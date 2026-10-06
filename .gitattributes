@@ -1,6 +1,3 @@
-* text=auto
-*.py text eol=lf
-*.sh text eol=lf
-*.xml text eol=lf
-*.json text eol=lf
-heritage/upstream/** -text -diff
+baseline/bhuman/** -text -diff
+models/NAOH25V60.urdf -text
+models/UPSTREAM_LICENSE -text

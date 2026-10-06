@@ -1,13 +1,10 @@
-"""Adaptador MuJoCo para lógica de penales; proxies cinemáticos de NAO."""
+"""Flujo de penales con NAO V6 derivados de URDF y raíces cinemáticas."""
 import argparse
 import math
-from pathlib import Path
-
 import mujoco
 
 from penalty.control import Observation, PenaltyController
-
-SCENE = Path(__file__).resolve().parents[1] / 'sim' / 'scene.xml'
+from penalty.nao_model import load_model
 
 
 def wrap(angle):
@@ -18,10 +15,10 @@ class PenaltySimulator:
     dt = 0.1
 
     def __init__(self):
-        self.model = mujoco.MjModel.from_xml_path(str(SCENE))
+        self.model = load_model(mocap=True)
         self.data = mujoco.MjData(self.model)
-        self.striker_mocap = self.model.body('striker').mocapid[0]
-        self.keeper_mocap = self.model.body('keeper').mocapid[0]
+        self.striker_mocap = self.model.body('striker_base_link').mocapid[0]
+        self.keeper_mocap = self.model.body('keeper_base_link').mocapid[0]
         joint = self.model.joint('ball_free')
         self.ball_qpos = joint.qposadr[0]
         self.ball_qvel = joint.dofadr[0]
@@ -93,6 +90,8 @@ class PenaltySimulator:
             return 'goal'
         if bx < -1.2:
             return 'wide'
+        if abs(by) > 1.2 or bx > 1.2:
+            return 'out'
         if self.kick_count and self.min_ball_x < -0.9 and bx > self.min_ball_x + 0.1:
             return 'blocked'
         return 'in_play'
