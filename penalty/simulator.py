@@ -1,10 +1,10 @@
-"""Flujo de penales con NAO V6 derivados de URDF y raíces cinemáticas."""
+"""Flujo de penales con el modelo NAO V6 B-Human y raíces cinemáticas."""
 import argparse
 import math
 import mujoco
 
 from penalty.control import Observation, PenaltyController
-from penalty.nao_model import load_model
+from penalty.nao_model import KINEMATIC_ROOT_Z, load_model, set_initial_pose
 
 
 def wrap(angle):
@@ -17,8 +17,8 @@ class PenaltySimulator:
     def __init__(self):
         self.model = load_model(mocap=True)
         self.data = mujoco.MjData(self.model)
-        self.striker_mocap = self.model.body('striker_base_link').mocapid[0]
-        self.keeper_mocap = self.model.body('keeper_base_link').mocapid[0]
+        self.striker_mocap = self.model.body('striker_Nao').mocapid[0]
+        self.keeper_mocap = self.model.body('keeper_Nao').mocapid[0]
         joint = self.model.joint('ball_free')
         self.ball_qpos = joint.qposadr[0]
         self.ball_qvel = joint.dofadr[0]
@@ -29,12 +29,13 @@ class PenaltySimulator:
         self.reset()
 
     def _mocap(self, mocap_id, pose):
-        self.data.mocap_pos[mocap_id] = [pose[0], pose[1], 0.4]
+        self.data.mocap_pos[mocap_id] = [pose[0], pose[1], KINEMATIC_ROOT_Z]
         yaw = pose[2]
         self.data.mocap_quat[mocap_id] = [math.cos(yaw / 2), 0, 0, math.sin(yaw / 2)]
 
     def reset(self):
         mujoco.mj_resetData(self.model, self.data)
+        set_initial_pose(self.model, self.data)
         self.striker[:] = [0.3, 0.0, math.pi]
         self.keeper[:] = [-1.08, 0.0, 0.0]
         self.kick_count = 0

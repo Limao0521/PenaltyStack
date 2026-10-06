@@ -1,3 +1,4 @@
 baseline/bhuman/** -text -diff
-models/NAOH25V60.urdf -text
-models/UPSTREAM_LICENSE -text
+models/bhuman/NaoV6H25.rsi3 -text -diff
+models/bhuman/License.md -text
+models/bhuman/meshes/** -text -diff

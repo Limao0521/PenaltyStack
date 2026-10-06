@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="bhuman_nao_v6">
+  <compiler angle="radian" inertiafromgeom="false" />
+  <asset>
+    <mesh name="naoHeadPitchV6_0" file="meshes/naoHeadPitchV6_0.obj" />
+    <mesh name="naoHeadPitchV6_1" file="meshes/naoHeadPitchV6_1.obj" />
+    <mesh name="naoHeadPitchV6_2" file="meshes/naoHeadPitchV6_2.obj" />
+    <mesh name="naoHeadPitchV6_3" file="meshes/naoHeadPitchV6_3.obj" />
+    <mesh name="naoHeadPitchV6_4" file="meshes/naoHeadPitchV6_4.obj" />
+    <mesh name="naoHeadPitchV6_5" file="meshes/naoHeadPitchV6_5.obj" />
+    <mesh name="naoHeadYaw_0" file="meshes/naoHeadYaw_0.obj" />
+    <mesh name="naoLAnklePitch_0" file="meshes/naoLAnklePitch_0.obj" />
+    <mesh name="naoLAnkleRollV6_0" file="meshes/naoLAnkleRollV6_0.obj" />
+    <mesh name="naoLAnkleRollV6_1" file="meshes/naoLAnkleRollV6_1.obj" />
+    <mesh name="naoLAnkleRollV6_2" file="meshes/naoLAnkleRollV6_2.obj" />
+    <mesh name="naoLAnkleRollV6_3" file="meshes/naoLAnkleRollV6_3.obj" />
+    <mesh name="naoLElbowRoll_0" file="meshes/naoLElbowRoll_0.obj" />
+    <mesh name="naoLHipPitch_0" file="meshes/naoLHipPitch_0.obj" />
+    <mesh name="naoLHipPitch_1" file="meshes/naoLHipPitch_1.obj" />
+    <mesh name="naoLHipRoll_0" file="meshes/naoLHipRoll_0.obj" />
+    <mesh name="naoLHipYawPitch_0" file="meshes/naoLHipYawPitch_0.obj" />
+    <mesh name="naoLHipYawPitch_1" file="meshes/naoLHipYawPitch_1.obj" />
+    <mesh name="naoLKneePitchV6_0" file="meshes/naoLKneePitchV6_0.obj" />
+    <mesh name="naoLKneePitchV6_1" file="meshes/naoLKneePitchV6_1.obj" />
+    <mesh name="naoLKneePitchV6_2" file="meshes/naoLKneePitchV6_2.obj" />
+    <mesh name="naoLShoulderPitch_0" file="meshes/naoLShoulderPitch_0.obj" />
+    <mesh name="naoLShoulderRollV6_0" file="meshes/naoLShoulderRollV6_0.obj" />
+    <mesh name="naoLShoulderRollV6_1" file="meshes/naoLShoulderRollV6_1.obj" />
+    <mesh name="naoLShoulderRollV6_2" file="meshes/naoLShoulderRollV6_2.obj" />
+    <mesh name="naoRAnklePitch_0" file="meshes/naoRAnklePitch_0.obj" />
+    <mesh name="naoRAnkleRollV6_0" file="meshes/naoRAnkleRollV6_0.obj" />
+    <mesh name="naoRAnkleRollV6_1" file="meshes/naoRAnkleRollV6_1.obj" />
+    <mesh name="naoRAnkleRollV6_2" file="meshes/naoRAnkleRollV6_2.obj" />
+    <mesh name="naoRAnkleRollV6_3" file="meshes/naoRAnkleRollV6_3.obj" />
+    <mesh name="naoRElbowRoll_0" file="meshes/naoRElbowRoll_0.obj" />
+    <mesh name="naoRHipPitch_0" file="meshes/naoRHipPitch_0.obj" />
+    <mesh name="naoRHipPitch_1" file="meshes/naoRHipPitch_1.obj" />
+    <mesh name="naoRHipRoll_0" file="meshes/naoRHipRoll_0.obj" />
+    <mesh name="naoRHipYawPitch_0" file="meshes/naoRHipYawPitch_0.obj" />
+    <mesh name="naoRHipYawPitch_1" file="meshes/naoRHipYawPitch_1.obj" />
+    <mesh name="naoRKneePitchV6_0" file="meshes/naoRKneePitchV6_0.obj" />
+    <mesh name="naoRKneePitchV6_1" file="meshes/naoRKneePitchV6_1.obj" />
+    <mesh name="naoRKneePitchV6_2" file="meshes/naoRKneePitchV6_2.obj" />
+    <mesh name="naoRShoulderPitch_0" file="meshes/naoRShoulderPitch_0.obj" />
+    <mesh name="naoRShoulderRollV6_0" file="meshes/naoRShoulderRollV6_0.obj" />
+    <mesh name="naoRShoulderRollV6_1" file="meshes/naoRShoulderRollV6_1.obj" />
+    <mesh name="naoRShoulderRollV6_2" file="meshes/naoRShoulderRollV6_2.obj" />
+    <mesh name="naoTorsoV6_0" file="meshes/naoTorsoV6_0.obj" />
+    <mesh name="naoTorsoV6_2" file="meshes/naoTorsoV6_2.obj" />
+    <mesh name="naoTorsoV6_3" file="meshes/naoTorsoV6_3.obj" />
+    <mesh name="naoTorsoV6_jersey" file="meshes/naoTorsoV6_jersey.obj" />
+    <mesh name="naoWristYawV6_0" file="meshes/naoWristYawV6_0.obj" />
+    <mesh name="naoWristYawV6_1" file="meshes/naoWristYawV6_1.obj" />
+    <mesh name="naoWristYawV6_2" file="meshes/naoWristYawV6_2.obj" />
+  </asset>
+  <worldbody>
+    <body name="Nao">
+      <inertial mass="1.04956" pos="-0.00413 0 0.04342" fullinertia="0.00506234169 0.00488013393 0.00161030224 1.43116e-05 0.00015519083 -2.70793e-05" />
+      <geom type="box" pos="0 0 0.02" rgba="0 0 0 0" group="3" size="0.05 0.06 0.095" />
+      <geom name="Nao_naoTorsoV6_0" type="mesh" mesh="naoTorsoV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+      <geom name="Nao_naoTorsoV6_jersey" type="mesh" mesh="naoTorsoV6_jersey" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+      <geom name="Nao_naoTorsoV6_2" type="mesh" mesh="naoTorsoV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+      <geom name="Nao_naoTorsoV6_3" type="mesh" mesh="naoTorsoV6_3" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+      <body name="Neck" pos="0 0 0.1265">
+        <joint name="HeadYaw" type="hinge" axis="0 0 1" range="-2.085668456 2.085668456" limited="true" />
+        <inertial mass="0.07842" pos="-1e-05 0 -0.02742" fullinertia="7.499298e-05 7.599999e-05 5.53373e-06 1.57e-09 -1.834e-08 -5.295e-08" />
+        <geom name="Neck_naoHeadYaw_0" type="mesh" mesh="naoHeadYaw_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+        <body name="Head" pos="0 0 0">
+          <joint name="HeadPitch" type="hinge" axis="0 1 0" range="-0.671951762 0.5148721293" limited="true" />
+          <inertial mass="0.65973" pos="0.00109 0.00146 0.05719" fullinertia="0.00292981872 0.00283859256 0.00071689593 3.7171e-06 -3.144671e-05 -7.377331e-05" />
+          <geom type="sphere" pos="0 0 0.055" rgba="0 0 0 0" group="3" size="0.062" />
+          <geom name="Head_naoHeadPitchV6_0" type="mesh" mesh="naoHeadPitchV6_0" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+          <geom name="Head_naoHeadPitchV6_1" type="mesh" mesh="naoHeadPitchV6_1" rgba="0 0 0 1" contype="0" conaffinity="0" group="1" />
+          <geom name="Head_naoHeadPitchV6_2" type="mesh" mesh="naoHeadPitchV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+          <geom name="Head_naoHeadPitchV6_3" type="mesh" mesh="naoHeadPitchV6_3" rgba="0 0 0 1" contype="0" conaffinity="0" group="1" />
+          <geom name="Head_naoHeadPitchV6_4" type="mesh" mesh="naoHeadPitchV6_4" rgba="0 0 0 1" contype="0" conaffinity="0" group="1" />
+          <geom name="Head_naoHeadPitchV6_5" type="mesh" mesh="naoHeadPitchV6_5" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+        </body>
+      </body>
+      <body name="LShoulder" pos="0 0.098 0.1">
+        <joint name="LShoulderPitch" type="hinge" axis="0 1 0" range="-2.085668456 2.085668456" limited="true" />
+        <inertial mass="0.09304" pos="-0.00165 -0.02663 0.00014" fullinertia="8.428428e-05 1.415563e-05 8.641946e-05 -2.02802e-06 2.339e-08 -1.948e-08" />
+        <geom name="LShoulder_naoLShoulderPitch_0" type="mesh" mesh="naoLShoulderPitch_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+        <body name="LUpperArm" pos="0 0 0">
+          <joint name="LShoulderRoll" type="hinge" axis="0 0 1" range="-0.3141592654 1.326450232" limited="true" />
+          <inertial mass="0.15777" pos="0.02455 0.00563 0.0033" fullinertia="9.39001e-05 0.00037151833 0.00034190119 -4.714485e-05 -2.699473e-05 -2.45982e-06" />
+          <geom type="box" pos="0.025 0 0" rgba="0 0 0 0" group="3" size="0.07 0.025 0.025" euler="0.7853981634 0 0.1745329252" />
+          <geom name="LUpperArm_naoLShoulderRollV6_0" type="mesh" mesh="naoLShoulderRollV6_0" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+          <geom name="LUpperArm_naoLShoulderRollV6_1" type="mesh" mesh="naoLShoulderRollV6_1" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+          <geom name="LUpperArm_naoLShoulderRollV6_2" type="mesh" mesh="naoLShoulderRollV6_2" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+          <body name="LElbow" pos="0.105 0.015 0">
+            <joint name="LElbowYaw" type="hinge" axis="1 0 0" range="-2.085668456 2.085668456" limited="true" />
+            <inertial mass="0.06483" pos="-0.02744 0 -0.00014" fullinertia="5.59715e-06 7.543315e-05 7.644338e-05 4.39e-09 4.319e-08 -1.84e-09" />
+            <body name="LLowerArm" pos="0 0 0">
+              <joint name="LElbowRoll" type="hinge" axis="0 0 1" range="-1.544616388 -0.03490658504" limited="true" />
+              <inertial mass="0.07761" pos="0.02556 0.00281 0.00076" fullinertia="2.533228e-05 8.913216e-05 8.728728e-05 -2.34289e-06 7.459e-08 -2.656e-08" />
+              <geom type="box" pos="0.027 0 0.005" rgba="0 0 0 0" group="3" size="0.0275 0.0235 0.0235" euler="0.7853981634 0 0" />
+              <geom name="LLowerArm_naoLElbowRoll_0" type="mesh" mesh="naoLElbowRoll_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+              <body name="LWrist" pos="0.05595 0 0">
+                <joint name="LWristYaw" type="hinge" axis="1 0 0" range="-1.823869068 1.823869068" limited="true" />
+                <inertial mass="0.18533" pos="0.03434 -0.00088 0.00308" fullinertia="7.054938e-05 0.00035606181 0.00035191925 5.71667e-06 -2.247441e-05 3.17777e-06" />
+                <geom type="box" pos="0.04 0 0" rgba="0 0 0 0" group="3" size="0.04 0.025 0.025" />
+                <geom name="LWrist_naoWristYawV6_0" type="mesh" mesh="naoWristYawV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+                <geom name="LWrist_naoWristYawV6_1" type="mesh" mesh="naoWristYawV6_1" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+                <geom name="LWrist_naoWristYawV6_2" type="mesh" mesh="naoWristYawV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="RShoulder" pos="0 -0.098 0.1">
+        <joint name="RShoulderPitch" type="hinge" axis="0 1 0" range="-2.085668456 2.085668456" limited="true" />
+        <inertial mass="0.09304" pos="-0.00165 0.02663 0.00014" fullinertia="8.428428e-05 1.415562e-05 8.641946e-05 2.02802e-06 2.337e-08 1.996e-08" />
+        <geom name="RShoulder_naoRShoulderPitch_0" type="mesh" mesh="naoRShoulderPitch_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+        <body name="RUpperArm" pos="0 0 0">
+          <joint name="RShoulderRoll" type="hinge" axis="0 0 1" range="-1.326450232 0.3141592654" limited="true" />
+          <inertial mass="0.15777" pos="0.02455 -0.00563 0.0033" fullinertia="0.00011011978 0.00036757665 0.00035461819 7.669099e-05 -2.604605e-05 1.209823e-05" />
+          <geom type="box" pos="0.025 0 0" rgba="0 0 0 0" group="3" size="0.07 0.025 0.025" euler="0.7853981634 0 -0.1745329252" />
+          <geom name="RUpperArm_naoRShoulderRollV6_0" type="mesh" mesh="naoRShoulderRollV6_0" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+          <geom name="RUpperArm_naoRShoulderRollV6_1" type="mesh" mesh="naoRShoulderRollV6_1" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+          <geom name="RUpperArm_naoRShoulderRollV6_2" type="mesh" mesh="naoRShoulderRollV6_2" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+          <body name="RElbow" pos="0.105 -0.015 0">
+            <joint name="RElbowYaw" type="hinge" axis="1 0 0" range="-2.085668456 2.085668456" limited="true" />
+            <inertial mass="0.06483" pos="-0.02744 0 -0.00014" fullinertia="5.59715e-06 7.543315e-05 7.644338e-05 4.39e-09 4.319e-08 -1.84e-09" />
+            <body name="RLowerArm" pos="0 0 0">
+              <joint name="RElbowRoll" type="hinge" axis="0 0 1" range="0.03490658504 1.544616388" limited="true" />
+              <inertial mass="0.07761" pos="0.02556 -0.00281 0.00076" fullinertia="2.53907e-05 8.922044e-05 8.724838e-05 2.33225e-06 -6.0117e-07 2.693e-08" />
+              <geom type="box" pos="0.027 0 0.005" rgba="0 0 0 0" group="3" size="0.0275 0.0235 0.0235" euler="0.7853981634 0 0" />
+              <geom name="RLowerArm_naoRElbowRoll_0" type="mesh" mesh="naoRElbowRoll_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+              <body name="RWrist" pos="0.05595 0 0">
+                <joint name="RWristYaw" type="hinge" axis="1 0 0" range="-1.823869068 1.823869068" limited="true" />
+                <inertial mass="0.18533" pos="0.03434 0.00088 0.00308" fullinertia="7.054929e-05 0.00035606188 0.00035191926 5.71666e-06 -2.247434e-05 3.17777e-06" />
+                <geom type="box" pos="0.04 0 0" rgba="0 0 0 0" group="3" size="0.04 0.025 0.025" />
+                <geom name="RWrist_naoWristYawV6_0" type="mesh" mesh="naoWristYawV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+                <geom name="RWrist_naoWristYawV6_1" type="mesh" mesh="naoWristYawV6_1" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+                <geom name="RWrist_naoWristYawV6_2" type="mesh" mesh="naoWristYawV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="LHip1" pos="0 0.05 -0.085">
+        <joint name="LHipYawPitch" type="hinge" axis="0 0.7 -0.7" range="-1.145285055 0.7407177345" limited="true" />
+        <inertial mass="0.06981" pos="-0.00781 -0.01114 0.02661" fullinertia="8.150227e-05 0.00010132527 6.262396e-05 -4.99462e-06 1.27482e-05 2.345501e-05" />
+        <geom name="LHip1_naoLHipYawPitch_0" type="mesh" mesh="naoLHipYawPitch_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+        <geom name="LHip1_naoLHipYawPitch_1" type="mesh" mesh="naoLHipYawPitch_1" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+        <body name="LHip2" pos="0 0 0">
+          <joint name="LHipRoll" type="hinge" axis="1 0 0" range="-0.3794345794 0.7904596182" limited="true" />
+          <inertial mass="0.14053" pos="-0.01549 0.00029 -0.00515" fullinertia="2.758344e-05 9.827059e-05 8.809978e-05 -2.23e-08 -4.08153e-06 -4.18e-09" />
+          <geom type="sphere" pos="0 0 -0.01" rgba="0 0 0 0" group="3" size="0.055" />
+          <geom name="LHip2_naoLHipRoll_0" type="mesh" mesh="naoLHipRoll_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+          <body name="LThigh" pos="0 0 0">
+            <joint name="LHipPitch" type="hinge" axis="0 1 0" range="-1.535889742 0.4839798016" limited="true" />
+            <inertial mass="0.38968" pos="0.00138 0.00221 -0.05373" fullinertia="0.00163671924 0.00159107267 0.00030374322 9.2445e-07 8.531079e-05 3.835747e-05" />
+            <geom type="box" pos="0 0 -0.05" rgba="0 0 0 0" group="3" size="0.035 0.035 0.045" euler="0 -0.1745329252 0" />
+            <geom name="LThigh_naoLHipPitch_0" type="mesh" mesh="naoLHipPitch_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+            <geom name="LThigh_naoLHipPitch_1" type="mesh" mesh="naoLHipPitch_1" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+            <body name="LTibia" pos="0 0 -0.1">
+              <joint name="LKneePitch" type="hinge" axis="0 1 0" range="-0.09232791743 2.112546527" limited="true" />
+              <inertial mass="0.30142" pos="0.00453 0.00225 -0.04936" fullinertia="0.00118207903 0.00112865224 0.0001932276 6.3374e-07 3.649964e-05 3.949253e-05" />
+              <geom type="box" pos="0 0 -0.051375" rgba="0 0 0 0" group="3" size="0.035 0.035 0.045" euler="0 0.1745329252 0" />
+              <geom name="LTibia_naoLKneePitchV6_0" type="mesh" mesh="naoLKneePitchV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+              <geom name="LTibia_naoLKneePitchV6_1" type="mesh" mesh="naoLKneePitchV6_1" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+              <geom name="LTibia_naoLKneePitchV6_2" type="mesh" mesh="naoLKneePitchV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+              <body name="LAnkle" pos="0 0 -0.1029">
+                <joint name="LAnklePitch" type="hinge" axis="0 1 0" range="-1.189441885 0.9225810426" limited="true" />
+                <inertial mass="0.13416" pos="0.00045 0.00029 0.00685" fullinertia="3.850981e-05 7.426529e-05 5.486535e-05 -2.634e-08 3.86196e-06 1.832e-08" />
+                <geom name="LAnkle_naoLAnklePitch_0" type="mesh" mesh="naoLAnklePitch_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+                <body name="LFoot" pos="0 0 0">
+                  <joint name="LAnkleRoll" type="hinge" axis="1 0 0" range="-0.3977605365 0.7689920684" limited="true" />
+                  <inertial mass="0.17184" pos="0.02542 0.0033 -0.03239" fullinertia="0.0002694429 0.00064434228 0.00052575535 -5.69602e-06 0.0001393792 1.874143e-05" />
+                  <geom type="box" pos="0.02 0.003 -0.03011" rgba="0 0 0 0" group="3" size="0.075 0.0375 0.015" />
+                  <geom name="LFoot_naoLAnkleRollV6_0" type="mesh" mesh="naoLAnkleRollV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+                  <geom name="LFoot_naoLAnkleRollV6_1" type="mesh" mesh="naoLAnkleRollV6_1" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+                  <geom name="LFoot_naoLAnkleRollV6_2" type="mesh" mesh="naoLAnkleRollV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+                  <geom name="LFoot_naoLAnkleRollV6_3" type="mesh" mesh="naoLAnkleRollV6_3" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="RHip1" pos="0 -0.05 -0.085">
+        <joint name="RHipYawPitch" type="hinge" axis="0 0.7 0.7" range="-1.145285055 0.7407177345" limited="true" />
+        <inertial mass="0.06981" pos="-0.00781 0.01114 0.02661" fullinertia="8.997187e-05 0.00010552606 6.688737e-05 5.00225e-06 1.273531e-05 -2.770088e-05" />
+        <geom name="RHip1_naoRHipYawPitch_0" type="mesh" mesh="naoRHipYawPitch_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+        <geom name="RHip1_naoRHipYawPitch_1" type="mesh" mesh="naoRHipYawPitch_1" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+        <body name="RHip2" pos="0 0 0">
+          <joint name="RHipRoll" type="hinge" axis="1 0 0" range="-0.7904596182 0.3794345794" limited="true" />
+          <inertial mass="0.14053" pos="-0.01549 -0.00029 -0.00515" fullinertia="2.758644e-05 9.826999e-05 8.810338e-05 -1.916e-08 -4.10811e-06 2.52e-09" />
+          <geom type="sphere" pos="0 0 -0.01" rgba="0 0 0 0" group="3" size="0.055" />
+          <geom name="RHip2_naoRHipRoll_0" type="mesh" mesh="naoRHipRoll_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+          <body name="RThigh" pos="0 0 0">
+            <joint name="RHipPitch" type="hinge" axis="0 1 0" range="-1.535889742 0.4839798016" limited="true" />
+            <inertial mass="0.38968" pos="0.00138 -0.00221 -0.05373" fullinertia="0.00163748224 0.00159221399 0.00030397889 -8.3927e-07 8.588718e-05 -3.918038e-05" />
+            <geom type="box" pos="0 0 -0.05" rgba="0 0 0 0" group="3" size="0.035 0.035 0.045" euler="0 -0.1745329252 0" />
+            <geom name="RThigh_naoRHipPitch_0" type="mesh" mesh="naoRHipPitch_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+            <geom name="RThigh_naoRHipPitch_1" type="mesh" mesh="naoRHipPitch_1" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+            <body name="RTibia" pos="0 0 -0.1">
+              <joint name="RKneePitch" type="hinge" axis="0 1 0" range="-0.1029744259 2.120051442" limited="true" />
+              <inertial mass="0.30142" pos="0.00453 -0.00225 -0.04936" fullinertia="0.00118282903 0.00112827875 0.00019145309 -8.9613e-07 2.799952e-05 -3.847873e-05" />
+              <geom type="box" pos="0 0 -0.051375" rgba="0 0 0 0" group="3" size="0.035 0.035 0.045" euler="0 0.1745329252 0" />
+              <geom name="RTibia_naoRKneePitchV6_0" type="mesh" mesh="naoRKneePitchV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+              <geom name="RTibia_naoRKneePitchV6_1" type="mesh" mesh="naoRKneePitchV6_1" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+              <geom name="RTibia_naoRKneePitchV6_2" type="mesh" mesh="naoRKneePitchV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+              <body name="RAnkle" pos="0 0 -0.1029">
+                <joint name="RAnklePitch" type="hinge" axis="0 1 0" range="-1.186300293 0.9320058206" limited="true" />
+                <inertial mass="0.13416" pos="0.00045 -0.00029 0.00685" fullinertia="3.850811e-05 7.431079e-05 5.491315e-05 6.434e-08 3.87468e-06 -4.6e-09" />
+                <geom name="RAnkle_naoRAnklePitch_0" type="mesh" mesh="naoRAnklePitch_0" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+                <body name="RFoot" pos="0 0 0">
+                  <joint name="RAnkleRoll" type="hinge" axis="1 0 0" range="-0.7689920684 0.3979350695" limited="true" />
+                  <inertial mass="0.17184" pos="0.02542 -0.0033 -0.03239" fullinertia="0.0002693031 0.00064347447 0.00052503416 5.87462e-06 0.00013913306 -1.884877e-05" />
+                  <geom type="box" pos="0.02 -0.003 -0.03011" rgba="0 0 0 0" group="3" size="0.075 0.0375 0.015" />
+                  <geom name="RFoot_naoRAnkleRollV6_0" type="mesh" mesh="naoRAnkleRollV6_0" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+                  <geom name="RFoot_naoRAnkleRollV6_1" type="mesh" mesh="naoRAnkleRollV6_1" rgba="0.25 0.27 0.28 1" contype="0" conaffinity="0" group="1" />
+                  <geom name="RFoot_naoRAnkleRollV6_2" type="mesh" mesh="naoRAnkleRollV6_2" rgba="0.4 0.4 0.4 1" contype="0" conaffinity="0" group="1" />
+                  <geom name="RFoot_naoRAnkleRollV6_3" type="mesh" mesh="naoRAnkleRollV6_3" rgba="0.92 0.94 0.97 1" contype="0" conaffinity="0" group="1" />
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="HeadYaw_servo" joint="HeadYaw" kp="40" kv="2" ctrlrange="-2.085668456 2.085668456" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="HeadPitch_servo" joint="HeadPitch" kp="40" kv="2" ctrlrange="-0.671951762 0.5148721293" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="LShoulderPitch_servo" joint="LShoulderPitch" kp="40" kv="2" ctrlrange="-2.085668456 2.085668456" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LShoulderRoll_servo" joint="LShoulderRoll" kp="40" kv="2" ctrlrange="-0.3141592654 1.326450232" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LElbowYaw_servo" joint="LElbowYaw" kp="40" kv="0.5" ctrlrange="-2.085668456 2.085668456" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="LElbowRoll_servo" joint="LElbowRoll" kp="40" kv="0.5" ctrlrange="-1.544616388 -0.03490658504" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="LWristYaw_servo" joint="LWristYaw" kp="40" kv="0.5" ctrlrange="-1.823869068 1.823869068" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="RShoulderPitch_servo" joint="RShoulderPitch" kp="40" kv="2" ctrlrange="-2.085668456 2.085668456" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RShoulderRoll_servo" joint="RShoulderRoll" kp="40" kv="2" ctrlrange="-1.326450232 0.3141592654" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RElbowYaw_servo" joint="RElbowYaw" kp="40" kv="0.5" ctrlrange="-2.085668456 2.085668456" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="RElbowRoll_servo" joint="RElbowRoll" kp="40" kv="0.5" ctrlrange="0.03490658504 1.544616388" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="RWristYaw_servo" joint="RWristYaw" kp="40" kv="0.5" ctrlrange="-1.823869068 1.823869068" ctrllimited="true" forcerange="-3 3" forcelimited="true" />
+    <position name="LHipYawPitch_servo" joint="LHipYawPitch" kp="40" kv="0.5" ctrlrange="-1.145285055 0.7407177345" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LHipRoll_servo" joint="LHipRoll" kp="40" kv="0.5" ctrlrange="-0.3794345794 0.7904596182" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LHipPitch_servo" joint="LHipPitch" kp="40" kv="0.5" ctrlrange="-1.535889742 0.4839798016" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LKneePitch_servo" joint="LKneePitch" kp="40" kv="0.5" ctrlrange="-0.09232791743 2.112546527" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LAnklePitch_servo" joint="LAnklePitch" kp="40" kv="0.5" ctrlrange="-1.189441885 0.9225810426" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="LAnkleRoll_servo" joint="LAnkleRoll" kp="40" kv="0.5" ctrlrange="-0.3977605365 0.7689920684" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RHipRoll_servo" joint="RHipRoll" kp="40" kv="0.5" ctrlrange="-0.7904596182 0.3794345794" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RHipPitch_servo" joint="RHipPitch" kp="40" kv="0.5" ctrlrange="-1.535889742 0.4839798016" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RKneePitch_servo" joint="RKneePitch" kp="40" kv="0.5" ctrlrange="-0.1029744259 2.120051442" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RAnklePitch_servo" joint="RAnklePitch" kp="40" kv="0.5" ctrlrange="-1.186300293 0.9320058206" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+    <position name="RAnkleRoll_servo" joint="RAnkleRoll" kp="40" kv="0.5" ctrlrange="-0.7689920684 0.3979350695" ctrllimited="true" forcerange="-5 5" forcelimited="true" />
+  </actuator>
+</mujoco>

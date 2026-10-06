@@ -1,15 +1,15 @@
 """Interfaz de acciones articulares para experimentos futuros de RL.
 
 No incluye política, recompensa ni marcha estable. Cada acción contiene 23
-objetivos angulares por NAO; los dos HipYawPitch se acoplan como en hardware.
-Manos y dedos se fijan en el modelo derivado porque el URDF no les da inercia.
+objetivos angulares por NAO, según los 24 hinges del modelo SimRobot de
+B-Human con los dos HipYawPitch acoplados como en hardware.
 """
 import math
 
 import mujoco
 import numpy as np
 
-from penalty.nao_model import load_model
+from penalty.nao_model import load_model, set_initial_pose
 
 
 class JointSpaceEnv:
@@ -23,6 +23,7 @@ class JointSpaceEnv:
 
     def reset(self):
         mujoco.mj_resetData(self.model, self.data)
+        set_initial_pose(self.model, self.data)
         for role, xyz, yaw in (
             ('striker', (0.3, 0.0, 0.4), math.pi),
             ('keeper', (-1.08, 0.0, 0.4), 0.0),
@@ -33,7 +34,6 @@ class JointSpaceEnv:
                                                     math.sin(yaw / 2)]
         ball = self.model.joint('ball_free').qposadr[0]
         self.data.qpos[ball:ball + 7] = [0.1, 0, 0.0325, 1, 0, 0, 0]
-        self.data.ctrl[:] = 0
         mujoco.mj_forward(self.model, self.data)
         return self.observation()
 

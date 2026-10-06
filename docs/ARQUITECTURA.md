@@ -5,7 +5,7 @@
 `Observation` contiene reloj, START, ABORT, distancia y rumbo al balón, edad de la observación y rumbo a la portería. `PenaltyController` produce `Command` con marcha, cabeza, petición de patada y lado de bloqueo. El controlador no importa MuJoCo ni NAOqi.
 
 ```text
-MuJoCo: scene.xml + URDF V6 → simulador/observación → FSM → comando → adaptador MuJoCo
+MuJoCo: scene.xml + B-Human RSI3 convertido a MJCF → simulador/observación → FSM → comando → adaptador MuJoCo
 NAO: cámara+ALMemory → visión/observación → FSM → comando → ALMotion
 RL futuro: JointSpaceEnv → objetivos articulares → dinámica MuJoCo
 ```
@@ -29,9 +29,9 @@ El MVP clasifica izquierda/centro/derecha por rumbo y se mantiene plantado; aún
 
 ## Simulador
 
-La escena contiene cancha de 2,4 × 2,4 m, marca a 1,3 m de la línea de gol, tirador 0,2 m detrás de la marca, arco de 1,5 m de ancho y 0,8 m de alto, área de portero de 0,6 × 2,2 m, líneas negras, postes azules, red blanca visual y balón naranja de 65 mm/55 g. `penalty/nao_model.py` carga dos instancias del URDF NAO H25 V6. Conserva las articulaciones principales, límites e inercias disponibles en el original, acopla los dos HipYawPitch y genera 23 servos por robot. Fija las manos y los dedos, que carecen de inercia en el URDF. Sus mallas visuales Webots `.mesh` se sustituyen por primitivas aproximadas; se añade geometría de pie para contacto y se evitan autocolisiones entre primitivas superpuestas del URDF. El archivo URDF original no se modifica.
+La escena contiene cancha de 2,4 × 2,4 m, marca a 1,3 m de la línea de gol, tirador 0,2 m detrás de la marca, arco de 1,5 m de ancho y 0,8 m de alto, área de portero de 0,6 × 2,2 m, líneas negras, postes azules, red blanca visual y balón naranja de 65 mm/55 g. `tools/build_bhuman_model.py` convierte la descripción `NaoV6H25.rsi3` de B-Human a MJCF y 50 mallas OBJ usadas por el robot. Se trasladan los 25 cuerpos, 24 articulaciones con ejes y límites, masas/inercia, geometrías de colisión y parámetros de los servos que figuran en la fuente. `penalty/nao_model.py` carga dos instancias, acopla los HipYawPitch y expone 23 servos por robot. Las mallas son sólo visuales; para contacto se usan las primitivas del modelo B-Human. Las autocolisiones y los contactos entre robots se desactivan para este MVP.
 
-`PenaltySimulator` fija la raíz de cada NAO a mocap y la mueve con comandos de velocidad ideales. MuJoCo calcula balón y articulaciones; la patada sigue siendo un impulso ideal. Comprueba secuencia, coordenadas y resultado aproximado, pero no valida marcha ni contacto de patada. `JointSpaceEnv` utiliza raíces libres y acciones articulares limitadas por URDF para futuros entrenamientos; con objetivos cero el NAO cae y no existe controlador de equilibrio, política ni recompensa. Ningún modo está calibrado contra un robot real.
+`PenaltySimulator` fija la raíz de cada NAO a mocap y la mueve con comandos de velocidad ideales. MuJoCo calcula balón y articulaciones; la patada sigue siendo un impulso ideal. Comprueba secuencia y coordenadas, pero no valida marcha ni contacto de patada. `JointSpaceEnv` utiliza raíces libres y acciones articulares limitadas por el modelo B-Human para futuros entrenamientos; con objetivos cero el NAO cae y no existe controlador de equilibrio, política ni recompensa. Ningún modo está calibrado contra un robot real. Este adaptador no ejecuta el SimRobotCore3 original ni reproduce sus cámaras, sensores o controlador de bajo nivel.
 
 ## Origen seleccionado
 

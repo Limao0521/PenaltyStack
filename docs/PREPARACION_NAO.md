@@ -10,4 +10,4 @@ Puertas concretas para declarar listo:
 4. Verificar marcha, equilibrio, zona de seguridad y botón ABORT con ambos roles. Ensayar el peor caso de timeout y fallo de cámara. El portero todavía solo bloquea estático.
 5. Ejecutar un penal completo sin Wi-Fi/PC, medir tiempos (<30 s y objetivo normal <15 s), trayectoria y contactos, y repetir por cada robot/perfil. Solo entonces activar movimiento físico para competencia.
 
-La simulación no sustituye estas medidas: aunque la cinemática parte del URDF V6, el flujo de penales mueve la raíz de cada NAO cinemáticamente y el impulso de kick no representa el pie real. El entorno articular con raíces libres todavía cae sin controlador de equilibrio.
+La simulación no sustituye estas medidas: ahora usa las mallas y los parámetros mecánicos de la descripción NAO V6 de B-Human, pero el flujo de penales mueve la raíz de cada NAO cinemáticamente y el impulso de kick no representa el pie real. El entorno articular con raíces libres todavía cae sin controlador de equilibrio.
