@@ -1,0 +1,54 @@
+<mujoco model="penalty_ccm_proxy">
+  <!-- Geometria NAO simplificada; NO es un modelo dinamico validado del NAO v6. -->
+  <compiler angle="radian"/>
+  <option timestep="0.002" gravity="0 0 -9.81"/>
+  <visual><map znear="0.01"/></visual>
+  <default>
+    <geom condim="3" friction="0.6 0.005 0.0001"/>
+  </default>
+  <worldbody>
+    <light pos="0 0 3" dir="0 0 -1"/>
+    <camera name="overview" pos="1.7 -2.7 2.3" xyaxes="0.85 0.53 0 -0.32 0.52 0.79"/>
+    <geom name="floor" type="plane" size="2 2 0.1" rgba="0.16 0.57 0.2 1"/>
+    <geom name="line_goal" type="box" pos="-1.2 0 0.002" size="0.006 1.2 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="line_far" type="box" pos="1.2 0 0.002" size="0.006 1.2 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="line_left" type="box" pos="0 1.2 0.002" size="1.2 0.006 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="line_right" type="box" pos="0 -1.2 0.002" size="1.2 0.006 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="keeper_area_back" type="box" pos="-0.6 0 0.002" size="0.006 1.1 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="keeper_area_left" type="box" pos="-0.9 1.1 0.002" size="0.3 0.006 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="keeper_area_right" type="box" pos="-0.9 -1.1 0.002" size="0.3 0.006 0.002" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="penalty_mark" type="cylinder" pos="0.1 0 0.003" size="0.016 0.003" rgba="0.02 0.02 0.02 1" contype="0" conaffinity="0"/>
+    <geom name="goal_post_left" type="cylinder" pos="-1.2 0.75 0.4" size="0.02 0.4" rgba="0.02 0.18 0.95 1"/>
+    <geom name="goal_post_right" type="cylinder" pos="-1.2 -0.75 0.4" size="0.02 0.4" rgba="0.02 0.18 0.95 1"/>
+    <geom name="goal_crossbar" type="capsule" fromto="-1.2 -0.75 0.8 -1.2 0.75 0.8" size="0.02" rgba="0.02 0.18 0.95 1"/>
+    <geom name="net_visual" type="box" pos="-1.34 0 0.4" size="0.003 0.75 0.4" rgba="1 1 1 0.16" contype="0" conaffinity="0"/>
+
+    <!-- Dos proxies NAO de ~0.58 m con torso 0.12x0.10x0.19 m y cabeza 0.124 m. -->
+    <body name="striker" mocap="true" pos="0.3 0 0.4">
+      <geom name="s_torso" type="box" size="0.05 0.06 0.095" pos="0 0 0.02" rgba="0.9 0.9 0.92 1"/>
+      <geom name="s_head" type="sphere" size="0.062" pos="0 0 0.12" rgba="0.9 0.9 0.92 1"/>
+      <geom name="s_larm" type="capsule" fromto="0 0.075 0.08 0.02 0.10 -0.12" size="0.028" rgba="0.8 0.8 0.85 1"/>
+      <geom name="s_rarm" type="capsule" fromto="0 -0.075 0.08 0.02 -0.10 -0.12" size="0.028" rgba="0.8 0.8 0.85 1"/>
+      <geom name="s_lleg" type="capsule" fromto="0 0.036 -0.08 0.0 0.036 -0.31" size="0.031" rgba="0.82 0.82 0.86 1"/>
+      <geom name="s_rleg" type="capsule" fromto="0 -0.036 -0.08 0.0 -0.036 -0.31" size="0.031" rgba="0.82 0.82 0.86 1"/>
+      <geom name="s_lfoot" type="box" size="0.055 0.035 0.02" pos="0.035 0.036 -0.36" rgba="0.08 0.08 0.12 1"/>
+      <geom name="s_rfoot" type="box" size="0.055 0.035 0.02" pos="0.035 -0.036 -0.36" rgba="0.08 0.08 0.12 1"/>
+      <site name="striker_center" pos="0 0 -0.35" size="0.01"/>
+    </body>
+    <body name="keeper" mocap="true" pos="-1.08 0 0.4">
+      <geom name="k_torso" type="box" size="0.05 0.06 0.095" pos="0 0 0.02" rgba="0.9 0.9 0.92 1"/>
+      <geom name="k_head" type="sphere" size="0.062" pos="0 0 0.12" rgba="0.9 0.9 0.92 1"/>
+      <geom name="k_larm" type="capsule" fromto="0 0.075 0.08 0.02 0.10 -0.12" size="0.028" rgba="0.8 0.8 0.85 1"/>
+      <geom name="k_rarm" type="capsule" fromto="0 -0.075 0.08 0.02 -0.10 -0.12" size="0.028" rgba="0.8 0.8 0.85 1"/>
+      <geom name="k_lleg" type="capsule" fromto="0 0.036 -0.08 0 0.036 -0.31" size="0.031" rgba="0.82 0.82 0.86 1"/>
+      <geom name="k_rleg" type="capsule" fromto="0 -0.036 -0.08 0 -0.036 -0.31" size="0.031" rgba="0.82 0.82 0.86 1"/>
+      <geom name="k_lfoot" type="box" size="0.055 0.035 0.02" pos="0.035 0.036 -0.36" rgba="0.08 0.08 0.12 1"/>
+      <geom name="k_rfoot" type="box" size="0.055 0.035 0.02" pos="0.035 -0.036 -0.36" rgba="0.08 0.08 0.12 1"/>
+      <site name="keeper_center" pos="0 0 -0.35" size="0.01"/>
+    </body>
+    <body name="ball" pos="0.1 0 0.0325">
+      <freejoint name="ball_free"/>
+      <geom name="orange_ball" type="sphere" size="0.0325" mass="0.055" friction="0.18 0.004 0.0001" rgba="1 0.33 0.01 1"/>
+    </body>
+  </worldbody>
+</mujoco>

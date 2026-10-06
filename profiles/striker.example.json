@@ -1,0 +1,8 @@
+{
+  "robot_id": "NAO_STRIKER_SERIAL_TO_FILL",
+  "role": "striker",
+  "camera": 1,
+  "goal_bearing_rad": 0.0,
+  "motion_enabled": false,
+  "kick_enabled": false
+}

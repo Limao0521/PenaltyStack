@@ -1,0 +1,14 @@
+{
+  "commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+  "files": {
+    "Config/KickEngine/kickForwardFast.kmc": "31184640fa4955242e2be59f7c2adfaca944bccc8880401e13b19d1ccd9203da",
+    "Config/KickEngine/kickForwardFastLong.kmc": "64cff432a5314e0e939deabd6ee9e603e81cdd2720b00b3a5cf1329915d8b2d6",
+    "Config/Robots/Default/kickInfo.cfg": "c58f3ab5867f36b969918fea070ce10d0b197c61dff9b436cf7c7aefdaa47f66",
+    "License.md": "c4ee5ee79d0367e352106da22bdde4c03c08c67d9bffa8258bec73a005d5012e",
+    "Src/Modules/Perception/BallPerceptors/TriondaBallPerceptor.cpp": "318f67f6a9e5ea3b4083885f6ffeebb8ed33fe8baaefeed82654083dfa79d84c",
+    "Src/Modules/Perception/BallPerceptors/TriondaBallPerceptor.h": "0ef777e1979989ff6ef057f224d5fe9e67b80f382719fe3f949b597fb454c353",
+    "Src/Modules/Perception/BallPerceptors/TriondaBallSpotsProvider.cpp": "ea04e3aabc00799dc4f9ad39c2570038f63179718a5ba55779b43b0e91251465",
+    "Src/Modules/Perception/BallPerceptors/TriondaBallSpotsProvider.h": "520abdc1ba1a7366c4c368faf6dbbc25c9d0526683d165245c6b1fd421fe96a1"
+  },
+  "source": "https://github.com/juanulloa2050/SabanaHerons2026"
+}
