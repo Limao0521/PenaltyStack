@@ -37,7 +37,7 @@ class Observation(object):
 
 class Command(object):
     def __init__(self, state, forward=0.0, lateral=0.0, turn=0.0,
-                 head_yaw=0.0, kick=False, block='center'):
+                 head_yaw=0.0, kick=False, block='center', block_now=None):
         self.state = state
         self.forward = forward
         self.lateral = lateral
@@ -45,6 +45,9 @@ class Command(object):
         self.head_yaw = head_yaw
         self.kick = kick
         self.block = block
+        # None keeps the simulator's scripted guard timing; True/False is an
+        # explicit tactical decision (RL keeper) to start or hold the guard.
+        self.block_now = block_now
 
 
 class PenaltyController(object):

@@ -7,8 +7,11 @@
 ```text
 MuJoCo: física/sensores → FSM → JSONL → B-Human C++ original → JointRequest → servos → física
 NAO: cámara+ALMemory → visión/observación → FSM → comando → ALMotion
-RL futuro: JointSpaceEnv → objetivos articulares → dinámica MuJoCo
+RL táctico: RLObservation → política → StrikerAction/KeeperAction → FSM + B-Human
+RL articular (P2): JointSpaceEnv → objetivos articulares → dinámica MuJoCo
 ```
+
+La capa táctica sustituye solo SELECT_SHOT del tirador y la guardia del portero; ver [RL](RL.md).
 
 La cámara onboard procesa RGB localmente y detecta la mayor componente naranja compacta. Es un baseline inspirado en los candidatos naranja del repositorio de origen, no una migración binaria del detector Trionda; los umbrales y el cálculo de distancia aún requieren dataset y calibración del balón de 65 mm. El rumbo a portería del adaptador físico es el rumbo inicial configurado; solo vale si la colocación inicial se comprueba en pista. No hay percepción real de postes.
 

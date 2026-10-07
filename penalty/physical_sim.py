@@ -148,6 +148,7 @@ class PhysicalSimulator:
         self.block_contacts = 0
         self.sequence = 0
         self.goal_event = None
+        self.goal_crossing = None
         self.fallen = {role: False for role in ROLES}
         self._fall_time = {role: 0.0 for role in ROLES}
         self._had_foot_ball = False
@@ -171,6 +172,7 @@ class PhysicalSimulator:
         self.data.qpos[self.ball_qpos:self.ball_qpos+7] = [*self.ball_xy, .0325, 1, 0, 0, 0]
         self.sequence = self.kick_count = self.kick_contact_count = self.block_contacts = 0
         self.goal_event = None
+        self.goal_crossing = None
         self.outputs = {role: {} for role in ROLES}
         self.fallen = {role: False for role in ROLES}
         self._fall_time = {role: 0.0 for role in ROLES}
@@ -234,6 +236,7 @@ class PhysicalSimulator:
             p = self.data.qpos[self.ball_qpos:self.ball_qpos+3]
             fraction = (-1.2-self._previous_ball[0]) / (p[0]-self._previous_ball[0])
             crossing = self._previous_ball + fraction*(p-self._previous_ball)
+            self.goal_crossing = crossing.tolist()
             if abs(crossing[1]) < .75-.0325 and crossing[2] < .8-.0325:
                 self.goal_event = 'goal'
             else:

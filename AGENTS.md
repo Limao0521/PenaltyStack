@@ -12,6 +12,7 @@
 - `deploy/`: empaquetado y despliegue Ethernet con ruta aislada.
 - `heritage/`: recursos estrictamente seleccionados de SabanaHerons2026 y procedencia.
 - `baseline/`: originales sin modificar usados por el runtime y como referencia para RL.
+- `penalty/rl/`, `penalty/skills/`, `penalty/optimization/`: RL táctico (contratos, entornos Gymnasium sintético/B-Human, recompensas versionadas, skills acotadas, búsqueda). Diseño en `docs/rl/`, estado en `docs/RL.md`.
 
 ## Comandos
 
@@ -20,6 +21,8 @@
 - `python tools/build_bhuman_model.py`
 - `python tools/build_motion_runtime.py`
 - `python -m unittest tests.test_sim_acceptance tests.test_sim_gui -v`
+- `python -m unittest tests.test_rl_contracts tests.test_rl_envs tests.test_rl_bhuman -v`
+- `python tools/evaluate_rl.py --role keeper --policy geometric --episodes 100 --seeds 0 1 2 3 4`
 - `python deploy/package.py --profile profiles/striker.example.json --output dist/striker.tar.gz`
 
 ## Restricciones
@@ -30,6 +33,8 @@
 - Preservar los bytes de `baseline/bhuman` y RSI3: las adaptaciones de plataforma se generan bajo `native/bhuman_motion/build/generated`.
 - No esperar IPC bajo el mutex del visor. Una cola llena/fallo de canal también debe recolectar todos los hijos.
 - Orientación/percepción ideales y sensores sintéticos deben quedar explícitos en trazas; no afirmar equivalencia con hardware.
-- No incorporar SimRobot, GameController, red de juego ni política RL.
+- No incorporar SimRobot, GameController ni red de juego.
+- RL solo en la capa táctica/skills: B-Human sigue como controlador de bajo nivel. El backend `synthetic` es analítico y siempre etiquetado; nada aprendido allí vale sin reevaluar en `bhuman`.
+- Nunca editar una recompensa, objetivo u observación publicada: crear una versión nueva (`*_v2`).
 
 Ver `docs/ARQUITECTURA.md`, `docs/SIMULACION.md` y `docs/DESPLIEGUE.md`.

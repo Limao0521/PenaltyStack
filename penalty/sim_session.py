@@ -61,6 +61,11 @@ class SimulationSession:
             return 0.
         return max(0., min(28., float(self.sim.data.time)-self._started_at))
 
+    @property
+    def control_due(self):
+        """True when the next tick runs the 0.1 s FSM update."""
+        return self.state == 'RUNNING' and self.penalty_time+1e-9 >= self._next_control
+
     def enqueue(self, action, value=None):
         self._commands.put((action, value))
 
@@ -263,7 +268,9 @@ class SimulationSession:
                 # Prepare the guard when the ball actually approaches. The
                 # ground-truth observation is explicit in the simulation log.
                 obs = self.sim.observation()[role]
-                if self._keeper_block is None and obs.get('ball_speed',0.) > .15 and obs['ball_range'] < 1.1:
+                scripted = (command.block_now is None and obs.get('ball_speed',0.) > .15
+                            and obs['ball_range'] < 1.1)
+                if self._keeper_block is None and (command.block_now or scripted):
                     self._keeper_block = command.block
                 # Keep the first guard requested for this shot. A stopped
                 # ball or a changing bearing must not release or replace an

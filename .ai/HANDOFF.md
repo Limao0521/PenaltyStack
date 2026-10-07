@@ -23,3 +23,12 @@ Guardar integración y corregir patadas/recuperación lateral. El usuario diseñ
 - Baseline funcional simulado: marcha 0.469 m/5 s, ambos kicks con contacto, guardia central y saltos laterales con recuperación. Alcance pedido manual/CLI de 1500–3500 mm; verificado físicamente el caso inicial de 2500 mm, no todo el rango.
 - Hardware: sigue sin penal completo habilitado; paquete NAOqi separado, ejecutor de patada apagado. Orientación/percepción ideales, sin calibración real.
 - Siguiente etapa: recibir diseño RL del usuario y comparar contra el mismo mundo/perfil registrado. No hay política RL nueva ni despliegue físico en esta entrega. Integración anterior ya estaba limpia en `9c08a41`; las correcciones se guardan en el commit posterior.
+
+## RL táctico P0 — 2026-10-07
+
+- Diseño del usuario en `docs/rl/` (copiado del zip); estado y comandos en `docs/RL.md`.
+- Hecho: contratos `rl_obs_v1`, entornos Gymnasium `synthetic`/`bhuman`, wrappers (historia, retardo, ruido/pérdida), recompensas v1, métricas, skills acotadas, búsqueda aleatoria/CMA-ES, `tools/evaluate_rl.py`. Suite: 79 pruebas.
+- Hooks mínimos: `Command.block_now`, `SimulationSession.control_due`, `PhysicalSimulator.goal_crossing`.
+- Hallazgos: girar en el sitio cerca del balón lo empuja → pose de patada orbitando; `kick_length_mm` 3100 desestabiliza la física → `power` mapea a 1500–2900 mm.
+- Baseline B-Human (5 semillas × 4): tirador scripted 100 % bloqueado; portero geométrico vs `random_kicks` 45 % atajadas. Throughput ~0.15 ep/s por proceso, ~0.8 ep/s con 8.
+- Siguiente: PPO (instalar stable-baselines3/torch), exponer parámetros de patada en runtime generado, self-play, adaptador NAO.
