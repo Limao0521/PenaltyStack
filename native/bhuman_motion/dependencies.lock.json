@@ -1,0 +1,14 @@
+{
+  "eigen-3.4.0.zip": {
+    "url": "https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip",
+    "sha256": "eba3f3d414d2f8cba2919c78ec6daab08fc71ba2ba4ae502b7e5d4d99fc02cda"
+  },
+  "json.hpp": {
+    "url": "https://raw.githubusercontent.com/nlohmann/json/v3.11.3/single_include/nlohmann/json.hpp",
+    "sha256": "9bea4c8066ef4a1c206b2be5a36302f8926f7fdc6087af5d20b417d0cf103ea6"
+  },
+  "RoboCupGameControlData.h": {
+    "url": "https://raw.githubusercontent.com/RoboCup-HumanoidSoccerLeague/GameController/81f0e79d8c84a9b24db47a8e7feaf2a3486bdb60/game_controller_msgs/headers/RoboCupGameControlData.h",
+    "sha256": "5e095f5d5faff1b6dae66c8c2f48e0c13b106bc5d4dc88ff0d4c9f419d27bc13"
+  }
+}

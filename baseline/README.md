@@ -6,13 +6,18 @@
 revisión `2360ab1100ad28f70e190c893f6b095651ff0bbc`: 54 archivos de
 MotionControl. Se incluyen además módulos de sensores y `NaoProvider`,
 `Tools/Motion`, representaciones de movimiento, configuración motriz y el
-cierre recursivo de cabeceras locales: 266 archivos en total. Los SHA-256 y
+cierre recursivo de cabeceras locales bajo `Src/` y `Src/Libs/`, sus unidades
+de implementación correspondientes y configuración motriz: 559 archivos en total. Los SHA-256 y
 rutas originales están en `motion_manifest.json`. La licencia del origen se
 conserva en `../heritage/upstream/License.md`.
 
-La carpeta es **referencia de código**, no un binario ejecutable. El motor
-depende del framework y la cadena de compilación de B-Human que no se
-migraron. No se conecta hoy ni al simulador MuJoCo ni al proceso NAOqi.
+La carpeta conserva **fuentes originales**. El target aislado en
+`../native/bhuman_motion` compila y ejecuta los módulos y fases originales,
+utilizando el Blackboard y los handlers de módulos B-Human. Se conecta al
+simulador mediante JSONL de sensores y JointRequest, con un proceso por NAO.
+La integración de hardware NAOqi permanece separada. Véase
+`../native/bhuman_motion/README.md` para compilación, adaptaciones explícitas
+de plataforma, entradas ideales de simulación y contrato.
 
 ## Comparación futura con RL
 

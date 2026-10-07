@@ -1,0 +1,58 @@
+/**
+ * @file KickOff.h
+ *
+ * This file declares the representation of a kick-off.
+ *
+ * @author Arne Hasselbring
+ */
+
+// Sabana Herons: team kick-off configurations.
+
+#pragma once
+
+#include "SetPlay.h"
+#include "Tactic.h"
+#include "Math/Pose2f.h"
+#include "Streaming/AutoStreamable.h"
+#include "Streaming/Enum.h"
+#include <vector>
+
+struct KickOff : public SetPlay
+{
+};
+
+STREAMABLE_WITH_BASE(OwnKickOff, KickOff,
+{
+  ENUM(Type,
+  {,
+    directKickOff,
+    attackKickOff,
+    soloKickOff,
+    attackKickOff_full,
+    attackKickOff_3v3_full,
+    soloKickOff_full,
+    soloKickOff_3v3_full,
+  });
+
+  static SetPlay::Type toSetPlay(Type type)
+  {
+    return static_cast<SetPlay::Type>(ownKickOffBegin + static_cast<unsigned>(type));
+  },
+});
+
+STREAMABLE_WITH_BASE(OpponentKickOff, KickOff,
+{
+  ENUM(Type,
+  {,
+    kiteKickOff,
+    defenseKickOff,
+    kiteKickOff_full,
+    kiteKickOff_3v3_full,
+
+  });
+
+  static SetPlay::Type toSetPlay(Type type)
+  {
+    return static_cast<SetPlay::Type>(opponentKickOffBegin + static_cast<unsigned>(type));
+  },
+});

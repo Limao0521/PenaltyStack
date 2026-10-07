@@ -1,4 +1,4 @@
-# Estado operativo — 2026-10-06
+# Estado operativo — 2026-10-07
 
 ## Objetivo
 
@@ -6,15 +6,18 @@ Controles interactivos de simulación y ejecución del motor B-Human original en
 
 ## Completado
 
-- Diseño conversacional aprobado por el usuario: panel, backend C++ por NAO, sensores y actuadores con dinámica física.
-- Especificación: `docs/superpowers/specs/2026-10-06-simulacion-interactiva-bhuman-design.md`.
-- Inspección del runtime y compilador: Visual Studio 2022 Build Tools disponible; ciclo motriz de origen de 12 ms.
-- Detectado cierre incompleto de dependencias: `tools/import_motion_engine.py` no contempla `Src/Libs/` ni el cierre de enlazado.
+- Runtime B-Human original compilado con MSVC 2022, 559 originales preservados y verificados por hash.
+- MuJoCo con raíces libres, servos, IMU/FSR; movimiento y contacto de balón físicos.
+- Panel y atajos: iniciar, pausa, paso, reset, repetir, ABORT, velocidad, modo y acciones manuales.
+- Dos procesos por ensayo, JSONL acotado, timeouts y cierre comprobados; sin esperas bajo mutex del visor.
+- FSM espera finalización de patada y conserva primera guardia del disparo.
+- Suite completa: 37 pruebas pasan; incluye visor/panel y tres penales idénticos con semilla 0. Informe `docs/validation/simulation-2026-10-07.json`.
 
 ## Estado y siguiente acción
 
-- La especificación requiere revisión del usuario antes de escribir el plan, según la habilidad brainstorming aplicada.
-- Después: plan de implementación, compilación del runtime, integración y comprobaciones físicas por etapas.
-- El motor aún no está ejecutándose; la simulación actual usa raíces mocap e impulso ideal de patada.
-- Modificaciones previas en `README.md` y `penalty/simulator.py` corresponden a reproducción a tiempo real y mantener la ventana abierta; se conservan fuera del commit documental.
-- Esta etapa sólo cambia documentación. No se ejecutaron pruebas de software ni movimientos físicos.
+- Rama: `feat/bhuman-simulation`. Lanzar `.venv/Scripts/python.exe -m penalty.simulator`, escena pausada; pulsar Iniciar.
+- Operación/compilación/limitaciones: `docs/SIMULACION.md`, `native/bhuman_motion/README.md`.
+- Baseline funcional simulado: marcha 0.469 m/5 s, kick izquierdo con contacto, bloqueo central, penal completo sin caída.
+- Patada derecha falla contacto inicial; saltos laterales caen; GetUp no recuperó salto izquierdo. Resultados explícitos, no ocultar como éxito físico.
+- Hardware: sigue sin penal completo habilitado; paquete NAOqi separado, ejecutor de patada apagado. Orientación/percepción ideales, sin calibración real.
+- Siguiente etapa: calibrar variantes/recuperación y diseñar host NAO/LoLA con validación progresiva si el usuario la autoriza. Esta entrega no modifica hardware ni fuente original.

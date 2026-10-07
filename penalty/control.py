@@ -15,7 +15,7 @@ def _finite(value):
 class Observation(object):
     def __init__(self, now, start=False, abort=False, ball_range=None,
                  ball_bearing=None, goal_bearing=None, ball_age=0.0,
-                 ball_lateral_speed=None):
+                 ball_lateral_speed=None, motion_busy=None, motion_done=None):
         self.now = float(now)
         self.start = bool(start)
         self.abort = bool(abort)
@@ -24,6 +24,10 @@ class Observation(object):
         self.goal_bearing = goal_bearing
         self.ball_age = float(ball_age)
         self.ball_lateral_speed = ball_lateral_speed
+        # None retains the NAOqi MVP's timing contract; simulators with a
+        # physical motor supply an explicit completion acknowledgement.
+        self.motion_busy = motion_busy
+        self.motion_done = motion_done
 
     def fresh_ball(self):
         return (self.ball_range is not None and self.ball_bearing is not None
@@ -96,6 +100,8 @@ class PenaltyController(object):
     def _striker(self, obs):
         now = obs.now
         if self.state == 'KICK':
+            if obs.motion_done is not None and not obs.motion_done:
+                return Command(self.state)
             self._state('RECOVER', now)
             return Command(self.state)
         if self.state == 'RECOVER':

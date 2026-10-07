@@ -6,23 +6,30 @@
 - `penalty/vision.py`: detector local de pelota naranja.
 - `penalty/simulator.py`, `penalty/nao_model.py`, `penalty/joint_env.py`, `sim/scene.xml` y `models/bhuman/`: cancha, modelo V6 B-Human y acciones articulares MuJoCo.
 - `tools/build_bhuman_model.py`: regeneración de MJCF y mallas desde la fuente RSI3 fijada.
+- `native/bhuman_motion/`: host C++ original por NAO; `tools/build_motion_runtime.py` compila con MSVC 2022.
+- `penalty/bhuman_bridge.py`, `physical_sim.py`, `sim_session.py`, `sim_panel.py`: IPC acotado, física/sensores, ciclo/controles y panel Tk.
 - `penalty/nao.py`: adaptador NAOqi local; ninguna dependencia de Wi-Fi durante el penal.
 - `deploy/`: empaquetado y despliegue Ethernet con ruta aislada.
 - `heritage/`: recursos estrictamente seleccionados de SabanaHerons2026 y procedencia.
-- `baseline/`: módulo MotionControl B-Human completo y dependencias seleccionadas, sólo como referencia de comparación.
+- `baseline/`: originales sin modificar usados por el runtime y como referencia para RL.
 
 ## Comandos
 
 - `python -m unittest discover -s tests -v`
 - `python -m penalty.simulator --headless`
 - `python tools/build_bhuman_model.py`
+- `python tools/build_motion_runtime.py`
+- `python -m unittest tests.test_sim_acceptance tests.test_sim_gui -v`
 - `python deploy/package.py --profile profiles/striker.example.json --output dist/striker.tar.gz`
 
 ## Restricciones
 
 - Dos roles configurables por robot; START y ABORT físicos, límite activo de 28 s.
 - No ejecutar movimientos físicos sin ensayos incrementales y calibración del NAO concreto.
-- Las mallas, masas y colisiones vienen de B-Human, pero la adaptación MuJoCo no reproduce todo SimRobotCore3; aún no hay control de equilibrio ni validación física.
+- El flujo usa raíces libres, servos y contactos físicos. No escribir trayectoria de raíz ni velocidad de balón para producir movimientos.
+- Preservar los bytes de `baseline/bhuman` y RSI3: las adaptaciones de plataforma se generan bajo `native/bhuman_motion/build/generated`.
+- No esperar IPC bajo el mutex del visor. Una cola llena/fallo de canal también debe recolectar todos los hijos.
+- Orientación/percepción ideales y sensores sintéticos deben quedar explícitos en trazas; no afirmar equivalencia con hardware.
 - No incorporar SimRobot, GameController, red de juego ni política RL.
 
-Ver `docs/ARQUITECTURA.md` y `docs/DESPLIEGUE.md`.
+Ver `docs/ARQUITECTURA.md`, `docs/SIMULACION.md` y `docs/DESPLIEGUE.md`.

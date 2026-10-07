@@ -1,134 +1,89 @@
-"""Flujo de penales con el modelo NAO V6 B-Human y raíces cinemáticas."""
+"""Interactive penalties driven by the original B-Human movement engine."""
 import argparse
+import json
 import math
-import mujoco
+import threading
 
-from penalty.control import Observation, PenaltyController
-from penalty.nao_model import KINEMATIC_ROOT_Z, load_model, set_initial_pose
+from penalty.motion_contract import ROOT
+from penalty.physical_sim import PhysicalSimulator
+from penalty.sim_session import SimulationSession
 
-
-def wrap(angle):
-    return (angle + math.pi) % (2.0 * math.pi) - math.pi
-
-
-class PenaltySimulator:
-    dt = 0.1
-
-    def __init__(self):
-        self.model = load_model(mocap=True)
-        self.data = mujoco.MjData(self.model)
-        self.striker_mocap = self.model.body('striker_Nao').mocapid[0]
-        self.keeper_mocap = self.model.body('keeper_Nao').mocapid[0]
-        joint = self.model.joint('ball_free')
-        self.ball_qpos = joint.qposadr[0]
-        self.ball_qvel = joint.dofadr[0]
-        self.striker = [0.3, 0.0, math.pi]
-        self.keeper = [-1.08, 0.0, 0.0]
-        self.kick_count = 0
-        self.min_ball_x = 0.1
-        self.reset()
-
-    def _mocap(self, mocap_id, pose):
-        self.data.mocap_pos[mocap_id] = [pose[0], pose[1], KINEMATIC_ROOT_Z]
-        yaw = pose[2]
-        self.data.mocap_quat[mocap_id] = [math.cos(yaw / 2), 0, 0, math.sin(yaw / 2)]
-
-    def reset(self):
-        mujoco.mj_resetData(self.model, self.data)
-        set_initial_pose(self.model, self.data)
-        self.striker[:] = [0.3, 0.0, math.pi]
-        self.keeper[:] = [-1.08, 0.0, 0.0]
-        self.kick_count = 0
-        self.min_ball_x = 0.1
-        self._mocap(self.striker_mocap, self.striker)
-        self._mocap(self.keeper_mocap, self.keeper)
-        self.data.qpos[self.ball_qpos:self.ball_qpos + 7] = [0.1, 0, 0.0325, 1, 0, 0, 0]
-        mujoco.mj_forward(self.model, self.data)
-        return self.observation()
-
-    def observation(self):
-        bx, by = self.data.qpos[self.ball_qpos:self.ball_qpos + 2]
-        result = {}
-        for role, pose, goal in (
-            ('striker', self.striker, (-1.2, 0.0)),
-            ('keeper', self.keeper, (0.1, 0.0)),
-        ):
-            dx, dy = bx - pose[0], by - pose[1]
-            gd_x, gd_y = goal[0] - pose[0], goal[1] - pose[1]
-            result[role] = {
-                'ball_range': math.hypot(dx, dy),
-                'ball_bearing': wrap(math.atan2(dy, dx) - pose[2]),
-                'goal_bearing': wrap(math.atan2(gd_y, gd_x) - pose[2]),
-            }
-        return result
-
-    def step(self, striker_vx=0.0, striker_vy=0.0, striker_yaw_rate=0.0,
-             keeper_vy=0.0, kick=False):
-        """Avanza 0,1 s. Velocidades en marco del robot; kick es impulso ideal."""
-        sx, sy, yaw = self.striker
-        sx += (math.cos(yaw) * striker_vx - math.sin(yaw) * striker_vy) * self.dt
-        sy += (math.sin(yaw) * striker_vx + math.cos(yaw) * striker_vy) * self.dt
-        self.striker[:] = [min(1.15, max(-0.7, sx)), min(1.0, max(-1.0, sy)),
-                           wrap(yaw + striker_yaw_rate * self.dt)]
-        self.keeper[1] = min(0.6, max(-0.6, self.keeper[1] + keeper_vy * self.dt))
-        self._mocap(self.striker_mocap, self.striker)
-        self._mocap(self.keeper_mocap, self.keeper)
-        if kick and self.kick_count == 0:
-            bx, by = self.data.qpos[self.ball_qpos:self.ball_qpos + 2]
-            if math.hypot(bx - self.striker[0], by - self.striker[1]) <= 0.25:
-                direction = self.striker[2]
-                self.data.qvel[self.ball_qvel] = math.cos(direction) * 2.7
-                self.data.qvel[self.ball_qvel + 1] = math.sin(direction) * 2.7
-                self.kick_count = 1
-        for _ in range(int(self.dt / self.model.opt.timestep)):
-            mujoco.mj_step(self.model, self.data)
-            self.min_ball_x = min(self.min_ball_x, self.data.qpos[self.ball_qpos])
-        return self.observation()
-
-    def result(self):
-        bx, by = self.data.qpos[self.ball_qpos:self.ball_qpos + 2]
-        if bx < -1.2 and abs(by) < 0.75:
-            return 'goal'
-        if bx < -1.2:
-            return 'wide'
-        if abs(by) > 1.2 or bx > 1.2:
-            return 'out'
-        if self.kick_count and self.min_ball_x < -0.9 and bx > self.min_ball_x + 0.1:
-            return 'blocked'
-        return 'in_play'
+PenaltySimulator = PhysicalSimulator
 
 
-def run(headless=True):
-    sim = PenaltySimulator()
-    striker = PenaltyController('striker')
-    keeper = PenaltyController('keeper')
-    viewer = None
-    if not headless:
+def run(headless=True, mode='penalty', seconds=28., action='stand', forward=.06,
+        lateral=0., turn=0., kick_type='forwardFastLeft', block_side='center',
+        role='striker', seed=0, record_dir=ROOT/'runs', ball_xy=(.1,0.)):
+    if not math.isfinite(seconds) or not 0 < seconds <= 28:
+        raise ValueError('seconds debe estar entre 0 y 28')
+    sim = PhysicalSimulator(seed=seed, ball_xy=ball_xy)
+    session = SimulationSession(sim, record_dir=record_dir, mode=mode)
+    session.command('role', role)
+    session.manual['kick_type'] = kick_type
+    if mode == 'manual':
+        session.command('manual', {'motion':action, 'forward':forward,
+            'lateral':lateral, 'turn':turn, 'kick_type':kick_type,'block_side':block_side})
+    if headless:
+        try:
+            session.command('start')
+            for _ in range(int((seconds+8)/sim.dt)+1):
+                session.tick()
+                if session.state in ('FINISHED','ABORTED','ERROR','CLOSED'):
+                    break
+                if session.state == 'RUNNING' and session.penalty_time >= seconds-1e-9:
+                    session._finish()
+                    session._publish()
+                    break
+            else:
+                raise RuntimeError('Se agotó el presupuesto del ensayo')
+            print(json.dumps(session.snapshot(),allow_nan=False))
+        finally:
+            session.close()
+            session.tick()
+    else:
         import mujoco.viewer
-        viewer = mujoco.viewer.launch_passive(sim.model, sim.data)
-    states = []
-    for tick in range(300):
-        t = tick * sim.dt
-        values = sim.observation()
-        s = striker.update(Observation(t, start=t >= 0.3, **values['striker']))
-        k = keeper.update(Observation(t, start=t >= 0.3, **values['keeper']))
-        if not states or states[-1] != (s.state, k.state):
-            states.append((s.state, k.state))
-            print('t=%.1f striker=%s keeper=%s' % (t, s.state, k.state))
-        sim.step(s.forward, s.lateral, s.turn, k.lateral, s.kick)
-        if viewer:
-            viewer.sync()
-        if s.state == 'STOP' and k.state == 'STOP':
-            break
-    if viewer:
-        viewer.close()
-    print('result=%s kick_count=%d ball=(%.3f, %.3f)' %
-          (sim.result(), sim.kick_count, sim.data.qpos[sim.ball_qpos], sim.data.qpos[sim.ball_qpos + 1]))
-    return sim, states
+        from penalty.sim_panel import run_panel
+        session.viewer = mujoco.viewer.launch_passive(sim.model,sim.data,key_callback=session.key)
+        sim.mutation_lock = session.viewer.lock
+        session.viewer.cam.type = mujoco.mjtCamera.mjCAMERA_FIXED
+        session.viewer.cam.fixedcamid = sim.model.camera('overview').id
+        worker = threading.Thread(target=session.run,name='penalty-simulation',daemon=True)
+        worker.start()
+        try:
+            run_panel(session)
+        finally:
+            session.close()
+            worker.join(6)
+            if worker.is_alive():
+                raise RuntimeError('El trabajador de simulación no terminó en 6 segundos')
+    return sim, [tuple(item['states']) for item in session.states]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--headless',action='store_true')
+    parser.add_argument('--mode',choices=('penalty','manual'),default='penalty')
+    parser.add_argument('--seconds',type=float,default=28.,help='duración activa sin ventana (máximo 28 s)')
+    parser.add_argument('--action',choices=('stand','walk','kick','block','getup'),default='stand')
+    parser.add_argument('--role',choices=('striker','keeper'),default='striker')
+    parser.add_argument('--forward',type=float,default=.06,help='m/s, modo manual')
+    parser.add_argument('--lateral',type=float,default=0.,help='m/s, modo manual')
+    parser.add_argument('--turn',type=float,default=0.,help='rad/s, modo manual')
+    parser.add_argument('--kick-type',choices=('forwardFastLeft','forwardFastRight'),default='forwardFastLeft')
+    parser.add_argument('--block-side',choices=('center','left','right'),default='center')
+    parser.add_argument('--seed',type=int,default=0)
+    parser.add_argument('--ball-x',type=float,default=.1)
+    parser.add_argument('--ball-y',type=float,default=0.)
+    parser.add_argument('--record-dir',type=str,default=str(ROOT/'runs'))
+    args = parser.parse_args()
+    try:
+        run(headless=args.headless,mode=args.mode,seconds=args.seconds,action=args.action,
+            role=args.role,forward=args.forward,lateral=args.lateral,turn=args.turn,
+            kick_type=args.kick_type,block_side=args.block_side,seed=args.seed,
+            ball_xy=(args.ball_x,args.ball_y),record_dir=args.record_dir)
+    except (RuntimeError,ValueError) as error:
+        parser.exit(1,str(error)+'\n')
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--headless', action='store_true', help='run without window')
-    args = parser.parse_args()
-    run(headless=args.headless)
+    main()

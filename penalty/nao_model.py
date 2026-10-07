@@ -21,6 +21,13 @@ def robot_spec(mocap=True):
         root.mocap = True
     else:
         root.add_freejoint(name='root_free')
+    # RobotDimensions.imuOffset is relative to the hip midpoint, 85 mm
+    # below the RSI3 torso origin. Keep the original model file unchanged.
+    root.add_site(name='imu', pos=[-0.008, 0.00606, 0.027], size=[0.003, 0, 0])
+    for suffix, sensor_type in (('gyro', mujoco.mjtSensor.mjSENS_GYRO),
+                                ('acc', mujoco.mjtSensor.mjSENS_ACCELEROMETER)):
+        spec.add_sensor(name='imu_' + suffix, type=sensor_type,
+                        objtype=mujoco.mjtObj.mjOBJ_SITE, objname='imu')
     return spec
 
 

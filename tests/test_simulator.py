@@ -15,7 +15,7 @@ class SimulationTests(unittest.TestCase):
         self.assertEqual(root.find('Body').get('name'), 'Nao')
         self.assertEqual(len(list(root.find('Body').iter('Hinge'))), 24)
 
-    def test_field_and_single_ball_impulse(self):
+    def test_field_and_physical_roots(self):
         from penalty.simulator import PenaltySimulator
         sim = PenaltySimulator()
         self.assertEqual(sim.model.nmesh, 100)
@@ -32,21 +32,24 @@ class SimulationTests(unittest.TestCase):
         self.assertAlmostEqual(sim.model.geom('goal_post_left').pos[1] -
                                sim.model.geom('goal_post_right').pos[1], 1.5)
         self.assertAlmostEqual(sim.observation()['striker']['ball_range'], 0.2)
-        self.assertEqual(sim.data.ncon, 1)
-        sim.step(kick=True)
-        self.assertEqual(sim.kick_count, 1)
-        self.assertLess(sim.data.qpos[sim.ball_qpos], 0.1)
-        sim.step(kick=True)
-        self.assertEqual(sim.kick_count, 1)
+        self.assertEqual(sim.model.nmocap, 0)
+        self.assertEqual(sim.model.nsensor, 4)
+        self.assertEqual(sim.kick_count, 0)
+        with self.assertRaises(RuntimeError):
+            sim.step({'striker':{'motion':'kick'}})
 
     def test_full_control_flow(self):
         from penalty.simulator import run
-        sim, states = run()
+        sim, states = run(record_dir=None)
         self.assertEqual(sim.kick_count, 1)
         self.assertIn(('KICK', 'BLOCK'), states)
         self.assertEqual(states[-1], ('STOP', 'STOP'))
         self.assertGreater(sim.data.time, 28.3)
         self.assertNotAlmostEqual(sim.data.qpos[sim.ball_qpos], 0.1)
+        self.assertGreater(sim.kick_contact_count, 0)
+        self.assertGreater(sim.block_contacts, 0)
+        self.assertFalse(any(sim.fallen.values()))
+        self.assertEqual(sim.bridges, {})
 
     def test_dynamic_joint_action_contract(self):
         import numpy as np

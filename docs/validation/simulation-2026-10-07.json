@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-07",
+  "command": ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+  "tests": 37,
+  "status": "passed",
+  "environment": {
+    "mujoco": "3.3.7",
+    "cycle_s": 0.012,
+    "physics_s": 0.002,
+    "seed": 0
+  },
+  "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+  "acceptance": {
+    "kicks": {
+      "forwardFastLeft": {
+        "ball_displacement_m": 0.975705082495829,
+        "kick_count": 1,
+        "foot_ball_contacts": 1,
+        "completed": true,
+        "physical_contact_pass": true
+      },
+      "forwardFastRight": {
+        "ball_displacement_m": 0.0,
+        "kick_count": 1,
+        "foot_ball_contacts": 0,
+        "completed": true,
+        "physical_contact_pass": false
+      }
+    },
+    "stand_walk": {
+      "stand_s": 10.008,
+      "walk_s": 5.004,
+      "displacement_m": 0.46851768674355904,
+      "fallen": {
+        "striker": false,
+        "keeper": false
+      }
+    },
+    "blocks": {
+      "center": {
+        "phases": [
+          "keyframeMotion"
+        ],
+        "max_qpos_change": 1.6254846410251411,
+        "fallen": false,
+        "position": [
+          -1.2343843083182209,
+          0.05030302246953132,
+          0.14078076325677036
+        ]
+      },
+      "left": {
+        "phases": [
+          "keyframeMotion"
+        ],
+        "max_qpos_change": 3.694915624645864,
+        "fallen": true,
+        "position": [
+          -1.2855793887629285,
+          0.2289001710565161,
+          0.0563511234829624
+        ]
+      },
+      "right": {
+        "phases": [
+          "keyframeMotion"
+        ],
+        "max_qpos_change": 3.7036701253818824,
+        "fallen": true,
+        "position": [
+          -1.2442066090605912,
+          -0.2343323121093026,
+          0.05429393366606792
+        ]
+      }
+    },
+    "repeats": {
+      "count": 3,
+      "max_qpos_error": 0.0,
+      "result": "blocked",
+      "final": {
+        "time_s": 30.551999999993946,
+        "result": "blocked",
+        "kick_count": 1,
+        "kick_contact_count": 1,
+        "block_contacts": 146,
+        "ball_position": [
+          -0.5193478095527956,
+          0.7496646202788237,
+          0.03239442532848075
+        ],
+        "robots": {
+          "striker": {
+            "phase": "stand",
+            "motion": "stand",
+            "fallen": false,
+            "fsr": [
+              0.6439478958201896,
+              0.7202459131455234,
+              0.6671493742999749,
+              0.7429086490284701,
+              0.6754723894232071,
+              0.5957619846821848,
+              0.7027044545394583,
+              0.6217651145244752
+            ],
+            "position": [
+              0.21355425459714983,
+              0.04471522896913385,
+              0.31374869517594717
+            ]
+          },
+          "keeper": {
+            "phase": "keyframeMotion",
+            "motion": "block",
+            "fallen": false,
+            "fsr": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "position": [
+              -1.1607429288248754,
+              0.04068558728029473,
+              0.140767078148963
+            ]
+          }
+        }
+      },
+      "children_collected": true
+    }
+  },
+  "limitations": [
+    "right fast kick misses the initial ball",
+    "lateral dives fall",
+    "left-dive getUp enters original phase but did not recover in the measured window",
+    "hardware not validated"
+  ]
+}

@@ -3,3 +3,6 @@ __pycache__/
 .pytest_cache/
 dist/
 .venv/
+runs/
+native/bhuman_motion/build/
+native/bhuman_motion/vendor/

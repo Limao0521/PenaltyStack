@@ -24,9 +24,10 @@ ejecuta las bibliotecas C++ originales de SimRobot.
   sensores ni la semántica completa del controlador SimRobot.
 - El HipYawPitch físico se representa con dos bisagras acopladas y un solo
   actuador, dejando 23 acciones articulares por NAO. Las mallas no colisionan.
-- En el flujo de penales se mueve la raíz cinemáticamente. En el entorno de
-  raíces libres no hay balanceo ni marcha estable. La patada usa un impulso
-  ideal y no el pie articulado.
+- El flujo de penales utiliza raíces libres y los motores originales B-Human
+  para actuar sobre los servos. IMU y cargas de pie se calculan desde MuJoCo;
+  el balón recibe únicamente contacto físico. El entorno `JointSpaceEnv`
+  sigue siendo una interfaz articular sin política para futuros ensayos RL.
 
 La fuente y sus archivos generados están bajo los términos de
 [`License.md`](License.md). La licencia permite redistribución con avisos y
