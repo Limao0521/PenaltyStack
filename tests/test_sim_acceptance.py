@@ -51,25 +51,31 @@ class PhysicalAcceptanceTests(unittest.TestCase):
         self.metrics['stand_walk'] = {'stand_s':10.008,'walk_s':5.004,
                                      'displacement_m':displacement,'fallen':sim.fallen}
 
-    def test_left_kick_has_contact_and_both_original_actions_complete_once(self):
+    def test_both_kicks_have_actual_contact_and_complete_once(self):
         cases = {}
         for kick in ('forwardFastLeft','forwardFastRight'):
             with self.subTest(kick=kick):
                 session = self.session()
                 session.command('manual',{'motion':'kick','kick_type':kick})
                 self.settle(session)
+                contact_phases=set()
+                previous_contacts=0
                 for _ in range(500):
                     session.tick()
+                    if session.sim.kick_contact_count>previous_contacts:
+                        contact_phases.add(session.sim.outputs['striker']['phase'])
+                    previous_contacts=session.sim.kick_contact_count
                 sim = session.sim
                 displacement = float(np.linalg.norm(np.array(sim.snapshot()['ball_position'])[:2]-[.1,0]))
                 self.assertEqual(sim.kick_count,1)
-                if kick == 'forwardFastLeft':
-                    self.assertGreater(sim.kick_contact_count,0)
-                    self.assertGreater(displacement,.1)
+                self.assertGreater(sim.kick_contact_count,0)
+                self.assertIn('kick',contact_phases,'ball must be struck during the original kick phase')
+                self.assertGreater(displacement,.1)
                 self.assertTrue(session._kick_done)
                 self.assertFalse(sim.fallen['striker'])
                 cases[kick] = {'ball_displacement_m':displacement,'kick_count':sim.kick_count,
                               'foot_ball_contacts':sim.kick_contact_count,'completed':session._kick_done,
+                              'contact_phases':sorted(contact_phases),'requested_length_mm':session.manual['kick_length_mm'],
                               'physical_contact_pass':sim.kick_contact_count>0 and displacement>.1}
                 sim.close()
         self.metrics['kicks'] = cases
@@ -128,6 +134,49 @@ class PhysicalAcceptanceTests(unittest.TestCase):
         self.metrics['repeats'] = {'count':3,'max_qpos_error':float(max(
             np.max(abs(sample-samples[0])) for sample in samples)),
             'result':session.sim.result(),'final':session.sim.snapshot(),'children_collected':True}
+
+    def test_lateral_jumps_recover_automatically_and_stay_standing(self):
+        cases={}
+        for side in ('left','right'):
+            with self.subTest(side=side):
+                session=self.session(ball_xy=(1.,.8))
+                session.command('role','keeper')
+                session.command('manual',{'motion':'block','block_side':side})
+                self.settle(session)
+                sim=session.sim
+                phases=set()
+                stable_for=0.
+                began=float(sim.data.time)
+                for _ in range(1900):
+                    session.tick()
+                    phases.add(sim.outputs['keeper']['phase'])
+                    upright=sim.outputs['keeper']['sensor_info']['fall_state']=='upright'
+                    recovered=('getUp' in phases and upright and sim.stable())
+                    stable_for=stable_for+sim.dt if recovered else 0.
+                    if stable_for>=.5 and sim.outputs['keeper']['phase']=='stand':
+                        break
+                self.assertIn('keyframeMotion',phases)
+                self.assertIn('getUp',phases)
+                self.assertTrue(sim.fallen['keeper'],'jump must really have left the upright state')
+                self.assertGreaterEqual(stable_for,.5,'must meet the same stability gate as initial settling')
+                self.assertGreater(sim.pose('keeper')[0][2],.28)
+                self.assertFalse(sim.fallen['striker'])
+                self.assertEqual(sim.outputs['keeper']['phase'],'stand')
+                # Hold a further second upright with both feet loaded. Solver
+                # contact chatter may briefly spike gyro; it must not induce
+                # another fall or an unloaded foot/unstable torso posture.
+                for _ in range(84):
+                    session.tick()
+                    self.assertEqual(sim.outputs['keeper']['sensor_info']['fall_state'],'upright')
+                    self.assertGreater(sim.pose('keeper')[0][2],.28)
+                    frame=sim.adapter.frame('keeper')
+                    self.assertGreater(sum(frame['fsr'][:4]),.05)
+                    self.assertGreater(sum(frame['fsr'][4:]),.05)
+                cases[side]={'phases':sorted(phases),'recovery_elapsed_s':float(sim.data.time)-began,
+                    'stable_gate_s':stable_for,'upright_hold_s':1.008,'final':sim.snapshot()['robots']['keeper'],
+                    'current_fall_state':sim.outputs['keeper']['sensor_info']['fall_state']}
+                sim.close()
+        self.metrics['lateral_recovery']=cases
 
 
 if __name__ == '__main__':

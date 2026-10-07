@@ -74,7 +74,14 @@ def prepare():
                   'manifest_sha256': hashlib.sha256((ROOT / 'baseline/motion_manifest.json').read_bytes()).hexdigest(),
                   'configuration_sha256': hashlib.sha256(json.dumps(config_hashes,sort_keys=True).encode()).hexdigest(),
                   'original_file_count': len(manifest['files']),
-                  'inputs_profile': 'mujoco-truth-v1'}
+                  'inputs_profile': 'mujoco-truth-v2',
+                  'simulation_calibration': {'ball_radius':'INIT geometry in mm',
+                      'inertial_angle':'original removeZRotation and angle-axis',
+                      'right_forward_stroke_ms':200,'left_forward_stroke_ms':100},
+                  'host_source_sha256': hashlib.sha256(b''.join(
+                      path.relative_to(ROOT).as_posix().encode()+b'\0'+path.read_bytes()
+                      for path in sorted(list(NATIVE.glob('*.cpp'))+list(NATIVE.glob('*.h'))+
+                                         [NATIVE/'CMakeLists.txt',pathlib.Path(__file__).resolve()]))).hexdigest()}
     (generated / 'provenance.h').write_text('static constexpr const char* provenance_json = R"PROV(' +
                                           json.dumps(provenance) + ')PROV";\n', encoding='utf-8')
     (generated / 'MotionEngine.cpp').write_text(source, encoding='utf-8')

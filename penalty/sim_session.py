@@ -32,7 +32,7 @@ class SimulationSession:
         self.controllers = {r:PenaltyController(r) for r in ('striker','keeper')}
         self.commands = {r:Command('WAIT_FOR_START') for r in self.controllers}
         self.manual = {'motion':'stand', 'forward':0., 'lateral':0., 'turn':0.,
-                       'kick_type':'forwardFastLeft', 'block_side':'center'}
+                       'kick_type':'forwardFastLeft', 'kick_length_mm':2500., 'block_side':'center'}
         self._commands = queue.Queue()
         self._closing = threading.Event()
         self._lock = threading.Lock()
@@ -48,6 +48,7 @@ class SimulationSession:
         self._kick_requested = False
         self._kick_done = False
         self._keeper_block = None
+        self._jump_started = {r:False for r in self.controllers}
         self._abort_at = None
         self._last_render = 0.
         self._publish()
@@ -96,17 +97,20 @@ class SimulationSession:
         self._stream = (self.record_dir/(self.trial+'.jsonl')).open('w',encoding='utf-8')
         hashes = {}
         for name in ('baseline/motion_manifest.json','models/bhuman/NaoV6H25.rsi3',
-                     'models/bhuman/nao.xml','sim/scene.xml'):
+                     'models/bhuman/nao.xml','sim/scene.xml','penalty/physical_sim.py',
+                     'penalty/bhuman_bridge.py','penalty/sim_session.py','penalty/control.py'):
             path = ROOT/name
             if path.is_file():
                 hashes[name] = hashlib.sha256(path.read_bytes()).hexdigest()
         self._write({'type':'METADATA', 'trial':self.trial, 'source_commit':SOURCE_COMMIT,
             'cycle_s':CYCLE_S, 'mode':self.mode, 'seed':getattr(self.sim,'seed',0),
+            'ball_radius_mm':float(self.sim.model.geom('orange_ball').size[0])*1000,
             'hashes':hashes, 'units':{'position':'m','angle':'rad','fsr':'kg','effort':'N m'},
             'synthetic_inputs':['hand positions','motor currents/temperatures','joint wear'],
             'ideal_inputs':['scene ball/goal geometry','torso orientation'],
             'configuration':dict(self.manual),
-            'engine_hello':{r:getattr(b,'hello',{}) for r,b in getattr(self.sim,'bridges',{}).items()}})
+            'engine_hello':{r:getattr(b,'hello',{}) for r,b in getattr(self.sim,'bridges',{}).items()},
+            'engine_ready':{r:getattr(b,'ready',{}) for r,b in getattr(self.sim,'bridges',{}).items()}})
 
     def _write(self, record):
         if self._stream is not None:
@@ -131,6 +135,7 @@ class SimulationSession:
         self._next_control = self._stable_for = 0.
         self._kick_requested = self._kick_done = False
         self._keeper_block = None
+        self._jump_started = {r:False for r in self.controllers}
         self._abort_at = None
         self._single_step = False
         self._initialized = True
@@ -160,6 +165,10 @@ class SimulationSession:
             raise ValueError('tipo de patada desconocido')
         if request.get('block_side','center') not in ('center','left','right'):
             raise ValueError('lado de bloqueo desconocido')
+        length=float(request.get('kick_length_mm',2500.))
+        if not math.isfinite(length) or not 1500. <= length <= 3500.:
+            raise ValueError('alcance de patada debe estar entre 1500 y 3500 mm')
+        request['kick_length_mm']=length
         return request
 
     def command(self, action, value=None):
@@ -185,6 +194,7 @@ class SimulationSession:
                 raise ValueError('selecciona modo manual para pedir acciones')
             self.manual.update(request)
             self._kick_done = False
+            self._jump_started[self.role] = False
         elif action == 'start' and self.state in ('PREPARED','FINISHED','ABORTED'):
             self._start()
         elif action == 'reset':
@@ -225,6 +235,9 @@ class SimulationSession:
             selected = dict(self.manual)
             if selected['motion'] == 'kick' and self._kick_done:
                 selected['motion'] = 'stand'
+            elif (selected['motion']=='block' and selected['block_side'] in ('left','right')
+                  and self._jump_started[self.role]):
+                selected['motion'] = 'getup'
             return {r:selected if r == self.role else {'motion':'stand'} for r in self.controllers}
         elapsed = self.penalty_time
         if elapsed+1e-9 >= self._next_control:
@@ -256,11 +269,13 @@ class SimulationSession:
                 # ball or a changing bearing must not release or replace an
                 # original keyframe that is still holding its guard posture.
                 if self._keeper_block is not None:
-                    motion = 'block'
+                    motion = ('getup' if self._keeper_block in ('left','right')
+                              and self._jump_started[role] else 'block')
             requests[role] = {'motion':motion,'forward':command.forward*1000,
                 'lateral':command.lateral*1000,'turn':command.turn,
                 'head_yaw':command.head_yaw,'head_pitch':0.,
                 'kick_type':self.manual['kick_type'],
+                'kick_length_mm':self.manual['kick_length_mm'],
                 'block_side':self._keeper_block if role=='keeper' and self._keeper_block is not None else command.block}
         return requests
 
@@ -304,6 +319,16 @@ class SimulationSession:
         else:
             requests = {r:{'motion':'stand'} for r in self.controllers}
         self.sim.step(requests)
+        # Release lateral dives after the original phase has accepted them.
+        # KeyframePhase::isDone still owns completion: a queued stand/getup
+        # request cannot truncate the dive. Keeping dive asserted indefinitely
+        # would leave the original engine waiting on the floor for a request.
+        for role,request in requests.items():
+            output = self.sim.outputs[role]
+            if (request.get('motion')=='block' and request.get('block_side') in ('left','right')
+                and output.get('phase')=='keyframeMotion'
+                and output.get('motion_info',{}).get('keyframe')=='keeperJumpLeft'):
+                self._jump_started[role] = True
         self._kick_done |= bool(self.sim.outputs[self.role if self.mode=='manual' else 'striker'].get('kick_completed'))
         self._write({'type':'FRAME','trial':self.trial,'state':active,
                      'penalty_time_s':self.penalty_time,'requests':requests,'world':self.sim.trace()})

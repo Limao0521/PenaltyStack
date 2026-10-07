@@ -1,0 +1,284 @@
+{
+  "date": "2026-10-07",
+  "command": ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+  "tests": 45,
+  "elapsed_s": 165.306,
+  "status": "passed",
+  "environment": {
+    "python": "3.13.4",
+    "mujoco": "3.3.7",
+    "cycle_s": 0.012,
+    "physics_s": 0.002,
+    "seed": 0
+  },
+  "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+  "baseline_verified_files": 559,
+  "engine_hello": {
+    "cycle_s": 0.012,
+    "joint_names": [
+      "headYaw",
+      "headPitch",
+      "lShoulderPitch",
+      "lShoulderRoll",
+      "lElbowYaw",
+      "lElbowRoll",
+      "lWristYaw",
+      "lHand",
+      "rShoulderPitch",
+      "rShoulderRoll",
+      "rElbowYaw",
+      "rElbowRoll",
+      "rWristYaw",
+      "rHand",
+      "lHipYawPitch",
+      "lHipRoll",
+      "lHipPitch",
+      "lKneePitch",
+      "lAnklePitch",
+      "lAnkleRoll",
+      "rHipYawPitch",
+      "rHipRoll",
+      "rHipPitch",
+      "rKneePitch",
+      "rAnklePitch",
+      "rAnkleRoll"
+    ],
+    "motions": [
+      "stand",
+      "walk",
+      "kick",
+      "block",
+      "getup"
+    ],
+    "protocol": 1,
+    "provenance": {
+      "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+      "host_source_sha256": "86de8e9344ac35e8d14085d9de056298ce72a92809b1149eec3795247c2ac3ba",
+      "inputs_profile": "mujoco-truth-v2",
+      "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+      "original_file_count": 559,
+      "simulation_calibration": {
+        "ball_radius": "INIT geometry in mm",
+        "inertial_angle": "original removeZRotation and angle-axis",
+        "left_forward_stroke_ms": 100,
+        "right_forward_stroke_ms": 200
+      },
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+    },
+    "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+    "type": "HELLO"
+  },
+  "test_log_sha256": "c840af8efec27985b265e642d4ce25ecffb38a2e02c6a44bd037b69bdf6d2d24",
+  "acceptance": {
+    "kicks": {
+      "forwardFastLeft": {
+        "ball_displacement_m": 1.0142692186406574,
+        "kick_count": 1,
+        "foot_ball_contacts": 1,
+        "completed": true,
+        "contact_phases": [
+          "kick"
+        ],
+        "requested_length_mm": 2500.0,
+        "physical_contact_pass": true
+      },
+      "forwardFastRight": {
+        "ball_displacement_m": 0.961808570596328,
+        "kick_count": 1,
+        "foot_ball_contacts": 1,
+        "completed": true,
+        "contact_phases": [
+          "kick"
+        ],
+        "requested_length_mm": 2500.0,
+        "physical_contact_pass": true
+      }
+    },
+    "lateral_recovery": {
+      "left": {
+        "phases": [
+          "getUp",
+          "keyframeMotion",
+          "stand",
+          "walk"
+        ],
+        "recovery_elapsed_s": 14.004000000001765,
+        "stable_gate_s": 0.5040000000000002,
+        "upright_hold_s": 1.008,
+        "final": {
+          "phase": "stand",
+          "motion": "getup",
+          "fall_state": "upright",
+          "fallen": true,
+          "fsr": [
+            0.37577723154122883,
+            0.546782419406217,
+            0.8621759318286608,
+            0.9847754373501372,
+            0.7436746062197447,
+            0.4568744733411384,
+            0.9979995073459629,
+            0.9355552044578959
+          ],
+          "position": [
+            -1.172906553006237,
+            -0.13125857966679544,
+            0.3132990400775491
+          ]
+        },
+        "current_fall_state": "upright"
+      },
+      "right": {
+        "phases": [
+          "getUp",
+          "keyframeMotion",
+          "stand",
+          "walk"
+        ],
+        "recovery_elapsed_s": 9.32400000000069,
+        "stable_gate_s": 0.5040000000000002,
+        "upright_hold_s": 1.008,
+        "final": {
+          "phase": "stand",
+          "motion": "getup",
+          "fall_state": "upright",
+          "fallen": true,
+          "fsr": [
+            0.6416797161812956,
+            0.6321087368762573,
+            0.76216892537551,
+            0.7506462343698923,
+            0.5902302619128055,
+            0.5538857283534805,
+            0.7367120271395364,
+            0.6918941004081764
+          ],
+          "position": [
+            -1.0856179161413368,
+            0.11584328343888971,
+            0.3136471419775507
+          ]
+        },
+        "current_fall_state": "upright"
+      }
+    },
+    "stand_walk": {
+      "stand_s": 10.008,
+      "walk_s": 5.004,
+      "displacement_m": 0.46851842142659417,
+      "fallen": {
+        "striker": false,
+        "keeper": false
+      }
+    },
+    "blocks": {
+      "center": {
+        "phases": [
+          "keyframeMotion"
+        ],
+        "max_qpos_change": 1.6254846410251411,
+        "fallen": false,
+        "position": [
+          -1.2343843083182209,
+          0.05030302246953132,
+          0.14078076325677036
+        ]
+      },
+      "left": {
+        "phases": [
+          "getUp",
+          "keyframeMotion"
+        ],
+        "max_qpos_change": 2.994257568676065,
+        "fallen": true,
+        "position": [
+          -1.2736359995206716,
+          0.19630157843535118,
+          0.090195065235144
+        ]
+      },
+      "right": {
+        "phases": [
+          "getUp",
+          "keyframeMotion"
+        ],
+        "max_qpos_change": 2.9889847729198173,
+        "fallen": true,
+        "position": [
+          -1.2356798218881613,
+          -0.20324718360442098,
+          0.07347610558371725
+        ]
+      }
+    },
+    "repeats": {
+      "count": 3,
+      "max_qpos_error": 0.0,
+      "result": "blocked",
+      "final": {
+        "time_s": 30.551999999993946,
+        "result": "blocked",
+        "kick_count": 1,
+        "kick_contact_count": 1,
+        "block_contacts": 153,
+        "ball_position": [
+          -0.6708930826003866,
+          0.09952017363900827,
+          0.03239442532848075
+        ],
+        "robots": {
+          "striker": {
+            "phase": "stand",
+            "motion": "stand",
+            "fall_state": "upright",
+            "fallen": false,
+            "fsr": [
+              0.5682622276321475,
+              0.6594787165286164,
+              0.6190515547554076,
+              0.7184525643619569,
+              0.7003774929718068,
+              0.6481268362456634,
+              0.7510545794060911,
+              0.6948388350419287
+            ],
+            "position": [
+              0.3183527541998837,
+              0.07256319082667902,
+              0.31372187392805684
+            ]
+          },
+          "keeper": {
+            "phase": "keyframeMotion",
+            "motion": "block",
+            "fall_state": "falling",
+            "fallen": false,
+            "fsr": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "position": [
+              -1.160982888451824,
+              0.03659738929723801,
+              0.14076707814896297
+            ]
+          }
+        }
+      },
+      "children_collected": true
+    }
+  },
+  "scope": {
+    "right_kick_profile": "Original phase 3 endpoints; duration 200 ms instead of KMC 100 ms",
+    "lateral_recovery": "Original dive completes; queued stand releases hold and original GetUp recovers. Stability gate 0.5 s plus upright hold 1.008 s. recovery_elapsed_s includes jump and verification.",
+    "hardware_validated": false,
+    "rl_policy_implemented": false,
+    "previous_report": "simulation-2026-10-07.json"
+  }
+}

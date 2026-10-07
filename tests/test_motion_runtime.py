@@ -3,6 +3,7 @@ import json
 import pathlib
 import subprocess
 import unittest
+import math
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 EXE = ROOT / 'native/bhuman_motion/build/Release/bhuman_motion.exe'
@@ -28,6 +29,25 @@ def run_native(requests):
 
 
 class NativeMotionRuntimeTests(unittest.TestCase):
+    def test_tilt_uses_original_angle_axis_without_yaw(self):
+        # Original InertialDataProvider uses the horizontal rotation vector,
+        # not Euler roll/pitch. They differ substantially when lying sideways.
+        tilt = math.radians(120)
+        axis = 2**-.5
+        sensors = frame(0,{'motion':'stand'})
+        sensors['sensors']['orientation'] = [math.cos(tilt/2),
+            axis*math.sin(tilt/2),axis*math.sin(tilt/2),0.]
+        messages = [{'type':'INIT','protocol':1,'trial':'native-test','role':'keeper','seed':0},
+                    sensors,{'type':'SHUTDOWN'}]
+        result = subprocess.run([str(EXE)],input=''.join(json.dumps(m)+'\n' for m in messages),
+                                text=True,capture_output=True,timeout=10)
+        self.assertEqual(result.returncode,0,result.stderr)
+        output = json.loads(result.stdout.splitlines()[2])
+        angles = output['sensor_info']['inertial_angle']
+        self.assertAlmostEqual(angles[0],tilt*axis,places=5)
+        self.assertAlmostEqual(angles[1],tilt*axis,places=5)
+        self.assertAlmostEqual(angles[2],0.,places=5)
+
     def test_native_hello(self):
         self.assertTrue(EXE.is_file(), 'Build original engine with tools/build_motion_runtime.py')
         process = subprocess.run([str(EXE)], input='{"type":"SHUTDOWN"}\n',
@@ -66,6 +86,18 @@ class NativeMotionRuntimeTests(unittest.TestCase):
         outputs = [m for m in messages if m['type'] == 'OUTPUT']
         self.assertIn('kick', {m['phase'] for m in outputs})
         self.assertTrue(any(m['kick_completed'] for m in outputs))
+
+    def test_requested_kick_length_changes_original_trajectory(self):
+        trajectories=[]
+        for length in (1500.,2500.):
+            result,messages = run_native([{'motion':'stand'}]*170 +
+                [{'motion':'kick','kick_type':'forwardFastRight','ball':[160.,-50.],
+                  'kick_length_mm':length}]*350)
+            self.assertEqual(result.returncode,0,result.stderr)
+            trajectories.append([m['angles'][23] for m in messages
+                if m['type']=='OUTPUT' and m['phase']=='kick'])
+        difference = max(abs(a-b) for a,b in zip(*trajectories))
+        self.assertGreater(difference,.05)
 
     def test_original_keeper_keyframes_and_mirror(self):
         for side, expected, mirror in (('center','genuflectStand',False),

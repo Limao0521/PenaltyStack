@@ -103,6 +103,15 @@ class SessionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             session.command('speed', float('nan'))
 
+    def test_kick_length_is_bounded_and_reaches_request(self):
+        session,_=self.session()
+        session.mode='manual'
+        session.command('manual',{'motion':'kick','kick_length_mm':2000.})
+        self.assertEqual(session._requests()['striker']['kick_length_mm'],2000.)
+        for length in (1499.,3501.,float('nan')):
+            with self.assertRaises(ValueError):
+                session.command('manual',{'motion':'kick','kick_length_mm':length})
+
     def test_guard_is_latched_for_one_shot_despite_stopped_ball_and_new_bearing(self):
         session, world = self.session()
         self.start_running(session)
@@ -130,6 +139,41 @@ class SessionTests(unittest.TestCase):
             session.tick()
         self.assertGreater(world.data.time,2.)
         self.assertEqual(session.penalty_time,elapsed)
+
+    def test_lateral_jump_releases_request_only_after_original_phase_starts(self):
+        session, world = self.session()
+        session.mode,session.role = 'manual','keeper'
+        session.command('manual',{'motion':'block','block_side':'right'})
+        self.start_running(session)
+        self.assertEqual(session._requests()['keeper']['motion'],'block')
+        world.outputs['keeper'] = {'phase':'keyframeMotion',
+            'motion_info':{'keyframe':'keeperJumpLeft','mirror':True}}
+        session.tick()
+        self.assertEqual(session._requests()['keeper']['motion'],'getup')
+        # Completion must not reissue the same held jump. A new explicit
+        # button press is required to execute another jump.
+        world.outputs['keeper'] = {'phase':'stand','motion_info':{'keyframe':'keeperJumpLeft'}}
+        session.tick()
+        self.assertEqual(session._requests()['keeper']['motion'],'getup')
+        session.command('manual',{'motion':'block','block_side':'left'})
+        self.assertEqual(session._requests()['keeper']['motion'],'block')
+        session.command('reset')
+        self.assertEqual(session._requests()['keeper']['motion'],'block')
+
+    def test_automatic_lateral_jump_recovers_without_repeating_for_same_shot(self):
+        session,world = self.session()
+        self.start_running(session)
+        ball = {'ball_range':.5,'ball_bearing':.5,'goal_bearing':0.,'ball_speed':.8}
+        world.observation = lambda:{r:dict(ball) for r in ('striker','keeper')}
+        first = session._requests()['keeper']
+        self.assertEqual((first['motion'],first['block_side']),('block','left'))
+        world.outputs['keeper'] = {'phase':'keyframeMotion',
+            'motion_info':{'keyframe':'keeperJumpLeft','mirror':False}}
+        session.tick()
+        self.assertEqual(session._requests()['keeper']['motion'],'getup')
+        ball.update(ball_speed=0.,ball_bearing=-.5)
+        world.data.time += .12
+        self.assertEqual(session._requests()['keeper']['motion'],'getup')
 
 
 if __name__ == '__main__':

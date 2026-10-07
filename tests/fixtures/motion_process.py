@@ -10,7 +10,7 @@ def emit(value):
 emit({'type':'HELLO','protocol':1,'source_commit':SOURCE_COMMIT,
       'cycle_s':.012,'joint_names':JOINT_NAMES,'motions':['stand']})
 init = json.loads(sys.stdin.readline())
-emit({'type':'READY','trial':init['trial'],'role':init['role']})
+emit({'type':'READY','trial':init['trial'],'role':init['role'],'ball_radius_mm':init['ball_radius_mm']})
 step = json.loads(sys.stdin.readline())
 if mode == 'timeout':
     time.sleep(10)

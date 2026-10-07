@@ -13,16 +13,18 @@ PenaltySimulator = PhysicalSimulator
 
 def run(headless=True, mode='penalty', seconds=28., action='stand', forward=.06,
         lateral=0., turn=0., kick_type='forwardFastLeft', block_side='center',
-        role='striker', seed=0, record_dir=ROOT/'runs', ball_xy=(.1,0.)):
+        role='striker', seed=0, record_dir=ROOT/'runs', ball_xy=(.1,0.), kick_length_mm=2500.):
     if not math.isfinite(seconds) or not 0 < seconds <= 28:
         raise ValueError('seconds debe estar entre 0 y 28')
     sim = PhysicalSimulator(seed=seed, ball_xy=ball_xy)
     session = SimulationSession(sim, record_dir=record_dir, mode=mode)
     session.command('role', role)
-    session.manual['kick_type'] = kick_type
+    request=SimulationSession._validate_manual({'motion':action,'kick_type':kick_type,
+        'kick_length_mm':kick_length_mm,'block_side':block_side,
+        'forward':forward,'lateral':lateral,'turn':turn})
+    session.manual.update(kick_type=kick_type,kick_length_mm=request['kick_length_mm'])
     if mode == 'manual':
-        session.command('manual', {'motion':action, 'forward':forward,
-            'lateral':lateral, 'turn':turn, 'kick_type':kick_type,'block_side':block_side})
+        session.command('manual',request)
     if headless:
         try:
             session.command('start')
@@ -70,6 +72,7 @@ def main():
     parser.add_argument('--lateral',type=float,default=0.,help='m/s, modo manual')
     parser.add_argument('--turn',type=float,default=0.,help='rad/s, modo manual')
     parser.add_argument('--kick-type',choices=('forwardFastLeft','forwardFastRight'),default='forwardFastLeft')
+    parser.add_argument('--kick-length-mm',type=float,default=2500.,help='alcance pedido al motor (1500..3500 mm), no distancia garantizada')
     parser.add_argument('--block-side',choices=('center','left','right'),default='center')
     parser.add_argument('--seed',type=int,default=0)
     parser.add_argument('--ball-x',type=float,default=.1)
@@ -79,7 +82,7 @@ def main():
     try:
         run(headless=args.headless,mode=args.mode,seconds=args.seconds,action=args.action,
             role=args.role,forward=args.forward,lateral=args.lateral,turn=args.turn,
-            kick_type=args.kick_type,block_side=args.block_side,seed=args.seed,
+            kick_type=args.kick_type,kick_length_mm=args.kick_length_mm,block_side=args.block_side,seed=args.seed,
             ball_xy=(args.ball_x,args.ball_y),record_dir=args.record_dir)
     except (RuntimeError,ValueError) as error:
         parser.exit(1,str(error)+'\n')

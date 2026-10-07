@@ -189,7 +189,8 @@ class PhysicalSimulator:
             factory = self.bridge_factory
         try:
             for role in ROLES:
-                self.bridges[role] = factory(role=role, trial=trial, seed=self.seed)
+                self.bridges[role] = factory(role=role, trial=trial, seed=self.seed,
+                    ball_radius_mm=float(self.model.geom('orange_ball').size[0])*1000)
         except Exception:
             self.close()
             raise
@@ -327,6 +328,7 @@ class PhysicalSimulator:
             'ball_position': self.data.qpos[self.ball_qpos:self.ball_qpos+3].tolist(),
             'robots': {role: {'phase': self.outputs[role].get('phase', 'not_started'),
                 'motion': self.outputs[role].get('motion', 'stand'),
+                'fall_state': self.outputs[role].get('sensor_info',{}).get('fall_state','not_started'),
                 'fallen': self.fallen[role], 'fsr': self.adapter.frame(role)['fsr'],
                 'position': self.pose(role)[0].tolist()} for role in ROLES}}
 

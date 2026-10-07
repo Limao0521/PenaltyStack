@@ -8,7 +8,7 @@ class ControlPanel:
         self.session = session
         self.root = root or tk.Tk()
         self.root.title('PenaltyStack · Control de simulación')
-        self.root.geometry('670x600')
+        self.root.geometry('670x640')
         self.root.protocol('WM_DELETE_WINDOW', self.close)
         frame = ttk.Frame(self.root,padding=12)
         frame.pack(fill='both',expand=True)
@@ -42,7 +42,8 @@ class ControlPanel:
         self.fields = {}
         defaults = [('forward','Avance (m/s)',0.06),('lateral','Lateral (m/s)',0.),
                     ('turn','Giro (rad/s)',0.),('head_yaw','Cabeza yaw (rad)',0.),
-                    ('head_pitch','Cabeza pitch (rad)',0.)]
+                    ('head_pitch','Cabeza pitch (rad)',0.),
+                    ('kick_length_mm','Alcance pedido de patada (mm)',2500.)]
         for i,(name,label,default) in enumerate(defaults):
             ttk.Label(manual,text=label).grid(row=i,column=0,sticky='w')
             variable = tk.StringVar(value=str(default))
@@ -52,11 +53,11 @@ class ControlPanel:
         self.block_side = tk.StringVar(value='center')
         for i,(label,variable,values) in enumerate([
                 ('Patada',self.kick_type,['forwardFastLeft','forwardFastRight']),
-                ('Bloqueo',self.block_side,['center','left','right'])],start=5):
+                ('Bloqueo',self.block_side,['center','left','right'])],start=len(defaults)):
             ttk.Label(manual,text=label).grid(row=i,column=0,sticky='w')
             ttk.Combobox(manual,textvariable=variable,values=values,state='readonly',width=22).grid(row=i,column=1,sticky='w')
         actions = ttk.Frame(manual)
-        actions.grid(row=7,column=0,columnspan=2,pady=8)
+        actions.grid(row=len(defaults)+2,column=0,columnspan=2,pady=8)
         for motion,label in [('stand','Pararse'),('walk','Caminar'),('kick','Patear'),
                              ('block','Bloquear'),('getup','Levantarse')]:
             ttk.Button(actions,text=label,command=lambda m=motion:self.request_motion(m)).pack(side='left',padx=2)
@@ -102,8 +103,11 @@ class ControlPanel:
         detail = [snapshot['message'],'Resultado: '+snapshot['result']]
         for role,label in [('striker','Tirador'),('keeper','Portero')]:
             robot = robots[role]
-            detail.append('%s: %s / %s · caída: %s · carga pies: %.2f kg' % (
-                label,robot['state'],robot['phase'],robot['fallen'],sum(robot['fsr'])))
+            posture={'upright':'de pie','fallen':'en el suelo','falling':'cayendo',
+                'squatting':'agachado','staggering':'desequilibrio','pickedUp':'sin apoyo',
+                'not_started':'sin iniciar'}.get(robot.get('fall_state'),'desconocida')
+            detail.append('%s: %s / %s · %s · cayó en ensayo: %s · pies: %.2f kg' % (
+                label,robot['state'],robot['phase'],posture,robot['fallen'],sum(robot['fsr'])))
         self.detail.set('\n'.join(detail))
         if snapshot.get('error'):
             self.error.set(snapshot['error'])

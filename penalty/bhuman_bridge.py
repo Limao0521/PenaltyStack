@@ -26,12 +26,15 @@ def _reject_constant(value):
 
 
 class BHumanBridge:
-    def __init__(self, role, trial, seed=0, timeout=2., executable=None, command=None):
+    def __init__(self, role, trial, seed=0, timeout=2., executable=None, command=None,ball_radius_mm=32.5):
         if role not in ('striker','keeper') or not isinstance(trial,str) or not trial:
             raise ValueError('identidad de robot/ensayo inválida')
         self.role,self.trial,self.timeout = role,trial,float(timeout)
         if not math.isfinite(self.timeout) or self.timeout<=0:
             raise ValueError('timeout debe ser positivo y finito')
+        self.ball_radius_mm = float(ball_radius_mm)
+        if not math.isfinite(self.ball_radius_mm) or not 0 < self.ball_radius_mm <= 200:
+            raise ValueError('radio de balón debe ser positivo y finito, máximo 200 mm')
         self._incoming = queue.Queue(maxsize=8)
         self._outgoing = queue.Queue(maxsize=2)
         self._stderr = deque(maxlen=8)
@@ -60,10 +63,13 @@ class BHumanBridge:
                     tuple(self.hello.get('joint_names',[]))!=JOINT_NAMES or
                     abs(float(self.hello.get('cycle_s',0))-CYCLE_S)>1e-9):
                 raise RuntimeError('HELLO B-Human incompatible con el modelo/protocolo')
-            self._send({'type':'INIT','protocol':1,'trial':trial,'role':role,'seed':int(seed)})
-            ready = self._read('READY')
+            self._send({'type':'INIT','protocol':1,'trial':trial,'role':role,'seed':int(seed),
+                        'ball_radius_mm':self.ball_radius_mm})
+            ready = self.ready = self._read('READY')
             if ready.get('trial')!=trial or ready.get('role')!=role:
                 raise RuntimeError('INIT respondió con identidad incorrecta')
+            if ready.get('ball_radius_mm') != self.ball_radius_mm:
+                raise RuntimeError('el motor no confirmó el radio físico del balón')
         except Exception:
             self.close()
             raise

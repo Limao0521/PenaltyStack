@@ -57,6 +57,25 @@ class BridgeFailureTests(unittest.TestCase):
                 bridge.process.kill()
                 bridge.process.wait(timeout=2)
 
+    def test_actual_ball_geometry_reaches_original_representation(self):
+        from penalty.bhuman_bridge import BHumanBridge
+        bridge=BHumanBridge(role='striker',trial='radius',ball_radius_mm=32.2)
+        try:
+            self.assertEqual(bridge.ready['ball_radius_mm'],32.2)
+            output=bridge.step(self.frame(),{'motion':'stand'},sequence=0,time_ms=10000)
+            self.assertAlmostEqual(output['sensor_info']['ball_radius_mm'],32.2,places=4)
+        finally:
+            bridge.close()
+        self.assertIsNotNone(bridge.process.poll())
+
+    def test_bad_radius_rejected_before_creating_process(self):
+        from penalty.bhuman_bridge import BHumanBridge
+        for radius in (float('nan'),float('inf'),0.,-1.,201.):
+            with self.subTest(radius=radius),patch('penalty.bhuman_bridge.subprocess.Popen') as spawn:
+                with self.assertRaises(ValueError):
+                    BHumanBridge(role='striker',trial='radius',ball_radius_mm=radius)
+                spawn.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

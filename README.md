@@ -36,7 +36,7 @@ Para abrir el visor y el panel:
 
 La escena abre **pausada**. Pulsa **Iniciar**; ambos motores estabilizan la postura antes del reloj activo de 28 s. La ventana queda abierta al terminar. [Guía de controles, pruebas y limitaciones](docs/SIMULACION.md).
 
-El ensayo inicial usa patada izquierda. La derecha se ejecuta y termina, pero todavía falla el contacto en esa colocación. Los bloqueos laterales son lanzamientos al suelo; la recuperación debe verificarse. **Esta integración no habilita todavía un penal completo en NAO real.**
+El ensayo inicial usa patada izquierda. Ambas patadas tienen contacto físico y finalización verificados en la colocación inicial. Tras un salto lateral, el portero solicita automáticamente la recuperación original y vuelve a mantenerse de pie. El panel distingue postura actual de caída histórica. **Esta integración no habilita todavía un penal completo en NAO real.**
 
 Leer [arquitectura](docs/ARQUITECTURA.md), [operación y despliegue](docs/DESPLIEGUE.md) y [criterios para NAO real](docs/PREPARACION_NAO.md).
 Ver también [modelo V6 y licencia](models/bhuman/README.md) y [baseline motriz](baseline/README.md).

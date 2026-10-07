@@ -15,6 +15,7 @@
 #include "Platform/File.h"
 #include "Math/Rotation.h"
 #include "Math/Random.h"
+#include "Tools/Motion/Transformation.h"
 #include "Modules/MotionControl/MotionEngine/MotionEngine.h"
 #include "Modules/MotionControl/WalkingEngine/WalkingEngine.h"
 #include "Modules/MotionControl/WalkingEngine/WalkKickEngine.h"
@@ -23,6 +24,8 @@
 #include "Modules/MotionControl/WalkingEngine/WalkGenerators/WalkToPoseEngine.h"
 #include "Modules/MotionControl/WalkingEngine/WalkGenerators/WalkToBallEngine.h"
 #include "Modules/MotionControl/WalkingEngine/WalkGenerators/WalkToBallAndKickEngine.h"
+#include "Modules/MotionControl/KickEngine/KickEngineParameters.h"
+#include "Representations/MotionControl/KickGenerator.h"
 #include "Modules/MotionControl/WalkingEngine/WalkGenerators/DribbleEngine.h"
 #include "Modules/MotionControl/WalkingEngine/WalkGenerators/ReplayWalkRequestProvider.h"
 #include "Modules/MotionControl/HeadMotionEngine/HeadMotionEngine.h"
@@ -180,6 +183,11 @@ public:
     CFG(BallSpecification, "ballSpecification.cfg"); CFG(CameraIntrinsics, "cameraIntrinsics.cfg");
     CFG(CameraCalibration, "cameraCalibration.cfg"); CFG(DamageConfigurationBody, "damageConfigurationBody.cfg");
 #undef CFG
+    // Upstream configured 65 mm as radius; this competition uses a 65 mm
+    // diameter ball. The world supplies its actual geometry at initialization.
+    auto& ballSpecification = rep<BallSpecification>("BallSpecification");
+    ballSpecification.radius = scalar(init,"ball_radius_mm",32.5f,200.f);
+    if(ballSpecification.radius <= 0.f) throw std::runtime_error("Ball radius must be positive");
 #define ALLOC(T) allocate<T>(#T)
     ALLOC(FrameInfo); ALLOC(CognitionFrameInfo); ALLOC(UpperFrameInfo); ALLOC(LowerFrameInfo);
     ALLOC(JointAngles); ALLOC(JointSensorData); ALLOC(JointRequest); ALLOC(InertialData); ALLOC(InertialSensorData);
@@ -231,11 +239,10 @@ public:
     inertial.gyro.x() = gyro[0]; inertial.gyro.y() = gyro[1]; inertial.gyro.z() = gyro[2];
     inertial.acc = Vector3f(acc[0], acc[1], acc[2]);
     inertial.orientation3D = quaternion;
-    const Angle yaw = Rotation::Euler::getZAngle(quaternion);
-    inertial.orientation2D = Quaternionf(Eigen::AngleAxisf(-static_cast<float>(yaw), Vector3f::UnitZ())) * quaternion;
-    inertial.angle.x() = Rotation::Euler::getXAngle(inertial.orientation2D);
-    inertial.angle.y() = Rotation::Euler::getYAngle(inertial.orientation2D);
-    inertial.angle.z() = yaw;
+    // Match InertialDataProvider exactly: tilt is a horizontal angle-axis
+    // vector. Euler decomposition is invalid for the get-up/fall contract.
+    inertial.orientation2D = Rotation::removeZRotation(quaternion);
+    inertial.angle << Rotation::AngleAxis::pack(AngleAxisf(inertial.orientation2D)).head<2>().cast<Angle>(), 0_deg;
     inertial.angleChange = inertial.angle.head<2>() - oldAngles;
     rep<InertialSensorData>("InertialSensorData") = inertial;
     auto& pressures = rep<FsrSensorData>("FsrSensorData");
@@ -258,7 +265,8 @@ public:
       std::string type = request.value("kick_type", "forwardFastLeft");
       if(type != "forwardFastLeft" && type != "forwardFastRight") throw std::runtime_error("Unknown kick type");
       motion.kickType = type == "forwardFastLeft" ? KickInfo::forwardFastLeft : KickInfo::forwardFastRight;
-      motion.kickLength = 2500.f;
+      motion.kickLength = scalar(request,"kick_length_mm",2500.f,3500.f);
+      if(motion.kickLength < 1500.f) throw std::runtime_error("Kick length must be 1500..3500 mm");
       auto ball = vector(request.at("ball"),2,10000);
       motion.ballEstimate.position = Vector2f(ball[0],ball[1]);
       motion.ballEstimate.velocity = Vector2f::Zero();
@@ -278,6 +286,30 @@ public:
     if(!constructed) construct();
     for(const auto& name : sensorOrder) update(name);
     for(const auto& name : generatorOrder) update(name);
+    // The 100 ms right strike has 0.2 rad knee tracking lag in this plant.
+    // Give the same original dynamic trajectory 200 ms to execute instead.
+    // Keep the working left strike and all original trajectory endpoints.
+    // Original balancing, IK, mirror and support foot stay in
+    // KickEngine. This adapter never changes measured joints/root/ball state.
+    auto& kickGenerator = rep<KickGenerator>("KickGenerator");
+    const auto originalKick = kickGenerator.createPhase;
+    kickGenerator.createPhase = [originalKick](const KickRequest& request,const MotionPhase& lastPhase)
+    {
+      KickRequest calibrated=request;
+      if(request.kickMotionType==KickRequest::kickForwardFast && !request.mirror && request.calcDynPoints)
+      {
+        const auto originalPoints=request.calcDynPoints;
+        calibrated.calcDynPoints = [originalPoints](const int phase)
+        {
+          auto points=originalPoints(phase);
+          for(auto& point:points)
+            if(point.limb==Phase::rightFootTra && point.phaseNumber==3)
+              point.duration=200;
+          return points;
+        };
+      }
+      return originalKick(calibrated,lastPhase);
+    };
     update("MotionEngine", "JointRequest"); update("MotionEngine", "MotionInfo"); update("MotionEngine", "OdometryData");
     update("MotionEngine", "ArmMotionInfo"); update("MotionEngine", "HeadMotionInfo");
     const auto& joints = rep<JointRequest>("JointRequest"); const auto& info = rep<MotionInfo>("MotionInfo");
@@ -294,12 +326,19 @@ public:
     const bool completed = info.lastKickTimestamp > lastKick; lastKick = info.lastKickTimestamp;
     lastSequence = sequence; lastTime = time;
     debug.clear(); annotations.getOut().clear();
+    const auto ballZeroStep = Motion::Transformation::getTransformationToZeroStep(
+        rep<TorsoMatrix>("TorsoMatrix"),rep<RobotModel>("RobotModel"),rep<RobotDimensions>("RobotDimensions"),
+        motion.odometryData,rep<OdometryDataPreview>("OdometryDataPreview"),
+        motion.kickType==KickInfo::forwardFastLeft)*motion.ballEstimate.position;
     return { {"type","OUTPUT"},{"trial",trial},{"sequence",sequence},{"angles",targets},{"stiffness",stiffness},
        {"phase",TypeRegistry::getEnumName(info.executedPhase)},{"motion",action},{"busy",info.isKicking() || info.executedPhase == MotionPhase::keyframeMotion || info.executedPhase == MotionPhase::getUp},
        {"kick_completed",completed},{"odometry",{odometry.translation.x(),odometry.translation.y(),static_cast<float>(odometry.rotation)}},
        {"motion_info",{{"last_kick_timestamp",info.lastKickTimestamp},{"keyframe",TypeRegistry::getEnumName(info.executedKeyframeMotion.keyframeMotion)},
                        {"mirror",info.executedKeyframeMotion.mirror},{"stable",info.isMotionStable}}},
        {"sensor_info",{{"fall_state",TypeRegistry::getEnumName(rep<FallDownState>("FallDownState").state)},
+                       {"ball_zero_step_mm",{ballZeroStep.x(),ballZeroStep.y()}},
+                       {"ball_radius_mm",rep<BallSpecification>("BallSpecification").radius},
+                       {"inertial_angle",{static_cast<float>(inertial.angle.x()),static_cast<float>(inertial.angle.y()),static_cast<float>(inertial.angle.z())}},
                        {"ground_contact",rep<GroundContactState>("GroundContactState").contact},
                        {"support",rep<FootSupport>("FootSupport").support}}} };
   }
@@ -337,7 +376,8 @@ int main()
       {
         if(runtime) throw std::runtime_error("INIT already accepted; start a new process for a reset");
         runtime=std::make_unique<Runtime>(message);
-        std::cout<<json({{"type","READY"},{"trial",runtime->trial},{"role",runtime->role},{"protocol",1}}).dump()<<std::endl;
+        std::cout<<json({{"type","READY"},{"trial",runtime->trial},{"role",runtime->role},{"protocol",1},
+          {"ball_radius_mm",message.value("ball_radius_mm",32.5)}}).dump()<<std::endl;
       }
       else if(type=="STEP")
       {

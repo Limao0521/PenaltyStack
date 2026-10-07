@@ -32,7 +32,10 @@ reciben sensores actuales. No hay reproducción de trazas ni marcha generada
 en el adaptador.
 
 Las entradas de orientación de InertialData provienen de la orientación real
-del torso en MuJoCo. JointAnglePred recibe los ángulos medidos, sin modelo neuronal
+del torso en MuJoCo. `orientation2D` y `angle` siguen exactamente el contrato
+de InertialDataProvider: `removeZRotation` y vector de rotación angle-axis
+horizontal con z=0. Usar Euler impedía recuperar grandes inclinaciones.
+JointAnglePred recibe los ángulos medidos, sin modelo neuronal
 de predicción del desgaste mecánico. Corriente cero, temperatura 35 C,
 GyroOffset calibrado y variancias cero son un perfil ideal explícito de
 simulación. Las representaciones de percepción ajenas al ensayo (obstáculos,
@@ -55,10 +58,30 @@ El host `ThreadFrame` sólo establece los punteros de Global mediante la
 amistad que el framework original declara. No se enlazan threads de robot,
 SimRobot, LoLA, percepción, comunicación de equipo ni servidor de debug.
 
+### Calibración simulada `mujoco-truth-v2`
+
+- `BallSpecification.radius` recibe el radio real del geom MuJoCo: **32.5 mm**,
+  diámetro 65 mm. El Config original de Sabana tiene radio 65 mm y permanece
+  intacto. B-Human de referencia usa [radio 50 mm](https://raw.githubusercontent.com/bhuman/BHumanCodeRelease/master/Config/Locations/Default/ballSpecification.cfg).
+- El golpe derecho de `kickForwardFast` conserva todos los endpoints originales,
+  pero su punto dinámico de fase 3 lleva `duration=200` ms, frente a los 100 ms
+  del KMC. Un wrapper de `KickGenerator.createPhase` aplica ese parámetro; el
+  KickEngine original calcula interpolación, equilibrio, IK y finalización.
+  No se desplazan endpoints ni se modifican sensores para simular aciertos.
+  La izquierda conserva sus 100 ms. La prueba previa midió un fallo de unos
+  8 mm y retraso de rodilla derecha de unos 0.2 rad; el golpe más lento logra
+  contacto sin caída. Es una calibración física de este modelo, no aprendizaje.
+- `HELLO.provenance` registra perfil, calibración y SHA256 de las fuentes del
+  host. METADATA registra además READY, radio y hashes de adaptadores Python.
+  Para comparar RL, usar el mismo mundo y perfil; las fuentes originales y
+  el informe anterior se conservan como referencia. No confundir este perfil
+  calibrado con la configuración KMC sin adaptaciones.
+
 ## Protocolo JSONL 1
 
-HELLO se emite al iniciar. INIT fija `trial`, `role`, `seed`, `protocol=1`,
-y responde READY. STEP requiere `trial`, `sequence` empezando en 0 y
+HELLO se emite al iniciar. INIT fija `trial`, `role`, `seed`, `protocol=1` y
+`ball_radius_mm` (por defecto 32.5, rango >0 y ≤200), y responde READY con el
+radio confirmado. STEP requiere `trial`, `sequence` empezando en 0 y
 `time_ms` con incrementos de 12 ms. El primer tiempo puede ser cero o un
 offset de simulación. Internamente se añade 100000 ms, como hace el reloj
 original para no confundir cero con un evento inexistente.
@@ -70,11 +93,17 @@ fl/fr/bl/br y derecha fl/fr/bl/br. Articulaciones siguen `HELLO.joint_names`
 y el orden original Joints, incluyendo ambas manos y HipYawPitch derecho.
 
 `request.motion` admite stand/walk/kick/block/getup. Marcha usa forward/lateral
-en mm/s y turn en rad/s. Patada admite forwardFastLeft/forwardFastRight y
-ball[2] en milímetros del plano robot. Block usa center/left/right; las fases
+en mm/s y turn en rad/s. Patada admite forwardFastLeft/forwardFastRight,
+`kick_length_mm` entre 1500 y 3500 (por defecto 2500), y ball[2] en milímetros
+del plano robot. El alcance solicitado alimenta KickLengthConverter original;
+no garantiza esa distancia recorrida en MuJoCo. Block usa center/left/right; las fases
 son genuflectStand, keeperJumpLeft y su espejo. Cabeza usa head_yaw/head_pitch
 en radianes. Getup solicita stand: el motor original decide la recuperación
-según FallDownState, sin forzar estados inventados.
+según FallDownState, sin forzar estados inventados. Después de que el salto
+lateral entra en `keeperJumpLeft`, la sesión solicita getup/stand una vez.
+`KeyframePhase::isDone` mantiene el salto hasta su finalización o salida
+original de fallo y sólo entonces permite la recuperación. La guardia central
+se conserva mientras permanece solicitado el bloqueo.
 
 OUTPUT devuelve ángulos, rigidez resuelta 0..100, odometría en mm/radianes,
 nombre de fase original, petición, busy y pulso kick_completed. Off/ignore
