@@ -101,6 +101,25 @@ from penalty.rl.wrappers import ObservationHistory, PerceptionNoiseWrapper
 env = ObservationHistory(PerceptionNoiseWrapper(PenaltyKeeperEnv(backend='synthetic')), length=6)
 ```
 
+## Entrenamiento PPO nocturno
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+.\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
+.\.venv\Scripts\python.exe tools/train_rl.py --smoke --hours 0.25 --workers 4 --output runs/train/smoke  # ~20 min
+.\.venv\Scripts\python.exe tools/train_rl.py --hours 10 --workers 8
+```
+
+`penalty/rl/training.py` ejecuta el currículo de `docs/rl/06`: primero todas las etapas sintéticas (≈7 000 pasos/s, ~25 min en total), luego B-Human, que se reparte el resto de horas por igual entre tirador (`static` 40 %, `scripted` 60 %) y portero (`random_kicks`). Cada rol conserva una política PPO (MLP 128×128, normalización de observaciones) que pasa de etapa en etapa. El portero usa historia de 6 observaciones.
+
+- Salida en `runs/train/<fecha>/`: `progress.json`/`report.json` con procedencia, `<rol>/latest` y `<rol>/<etapa>` (`model.zip`, `obs_norm.npz`, `config.json`) y registros CSV en `logs/<etapa>/` con `outcome/*_rate`.
+- Tras cada etapa se compara contra el baseline (tirador scripted, portero geométrico) en semillas apartadas.
+- Puntos de control cada 10 min. Si se corta, `--output <carpeta> --resume` continúa: las etapas sintéticas incompletas se repiten y las de B-Human usan el tiempo restante.
+- Un reinicio fallido de B-Human se reintenta con sesión nueva. Windows no entra en suspensión mientras entrena.
+- Evaluar un modelo: `tools/evaluate_rl.py --role striker --backend bhuman --policy runs/train/<fecha>/striker/latest`.
+
+Hallazgo de la prueba corta: la patada B-Human en MuJoCo está cerca de un límite de estabilidad. Con la misma semilla, liberar a 2248 mm a los 5.2 s derriba al tirador, mientras 2242 mm no lo hace; las peticiones al motor fueron idénticas byte a byte. Es determinista y se penaliza como caída, así que la política aprende a evitarlo. Hay que vigilar `any_fall_rate` frente al baseline.
+
 ## Estado frente al plan de 20 días
 
 Hecho (P0, Agente A completo y partes no entrenables de B/C/E):
@@ -112,7 +131,7 @@ Hecho (P0, Agente A completo y partes no entrenables de B/C/E):
 
 Pendiente:
 
-- **Entrenamiento PPO** (días 10–15): requiere `stable-baselines3`/`torch` y horas de simulación. B-Human corre a ~1× tiempo real, ~7–10 s por episodio y proceso.
+- Resultados de entrenamiento PPO: el pipeline está listo y probado de punta a punta; falta la corrida larga y revisar las compuertas (`goal_rate ≥ baseline`, caídas ≤ baseline + 5 %).
 - Exponer parámetros de patada/bloqueo en el runtime nativo generado (días 4–6).
 - Self-play, `opponent_pool.py`, matriz cross-play (P1).
 - Residual RL (P1), `penalty/rl/runtime.py` y adaptador de observación para NAO (Agente F).

@@ -19,6 +19,8 @@ def make_env(role, backend='synthetic', opponent=None, backend_options=None, rew
 def rollout(env, policy, seed, options=None):
     """One episode; returns its episode_record (plus the seed)."""
     observation, _ = env.reset(seed=seed, options=options)
+    if hasattr(policy, 'reset'):
+        policy.reset()
     while True:
         observation, _, terminated, truncated, info = env.step(policy(observation))
         if terminated or truncated:
@@ -30,9 +32,13 @@ def _worker(job):
     env = make_env(job['role'], job['backend'], job['opponent'], job['backend_options'])
     start = time.perf_counter()
     try:
-        # One policy per episode seed: results do not depend on worker split.
-        records = [rollout(env, make_policy(job['policy'], job['role'], seed=seed), seed)
-                   for seed in job['episode_seeds']]
+        if job['policy'] == 'random':
+            # One policy per episode seed: results do not depend on worker split.
+            records = [rollout(env, make_policy('random', job['role'], seed=seed), seed)
+                       for seed in job['episode_seeds']]
+        else:
+            policy = make_policy(job['policy'], job['role'])
+            records = [rollout(env, policy, seed) for seed in job['episode_seeds']]
     finally:
         env.close()
     return records, time.perf_counter() - start

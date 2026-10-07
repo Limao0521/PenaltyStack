@@ -32,3 +32,5 @@ Guardar integración y corregir patadas/recuperación lateral. El usuario diseñ
 - Hallazgos: girar en el sitio cerca del balón lo empuja → pose de patada orbitando; `kick_length_mm` 3100 desestabiliza la física → `power` mapea a 1500–2900 mm.
 - Baseline B-Human (5 semillas × 4): tirador scripted 100 % bloqueado; portero geométrico vs `random_kicks` 45 % atajadas. Throughput ~0.15 ep/s por proceso, ~0.8 ep/s con 8.
 - Siguiente: PPO (instalar stable-baselines3/torch), exponer parámetros de patada en runtime generado, self-play, adaptador NAO.
+
+- 2026-10-07: PPO nocturno listo (`tools/train_rl.py`, `penalty/rl/training.py`); prueba corta de 9 etapas completada sin fallos. Lanzar `tools/train_rl.py --hours 10 --workers 8` y revisar `runs/train/<fecha>/report.json`.

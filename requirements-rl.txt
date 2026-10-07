@@ -1,2 +1,4 @@
 -r requirements-sim.txt
 gymnasium>=1.0,<2
+stable-baselines3>=2.4,<3
+# torch CPU: pip install torch --index-url https://download.pytorch.org/whl/cpu

@@ -74,6 +74,13 @@ class RandomPolicy:
 
 
 def make_policy(name, role, seed=None):
+    """`name` is a baseline name or a directory written by training."""
+    from penalty.rl.policies.trained import TrainedPolicy, is_policy_dir
+    if is_policy_dir(name):
+        policy = TrainedPolicy(name)
+        if policy.role != role:
+            raise ValueError('la política entrenada es de %s, no de %s' % (policy.role, role))
+        return policy
     if role == 'striker' and name == 'scripted':
         return ScriptedStrikerPolicy()
     if role == 'keeper' and name == 'scripted':

@@ -20,7 +20,8 @@ from penalty.rl.run_metadata import run_metadata  # noqa: E402
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--role', choices=('striker', 'keeper'), required=True)
-    parser.add_argument('--policy', default='scripted', help='scripted | geometric (keeper) | random')
+    parser.add_argument('--policy', default='scripted',
+                        help='scripted | geometric (keeper) | random | carpeta de un modelo entrenado')
     parser.add_argument('--backend', choices=('synthetic', 'bhuman'), default='synthetic')
     parser.add_argument('--opponent', default=None)
     parser.add_argument('--episodes', type=int, default=100, help='episodios por semilla')

@@ -222,7 +222,7 @@ class BHumanWorld:
             if self.role == 'striker':
                 return self._striker_step(action)
             return self._keeper_step(action)
-        except RuntimeError as error:
+        except (RuntimeError, ValueError, OSError) as error:
             # A native/physics failure ends the episode and is penalised as a
             # fall, so a policy cannot prefer it to a bad outcome. The broken
             # session is discarded; reset() builds a new one.
