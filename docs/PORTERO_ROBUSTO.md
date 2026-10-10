@@ -159,6 +159,47 @@ pareado, con procedencia y hashes, es `comparacion_bhuman_base.json`, ambos
 en `docs/validation/rl/robustez_20261010/`. La prueba adicional usa la condición
 original de percepción; no añade una comparación con `scripted` bajo `stress`.
 
+El caso `center` reproduce las decisiones del tirador base
+`ScriptedStrikerPolicy`: centro, pie izquierdo, alcance nominal de 2500 mm
+y disparo habilitado desde el inicio. Ambos pasan por el mismo controlador
+táctico y el motor B-Human. Los casos `v1` y `v2` usan nuestras políticas
+entrenadas. Ninguno ejecuta el comportamiento oficial completo de B-Human.
+
+## Estado en el NAO real y trabajo pendiente
+
+La mejora táctica, su configuración y las pruebas están implementadas en
+simulación. El portero obtiene la posición del balón y la postura del rival
+desde la escena, con las perturbaciones descritas arriba. La postura del
+tirador ayuda a resolver casos dudosos cerca del borde de la guardia central;
+la trayectoria del balón y su tiempo de llegada guían el bloqueo.
+
+Ya existe un detector básico de pelota naranja en `penalty/vision.py` que
+estima distancia y ángulo desde una imagen RGB. Requiere calibración con las
+cámaras del NAO concreto. `penalty/nao.py` lee imágenes mediante NAOqi, pero
+actualmente ejecuta la FSM básica: no construye las observaciones de
+`robust`, no carga esta política y no ejecuta sus bloqueos físicos.
+
+Para trasladar la mejora al robot falta:
+
+1. Seguir el balón entre imágenes con sus tiempos de captura; estimar
+   posición, velocidad, visibilidad y antigüedad en el marco del portero,
+   compensando la orientación de la cámara y de la cabeza.
+2. Estimar la posición y orientación del tirador a partir de imágenes,
+   registrando la incertidumbre y los casos en que no se puede medir.
+3. Conectar cámaras y sensores a un adaptador de observaciones compatible
+   con la política, y conectar sus decisiones al ejecutor físico. Los
+   contratos publicados se conservan; cualquier extensión necesita una
+   versión nueva. Un único controlador debe ser dueño de los actuadores.
+4. Medir los retrasos y la precisión con imágenes grabadas antes de los
+   ensayos físicos, y calibrar los bloqueos mediante pruebas incrementales
+   en el NAO concreto. Comparar después con el portero base bajo las mismas
+   condiciones reales.
+
+La prioridad propuesta es el seguimiento del balón y el tiempo de llegada;
+la postura del rival aporta una pista adicional. Incorporar cámaras permite
+operar con observaciones reales, pero no garantiza mantener la tasa de
+atajadas de la simulación. El **84.6 % no es un resultado en hardware**.
+
 ## Métricas y archivos
 
 La media da el mismo peso a cada estilo. El mínimo por estilo permite detectar
