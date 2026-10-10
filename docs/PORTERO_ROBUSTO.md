@@ -167,6 +167,11 @@ entrenadas. Ninguno ejecuta el comportamiento oficial completo de B-Human.
 
 ## Estado en el NAO real y trabajo pendiente
 
+La propuesta de reutilización de visión B-Human, el mapa de fuentes y el
+adaptador con medidas desconocidas están en [VISION_PORTERO.md](VISION_PORTERO.md).
+Es un diseño pendiente de implementación; la detección de un rival en las
+estructuras importadas no entrega su orientación corporal.
+
 La mejora táctica, su configuración y las pruebas están implementadas en
 simulación. El portero obtiene la posición del balón y la postura del rival
 desde la escena, con las perturbaciones descritas arriba. La postura del
