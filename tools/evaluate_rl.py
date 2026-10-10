@@ -21,9 +21,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--role', choices=('striker', 'keeper'), required=True)
     parser.add_argument('--policy', default='scripted',
-                        help='scripted | geometric (keeper) | random | carpeta de un modelo entrenado')
+                        help='scripted | geometric | center (portero) | random | carpeta de un modelo entrenado')
     parser.add_argument('--backend', choices=('synthetic', 'bhuman'), default='synthetic')
     parser.add_argument('--opponent', default=None)
+    parser.add_argument('--stage', default=None,
+                        help='usar backend, oponente y condiciones (variación, ruido, patadas) de una '
+                             'etapa del currículo, p. ej. keeper_bhuman_random_kicks')
     parser.add_argument('--episodes', type=int, default=100, help='episodios por semilla')
     parser.add_argument('--seeds', type=int, nargs='+', default=[0, 1, 2, 3, 4])
     parser.add_argument('--workers', type=int, default=1)
@@ -34,19 +37,27 @@ def main():
     args = parser.parse_args()
     if args.episodes < 1 or args.workers < 1:
         parser.error('episodes y workers deben ser >= 1')
+    options = {}
+    if args.stage:
+        from penalty.rl.training import overnight_plan
+        stage = next((s for s in overnight_plan() if s.name == args.stage), None)
+        if stage is None or stage.role != args.role:
+            parser.error('etapa desconocida para %s: %s' % (args.role, args.stage))
+        args.backend, args.opponent, options = stage.backend, stage.opponent, stage.backend_options
     report = {'metadata': run_metadata(role=args.role, policy=args.policy, backend=args.backend,
-                                       opponent=args.opponent, seeds=args.seeds,
-                                       episodes_per_seed=args.episodes, model=None)}
+                                       opponent=args.opponent, seeds=args.seeds, stage=args.stage,
+                                       backend_options=options, episodes_per_seed=args.episodes,
+                                       model=None)}
     if args.throughput:
         report['throughput'] = []
         for workers in args.throughput:
             result = evaluate(args.role, args.policy, args.backend, args.opponent,
-                              args.episodes, args.seeds[:1], workers)
+                              args.episodes, args.seeds[:1], workers, options)
             report['throughput'].append(result['throughput'])
             print(json.dumps(result['throughput']), flush=True)
     else:
         result = evaluate(args.role, args.policy, args.backend, args.opponent,
-                          args.episodes, args.seeds, args.workers)
+                          args.episodes, args.seeds, args.workers, options)
         if not args.records:
             result.pop('records')
         report.update(result)

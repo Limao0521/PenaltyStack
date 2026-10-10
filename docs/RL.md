@@ -30,6 +30,8 @@ L1 B-Human                  -> FSM compartida + MotionEngine original en MuJoCo
 | `penalty/rl/policies/baselines.py` | Baselines scripted (equivalentes a la FSM), geométrica de portero y aleatoria. |
 | `penalty/rl/evaluation.py`, `tools/evaluate_rl.py` | Benchmark multi-semilla, multiproceso, throughput e informe con procedencia. |
 | `penalty/rl/run_metadata.py` | Commit, estado sucio, versiones, hashes y plataforma de cada ejecución. |
+| `penalty/rl/training.py`, `tools/train_rl.py` | Currículo PPO, convergencia, protecciones, checkpoints y supervisor con reinicio. |
+| `penalty/rl/async_ppo.py`, `actors.py` | Recolección asíncrona para B-Human: workers con política numpy y `AsyncPPO`. |
 | `penalty/skills/` | `KickParameters`, `BlockParameters`, `ParameterizedSkill` (`reset/apply/bounds`). |
 | `penalty/optimization/` | Búsqueda aleatoria acotada, CMA-ES, objetivos `kick_objective_v1`/`block_objective_v1`, `kick_search`. |
 
@@ -56,7 +58,10 @@ Oponentes del tirador: `empty`, `static`, `random`, `scripted`. Portero: `synthe
 Un paso táctico es un periodo de control de 0.1 s de `SimulationSession`. La aproximación, la marcha, la patada y la guardia siguen en la FSM compartida y B-Human. Tras liberar la patada o comprometer la guardia, el entorno avanza hasta el resultado del balón (máximo 10 s).
 
 - Tirador: oponentes `scripted` (portero FSM) y `static` (solo sigue el balón).
-- Portero: oponentes `scripted` (tirador FSM, centro, pie izquierdo, 2500 mm) y `random_kicks` (patadas B-Human con objetivo, pie y alcance aleatorios por episodio).
+- Portero: oponentes `scripted` (tirador FSM, centro, pie izquierdo, 2500 mm) y `random_kicks` (patadas B-Human con objetivo, pie y alcance aleatorios por episodio). Por defecto el objetivo es uniforme en ±0.65 m; `shot_target=(min, max)` sortea |objetivo| en ese rango con lado aleatorio, salvo una fracción `center_shots` dentro de ±0.15 m, y `shot_power=(min, max)` acota el alcance.
+- Variación por episodio (`backend_options`): `ball_jitter` (± m alrededor del punto penal) y `start_jitter=(± m, ± rad)` de ambos robots respecto a su pose inicial nominal. Sin ellas el mundo del tirador es determinista: la semilla no cambia el episodio.
+- `perception_noise` (`True` o argumentos de `PerceptionNoiseWrapper`) en `backend_options` envuelve el entorno con ruido de percepción, en entrenamiento y evaluación por igual.
+- Con valores por defecto la simulación es bit a bit la de antes de estas opciones (comprobado en 10 episodios con semilla).
 - Pose de patada: para apuntar fuera del centro, el tirador táctico se mueve sobre el círculo alrededor del balón. Girar en el sitio a 0.2 m del balón lo empuja con los pies. Las compuertas de disparo son las de la FSM, así que el objetivo centrado reproduce el penal scripted (`blocked`).
 - Un fallo nativo/físico termina el episodio como `sim_error`, puntuado como caída, y descarta la sesión.
 
@@ -101,22 +106,58 @@ from penalty.rl.wrappers import ObservationHistory, PerceptionNoiseWrapper
 env = ObservationHistory(PerceptionNoiseWrapper(PenaltyKeeperEnv(backend='synthetic')), length=6)
 ```
 
-## Entrenamiento PPO nocturno
+## Entrenamiento PPO hasta convergencia
 
 ```powershell
 .\.venv\Scripts\python.exe -m pip install torch --index-url https://download.pytorch.org/whl/cpu
 .\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
-.\.venv\Scripts\python.exe tools/train_rl.py --smoke --hours 0.25 --workers 4 --output runs/train/smoke  # ~20 min
-.\.venv\Scripts\python.exe tools/train_rl.py --hours 10 --workers 8
+.\.venv\Scripts\python.exe tools/train_rl.py --smoke --hours 0.2 --workers 30 --output runs/train/smoke  # ~12 min
+.\.venv\Scripts\python.exe tools/train_rl.py --hours 48 --workers 30
 ```
 
-`penalty/rl/training.py` ejecuta el currículo de `docs/rl/06`: primero todas las etapas sintéticas (≈7 000 pasos/s, ~25 min en total), luego B-Human, que se reparte el resto de horas por igual entre tirador (`static` 40 %, `scripted` 60 %) y portero (`random_kicks`). Cada rol conserva una política PPO (MLP 128×128, normalización de observaciones) que pasa de etapa en etapa. El portero usa historia de 6 observaciones.
+`penalty/rl/training.py` ejecuta el currículo de `docs/rl/06`: primero todas las etapas sintéticas (≈7 000 pasos/s, ~25 min en total, pasos fijos), luego B-Human, que se reparte el resto de horas por igual entre tirador (`static` 40 %, `scripted` 60 %) y portero (`random_kicks`). Cada rol conserva una política PPO (MLP 128×128, normalización de observaciones, `target_kl=0.03`) que pasa de etapa en etapa. El portero usa historia de 6 observaciones.
 
-- Salida en `runs/train/<fecha>/`: `progress.json`/`report.json` con procedencia, `<rol>/latest` y `<rol>/<etapa>` (`model.zip`, `obs_norm.npz`, `config.json`) y registros CSV en `logs/<etapa>/` con `outcome/*_rate`.
+**Recolección asíncrona (etapas B-Human).** `SubprocVecEnv` avanza todos los entornos sincronizados y cada paso espera al más lento; tras una patada el entorno simula la pelota hasta el resultado (~440 ticks frente a ~9 de un paso normal) y el reinicio lanza dos motores y estabiliza 2 s. Con 16 entornos eso dejaba el CPU al 8 % y el entrenamiento en ~10 pasos/s. Ahora cada worker de `penalty/rl/actors.py` corre su entorno con una copia numpy de la política (sin torch) y envía transiciones sin esperar a los demás; `penalty/rl/async_ppo.py` llena el buffer con 4096 transiciones y entrena con la actualización PPO de stable-baselines3 sin cambios. Sigue siendo on-policy: los workers se pausan durante la actualización y retoman sus episodios. Entre segmentos de workers distintos se corta el GAE y se hace bootstrap con V(s') del mismo modo que SB3 al final de un rollout. Las pruebas comprueban que la política numpy coincide con la de torch, que las log-prob y valores guardados coinciden con los que recalcula el learner y que aprende igual que PPO (portero estático sintético: aleatoria 6.5 %, PPO 0.44–0.97, asíncrono 0.83–0.90 con 20 000 pasos y 3 semillas).
+
+**Simulación por tick.** Optimizaciones sin cambio de resultados, comprobadas bit a bit (observaciones, recompensas, `qpos`/`qvel` finales) en 10 episodios con semilla de tirador y portero: lectura con búfer de los pipes nativos (antes `readline` hacía una lectura por byte), STEP a los dos motores antes de leer sus respuestas, contactos vectorizados, constantes de FSR y actuadores precalculadas, y sin trazas ni snapshots por tick cuando nadie los graba ni los lee. Tick de 8.0 a 2.3 ms y episodio de 7.6 a 2.2 s en un proceso aislado.
+
+**Condiciones de entrenamiento (desde `ppo_v2`).** La corrida `ppo_v1_20261009` mostró dos atajos. El portero aprendió a agacharse en la guardia central antes de cada tiro: 0.778 de atajadas contra 0.420 del geométrico con las patadas uniformes. El tirador aprendió un solo tiro, en un mundo determinista. Por eso:
+
+- Todas las etapas usan ruido de percepción; las B-Human añaden ±5 cm de balón y ±5 cm/±0.1 rad de pose inicial. El tirador v1 bajó de 1.00 a 0.81 de goles con esa variación; el portero v1 cayó a 0.09 de atajadas con 85 % de caídas.
+- El portero entrena contra patadas a las esquinas: 3/4 apuntan a |y| 0.3–0.65 m, 1/4 al centro, con alcance de 1960–2900 mm. Aun así, la guardia central inmediata ataja 0.48 y el geométrico 0.28 (100 episodios): las patadas B-Human son imprecisas (21 % fuera) y la estirada lateral rinde poco. Por eso el reporte del portero añade el baseline `center` y la compuerta `primary_ge_center`. Superarla muestra que lee el tiro.
+- En B-Human no hay bono de entropía y la desviación de la Gaussiana se limita a 0.5 antes de cada rollout. Con las acciones recortadas a [-1, 1], el bono la había inflado (portero 0.7–0.8; gatillo del tirador 20) y los episodios de entrenamiento eran casi aleatorios: 0.26 de atajadas al entrenar contra 0.79 sin ruido.
+
+**Convergencia (etapas B-Human).** Cada worker juega 1 de cada 5 episodios con la acción media, como se usaría la política. Esos episodios no entran al rollout de PPO y forman ventanas de 200 para la convergencia y el mejor checkpoint. Sin `eval_every`, se usan los episodios de entrenamiento en ventanas de 1000. Una ventana mejora si su tasa principal (`goal_rate` o `save_rate`) supera a la mejor por más del error estándar de la diferencia entre dos ventanas (≈5 puntos con 200 episodios y p=0.5). La etapa converge con 4 ventanas seguidas sin mejora y al menos 60 min de etapa. El tiempo que libera pasa a las etapas pendientes, y `--hours` queda como tope. Al cerrar, si la última ventana es claramente peor que la mejor, se restaura `<rol>/<etapa>_best`. Que se estanque no garantiza el óptimo: PPO puede volver a mejorar después de una meseta.
+
+**Protecciones.**
+
+| Condición | Acción |
+| --- | --- |
+| `sim_error` > 10 % en una ventana | Aborta la corrida (código 3, sin reinicio): el runtime está mal. |
+| Pesos no finitos (NaN) | No sobrescribe el último checkpoint válido, cierra la etapa como `diverged`, restaura el mejor y continúa. |
+| 15 min sin pasos de entorno | El watchdog termina el proceso (código 75); el supervisor reanuda. |
+| Caída o cuelgue del proceso | El supervisor de `tools/train_rl.py` reanuda con `--resume` tras 30 s; se rinde con más de `--max-restarts` (3) fallos seguidos de menos de 30 min. |
+| Reinicio de B-Human fallido | 5 reintentos con sesión nueva antes de fallar. |
+| Compuertas al cerrar etapa | `report.json` registra `primary_ge_baseline` y `falls_le_baseline_plus_5pct` frente al baseline; solo informan, no detienen. |
+
+- Salida en `runs/train/<fecha>/`: `progress.json`/`report.json` con procedencia, reanudaciones (`resumes`), motivo de parada (`converged`, `deadline`, `diverged`, `budget`) y ventanas por etapa; `<rol>/latest`, `<rol>/<etapa>` y `<rol>/<etapa>_best` (`model.zip`, `obs_norm.npz`, `config.json`); registros CSV en `logs/<etapa>/` con `outcome/*_rate` y `convergence/*` (una etapa reanudada escribe en `logs/<etapa>/resume<k>/`).
 - Tras cada etapa se compara contra el baseline (tirador scripted, portero geométrico) en semillas apartadas.
-- Puntos de control cada 10 min. Si se corta, `--output <carpeta> --resume` continúa: las etapas sintéticas incompletas se repiten y las de B-Human usan el tiempo restante.
-- Un reinicio fallido de B-Human se reintenta con sesión nueva. Windows no entra en suspensión mientras entrena.
-- Evaluar un modelo: `tools/evaluate_rl.py --role striker --backend bhuman --policy runs/train/<fecha>/striker/latest`.
+- Puntos de control cada 10 min y al interrumpir con Ctrl+C. `--output <carpeta> --resume` continúa: las etapas sintéticas incompletas se repiten, las de B-Human conservan el estado de convergencia y usan el tiempo restante.
+- Windows no entra en suspensión mientras entrena.
+- Evaluar un modelo en las condiciones de una etapa: `tools/evaluate_rl.py --role keeper --stage keeper_bhuman_random_kicks --policy runs/train/<fecha>/keeper/latest --episodes 100 --seeds 20000 20001 20002 20003 20004 --workers 30` (`--policy center` o `geometric` para los baselines).
+- Resultado guardado de la primera corrida: `runs/results/ppo_v1_20261009/` (modelos, logs, evaluación 5×100, `resumen.json` y parche del código que la produjo).
+
+Rendimiento medido el 2026-10-09 (Ryzen 9 8940HX, 16 núcleos/32 hilos, 31 GB, enchufado, modo de energía "Máximo rendimiento"):
+
+| Recolección B-Human | Tirador vs `scripted` | CPU |
+| --- | --- | --- |
+| Sincronizada, 16 entornos (antes) | ~10 transiciones/s | 8 % |
+| Asíncrona, 24 workers | 128 transiciones/s, 4.9 ep/s | — |
+| Asíncrona, 30 workers | 148 transiciones/s, 5.0 ep/s | 100 % a ~3.2 GHz |
+
+Portero `random_kicks` con 30 workers y política inicial aleatoria: 9.6 ep/s (se lanza enseguida; la entrenada espera el tiro y da más decisiones por episodio). Con 30 workers el CPU queda saturado: el límite es la potencia sostenida del portátil. Cada worker usa ~0.25 GB (30 workers ≈ 8 GB).
+
+**GPU.** No acelera este entrenamiento. La actualización PPO de 4096 transiciones (MLP 128×128, 10 épocas, lote 256) tarda 0.3 s en CPU frente a ~28 s de recolección: ~1 % del tiempo, y con una red tan pequeña la GPU no sería más rápida por el costo de transferencia y lanzamiento de kernels. El costo está en la simulación (MuJoCo y el motor B-Human en C++ por robot), que corre en CPU; los simuladores en GPU (MJX, MuJoCo Warp) no pueden alojar el MotionEngine original por tick, que es el controlador de bajo nivel exigido.
 
 Hallazgo de la prueba corta: la patada B-Human en MuJoCo está cerca de un límite de estabilidad. Con la misma semilla, liberar a 2248 mm a los 5.2 s derriba al tirador, mientras 2242 mm no lo hace; las peticiones al motor fueron idénticas byte a byte. Es determinista y se penaliza como caída, así que la política aprende a evitarlo. Hay que vigilar `any_fall_rate` frente al baseline.
 

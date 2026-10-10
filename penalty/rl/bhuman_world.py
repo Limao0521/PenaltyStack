@@ -26,20 +26,60 @@ KEEPER_OPPONENTS = ('scripted', 'random_kicks')
 FAST_FORWARD_S = 10.
 STOPPED_SPEED = .05
 STOPPED_FOR_S = .5
+CENTER_SHOT_Y = .15
+MAX_BALL_JITTER = .2
+MAX_START_JITTER = (.2, .5)
 INFO = {'backend': 'bhuman',
         'privileged_inputs': ['scene ball position', 'scene robot/opponent poses',
                               'torso orientation'],
         'synthetic_inputs': ['hand positions', 'motor currents/temperatures', 'joint wear']}
 
 
+def sample_shot(rng, target=None, center=0., power=(.25, 1.)):
+    """random_kicks opponent shot. target=None keeps the original uniform aim
+    over the whole goal; otherwise |aim| is drawn from `target` on a random
+    side, except a `center` fraction aimed within ±CENTER_SHOT_Y."""
+    if target is None:
+        aim = float(rng.uniform(-TARGET_Y_LIMIT, TARGET_Y_LIMIT))
+    elif rng.random() < center:
+        aim = float(rng.uniform(-CENTER_SHOT_Y, CENTER_SHOT_Y))
+    else:
+        aim = float(rng.choice((-1., 1.))*rng.uniform(*target))
+    return StrikerAction(aim, int(rng.integers(KICK_LEFT, KICK_RIGHT+1)), float(rng.uniform(*power)), 1.)
+
+
+def _check_range(value, low, high, label):
+    if (len(value) != 2 or not all(math.isfinite(v) for v in value)
+            or not low <= value[0] <= value[1] <= high):
+        raise ValueError('%s debe ser (min, max) dentro de [%g, %g]' % (label, low, high))
+    return tuple(float(v) for v in value)
+
+
 class BHumanWorld:
     control_dt = .1
 
     def __init__(self, role, opponent='scripted', seed=0, record_dir=None, simulator_factory=None,
-                 kick_parameters=None):
+                 kick_parameters=None, ball_jitter=0., start_jitter=(0., 0.), shot_target=None,
+                 center_shots=0., shot_power=(.25, 1.)):
+        """ball_jitter: ± metres around the penalty mark per episode.
+        start_jitter: (± metres, ± rad) per robot from the nominal start pose.
+        shot_target/center_shots/shot_power: random_kicks distribution (sample_shot)."""
         allowed = STRIKER_OPPONENTS if role == 'striker' else KEEPER_OPPONENTS
         if role not in ('striker', 'keeper') or opponent not in allowed:
             raise ValueError('combinación rol/oponente no soportada por B-Human: %s/%s' % (role, opponent))
+        self.ball_jitter = float(ball_jitter)
+        if not 0 <= self.ball_jitter <= MAX_BALL_JITTER:
+            raise ValueError('ball_jitter debe estar en [0, %g] m' % MAX_BALL_JITTER)
+        self.start_jitter = tuple(float(v) for v in start_jitter)
+        if (len(self.start_jitter) != 2 or not all(0 <= v <= limit for v, limit in
+                                                    zip(self.start_jitter, MAX_START_JITTER))):
+            raise ValueError('start_jitter debe ser (m <= %g, rad <= %g)' % MAX_START_JITTER)
+        self.shot_target = (None if shot_target is None else
+                            _check_range(shot_target, 0., TARGET_Y_LIMIT, 'shot_target'))
+        self.center_shots = float(center_shots)
+        if not 0 <= self.center_shots <= 1:
+            raise ValueError('center_shots debe estar en [0, 1]')
+        self.shot_power = _check_range(shot_power, 0., 1., 'shot_power')
         self.role, self.opponent = role, opponent
         self.other = 'keeper' if role == 'striker' else 'striker'
         self.base_seed = seed
@@ -59,7 +99,8 @@ class BHumanWorld:
                 sim = PhysicalSimulator(seed=self.base_seed)
             else:
                 sim = self.simulator_factory()
-            self.session = SimulationSession(sim, record_dir=self.record_dir, mode='penalty')
+            self.session = SimulationSession(sim, record_dir=self.record_dir, mode='penalty',
+                                             publish_ticks=False)
         return self.session
 
     @property
@@ -78,14 +119,34 @@ class BHumanWorld:
                 pass
             session.sim.close()
 
+    def _layout(self, rng, options):
+        """Ball position and robot start offsets; no draws without jitter."""
+        if 'ball_xy' in options:
+            ball_xy = options['ball_xy']
+        elif self.ball_jitter:
+            jitter = self.ball_jitter
+            ball_xy = (geometry.PENALTY_MARK[0] + rng.uniform(-jitter, jitter),
+                       geometry.PENALTY_MARK[1] + rng.uniform(-jitter, jitter))
+        else:
+            ball_xy = geometry.PENALTY_MARK
+        offsets = None
+        if any(self.start_jitter):
+            distance, yaw = self.start_jitter
+            offsets = {role: (float(rng.uniform(-distance, distance)), float(rng.uniform(-distance, distance)),
+                              float(rng.uniform(-yaw, yaw))) for role in ('striker', 'keeper')}
+        return ball_xy, offsets
+
     def reset(self, rng, options):
-        ball_xy = tuple(float(v) for v in options.get('ball_xy', geometry.PENALTY_MARK))
+        ball_xy, offsets = self._layout(rng, options)
+        ball_xy = tuple(float(v) for v in ball_xy)
         if len(ball_xy) != 2 or not all(math.isfinite(v) and abs(v) <= 1.2 for v in ball_xy):
             raise ValueError('ball_xy debe contener dos coordenadas finitas dentro de la cancha')
         session = self._ensure_session()
         sim = session.sim
         sim.seed = int(options.get('engine_seed', rng.integers(0, 2**31-1)))
         sim.ball_xy = ball_xy
+        if offsets is not None:
+            sim.start_offsets = offsets
         self.builder.reset()
         self.kick_time = self.contact_time = self.commit_time = None
         self.max_ball_speed = 0.
@@ -105,7 +166,8 @@ class BHumanWorld:
             # Never reuse a half-started session: collect both engines.
             self.close()
             raise
-        info = dict(INFO, opponent=self.opponent, engine_seed=sim.seed, trial=session.trial)
+        info = dict(INFO, opponent=self.opponent, engine_seed=sim.seed, trial=session.trial,
+                    ball_xy=list(ball_xy), start_offsets=offsets)
         if self.role == 'keeper' and self.opponent == 'random_kicks':
             info['opponent_shot'] = dict(self.opponent_shot)
         return self._observe(), info
@@ -122,9 +184,7 @@ class BHumanWorld:
         session.controllers['keeper'] = self.keeper
         if self.opponent == 'random_kicks':
             # Parameterized B-Human kicks: random aim, foot and reach.
-            shot = StrikerAction(float(rng.uniform(-TARGET_Y_LIMIT, TARGET_Y_LIMIT)),
-                                 int(rng.integers(KICK_LEFT, KICK_RIGHT+1)),
-                                 float(rng.uniform(.25, 1.)), 1.)
+            shot = sample_shot(rng, self.shot_target, self.center_shots, self.shot_power)
             shot = options.get('opponent_shot', shot)
             self.opponent_shot = {'target_y': shot.target_y, 'kick_side': shot.kick_side,
                                   'kick_power': shot.kick_power}

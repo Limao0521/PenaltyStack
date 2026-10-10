@@ -14,13 +14,15 @@ from penalty.motion_contract import CYCLE_S, ROOT, SOURCE_COMMIT
 
 
 class SimulationSession:
-    def __init__(self, simulator=None, record_dir=ROOT/'runs', mode='penalty'):
+    def __init__(self, simulator=None, record_dir=ROOT/'runs', mode='penalty', publish_ticks=True):
         if simulator is None:
             from penalty.physical_sim import PhysicalSimulator
             simulator = PhysicalSimulator()
         self.sim = simulator
         self.record_dir = Path(record_dir) if record_dir is not None else None
         self.mode = mode
+        # Headless callers that never read snapshot() skip the per-tick copy.
+        self.publish_ticks = publish_ticks
         self.role = 'striker'
         self.speed = 1.0
         self.state = 'PREPARED'
@@ -337,8 +339,9 @@ class SimulationSession:
                 and output.get('motion_info',{}).get('keyframe')=='keeperJumpLeft'):
                 self._jump_started[role] = True
         self._kick_done |= bool(self.sim.outputs[self.role if self.mode=='manual' else 'striker'].get('kick_completed'))
-        self._write({'type':'FRAME','trial':self.trial,'state':active,
-                     'penalty_time_s':self.penalty_time,'requests':requests,'world':self.sim.trace()})
+        if self._stream is not None:
+            self._write({'type':'FRAME','trial':self.trial,'state':active,
+                         'penalty_time_s':self.penalty_time,'requests':requests,'world':self.sim.trace()})
         if active == 'SETTLING':
             self._stable_for = self._stable_for+self.sim.dt if self.sim.stable() else 0.
             if self.sim.data.time >= 2. and self._stable_for >= .5:
@@ -359,7 +362,8 @@ class SimulationSession:
             for controller in self.controllers.values():
                 controller.update(Observation(28.,start=True))
             self._finish()
-        self._publish()
+        if self.publish_ticks or self.state not in ('SETTLING','RUNNING'):
+            self._publish()
 
     def run(self, realtime=True):
         """Background loop; GUI never waits for a native response."""

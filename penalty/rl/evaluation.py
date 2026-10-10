@@ -6,14 +6,21 @@ from penalty.rl.metrics import summarize
 
 
 def make_env(role, backend='synthetic', opponent=None, backend_options=None, reward_id=None):
+    """backend_options['perception_noise']: True or PerceptionNoiseWrapper kwargs;
+    the rest goes to the world."""
     if role == 'striker':
         from penalty.rl.striker_env import PenaltyStrikerEnv as Env
     elif role == 'keeper':
         from penalty.rl.keeper_env import PenaltyKeeperEnv as Env
     else:
         raise ValueError('rol desconocido')
-    return Env(backend=backend, opponent=opponent, reward_id=reward_id,
-               backend_options=backend_options)
+    options = dict(backend_options or {})
+    noise = options.pop('perception_noise', None)
+    env = Env(backend=backend, opponent=opponent, reward_id=reward_id, backend_options=options)
+    if noise:
+        from penalty.rl.wrappers import PerceptionNoiseWrapper
+        env = PerceptionNoiseWrapper(env, **(noise if isinstance(noise, dict) else {}))
+    return env
 
 
 def rollout(env, policy, seed, options=None):

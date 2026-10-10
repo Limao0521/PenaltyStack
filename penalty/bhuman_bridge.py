@@ -1,5 +1,6 @@
 """Bounded local pipes to one original B-Human C++ runtime per robot."""
 from collections import deque
+import io
 import json
 import math
 import os
@@ -42,6 +43,7 @@ class BHumanBridge:
         self._closed = False
         self._last_sequence = -1
         self._last_time = None
+        self._submitted = None
         if command is None:
             exe = executable or executable_path()
             if not exe.is_file():
@@ -51,6 +53,8 @@ class BHumanBridge:
         flags = subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
         self.process = subprocess.Popen(command,cwd=str(ROOT),stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,stderr=subprocess.PIPE,bufsize=0,creationflags=flags)
+        # readline() on the raw pipe issues one read per byte; buffer it.
+        self._stdout = io.BufferedReader(self.process.stdout, buffer_size=2*MAX_FRAME)
         self._reader = threading.Thread(target=self._read_stdout,daemon=True)
         self._err_reader = threading.Thread(target=self._read_stderr,daemon=True)
         self._writer = threading.Thread(target=self._write_stdin,daemon=True)
@@ -77,7 +81,7 @@ class BHumanBridge:
     def _read_stdout(self):
         try:
             while True:
-                raw = self.process.stdout.readline(MAX_FRAME+1)
+                raw = self._stdout.readline(MAX_FRAME+1)
                 if not raw:
                     self._failure = 'El motor cerró su canal de salida'
                     return
@@ -137,6 +141,14 @@ class BHumanBridge:
         return message
 
     def step(self, sensors, request, sequence, time_ms):
+        self.submit(sensors, request, sequence, time_ms)
+        return self.collect()
+
+    def submit(self, sensors, request, sequence, time_ms):
+        """Send one STEP; collect() returns its OUTPUT. Splitting them lets
+        both robots' engines compute the same cycle concurrently."""
+        if self._submitted is not None:
+            raise RuntimeError('STEP anterior sin recoger')
         if type(sequence) is not int or sequence!=self._last_sequence+1:
             raise RuntimeError('secuencia de entrada inválida')
         if type(time_ms) is not int or time_ms<0 or (self._last_time is not None and time_ms-self._last_time!=12):
@@ -148,6 +160,12 @@ class BHumanBridge:
             raise RuntimeError('petición de movimiento inválida')
         self._send({'type':'STEP','trial':self.trial,'sequence':sequence,
                     'time_ms':time_ms,'sensors':sensors,'request':request})
+        self._submitted = (sequence, time_ms)
+
+    def collect(self):
+        if self._submitted is None:
+            raise RuntimeError('no hay STEP pendiente')
+        sequence, time_ms = self._submitted
         output = self._read('OUTPUT')
         if (output.get('trial')!=self.trial or type(output.get('sequence')) is not int or
                 output['sequence']!=sequence):
@@ -160,6 +178,7 @@ class BHumanBridge:
         if type(output.get('busy')) is not bool or type(output.get('kick_completed')) is not bool:
             raise RuntimeError('estado motriz inválido')
         self._last_sequence,self._last_time = sequence,time_ms
+        self._submitted = None
         return output
 
     def close(self):

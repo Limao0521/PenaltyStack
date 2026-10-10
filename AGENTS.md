@@ -23,7 +23,7 @@
 - `python -m unittest tests.test_sim_acceptance tests.test_sim_gui -v`
 - `python -m unittest tests.test_rl_contracts tests.test_rl_envs tests.test_rl_bhuman -v`
 - `python tools/evaluate_rl.py --role keeper --policy geometric --episodes 100 --seeds 0 1 2 3 4`
-- `python tools/train_rl.py --hours 10 --workers 8` (PPO nocturno; `--output <dir> --resume` para continuar)
+- `python tools/train_rl.py --hours 48 --workers 30` (PPO hasta convergencia, `--hours` es tope; B-Human con recolección asíncrona; supervisado con reinicio; `--output <dir> --resume` para continuar)
 - `python deploy/package.py --profile profiles/striker.example.json --output dist/striker.tar.gz`
 
 ## Restricciones
