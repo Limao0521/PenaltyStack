@@ -1,5 +1,14 @@
 # Estado operativo — 2026-10-10
 
+## Actualización: orientación visual y sensores propios
+
+- Rama `codex/mejora-portero`. Nueva ruta `keeper_sensor_camera_v2`: B-Human aporta cajas originales; `nao_visual_yaw_v1` compara RGB con 2294 referencias NAO para estimar yaw corporal. Referencias/manifest/posturas reproducibles en `models/vision/nao_yaw_v1`. Dominio simulado únicamente, no modelo de hardware.
+- `sim_sensors.py`: lee jointpos, gyro, accelerometer y FSR propios; integra gyro/gravedad, odometría de apoyo y FK local para cámaras. No consulta poses globales del robot/rival/cámara en percepción. El motor nativo conserva el perfil propio ideal `mujoco-truth-v2`. Sensores ideales, aproximaciones/drift y reloj de inferencia quedan explícitos.
+- Cabeza encuadra balón y cuerpo antes del tiro; vuelve al balón entrante/cercano. Nuevo estado v2 y RL v3 (32 campos); contratos y políticas publicados anteriores intactos. `vision_keeper_v3` acepta postura reciente de baja incertidumbre sólo en frontera de guardia; dos capturas de balón siguen confirmando; primera guardia no se cambia.
+- Probe: 12 giros/144 capturas, 108 válidas, error mediano 1.14°, p95 3.41°, cero frente/espalda. 24 duelos/ocho estilos: 1533/1989 válidas, mediana 1.66°, p95 5.12°, cero frente/espalda/errores/compromisos tempranos. V3 y v2 5/8 atajadas, FSM base 2/8; postura no cambió decisiones en esta muestra. No afirmar mejora de atajadas por orientación.
+- Comando: `.venv/Scripts/python.exe tools/watch_keeper_orientation.py --style v2 --seed 68003 --output runs/keeper_sensor_camera` (opcional `--live`). Reproducción exacta 71/71 decisiones; visor no probado manualmente. Comparación `tools/evaluate_keeper_vision.py --opponent-detector bhuman --orientation visual`. Suite final: 183 pruebas pasan. Informe `docs/ORIENTACION_PORTERO.md`, trazas/resultados `docs/validation/vision/orientation_20261010`.
+- NAOqi permanece sólo observación con yaw desconocido. Siguiente hardware: datos/calibración/camisetas/iluminación reales y runtime Linux; no habilitar movimientos. Los 559 originales, 19 originales de detector y RSI3 preservados.
+
 ## Actualización: percepción del rival
 
 - Rama `codex/mejora-portero`. Detector B-Human activo en proceso local de imágenes: red ONNX superior y contraste/clustering inferior, cuerpos originales compilados. Misma revisión fijada que movimientos; 19 originales/pesos/licencias importados aparte en `heritage/bhuman_robot_perception`, hashes verificados. Los 559 originales y RSI3 intactos.

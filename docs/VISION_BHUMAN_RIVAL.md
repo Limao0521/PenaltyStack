@@ -1,5 +1,11 @@
 # Percepción B-Human del rival
 
+**Actualización:** la ruta nueva de simulación ya estima orientación corporal
+desde RGB y reconstruye cámara/odometría con encoders, IMU y FSR propios.
+Ver [ORIENTACION_PORTERO.md](ORIENTACION_PORTERO.md). El detector original
+B-Human sigue entregando cajas; esta extensión visual es propia. El informe
+v1 de abajo y el observador NAOqi conservan sus resultados y yaw desconocido.
+
 2026-10-10. **Detector activado y conectado a las observaciones del portero.**
 Se ejecuta en un proceso local de imágenes, con la misma revisión original
 `2360ab1100ad28f70e190c893f6b095651ff0bbc` que el motor de movimientos.

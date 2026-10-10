@@ -1,5 +1,10 @@
 # Portero robusto frente a distintos estilos
 
+La orientación visual del tirador ya se implementó en una ruta nueva de
+simulación con encoders/IMU/FSR propios. Detalle y límites en
+[ORIENTACION_PORTERO.md](ORIENTACION_PORTERO.md). Los resultados y la política
+`robust` de este documento permanecen como experimentos anteriores.
+
 2026-10-10. Continuación de [MEJORA_DE_PORTERO.md](MEJORA_DE_PORTERO.md) en
 `codex/mejora-portero`. Objetivo: mejorar el rendimiento equilibrado entre
 estilos y el peor estilo, con evaluación reservada en B-Human/MuJoCo.

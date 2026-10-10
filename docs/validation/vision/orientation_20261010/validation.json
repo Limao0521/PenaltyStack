@@ -1,0 +1,66 @@
+{
+  "validation": "keeper_orientation_integration_v1",
+  "date": "2026-10-10",
+  "branch": "codex/mejora-portero",
+  "published_parent": "0c10de5e4dcf99f1357fd324f920ea61da13740a",
+  "environment": "Windows, Python 3.11.9, MuJoCo 3.3.7; native B-Human motion + vision Windows hosts",
+  "full_suite": {
+    "tests": 183,
+    "wall_s": 67.778,
+    "result": "passed"
+  },
+  "replay": {
+    "frames": 71,
+    "matched_actions_and_decisions": 71,
+    "hardware_actuation": false
+  },
+  "originals": {
+    "motion_files_verified": 559,
+    "vision_files_verified": 19,
+    "rsi3_sha256": "73f8c9a78b35fbdd18e6e407193924b2d1996812ff78cd405377cc57b0981369"
+  },
+  "orientation": {
+    "version": "nao_visual_yaw_v1",
+    "templates": 2294,
+    "sha256": "6488f32193e0fff8ab05b65c7eafe908668b1dc6a422fb42d76667b10f05ca64",
+    "domain": "simulated NAO V6 RGB only; no physical camera validation"
+  },
+  "sensors": {
+    "perception": "MuJoCo jointpos, gyro, accelerometer, contact-derived FSR; encoder FK, relative gyro/gravity attitude and support odometry",
+    "limitations": "ideal measurements, nominal geometry, gravity/stance/slip assumptions; wall inference does not delay simulated physics",
+    "native_motion": "unchanged mujoco-truth-v2 profile: ideal own torso orientation and original low-level controller inputs"
+  },
+  "hardware_tested": false,
+  "live_viewer_tested_manually": false,
+  "competitive_gain_from_orientation_established": false,
+  "source_sha256": {
+    "penalty/physical_sim.py": "b2f15a31fc1d6083028b45062f1045c13ac4fbaf3bef69c0b964dfe2ea341879",
+    "penalty/opponent_orientation.py": "7aefa3fc69b27753caad091b08c8cbf964ff6734c08794900d9851bdfbaf8258",
+    "penalty/sim_sensors.py": "229214b9afacd50eac9deb983618fd1c5cd616cd6c7ce445f53b2f9328ee0fed",
+    "penalty/sim_orientation.py": "2586a767f06ae6f683d36e4f99251ff68f28cfd6ac71cd487c72bdc84d191cbb",
+    "penalty/keeper_pose_vision.py": "9838f983009a09356769734e0ee46a9703f0e191086588af72de3cf2a8d057a3",
+    "penalty/rl/orientation_contracts.py": "d684579ab16d30ced698698ffff3fd8f496beb7cea4a179f2961ba784399d3e8",
+    "penalty/rl/orientation_benchmark.py": "2a096aeb65b45c875e2d774fa312f72ac4381bcb9066bef5cf4b09bb7ffb333d",
+    "tools/build_orientation_templates.py": "676fe390bb46ff0e1b41cc679d6ae8fa7229ec028fbf4e3d941f00a61420c875",
+    "tools/collect_orientation_poses.py": "9c476244a480a40a6c80000f1dac89ddc14ed4ca05bb778d4efe7e22d4f038a8",
+    "tools/validate_keeper_orientation.py": "19c06ee60623c6afb7c64da12ebe1417fe46deea171edbdbb79cab75407f8d34",
+    "tools/watch_keeper_orientation.py": "7ce625ea7472129fda70fcdf60f2ab230577c2117cc54e7cbd35cdfd33a3054e",
+    "tools/evaluate_keeper_vision.py": "de87e65bddbea167942d51851802b4c74b83bacf9df53eeb123dfd87b44c77b2",
+    "tests/test_keeper_orientation.py": "059a92e0edbcea1721ec5832f2ec8ae4bfd8bc2d556867e3e56445284392a4ac",
+    "models/vision/nao_yaw_v1/manifest.json": "a108fc0d807fa0792a637669319fcaa40bf86a15c176cde0df746cdec9c66495",
+    "models/vision/nao_yaw_v1/reference_poses.json": "2963ce3f876980b2af258f0846fbf78b630c2f417bd41b886560ab7301de57fa",
+    "models/vision/nao_yaw_v1/templates.npz": "6488f32193e0fff8ab05b65c7eafe908668b1dc6a422fb42d76667b10f05ca64"
+  },
+  "artifacts_sha256": {
+    "angular_trace.jsonl": "a5dcd34a1bac659be5159dbfc1df6159bdcd0fe57ee302db0e19931840f79b70",
+    "camera.png": "5821b8ed827333aad427c813cb23c175fcafaa3edaf52908616bd3aa8401513c",
+    "camera_+003.png": "08b5d5c697a021b54f895955b75b70e30bae17cf816b885e916dce60a96c3bb7",
+    "camera_-087.png": "c26847f67b568feba45c49da51f48f677404c30510249150e666269ffe206741",
+    "camera_-177.png": "5fcb05b946db1b57ae7543f400a5f8928931f4a1477c025358e50dfadf2c378d",
+    "episode.json": "fcf60a8308078afa1662e0493e0f278cc051b3c0a4aabdf7957c015ad4fb46f1",
+    "episode_trace.jsonl": "80977fb302a8191d6f9aae286e18e83dc7a7e9d9bed30c89910a296dbdca0e64",
+    "probe.json": "bb668efc18043dbe839bc8defbbd0261095d3624f1fb3cfd42cc89aa8b5a87d5",
+    "README.md": "cc38df0427ca987f47b85a39a68f3eeb46651574a89322a9742c3fa22d819bc5",
+    "simulation_smoke.json": "73fad6afc7507cbad14d2407de646341b68e15aceb5e6bcc128eb3eebb6d0edf"
+  }
+}

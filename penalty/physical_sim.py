@@ -127,13 +127,13 @@ class SensorAdapter:
 class PhysicalSimulator:
     dt = CYCLE_S
 
-    def __init__(self, bridge_factory=None, seed=0, ball_xy=(0.1, 0.0)):
+    def __init__(self, bridge_factory=None, seed=0, ball_xy=(0.1, 0.0), model_factory=None):
         if (len(ball_xy) != 2 or not all(math.isfinite(v) for v in ball_xy) or
                 abs(ball_xy[0]) > 1.2 or abs(ball_xy[1]) > 1.2):
             raise ValueError('ball_xy debe contener dos coordenadas finitas dentro de la cancha')
         if type(seed) is not int or not 0 <= seed <= 2**32-1:
             raise ValueError('seed debe ser un entero entre 0 y 2**32-1')
-        self.model = load_model(mocap=False)
+        self.model = (model_factory or load_model)(mocap=False)
         self.model.opt.integrator = mujoco.mjtIntegrator.mjINT_IMPLICITFAST
         self.model.opt.iterations = 100
         self.data = mujoco.MjData(self.model)

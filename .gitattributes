@@ -20,3 +20,16 @@ penalty/nao_opponent_vision.py text eol=lf
 tools/build_robot_perception.py text eol=lf
 tests/test_robot_perception.py text eol=lf
 deploy/package.py text eol=lf
+
+models/vision/**/*.npz -text -diff
+models/vision/**/*.json text eol=lf
+penalty/physical_sim.py text eol=lf
+penalty/opponent_orientation.py text eol=lf
+penalty/sim_sensors.py text eol=lf
+penalty/sim_orientation.py text eol=lf
+penalty/keeper_pose_vision.py text eol=lf
+penalty/rl/orientation_*.py text eol=lf
+tools/*orientation*.py text eol=lf
+tools/evaluate_keeper_vision.py text eol=lf
+tests/test_keeper_orientation.py text eol=lf
+docs/validation/vision/orientation_20261010/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

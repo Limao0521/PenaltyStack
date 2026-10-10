@@ -8,8 +8,9 @@ observación: registra la decisión, sin ejecutar movimientos físicos.
 El detector del rival B-Human ya se ejecuta en un proceso local separado:
 red superior y contraste inferior, con proyección/asociación desde píxeles.
 Detalle, ensayos y límites en [VISION_BHUMAN_RIVAL.md](VISION_BHUMAN_RIVAL.md).
-La orientación corporal del tirador continúa desconocida; esta versión decide
-por la trayectoria del balón y no utiliza el predictor de postura.
+El v2 de este documento decide por la trayectoria del balón. La nueva ruta
+de simulación `keeper_sensor_camera_v2` estima orientación visual y alimenta
+el v3 con sensores propios; ver [ORIENTACION_PORTERO.md](ORIENTACION_PORTERO.md).
 
 ## Qué se integró
 

@@ -1,0 +1,243 @@
+{
+  "validation": "keeper_sensor_orientation_probe_v1",
+  "seed": 68002,
+  "frames_per_layout": 12,
+  "layouts": [
+    {
+      "initial_rival_yaw_deg": -177,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 0.4778457198709951,
+      "yaw_error_p95_deg": 2.685509703376342,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.048805745071109324,
+      "ball_error_p95_m": 0.0568150497891641,
+      "yaw_processing_median_ms": 2.494849992217496,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": -147,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 0.4671465760813087,
+      "yaw_error_p95_deg": 1.7702438494071777,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.047347405100731974,
+      "ball_error_p95_m": 0.05936461719305621,
+      "yaw_processing_median_ms": 2.484800003003329,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": -117,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 0.3522672320395151,
+      "yaw_error_p95_deg": 1.874355429907805,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.047820862926633206,
+      "ball_error_p95_m": 0.05801504251775936,
+      "yaw_processing_median_ms": 2.2587499988730997,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": -87,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 1.085696740782673,
+      "yaw_error_p95_deg": 1.6047576138009563,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04875573563488274,
+      "ball_error_p95_m": 0.06041511184976031,
+      "yaw_processing_median_ms": 2.2389499936252832,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": -57,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 0.6268259486339459,
+      "yaw_error_p95_deg": 2.565427338440042,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04845775603759185,
+      "ball_error_p95_m": 0.05521067898066376,
+      "yaw_processing_median_ms": 2.277850013342686,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": -27,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 1.7754318443775405,
+      "yaw_error_p95_deg": 2.1284403583233353,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04334148835263777,
+      "ball_error_p95_m": 0.057544252429964624,
+      "yaw_processing_median_ms": 2.5147999986074865,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": 3,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 2.1990139610412687,
+      "yaw_error_p95_deg": 3.3767778238775845,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04664870472581003,
+      "ball_error_p95_m": 0.056831689017167744,
+      "yaw_processing_median_ms": 2.4667499819770455,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": 33,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 2.7800979826581003,
+      "yaw_error_p95_deg": 4.463726949096857,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04754605869254683,
+      "ball_error_p95_m": 0.058762141679182485,
+      "yaw_processing_median_ms": 2.525849995436147,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": 63,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 2.8533934724345364,
+      "yaw_error_p95_deg": 5.346628469284272,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04772996508464997,
+      "ball_error_p95_m": 0.05644270251163719,
+      "yaw_processing_median_ms": 2.3350999981630594,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": 93,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 1.7974033829898006,
+      "yaw_error_p95_deg": 1.8483872746206282,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.05112080823821199,
+      "ball_error_p95_m": 0.0590980709180825,
+      "yaw_processing_median_ms": 2.4057500122580677,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": 123,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 0.3980711459887896,
+      "yaw_error_p95_deg": 1.7328956508580804,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04957810503963899,
+      "ball_error_p95_m": 0.0580729631297177,
+      "yaw_processing_median_ms": 2.550449993577786,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    },
+    {
+      "initial_rival_yaw_deg": 153,
+      "frames": 12,
+      "position_valid_frames": 10,
+      "yaw_valid_frames": 9,
+      "yaw_valid_fraction": 0.75,
+      "yaw_error_median_deg": 0.7507612486342243,
+      "yaw_error_p95_deg": 1.123836911575494,
+      "front_back_errors_over_90deg": 0,
+      "ball_error_median_m": 0.04803157167808745,
+      "ball_error_p95_m": 0.05957853023689273,
+      "yaw_processing_median_ms": 2.5474999856669456,
+      "reasons": {
+        "confirming_orientation": 1,
+        "measured_visual_orientation": 9,
+        "opponent_position_missing": 2
+      }
+    }
+  ],
+  "summary": {
+    "frames": 144,
+    "position_valid_frames": 120,
+    "yaw_valid_frames": 108,
+    "yaw_valid_fraction": 0.75,
+    "yaw_error_median_deg": 1.1424778591787097,
+    "yaw_error_p95_deg": 3.412480686049708,
+    "front_back_errors_over_90deg": 0,
+    "ball_error_median_m": 0.04777541400564159,
+    "ball_error_p95_m": 0.05900682876058837,
+    "yaw_processing_median_ms": 2.453949986374937,
+    "reasons": {
+      "confirming_orientation": 12,
+      "measured_visual_orientation": 108,
+      "opponent_position_missing": 24
+    }
+  },
+  "trace_sha256": "a5dcd34a1bac659be5159dbfc1df6159bdcd0fe57ee302db0e19931840f79b70",
+  "sensor_limitations": "ideal simulated encoder/IMU/FSR measurements; FK/attitude/contact odometry estimated; simulation appearance only; no hardware",
+  "privileged_truth": "evaluation_only fields never feed perception or keeper"
+}

@@ -1,5 +1,10 @@
 # Simulación interactiva de penales
 
+El portero con **orientación visual y sensores propios** se ejecuta mediante
+`tools/watch_keeper_orientation.py`; la opción `--live` abre el visor.
+La ruta obtiene RGB, encoders, IMU y apoyo de los pies del mismo simulador.
+Comandos, validación y límites en [ORIENTACION_PORTERO.md](ORIENTACION_PORTERO.md).
+
 ## Abrir en este equipo
 
 ```powershell
