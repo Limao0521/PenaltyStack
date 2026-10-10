@@ -1,0 +1,62 @@
+{
+  "metadata": {
+    "role": "striker",
+    "policy": "random",
+    "backend": "bhuman",
+    "opponent": null,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "episodes_per_seed": 72,
+    "model": null,
+    "commit": "9682fe0120b84bef9c18e783f90403140f1e4d01",
+    "dirty": false,
+    "bhuman_source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+    "versions": {
+      "observation": "rl_obs_v1",
+      "striker_action": "striker_action_v1",
+      "keeper_action": "keeper_action_v1"
+    },
+    "hashes": {
+      "penalty/rl/contracts.py": "4586713716032729d76b4b50ef5e03043f2587ee98a67e77177f22de631ce258",
+      "penalty/rl/rewards.py": "4e350afceae61fcb0bde65bf1a9e9eb5e680b849f5cefed13f31f4e854ab18bc",
+      "penalty/rl/synthetic.py": "a916a811119aa68c00ff7600d3c6640ae37cf54c76af541dca3a0983b08b870a",
+      "penalty/rl/bhuman_world.py": "40f28c4aa59eb5764bfd9506cf244c89cddafb98724567c5edd8b9ff0ebcff37",
+      "penalty/rl/observation.py": "1d4a4ebcc0166c28587c9d858017fd2b135ae26921419ea165d63bb9629d5a37",
+      "penalty/control.py": "61f3c57077aca365f7f418ac9c40232ad7548f8c5589402f19624a4eb5d85259",
+      "penalty/physical_sim.py": "7124beb0c91236b11ccf83e4c7396329a52a46b517fecbf1a7c9cce7c4b0dbb0",
+      "penalty/sim_session.py": "7b62b9d11934067a9c49e35de6ecfcca9ab1f0263f8cac3d5292551d4d308920",
+      "sim/scene.xml": "40380f2f228408094041e190860fcbb1e635114b2b3a041cb393520367ec3ff3",
+      "baseline/motion_manifest.json": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "throughput": [
+    {
+      "workers": 8,
+      "wall_s": 63.6091907,
+      "episodes": 72,
+      "episodes_per_s": 1.1319119015296637,
+      "decisions_per_s": 22.653959029225632
+    },
+    {
+      "workers": 16,
+      "wall_s": 49.672919399999955,
+      "episodes": 72,
+      "episodes_per_s": 1.4494819485081456,
+      "decisions_per_s": 29.00977066389219
+    },
+    {
+      "workers": 24,
+      "wall_s": 42.771491699999956,
+      "episodes": 72,
+      "episodes_per_s": 1.6833642489022675,
+      "decisions_per_s": 33.69066503705788
+    }
+  ]
+}

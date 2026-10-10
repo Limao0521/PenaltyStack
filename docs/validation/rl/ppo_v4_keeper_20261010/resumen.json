@@ -1,0 +1,12 @@
+{
+  "nombre": "ppo_v4_keeper_20261010",
+  "codigo": "commit 132c55c + cambios sin commit del 2026-10-10 (commit_after_shot, KEEPER_TIMING, min_std)",
+  "condiciones": "solo portero; sintético con tiros a los 3-9 s y filtro commit_after_shot; B-Human contra patadas a las esquinas con variación, ruido y filtro; std entre 0.2 y 0.5",
+  "politica": "run/keeper/latest — mejor portero entrenado, pero por debajo de la regla fija de guardia central",
+  "evaluacion_100_episodios": {
+    "entrenado": {"save_rate": 0.37, "ci95": [0.28, 0.47], "goal_rate": 0.61, "any_fall_rate": 0.87, "wrong_side_rate": 0.67},
+    "geometric": {"save_rate": 0.18, "ci95": [0.12, 0.27], "goal_rate": 0.81, "any_fall_rate": 0.0},
+    "center_tras_la_patada": {"save_rate": 0.55, "ci95": [0.45, 0.64], "goal_rate": 0.43, "any_fall_rate": 0.0}
+  },
+  "lectura": "Ya no cae antes del tiro (ppo_v2: 0.13) y duplica al geométrico, pero se lanza de lado casi siempre y elige mal el lado 2 de cada 3 veces; en esta simulación la guardia central tras la patada ataja más."
+}

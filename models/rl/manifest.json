@@ -1,0 +1,69 @@
+{
+  "striker_v1": {
+    "rol": "striker",
+    "corrida": "ppo_v1_20261009",
+    "etapa": "striker_bhuman_scripted",
+    "timesteps": 5485463,
+    "historia": 1,
+    "commit_after_shot": false,
+    "estado": "anterior: un solo tiro (siempre a su derecha), sin ruido",
+    "evaluacion": {
+      "duelo_vs_portero_fsm_sin_ruido": 0.92,
+      "duelo_vs_portero_fsm_realista": 0.75
+    }
+  },
+  "keeper_v1": {
+    "rol": "keeper",
+    "corrida": "ppo_v1_20261009",
+    "etapa": "keeper_bhuman_random_kicks",
+    "timesteps": 5092646,
+    "historia": 6,
+    "commit_after_shot": false,
+    "estado": "anterior: guardia central antes del tiro; se derrumba con ruido",
+    "evaluacion": {
+      "save_rate_5x100_patadas_uniformes_sin_ruido": 0.778,
+      "save_rate_patadas_esquinas_realista": 0.09
+    }
+  },
+  "striker_v2": {
+    "rol": "striker",
+    "corrida": "ppo_v2_20261010",
+    "etapa": "striker_bhuman_scripted",
+    "timesteps": 6052886,
+    "historia": 1,
+    "commit_after_shot": false,
+    "estado": "recomendado",
+    "evaluacion": {
+      "goal_rate_vs_estatico_realista": 0.97,
+      "goal_rate_vs_portero_fsm_realista": 0.96,
+      "duelo_vs_portero_fsm_sin_ruido": 0.94,
+      "duelo_vs_portero_fsm_realista": 0.915
+    }
+  },
+  "keeper_v2": {
+    "rol": "keeper",
+    "corrida": "ppo_v2_20261010",
+    "etapa": "keeper_bhuman_random_kicks",
+    "timesteps": 5009199,
+    "historia": 6,
+    "commit_after_shot": false,
+    "estado": "no usar: se lanza antes del tiro y cae",
+    "evaluacion": {
+      "save_rate_patadas_esquinas_realista": 0.13
+    }
+  },
+  "keeper_v4": {
+    "rol": "keeper",
+    "corrida": "ppo_v4_keeper_20261010",
+    "etapa": "keeper_bhuman_random_kicks",
+    "timesteps": 5554271,
+    "historia": 6,
+    "commit_after_shot": true,
+    "estado": "mejor portero entrenado; por debajo de la guardia central fija",
+    "evaluacion": {
+      "save_rate_patadas_esquinas_realista": 0.37,
+      "geometric": 0.18,
+      "center_tras_la_patada": 0.55
+    }
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "completed": [
+    "keeper_synth_easy"
+  ],
+  "elapsed": {
+    "keeper_synth_easy": 243.34400000001187
+  },
+  "reports": {
+    "keeper_synth_easy": {
+      "trained": {
+        "episodes": 500,
+        "rates": {
+          "save_rate": 0.204,
+          "goal_rate": 0.152,
+          "out_rate": 0.0,
+          "keeper_fall_rate": 0.644,
+          "sim_error_rate": 0.0,
+          "timeout_rate": 0.0,
+          "any_fall_rate": 0.8,
+          "wrong_side_rate": 0.612,
+          "early_dive_rate": 0.824,
+          "contact_rate": 0.204,
+          "fallen_rate": 0.8
+        },
+        "counts": {
+          "save": 102,
+          "goal": 76,
+          "out": 0,
+          "keeper_fall": 322,
+          "sim_error": 0,
+          "timeout": 0
+        },
+        "ci95": {
+          "save_rate": [
+            0.17099770962966332,
+            0.24151606454063146
+          ],
+          "goal_rate": [
+            0.12319191165756974,
+            0.186114822839939
+          ],
+          "out_rate": [
+            0.0,
+            0.007624618530903363
+          ],
+          "keeper_fall_rate": [
+            0.6010779467373235,
+            0.6847261631257764
+          ],
+          "sim_error_rate": [
+            0.0,
+            0.007624618530903363
+          ],
+          "timeout_rate": [
+            0.0,
+            0.007624618530903363
+          ]
+        },
+        "secondary": {
+          "reaction_time": {
+            "mean": 0.23453180928154096,
+            "std": 0.1493576225038098,
+            "n": 88
+          }
+        },
+        "mean_return": {
+          "mean": -4.731520000000001,
+          "std": 8.825308611578407,
+          "n": 500
+        },
+        "mean_steps": {
+          "mean": 46.476,
+          "std": 14.80423669089359,
+          "n": 500
+        }
+      },
+      "baseline": {
+        "episodes": 500,
+        "rates": {
+          "save_rate": 0.98,
+          "goal_rate": 0.018,
+          "out_rate": 0.002,
+          "keeper_fall_rate": 0.0,
+          "sim_error_rate": 0.0,
+          "timeout_rate": 0.0,
+          "any_fall_rate": 0.65,
+          "wrong_side_rate": 0.08,
+          "early_dive_rate": 0.0,
+          "contact_rate": 0.98,
+          "fallen_rate": 0.65
+        },
+        "counts": {
+          "save": 490,
+          "goal": 9,
+          "out": 1,
+          "keeper_fall": 0,
+          "sim_error": 0,
+          "timeout": 0
+        },
+        "ci95": {
+          "save_rate": [
+            0.9635794314459021,
+            0.9891009347644306
+          ],
+          "goal_rate": [
+            0.009498085051756854,
+            0.03385204721203399
+          ],
+          "out_rate": [
+            0.000353127309584542,
+            0.011240992747195207
+          ],
+          "keeper_fall_rate": [
+            0.0,
+            0.007624618530903363
+          ],
+          "sim_error_rate": [
+            0.0,
+            0.007624618530903363
+          ],
+          "timeout_rate": [
+            0.0,
+            0.007624618530903363
+          ]
+        },
+        "secondary": {
+          "reaction_time": {
+            "mean": 0.20064738200192658,
+            "std": 0.10705822317483021,
+            "n": 500
+          }
+        },
+        "mean_return": {
+          "mean": 12.122,
+          "std": 3.720787121026947,
+          "n": 500
+        },
+        "mean_steps": {
+          "mean": 67.4,
+          "std": 17.558245926059925,
+          "n": 500
+        }
+      },
+      "baseline_policy": "geometric",
+      "other_baselines": {
+        "center": {
+          "episodes": 500,
+          "rates": {
+            "save_rate": 0.462,
+            "goal_rate": 0.536,
+            "out_rate": 0.002,
+            "keeper_fall_rate": 0.0,
+            "sim_error_rate": 0.0,
+            "timeout_rate": 0.0,
+            "any_fall_rate": 0.0,
+            "wrong_side_rate": 0.622,
+            "early_dive_rate": 1.0,
+            "contact_rate": 0.462,
+            "fallen_rate": 0.0
+          },
+          "counts": {
+            "save": 231,
+            "goal": 268,
+            "out": 1,
+            "keeper_fall": 0,
+            "sim_error": 0,
+            "timeout": 0
+          },
+          "ci95": {
+            "save_rate": [
+              0.41875551183784954,
+              0.5058239591704992
+            ],
+            "goal_rate": [
+              0.4921784303653343,
+              0.5792725971004405
+            ],
+            "out_rate": [
+              0.000353127309584542,
+              0.011240992747195207
+            ],
+            "keeper_fall_rate": [
+              0.0,
+              0.007624618530903363
+            ],
+            "sim_error_rate": [
+              0.0,
+              0.007624618530903363
+            ],
+            "timeout_rate": [
+              0.0,
+              0.007624618530903363
+            ]
+          },
+          "secondary": {
+            "reaction_time": null
+          },
+          "mean_return": {
+            "mean": -2.240000000000001,
+            "std": 11.990480424069753,
+            "n": 500
+          },
+          "mean_steps": {
+            "mean": 67.4,
+            "std": 17.558245926059925,
+            "n": 500
+          }
+        }
+      },
+      "gates": {
+        "primary_ge_baseline": false,
+        "falls_le_baseline_plus_5pct": false,
+        "primary_ge_center": false
+      },
+      "training": {
+        "stop": "budget",
+        "restored_best": false,
+        "timesteps": 1503232,
+        "windows": null
+      }
+    }
+  },
+  "metadata": {
+    "seed": 0,
+    "hours": 48.0,
+    "roles": [
+      "keeper"
+    ],
+    "workers": 30,
+    "algorithm": "PPO",
+    "stages": [
+      {
+        "name": "keeper_synth_easy",
+        "role": "keeper",
+        "backend": "synthetic",
+        "opponent": "synthetic",
+        "timesteps": 1500000,
+        "share": 0.0,
+        "backend_options": {
+          "perception_noise": true,
+          "kick_time_range": [
+            3.0,
+            9.0
+          ],
+          "speed_range": [
+            1.5,
+            2.5
+          ],
+          "target_range": [
+            -0.6,
+            0.6
+          ]
+        },
+        "eval_episodes": 500,
+        "window": 1000,
+        "patience": 4,
+        "min_minutes": 60.0,
+        "eval_every": 0
+      },
+      {
+        "name": "keeper_synth_full",
+        "role": "keeper",
+        "backend": "synthetic",
+        "opponent": "synthetic",
+        "timesteps": 3500000,
+        "share": 0.0,
+        "backend_options": {
+          "perception_noise": true,
+          "kick_time_range": [
+            3.0,
+            9.0
+          ]
+        },
+        "eval_episodes": 500,
+        "window": 1000,
+        "patience": 4,
+        "min_minutes": 60.0,
+        "eval_every": 0
+      },
+      {
+        "name": "keeper_bhuman_random_kicks",
+        "role": "keeper",
+        "backend": "bhuman",
+        "opponent": "random_kicks",
+        "timesteps": 0,
+        "share": 1.0,
+        "backend_options": {
+          "perception_noise": true,
+          "ball_jitter": 0.05,
+          "start_jitter": [
+            0.05,
+            0.1
+          ],
+          "shot_target": [
+            0.3,
+            0.65
+          ],
+          "center_shots": 0.25,
+          "shot_power": [
+            0.5,
+            1.0
+          ]
+        },
+        "eval_episodes": 100,
+        "window": 200,
+        "patience": 4,
+        "min_minutes": 60.0,
+        "eval_every": 5
+      }
+    ],
+    "ppo": {
+      "synthetic": {
+        "n_envs": 8,
+        "n_steps": 512,
+        "batch_size": 512,
+        "learning_rate": 0.0003,
+        "ent_coef": 0.01,
+        "target_kl": 0.03
+      },
+      "bhuman": {
+        "rollout": 4096,
+        "batch_size": 256,
+        "learning_rate": 0.0001,
+        "ent_coef": 0.0,
+        "target_kl": 0.03,
+        "min_std": 0.2,
+        "max_std": 0.5
+      }
+    },
+    "commit": "132c55c5e0f2645d7921398b8d6809655d66bf00",
+    "dirty": true,
+    "bhuman_source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+    "versions": {
+      "observation": "rl_obs_v1",
+      "striker_action": "striker_action_v1",
+      "keeper_action": "keeper_action_v1"
+    },
+    "hashes": {
+      "penalty/rl/contracts.py": "4586713716032729d76b4b50ef5e03043f2587ee98a67e77177f22de631ce258",
+      "penalty/rl/rewards.py": "4e350afceae61fcb0bde65bf1a9e9eb5e680b849f5cefed13f31f4e854ab18bc",
+      "penalty/rl/synthetic.py": "a916a811119aa68c00ff7600d3c6640ae37cf54c76af541dca3a0983b08b870a",
+      "penalty/rl/bhuman_world.py": "219997db69c83f61fca45f7e7d3bbaae9e2db9f52e7a3f14f50e35b56fc9a89d",
+      "penalty/rl/observation.py": "1d4a4ebcc0166c28587c9d858017fd2b135ae26921419ea165d63bb9629d5a37",
+      "penalty/control.py": "61f3c57077aca365f7f418ac9c40232ad7548f8c5589402f19624a4eb5d85259",
+      "penalty/physical_sim.py": "ee688f50533245e51128192609c6a8c7c8e16a03435809d654d827e3d6ed2bb0",
+      "penalty/sim_session.py": "d33507c85de0f187529b555994da084870ea13f410a34668cb1f3745df2a35a2",
+      "sim/scene.xml": "40380f2f228408094041e190860fcbb1e635114b2b3a041cb393520367ec3ff3",
+      "baseline/motion_manifest.json": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "started_at": 1791634212.080449
+}

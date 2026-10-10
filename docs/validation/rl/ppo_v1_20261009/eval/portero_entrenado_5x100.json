@@ -1,0 +1,426 @@
+{
+  "metadata": {
+    "role": "keeper",
+    "policy": "runs/train/24h_20261009/keeper/latest",
+    "backend": "bhuman",
+    "opponent": "random_kicks",
+    "seeds": [
+      20000,
+      20001,
+      20002,
+      20003,
+      20004
+    ],
+    "episodes_per_seed": 100,
+    "model": null,
+    "commit": "9682fe0120b84bef9c18e783f90403140f1e4d01",
+    "dirty": true,
+    "bhuman_source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+    "versions": {
+      "observation": "rl_obs_v1",
+      "striker_action": "striker_action_v1",
+      "keeper_action": "keeper_action_v1"
+    },
+    "hashes": {
+      "penalty/rl/contracts.py": "4586713716032729d76b4b50ef5e03043f2587ee98a67e77177f22de631ce258",
+      "penalty/rl/rewards.py": "4e350afceae61fcb0bde65bf1a9e9eb5e680b849f5cefed13f31f4e854ab18bc",
+      "penalty/rl/synthetic.py": "a916a811119aa68c00ff7600d3c6640ae37cf54c76af541dca3a0983b08b870a",
+      "penalty/rl/bhuman_world.py": "8ac226d415ab1f1395d753079f17f02d97fbbd35d766371e7e68b2efb606f7d6",
+      "penalty/rl/observation.py": "1d4a4ebcc0166c28587c9d858017fd2b135ae26921419ea165d63bb9629d5a37",
+      "penalty/control.py": "61f3c57077aca365f7f418ac9c40232ad7548f8c5589402f19624a4eb5d85259",
+      "penalty/physical_sim.py": "bf638d10d3608edbb2e0bc28b749a67f7f674d215b677f250abccf2535727cf7",
+      "penalty/sim_session.py": "d33507c85de0f187529b555994da084870ea13f410a34668cb1f3745df2a35a2",
+      "sim/scene.xml": "40380f2f228408094041e190860fcbb1e635114b2b3a041cb393520367ec3ff3",
+      "baseline/motion_manifest.json": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26200-SP0"
+  },
+  "summary": {
+    "episodes": 500,
+    "rates": {
+      "save_rate": 0.778,
+      "goal_rate": 0.1,
+      "out_rate": 0.12,
+      "keeper_fall_rate": 0.0,
+      "sim_error_rate": 0.0,
+      "timeout_rate": 0.002,
+      "any_fall_rate": 0.0,
+      "wrong_side_rate": 0.554,
+      "early_dive_rate": 1.0,
+      "contact_rate": 0.792,
+      "fallen_rate": 0.0
+    },
+    "counts": {
+      "save": 389,
+      "goal": 50,
+      "out": 60,
+      "keeper_fall": 0,
+      "sim_error": 0,
+      "timeout": 1
+    },
+    "ci95": {
+      "save_rate": [
+        0.7395294756647782,
+        0.8122312364320395
+      ],
+      "goal_rate": [
+        0.07667718662472012,
+        0.1294225082000026
+      ],
+      "out_rate": [
+        0.09437448030757052,
+        0.15142022977591602
+      ],
+      "keeper_fall_rate": [
+        0.0,
+        0.007624618530903363
+      ],
+      "sim_error_rate": [
+        0.0,
+        0.007624618530903363
+      ],
+      "timeout_rate": [
+        0.000353127309584542,
+        0.011240992747195207
+      ]
+    },
+    "secondary": {
+      "reaction_time": null
+    },
+    "mean_return": {
+      "mean": 7.8768400000000005,
+      "std": 7.916149595251469,
+      "n": 500
+    },
+    "mean_steps": {
+      "mean": 3.558,
+      "std": 0.6501046069672173,
+      "n": 500
+    }
+  },
+  "per_seed": {
+    "20000": {
+      "episodes": 100,
+      "rates": {
+        "save_rate": 0.82,
+        "goal_rate": 0.08,
+        "out_rate": 0.1,
+        "keeper_fall_rate": 0.0,
+        "sim_error_rate": 0.0,
+        "timeout_rate": 0.0,
+        "any_fall_rate": 0.0,
+        "wrong_side_rate": 0.5,
+        "early_dive_rate": 1.0,
+        "contact_rate": 0.84,
+        "fallen_rate": 0.0
+      },
+      "counts": {
+        "save": 82,
+        "goal": 8,
+        "out": 10,
+        "keeper_fall": 0,
+        "sim_error": 0,
+        "timeout": 0
+      },
+      "ci95": {
+        "save_rate": [
+          0.7333246397578691,
+          0.8829986834574896
+        ],
+        "goal_rate": [
+          0.04109296948581091,
+          0.14998266879403072
+        ],
+        "out_rate": [
+          0.05522854161313613,
+          0.1743673043676654
+        ],
+        "keeper_fall_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "sim_error_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "timeout_rate": [
+          0.0,
+          0.03699480747600191
+        ]
+      },
+      "secondary": {
+        "reaction_time": null
+      },
+      "mean_return": {
+        "mean": 8.690000000000001,
+        "std": 7.189835881297987,
+        "n": 100
+      },
+      "mean_steps": {
+        "mean": 3.5,
+        "std": 0.5916079783099616,
+        "n": 100
+      }
+    },
+    "20001": {
+      "episodes": 100,
+      "rates": {
+        "save_rate": 0.76,
+        "goal_rate": 0.1,
+        "out_rate": 0.13,
+        "keeper_fall_rate": 0.0,
+        "sim_error_rate": 0.0,
+        "timeout_rate": 0.01,
+        "any_fall_rate": 0.0,
+        "wrong_side_rate": 0.5,
+        "early_dive_rate": 1.0,
+        "contact_rate": 0.79,
+        "fallen_rate": 0.0
+      },
+      "counts": {
+        "save": 76,
+        "goal": 10,
+        "out": 13,
+        "keeper_fall": 0,
+        "sim_error": 0,
+        "timeout": 1
+      },
+      "ci95": {
+        "save_rate": [
+          0.6676748127670786,
+          0.8330878873454004
+        ],
+        "goal_rate": [
+          0.05522854161313613,
+          0.1743673043676654
+        ],
+        "out_rate": [
+          0.07757093858414264,
+          0.20980521894809878
+        ],
+        "keeper_fall_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "sim_error_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "timeout_rate": [
+          0.0017673865655472645,
+          0.0544875247609346
+        ]
+      },
+      "secondary": {
+        "reaction_time": null
+      },
+      "mean_return": {
+        "mean": 7.690200000000002,
+        "std": 7.863400025434291,
+        "n": 100
+      },
+      "mean_steps": {
+        "mean": 3.49,
+        "std": 0.6402343321003645,
+        "n": 100
+      }
+    },
+    "20002": {
+      "episodes": 100,
+      "rates": {
+        "save_rate": 0.79,
+        "goal_rate": 0.11,
+        "out_rate": 0.1,
+        "keeper_fall_rate": 0.0,
+        "sim_error_rate": 0.0,
+        "timeout_rate": 0.0,
+        "any_fall_rate": 0.0,
+        "wrong_side_rate": 0.61,
+        "early_dive_rate": 1.0,
+        "contact_rate": 0.79,
+        "fallen_rate": 0.0
+      },
+      "counts": {
+        "save": 79,
+        "goal": 11,
+        "out": 10,
+        "keeper_fall": 0,
+        "sim_error": 0,
+        "timeout": 0
+      },
+      "ci95": {
+        "save_rate": [
+          0.7001985069803768,
+          0.8583445046835422
+        ],
+        "goal_rate": [
+          0.06254131955225126,
+          0.18631463027903022
+        ],
+        "out_rate": [
+          0.05522854161313613,
+          0.1743673043676654
+        ],
+        "keeper_fall_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "sim_error_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "timeout_rate": [
+          0.0,
+          0.03699480747600191
+        ]
+      },
+      "secondary": {
+        "reaction_time": null
+      },
+      "mean_return": {
+        "mean": 7.886400000000002,
+        "std": 8.166070232370036,
+        "n": 100
+      },
+      "mean_steps": {
+        "mean": 3.68,
+        "std": 0.6910861017268399,
+        "n": 100
+      }
+    },
+    "20003": {
+      "episodes": 100,
+      "rates": {
+        "save_rate": 0.78,
+        "goal_rate": 0.09,
+        "out_rate": 0.13,
+        "keeper_fall_rate": 0.0,
+        "sim_error_rate": 0.0,
+        "timeout_rate": 0.0,
+        "any_fall_rate": 0.0,
+        "wrong_side_rate": 0.61,
+        "early_dive_rate": 1.0,
+        "contact_rate": 0.79,
+        "fallen_rate": 0.0
+      },
+      "counts": {
+        "save": 78,
+        "goal": 9,
+        "out": 13,
+        "keeper_fall": 0,
+        "sim_error": 0,
+        "timeout": 0
+      },
+      "ci95": {
+        "save_rate": [
+          0.6892946528499969,
+          0.849988254963442
+        ],
+        "goal_rate": [
+          0.04807199516388488,
+          0.16226374696643667
+        ],
+        "out_rate": [
+          0.07757093858414264,
+          0.20980521894809878
+        ],
+        "keeper_fall_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "sim_error_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "timeout_rate": [
+          0.0,
+          0.03699480747600191
+        ]
+      },
+      "secondary": {
+        "reaction_time": null
+      },
+      "mean_return": {
+        "mean": 7.9886,
+        "std": 7.749551860591682,
+        "n": 100
+      },
+      "mean_steps": {
+        "mean": 3.57,
+        "std": 0.6819824044651005,
+        "n": 100
+      }
+    },
+    "20004": {
+      "episodes": 100,
+      "rates": {
+        "save_rate": 0.74,
+        "goal_rate": 0.12,
+        "out_rate": 0.14,
+        "keeper_fall_rate": 0.0,
+        "sim_error_rate": 0.0,
+        "timeout_rate": 0.0,
+        "any_fall_rate": 0.0,
+        "wrong_side_rate": 0.55,
+        "early_dive_rate": 1.0,
+        "contact_rate": 0.75,
+        "fallen_rate": 0.0
+      },
+      "counts": {
+        "save": 74,
+        "goal": 12,
+        "out": 14,
+        "keeper_fall": 0,
+        "sim_error": 0,
+        "timeout": 0
+      },
+      "ci95": {
+        "save_rate": [
+          0.6462882736813838,
+          0.8159542187301354
+        ],
+        "goal_rate": [
+          0.06999337365267776,
+          0.19812268002908368
+        ],
+        "out_rate": [
+          0.08526265754464905,
+          0.22137360383807236
+        ],
+        "keeper_fall_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "sim_error_rate": [
+          0.0,
+          0.03699480747600191
+        ],
+        "timeout_rate": [
+          0.0,
+          0.03699480747600191
+        ]
+      },
+      "secondary": {
+        "reaction_time": null
+      },
+      "mean_return": {
+        "mean": 7.129000000000001,
+        "std": 8.473025138638501,
+        "n": 100
+      },
+      "mean_steps": {
+        "mean": 3.55,
+        "std": 0.6224949798994367,
+        "n": 100
+      }
+    }
+  },
+  "throughput": {
+    "workers": 30,
+    "wall_s": 237.99515599998995,
+    "episodes": 500,
+    "episodes_per_s": 2.1008830952845994,
+    "decisions_per_s": 7.474942053022605
+  }
+}

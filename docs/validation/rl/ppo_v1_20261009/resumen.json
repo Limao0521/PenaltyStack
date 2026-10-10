@@ -1,0 +1,23 @@
+{
+  "nombre": "ppo_v1_20261009",
+  "codigo": "commit 9682fe0 + codigo_vs_9682fe0.patch (cambios sin commit)",
+  "corrida": "run/ (copia de runs/train/24h_20261009); 14:56-22:12 del 2026-10-09; recolección sincronizada hasta 19:17, asíncrona con 30 workers desde 19:57",
+  "politicas": {
+    "tirador": "run/striker/latest (etapa striker_bhuman_scripted, mejor ventana restaurada)",
+    "portero": "run/keeper/latest (etapa keeper_bhuman_random_kicks)"
+  },
+  "evaluacion_formal_portero": {
+    "protocolo": "B-Human, random_kicks, 5 semillas (20000-20004) x 100 episodios, acción determinista",
+    "entrenado": {"save_rate": 0.778, "ci95": [0.740, 0.812], "any_fall_rate": 0.0, "early_dive_rate": 1.0, "wrong_side_rate": 0.554},
+    "geometrico": {"save_rate": 0.420, "ci95": [0.378, 0.464], "any_fall_rate": 0.0, "early_dive_rate": 0.008, "wrong_side_rate": 0.092}
+  },
+  "tirador": {
+    "vs_portero_scripted": "24/24 goles frente a 0/24 del tirador scripted",
+    "vs_portero_estatico": "48/48 goles con el mejor checkpoint de la etapa static"
+  },
+  "limitaciones": [
+    "El portero ataja con una estrategia fija: se compromete a la guardia central antes de cada tiro (early_dive_rate 1.0, sin caídas). Funciona contra patadas aleatorias de B-Human, no lee el tiro.",
+    "Los episodios B-Human del tirador son deterministas (la semilla no cambia nada): 24/24 es un mismo escenario repetido, sin evidencia de robustez ante otras posiciones.",
+    "La convergencia se midió con episodios de entrenamiento con mucho ruido de exploración (std final del portero: lado 0.72, gatillo 0.83; gatillo del tirador 20)."
+  ]
+}

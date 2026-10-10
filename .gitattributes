@@ -2,3 +2,6 @@ baseline/bhuman/** -text -diff
 models/bhuman/NaoV6H25.rsi3 -text -diff
 models/bhuman/License.md -text
 models/bhuman/meshes/** -text -diff
+models/rl/**/*.zip -text -diff
+models/rl/**/*.npz -text -diff
+docs/media/** -text -diff

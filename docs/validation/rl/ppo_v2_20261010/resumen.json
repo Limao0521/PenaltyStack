@@ -1,0 +1,19 @@
+{
+  "nombre": "ppo_v2_20261010",
+  "codigo": "commit 132c55c (feat/rl-contracts)",
+  "condiciones": "ruido de percepción en todas las etapas; B-Human con ±5 cm de balón y ±5 cm/±0.1 rad de pose inicial; portero contra patadas sesgadas a las esquinas; sin bono de entropía, std <= 0.5; convergencia con episodios sin ruido",
+  "politicas": {
+    "tirador": "run/striker/latest (etapa striker_bhuman_scripted) — usar esta",
+    "portero": "run/keeper/latest — NO usar: se lanza antes del tiro y cae"
+  },
+  "evaluacion_por_etapa_100_episodios": {
+    "striker_bhuman_static": {"goal_rate": 0.970, "ci95": [0.92, 0.99], "baseline_scripted": 0.310, "any_fall_rate": 0.0},
+    "striker_bhuman_scripted": {"goal_rate": 0.960, "ci95": [0.90, 0.98], "baseline_scripted": 0.020, "any_fall_rate": 0.0},
+    "keeper_bhuman_random_kicks": {"save_rate": 0.130, "ci95": [0.08, 0.21], "geometric": 0.180, "center": 0.460, "any_fall_rate": 0.83}
+  },
+  "diagnostico_portero": [
+    "El mundo sintético hacía patear al rival entre 0.5 y 3 s; en B-Human patea entre 3 y 9 s (mediana 5.7 s, 60 episodios). El portero sintético se lanza en la primera o segunda decisión y cae antes del tiro (keeper_fall 0.79).",
+    "Con episodios de ~3 decisiones, cada rollout de 4096 transiciones exigió ~1300 reinicios de B-Human: solo 27 iteraciones PPO en la hora de la etapa, y desviación del gatillo 0.13 heredada del sintético.",
+    "La etapa no mejoró nunca (41 ventanas) y al cerrar se restauró la primera ventana: el portero final es el sintético."
+  ]
+}
