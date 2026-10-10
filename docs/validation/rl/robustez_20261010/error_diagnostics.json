@@ -1,0 +1,26 @@
+[
+  {
+    "style": "corners",
+    "seed": 62001000086,
+    "record": {
+      "result": "sim_error",
+      "seed": 62001000086,
+      "steps": 82
+    },
+    "error": {
+      "sim_error": "striker: Nonfinite or out-of-range sensor"
+    }
+  },
+  {
+    "style": "v2",
+    "seed": 62001000010,
+    "record": {
+      "result": "sim_error",
+      "seed": 62001000010,
+      "steps": 70
+    },
+    "error": {
+      "sim_error": "striker: Nonfinite or out-of-range sensor"
+    }
+  }
+]

@@ -27,6 +27,7 @@
 - `python tools/duel_rl.py --strikers scripted v2=models/rl/striker_v2 --keepers scripted v4=models/rl/keeper_v4:gate --episodes 200 --workers 30` (duelo en B-Human; `:gate` para porteros entrenados con `commit_after_shot`)
 - `python tools/watch_rl.py --striker models/rl/striker_v2 --keeper scripted --shots 4 --live` (visor de MuJoCo; `--video <carpeta>` graba MP4)
 - `python tools/fit_kick_predictor.py --episodes 600 --workers 30` (reajusta el predictor del lado del tiro que usa el portero `anticipation`)
+- `python tools/evaluate_keeper_robustness.py --episodes 100 --seed 62001 --workers 16 --output runs/keeper_robust/test.json` (ocho estilos en B-Human; portero `robust`, comparación pareada y `--condition stress` para percepción degradada)
 - Modelos entrenados en `models/rl/` (ver `manifest.json`); reportes en `docs/validation/rl/`.
 - `python deploy/package.py --profile profiles/striker.example.json --output dist/striker.tar.gz`
 

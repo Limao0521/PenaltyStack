@@ -34,6 +34,7 @@ L1 B-Human                  -> FSM compartida + MotionEngine original en MuJoCo
 | `penalty/rl/async_ppo.py`, `actors.py` | Recolección asíncrona para B-Human: workers con política numpy y `AsyncPPO`. |
 | `penalty/rl/duel.py`, `tools/duel_rl.py`, `tools/watch_rl.py` | Duelo entre políticas; ver penales en el visor de MuJoCo o grabarlos en MP4. |
 | `penalty/rl/anticipation.py`, `tools/fit_kick_predictor.py` | Portero que lee la postura del tirador: predictor del lado (`models/rl/kick_side_predictor.json`) y baseline `anticipation`. Detalle en [MEJORA_DE_PORTERO.md](MEJORA_DE_PORTERO.md). |
+| `penalty/rl/robust_keeper.py`, `keeper_benchmark.py`, `keeper_noise.py`, `tools/evaluate_keeper_robustness.py` | Baseline temporal `robust`, benchmark de ocho estilos y perturbaciones versionadas. 84.6 % de atajadas de media; peor estilo 77 %. Con perturbaciones: 70.2 % y 57 %. Ver [PORTERO_ROBUSTO.md](PORTERO_ROBUSTO.md). |
 | `models/rl/`, `docs/validation/rl/`, `docs/media/rl/` | Políticas entrenadas (con `manifest.json`), reportes y curvas, y videos. |
 | `penalty/skills/` | `KickParameters`, `BlockParameters`, `ParameterizedSkill` (`reset/apply/bounds`). |
 | `penalty/optimization/` | Búsqueda aleatoria acotada, CMA-ES, objetivos `kick_objective_v1`/`block_objective_v1`, `kick_search`. |

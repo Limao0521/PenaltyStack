@@ -1,0 +1,2832 @@
+{
+  "date": "2026-10-10",
+  "backend": "bhuman",
+  "benchmark": "keeper_robustness_v1",
+  "selection_seed": 61001,
+  "heldout_seeds": [
+    62001,
+    63001
+  ],
+  "episodes_per_style": 100,
+  "evaluation_episodes": 4800,
+  "tests": {
+    "rl_and_robust_keeper": 82
+  },
+  "conditions": {
+    "realista": {
+      "summary": {
+        "robust": {
+          "per_style": {
+            "center": {
+              "episodes": 100,
+              "counts": {
+                "goal": 10,
+                "save": 89,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.1,
+                "save_rate": 0.89,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.05522854161313613,
+                  0.1743673043676654
+                ],
+                "save": [
+                  0.8136853697209698,
+                  0.9374586804477487
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.04,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 10,
+                "aim": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.4,
+                  "right": 0.6
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.1,
+                  "right": null
+                },
+                "mean_abs_target_y": 0.0
+              }
+            },
+            "mixed": {
+              "episodes": 100,
+              "counts": {
+                "goal": 15,
+                "save": 83,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 2,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.15,
+                "save_rate": 0.83,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.02,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.09305903191162297,
+                  0.23283733332157835
+                ],
+                "save": [
+                  0.7445181876635703,
+                  0.8910652394022684
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 15,
+                "aim": {
+                  "left": 0.4,
+                  "center": 0.24,
+                  "right": 0.36
+                },
+                "goal_line": {
+                  "left": 0.5333333333333333,
+                  "center": 0.13333333333333333,
+                  "right": 0.3333333333333333
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.175,
+                  "center": 0.125,
+                  "right": 0.1388888888888889
+                },
+                "mean_abs_target_y": 0.3290196963182534
+              }
+            },
+            "corners": {
+              "episodes": 100,
+              "counts": {
+                "goal": 17,
+                "save": 82,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 1
+              },
+              "rates": {
+                "goal_rate": 0.17,
+                "save_rate": 0.82,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.01
+              },
+              "ci95": {
+                "goal": [
+                  0.10893476059773155,
+                  0.25548181233642975
+                ],
+                "save": [
+                  0.7333246397578691,
+                  0.8829986834574896
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.97,
+              "sides": {
+                "kicks": 99,
+                "crossed_goal_line": 17,
+                "aim": {
+                  "left": 0.4444444444444444,
+                  "center": 0.0,
+                  "right": 0.5555555555555556
+                },
+                "goal_line": {
+                  "left": 0.47058823529411764,
+                  "center": 0.0,
+                  "right": 0.5294117647058824
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.20454545454545456,
+                  "center": null,
+                  "right": 0.14545454545454545
+                },
+                "mean_abs_target_y": 0.49680535507322565
+              }
+            },
+            "soft": {
+              "episodes": 100,
+              "counts": {
+                "goal": 14,
+                "save": 86,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.14,
+                "save_rate": 0.86,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.08526265754464905,
+                  0.22137360383807236
+                ],
+                "save": [
+                  0.7786263961619276,
+                  0.914737342455351
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 16,
+                "aim": {
+                  "left": 0.45,
+                  "center": 0.0,
+                  "right": 0.55
+                },
+                "goal_line": {
+                  "left": 0.5,
+                  "center": 0.0,
+                  "right": 0.5
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.17777777777777778,
+                  "center": null,
+                  "right": 0.10909090909090909
+                },
+                "mean_abs_target_y": 0.4976245489120484
+              }
+            },
+            "late": {
+              "episodes": 100,
+              "counts": {
+                "goal": 19,
+                "save": 77,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 4,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.19,
+                "save_rate": 0.77,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.04,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.1251465399270426,
+                  0.27779024070807856
+                ],
+                "save": [
+                  0.6784543514317231,
+                  0.841568452531236
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.92,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 19,
+                "aim": {
+                  "left": 0.4,
+                  "center": 0.24,
+                  "right": 0.36
+                },
+                "goal_line": {
+                  "left": 0.5263157894736842,
+                  "center": 0.05263157894736842,
+                  "right": 0.42105263157894735
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.275,
+                  "center": 0.125,
+                  "right": 0.1388888888888889
+                },
+                "mean_abs_target_y": 0.3290196963182534
+              }
+            },
+            "feint": {
+              "episodes": 100,
+              "counts": {
+                "goal": 22,
+                "save": 78,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.22,
+                "save_rate": 0.78,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.15001174503655804,
+                  0.3107053471500031
+                ],
+                "save": [
+                  0.6892946528499969,
+                  0.849988254963442
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.97,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 22,
+                "aim": {
+                  "left": 0.45,
+                  "center": 0.0,
+                  "right": 0.55
+                },
+                "goal_line": {
+                  "left": 0.5,
+                  "center": 0.0,
+                  "right": 0.5
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.26666666666666666,
+                  "center": null,
+                  "right": 0.18181818181818182
+                },
+                "mean_abs_target_y": 0.4976245489120484
+              }
+            },
+            "v1": {
+              "episodes": 100,
+              "counts": {
+                "goal": 7,
+                "save": 92,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.07,
+                "save_rate": 0.92,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.034318824364064096,
+                  0.13749671006529757
+                ],
+                "save": [
+                  0.8500173312059693,
+                  0.9589070305141891
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 7,
+                "aim": {
+                  "left": 0.0,
+                  "center": 0.15,
+                  "right": 0.85
+                },
+                "goal_line": {
+                  "left": 0.14285714285714285,
+                  "center": 0.14285714285714285,
+                  "right": 0.7142857142857143
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.2,
+                  "right": 0.047058823529411764
+                },
+                "mean_abs_target_y": 0.36557349789980803
+              }
+            },
+            "v2": {
+              "episodes": 100,
+              "counts": {
+                "goal": 9,
+                "save": 90,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 1
+              },
+              "rates": {
+                "goal_rate": 0.09,
+                "save_rate": 0.9,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.01
+              },
+              "ci95": {
+                "goal": [
+                  0.04807199516388488,
+                  0.16226374696643667
+                ],
+                "save": [
+                  0.8256326956323347,
+                  0.9447714583868639
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 99,
+                "crossed_goal_line": 10,
+                "aim": {
+                  "left": 0.47474747474747475,
+                  "center": 0.0,
+                  "right": 0.5252525252525253
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.0,
+                  "right": 1.0
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.0,
+                  "center": null,
+                  "right": 0.17307692307692307
+                },
+                "mean_abs_target_y": 0.6367492284437624
+              }
+            }
+          },
+          "macro_save_rate": 0.84625,
+          "worst_style_save_rate": 0.77,
+          "worst_style": "late",
+          "sim_errors": 2,
+          "early_commits": 7
+        },
+        "anticipation": {
+          "per_style": {
+            "center": {
+              "episodes": 100,
+              "counts": {
+                "goal": 20,
+                "save": 79,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.2,
+                "save_rate": 0.79,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.1333659225590988,
+                  0.28883096192650237
+                ],
+                "save": [
+                  0.7001985069803768,
+                  0.8583445046835422
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.04,
+              "keeper_commit_rate": 0.95,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 20,
+                "aim": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_line": {
+                  "left": 0.05,
+                  "center": 0.55,
+                  "right": 0.4
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.2,
+                  "right": null
+                },
+                "mean_abs_target_y": 0.0
+              }
+            },
+            "mixed": {
+              "episodes": 100,
+              "counts": {
+                "goal": 34,
+                "save": 64,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 2,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.34,
+                "save_rate": 0.64,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.02,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.25461379497543,
+                  0.43722454341689065
+                ],
+                "save": [
+                  0.542352199811621,
+                  0.7272892540950986
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 34,
+                "aim": {
+                  "left": 0.4,
+                  "center": 0.24,
+                  "right": 0.36
+                },
+                "goal_line": {
+                  "left": 0.5,
+                  "center": 0.11764705882352941,
+                  "right": 0.38235294117647056
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.425,
+                  "center": 0.16666666666666666,
+                  "right": 0.3611111111111111
+                },
+                "mean_abs_target_y": 0.3290196963182534
+              }
+            },
+            "corners": {
+              "episodes": 100,
+              "counts": {
+                "goal": 56,
+                "save": 43,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 1
+              },
+              "rates": {
+                "goal_rate": 0.56,
+                "save_rate": 0.43,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.01
+              },
+              "ci95": {
+                "goal": [
+                  0.4622792771125631,
+                  0.6532813459903167
+                ],
+                "save": [
+                  0.3373313900052838,
+                  0.5278478830413564
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.95,
+              "sides": {
+                "kicks": 99,
+                "crossed_goal_line": 56,
+                "aim": {
+                  "left": 0.4444444444444444,
+                  "center": 0.0,
+                  "right": 0.5555555555555556
+                },
+                "goal_line": {
+                  "left": 0.4107142857142857,
+                  "center": 0.05357142857142857,
+                  "right": 0.5357142857142857
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.5909090909090909,
+                  "center": null,
+                  "right": 0.5454545454545454
+                },
+                "mean_abs_target_y": 0.49680535507322565
+              }
+            },
+            "soft": {
+              "episodes": 100,
+              "counts": {
+                "goal": 59,
+                "save": 41,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.59,
+                "save_rate": 0.41,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.4920125056109662,
+                  0.6813284290433533
+                ],
+                "save": [
+                  0.31867157095664655,
+                  0.5079874943890338
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 60,
+                "aim": {
+                  "left": 0.45,
+                  "center": 0.0,
+                  "right": 0.55
+                },
+                "goal_line": {
+                  "left": 0.5833333333333334,
+                  "center": 0.0,
+                  "right": 0.4166666666666667
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.8,
+                  "center": null,
+                  "right": 0.41818181818181815
+                },
+                "mean_abs_target_y": 0.4976245489120484
+              }
+            },
+            "late": {
+              "episodes": 100,
+              "counts": {
+                "goal": 37,
+                "save": 59,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 4,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.37,
+                "save_rate": 0.59,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.04,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.28182212569509163,
+                  0.46779652424866885
+                ],
+                "save": [
+                  0.4920125056109662,
+                  0.6813284290433533
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.89,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 37,
+                "aim": {
+                  "left": 0.4,
+                  "center": 0.24,
+                  "right": 0.36
+                },
+                "goal_line": {
+                  "left": 0.5135135135135135,
+                  "center": 0.13513513513513514,
+                  "right": 0.35135135135135137
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.45,
+                  "center": 0.2916666666666667,
+                  "right": 0.3333333333333333
+                },
+                "mean_abs_target_y": 0.3290196963182534
+              }
+            },
+            "feint": {
+              "episodes": 100,
+              "counts": {
+                "goal": 54,
+                "save": 46,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.54,
+                "save_rate": 0.46,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.44264685393523856,
+                  0.6343935614666815
+                ],
+                "save": [
+                  0.36560643853331865,
+                  0.5573531460647615
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 54,
+                "aim": {
+                  "left": 0.45,
+                  "center": 0.0,
+                  "right": 0.55
+                },
+                "goal_line": {
+                  "left": 0.37037037037037035,
+                  "center": 0.018518518518518517,
+                  "right": 0.6111111111111112
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.4888888888888889,
+                  "center": null,
+                  "right": 0.5818181818181818
+                },
+                "mean_abs_target_y": 0.4976245489120484
+              }
+            },
+            "v1": {
+              "episodes": 100,
+              "counts": {
+                "goal": 71,
+                "save": 28,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.71,
+                "save_rate": 0.28,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.6146092505999207,
+                  0.7898529302601586
+                ],
+                "save": [
+                  0.2013955916759837,
+                  0.37488212361345724
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 71,
+                "aim": {
+                  "left": 0.0,
+                  "center": 0.15,
+                  "right": 0.85
+                },
+                "goal_line": {
+                  "left": 0.014084507042253521,
+                  "center": 0.014084507042253521,
+                  "right": 0.971830985915493
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.3333333333333333,
+                  "right": 0.7764705882352941
+                },
+                "mean_abs_target_y": 0.36557349789980803
+              }
+            },
+            "v2": {
+              "episodes": 100,
+              "counts": {
+                "goal": 72,
+                "save": 27,
+                "miss": 0,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 1
+              },
+              "rates": {
+                "goal_rate": 0.72,
+                "save_rate": 0.27,
+                "miss_rate": 0.0,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.01
+              },
+              "ci95": {
+                "goal": [
+                  0.6251178763865427,
+                  0.7986044083240164
+                ],
+                "save": [
+                  0.1926946091766482,
+                  0.3643230022623127
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 99,
+                "crossed_goal_line": 73,
+                "aim": {
+                  "left": 0.47474747474747475,
+                  "center": 0.0,
+                  "right": 0.5252525252525253
+                },
+                "goal_line": {
+                  "left": 0.3835616438356164,
+                  "center": 0.0,
+                  "right": 0.6164383561643836
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.5957446808510638,
+                  "center": null,
+                  "right": 0.8461538461538461
+                },
+                "mean_abs_target_y": 0.6367492284437624
+              }
+            }
+          },
+          "macro_save_rate": 0.48375,
+          "worst_style_save_rate": 0.27,
+          "worst_style": "v2",
+          "sim_errors": 2,
+          "early_commits": 0
+        },
+        "center:gate": {
+          "per_style": {
+            "center": {
+              "episodes": 100,
+              "counts": {
+                "goal": 6,
+                "save": 89,
+                "miss": 4,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.06,
+                "save_rate": 0.89,
+                "miss_rate": 0.04,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.02778574526665662,
+                  0.12476968531222507
+                ],
+                "save": [
+                  0.8136853697209698,
+                  0.9374586804477487
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.04,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 6,
+                "aim": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_line": {
+                  "left": 0.16666666666666666,
+                  "center": 0.5,
+                  "right": 0.3333333333333333
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.06,
+                  "right": null
+                },
+                "mean_abs_target_y": 0.0
+              }
+            },
+            "mixed": {
+              "episodes": 100,
+              "counts": {
+                "goal": 33,
+                "save": 63,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 2,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.33,
+                "save_rate": 0.63,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.02,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.24562983793895452,
+                  0.4269483966028862
+                ],
+                "save": [
+                  0.5322034757513312,
+                  0.7181778743049083
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 33,
+                "aim": {
+                  "left": 0.4,
+                  "center": 0.24,
+                  "right": 0.36
+                },
+                "goal_line": {
+                  "left": 0.5757575757575758,
+                  "center": 0.030303030303030304,
+                  "right": 0.3939393939393939
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.45,
+                  "center": 0.08333333333333333,
+                  "right": 0.3611111111111111
+                },
+                "mean_abs_target_y": 0.3290196963182534
+              }
+            },
+            "corners": {
+              "episodes": 100,
+              "counts": {
+                "goal": 55,
+                "save": 42,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 1
+              },
+              "rates": {
+                "goal_rate": 0.55,
+                "save_rate": 0.42,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.01
+              },
+              "ci95": {
+                "goal": [
+                  0.45244427031643447,
+                  0.6438562489359654
+                ],
+                "save": [
+                  0.327982249185113,
+                  0.5179369200110473
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 99,
+                "crossed_goal_line": 55,
+                "aim": {
+                  "left": 0.4444444444444444,
+                  "center": 0.0,
+                  "right": 0.5555555555555556
+                },
+                "goal_line": {
+                  "left": 0.5636363636363636,
+                  "center": 0.01818181818181818,
+                  "right": 0.41818181818181815
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.7272727272727273,
+                  "center": null,
+                  "right": 0.41818181818181815
+                },
+                "mean_abs_target_y": 0.49680535507322565
+              }
+            },
+            "soft": {
+              "episodes": 100,
+              "counts": {
+                "goal": 56,
+                "save": 42,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.56,
+                "save_rate": 0.42,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.4622792771125631,
+                  0.6532813459903167
+                ],
+                "save": [
+                  0.327982249185113,
+                  0.5179369200110473
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 56,
+                "aim": {
+                  "left": 0.45,
+                  "center": 0.0,
+                  "right": 0.55
+                },
+                "goal_line": {
+                  "left": 0.625,
+                  "center": 0.0,
+                  "right": 0.375
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.8,
+                  "center": null,
+                  "right": 0.36363636363636365
+                },
+                "mean_abs_target_y": 0.4976245489120484
+              }
+            },
+            "late": {
+              "episodes": 100,
+              "counts": {
+                "goal": 27,
+                "save": 65,
+                "miss": 4,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 4,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.27,
+                "save_rate": 0.65,
+                "miss_rate": 0.04,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.04,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.1926946091766482,
+                  0.3643230022623127
+                ],
+                "save": [
+                  0.5525426042919797,
+                  0.7363589534652197
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.96,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 27,
+                "aim": {
+                  "left": 0.4,
+                  "center": 0.24,
+                  "right": 0.36
+                },
+                "goal_line": {
+                  "left": 0.7037037037037037,
+                  "center": 0.0,
+                  "right": 0.2962962962962963
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.45,
+                  "center": 0.125,
+                  "right": 0.16666666666666666
+                },
+                "mean_abs_target_y": 0.3290196963182534
+              }
+            },
+            "feint": {
+              "episodes": 100,
+              "counts": {
+                "goal": 54,
+                "save": 43,
+                "miss": 3,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.54,
+                "save_rate": 0.43,
+                "miss_rate": 0.03,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.44264685393523856,
+                  0.6343935614666815
+                ],
+                "save": [
+                  0.3373313900052838,
+                  0.5278478830413564
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 54,
+                "aim": {
+                  "left": 0.46,
+                  "center": 0.0,
+                  "right": 0.54
+                },
+                "goal_line": {
+                  "left": 0.46296296296296297,
+                  "center": 0.0,
+                  "right": 0.5370370370370371
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.5652173913043478,
+                  "center": null,
+                  "right": 0.5185185185185185
+                },
+                "mean_abs_target_y": 0.4976245489120484
+              }
+            },
+            "v1": {
+              "episodes": 100,
+              "counts": {
+                "goal": 79,
+                "save": 17,
+                "miss": 2,
+                "striker_fall": 1,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.79,
+                "save_rate": 0.17,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.01,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.7001985069803768,
+                  0.8583445046835422
+                ],
+                "save": [
+                  0.10893476059773155,
+                  0.25548181233642975
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 79,
+                "aim": {
+                  "left": 0.0,
+                  "center": 0.14,
+                  "right": 0.86
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.0,
+                  "right": 1.0
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.07142857142857142,
+                  "right": 0.9069767441860465
+                },
+                "mean_abs_target_y": 0.3728006171965972
+              }
+            },
+            "v2": {
+              "episodes": 100,
+              "counts": {
+                "goal": 97,
+                "save": 1,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.97,
+                "save_rate": 0.01,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.915479219195973,
+                  0.9897456617765851
+                ],
+                "save": [
+                  0.0017673865655472645,
+                  0.0544875247609346
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 97,
+                "aim": {
+                  "left": 0.47,
+                  "center": 0.0,
+                  "right": 0.53
+                },
+                "goal_line": {
+                  "left": 0.4742268041237113,
+                  "center": 0.0,
+                  "right": 0.5257731958762887
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.9787234042553191,
+                  "center": null,
+                  "right": 0.9622641509433962
+                },
+                "mean_abs_target_y": 0.6368817361593248
+              }
+            }
+          },
+          "macro_save_rate": 0.4525,
+          "worst_style_save_rate": 0.01,
+          "worst_style": "v2",
+          "sim_errors": 1,
+          "early_commits": 34
+        }
+      },
+      "comparisons_vs_robust": {
+        "anticipation": {
+          "per_style": {
+            "center": {
+              "only_first_saves": 13,
+              "only_second_saves": 3,
+              "p_exact": 0.021270751953125028
+            },
+            "corners": {
+              "only_first_saves": 47,
+              "only_second_saves": 8,
+              "p_exact": 8.067609591488992e-08
+            },
+            "feint": {
+              "only_first_saves": 41,
+              "only_second_saves": 9,
+              "p_exact": 5.614100093254263e-06
+            },
+            "late": {
+              "only_first_saves": 25,
+              "only_second_saves": 7,
+              "p_exact": 0.0021024015732109347
+            },
+            "mixed": {
+              "only_first_saves": 25,
+              "only_second_saves": 6,
+              "p_exact": 0.0008779102936386975
+            },
+            "soft": {
+              "only_first_saves": 48,
+              "only_second_saves": 3,
+              "p_exact": 1.9674928353196638e-11
+            },
+            "v1": {
+              "only_first_saves": 66,
+              "only_second_saves": 2,
+              "p_exact": 1.590389061764712e-17
+            },
+            "v2": {
+              "only_first_saves": 63,
+              "only_second_saves": 0,
+              "p_exact": 2.168404344971016e-19
+            }
+          },
+          "macro_gain": 0.3625,
+          "macro_gain_ci95": [
+            0.31625,
+            0.40875
+          ],
+          "ci_method": "paired bootstrap; episode seeds clustered across styles"
+        },
+        "center:gate": {
+          "per_style": {
+            "center": {
+              "only_first_saves": 4,
+              "only_second_saves": 4,
+              "p_exact": 1.0
+            },
+            "corners": {
+              "only_first_saves": 47,
+              "only_second_saves": 7,
+              "p_exact": 2.291864209524813e-08
+            },
+            "feint": {
+              "only_first_saves": 48,
+              "only_second_saves": 13,
+              "p_exact": 7.665168380445412e-06
+            },
+            "late": {
+              "only_first_saves": 21,
+              "only_second_saves": 9,
+              "p_exact": 0.04277394525706799
+            },
+            "mixed": {
+              "only_first_saves": 25,
+              "only_second_saves": 5,
+              "p_exact": 0.00032491423189640175
+            },
+            "soft": {
+              "only_first_saves": 47,
+              "only_second_saves": 3,
+              "p_exact": 3.7083225379320734e-11
+            },
+            "v1": {
+              "only_first_saves": 78,
+              "only_second_saves": 3,
+              "p_exact": 7.332294385792172e-20
+            },
+            "v2": {
+              "only_first_saves": 89,
+              "only_second_saves": 0,
+              "p_exact": 3.2311742677852794e-27
+            }
+          },
+          "macro_gain": 0.39375,
+          "macro_gain_ci95": [
+            0.345,
+            0.4425
+          ],
+          "ci_method": "paired bootstrap; episode seeds clustered across styles"
+        }
+      }
+    },
+    "stress": {
+      "summary": {
+        "robust": {
+          "per_style": {
+            "center": {
+              "episodes": 100,
+              "counts": {
+                "goal": 6,
+                "save": 90,
+                "miss": 3,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.06,
+                "save_rate": 0.9,
+                "miss_rate": 0.03,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.02778574526665662,
+                  0.12476968531222507
+                ],
+                "save": [
+                  0.8256326956323347,
+                  0.9447714583868639
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.97,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 6,
+                "aim": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.6666666666666666,
+                  "right": 0.3333333333333333
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.06,
+                  "right": null
+                },
+                "mean_abs_target_y": 0.0
+              }
+            },
+            "mixed": {
+              "episodes": 100,
+              "counts": {
+                "goal": 24,
+                "save": 75,
+                "miss": 1,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.24,
+                "save_rate": 0.75,
+                "miss_rate": 0.01,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.16691211265459965,
+                  0.3323251872329213
+                ],
+                "save": [
+                  0.6569535362992417,
+                  0.8245490599627573
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 24,
+                "aim": {
+                  "left": 0.38,
+                  "center": 0.23,
+                  "right": 0.39
+                },
+                "goal_line": {
+                  "left": 0.5833333333333334,
+                  "center": 0.041666666666666664,
+                  "right": 0.375
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.3684210526315789,
+                  "center": 0.08695652173913043,
+                  "right": 0.20512820512820512
+                },
+                "mean_abs_target_y": 0.35346523514064027
+              }
+            },
+            "corners": {
+              "episodes": 100,
+              "counts": {
+                "goal": 40,
+                "save": 57,
+                "miss": 3,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.4,
+                "save_rate": 0.57,
+                "miss_rate": 0.03,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.3093997461136028,
+                  0.4979992153815976
+                ],
+                "save": [
+                  0.4721521169586435,
+                  0.6626686099947162
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.02,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 40,
+                "aim": {
+                  "left": 0.53,
+                  "center": 0.0,
+                  "right": 0.47
+                },
+                "goal_line": {
+                  "left": 0.675,
+                  "center": 0.05,
+                  "right": 0.275
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.5283018867924528,
+                  "center": null,
+                  "right": 0.2553191489361702
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "soft": {
+              "episodes": 100,
+              "counts": {
+                "goal": 41,
+                "save": 58,
+                "miss": 1,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.41,
+                "save_rate": 0.58,
+                "miss_rate": 0.01,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.31867157095664655,
+                  0.5079874943890338
+                ],
+                "save": [
+                  0.4820630799889527,
+                  0.672017750814887
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 41,
+                "aim": {
+                  "left": 0.53,
+                  "center": 0.0,
+                  "right": 0.47
+                },
+                "goal_line": {
+                  "left": 0.8536585365853658,
+                  "center": 0.0,
+                  "right": 0.14634146341463414
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.660377358490566,
+                  "center": null,
+                  "right": 0.1276595744680851
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "late": {
+              "episodes": 100,
+              "counts": {
+                "goal": 21,
+                "save": 75,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 2,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.21,
+                "save_rate": 0.75,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.02,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.14165549531645788,
+                  0.2998014930196232
+                ],
+                "save": [
+                  0.6569535362992417,
+                  0.8245490599627573
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.98,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 21,
+                "aim": {
+                  "left": 0.38,
+                  "center": 0.23,
+                  "right": 0.39
+                },
+                "goal_line": {
+                  "left": 0.6666666666666666,
+                  "center": 0.0,
+                  "right": 0.3333333333333333
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.3684210526315789,
+                  "center": 0.043478260869565216,
+                  "right": 0.15384615384615385
+                },
+                "mean_abs_target_y": 0.35346523514064027
+              }
+            },
+            "feint": {
+              "episodes": 100,
+              "counts": {
+                "goal": 37,
+                "save": 61,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.37,
+                "save_rate": 0.61,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.28182212569509163,
+                  0.46779652424866885
+                ],
+                "save": [
+                  0.5120283616749817,
+                  0.699832780680298
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.02,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 38,
+                "aim": {
+                  "left": 0.55,
+                  "center": 0.0,
+                  "right": 0.45
+                },
+                "goal_line": {
+                  "left": 0.6578947368421053,
+                  "center": 0.02631578947368421,
+                  "right": 0.3157894736842105
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.43636363636363634,
+                  "center": null,
+                  "right": 0.28888888888888886
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "v1": {
+              "episodes": 100,
+              "counts": {
+                "goal": 26,
+                "save": 73,
+                "miss": 1,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.26,
+                "save_rate": 0.73,
+                "miss_rate": 0.01,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.18404578126986462,
+                  0.35371172631861636
+                ],
+                "save": [
+                  0.6356769977376873,
+                  0.8073053908233518
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.02,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 26,
+                "aim": {
+                  "left": 0.0,
+                  "center": 0.12,
+                  "right": 0.88
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.0,
+                  "right": 1.0
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.0,
+                  "right": 0.29545454545454547
+                },
+                "mean_abs_target_y": 0.4032020547483117
+              }
+            },
+            "v2": {
+              "episodes": 100,
+              "counts": {
+                "goal": 25,
+                "save": 73,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.25,
+                "save_rate": 0.73,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.1754509400372426,
+                  0.3430464637007583
+                ],
+                "save": [
+                  0.6356769977376873,
+                  0.8073053908233518
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 28,
+                "aim": {
+                  "left": 0.54,
+                  "center": 0.01,
+                  "right": 0.45
+                },
+                "goal_line": {
+                  "left": 0.32142857142857145,
+                  "center": 0.0,
+                  "right": 0.6785714285714286
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.14814814814814814,
+                  "center": 0.0,
+                  "right": 0.37777777777777777
+                },
+                "mean_abs_target_y": 0.635446262408048
+              }
+            }
+          },
+          "macro_save_rate": 0.7024999999999999,
+          "worst_style_save_rate": 0.57,
+          "worst_style": "corners",
+          "sim_errors": 0,
+          "early_commits": 26
+        },
+        "anticipation": {
+          "per_style": {
+            "center": {
+              "episodes": 100,
+              "counts": {
+                "goal": 12,
+                "save": 44,
+                "miss": 4,
+                "striker_fall": 0,
+                "keeper_fall": 40,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.12,
+                "save_rate": 0.44,
+                "miss_rate": 0.04,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.4,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.06999337365267776,
+                  0.19812268002908368
+                ],
+                "save": [
+                  0.34671865400968327,
+                  0.537720722887437
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 12,
+                "aim": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.8333333333333334,
+                  "right": 0.16666666666666666
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.12,
+                  "right": null
+                },
+                "mean_abs_target_y": 0.0
+              }
+            },
+            "mixed": {
+              "episodes": 100,
+              "counts": {
+                "goal": 17,
+                "save": 31,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 50,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.17,
+                "save_rate": 0.31,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.5,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.10893476059773155,
+                  0.25548181233642975
+                ],
+                "save": [
+                  0.22779563206132378,
+                  0.40626239477955695
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 17,
+                "aim": {
+                  "left": 0.38,
+                  "center": 0.23,
+                  "right": 0.39
+                },
+                "goal_line": {
+                  "left": 0.5294117647058824,
+                  "center": 0.17647058823529413,
+                  "right": 0.29411764705882354
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.2631578947368421,
+                  "center": 0.13043478260869565,
+                  "right": 0.10256410256410256
+                },
+                "mean_abs_target_y": 0.35346523514064027
+              }
+            },
+            "corners": {
+              "episodes": 100,
+              "counts": {
+                "goal": 27,
+                "save": 15,
+                "miss": 4,
+                "striker_fall": 0,
+                "keeper_fall": 54,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.27,
+                "save_rate": 0.15,
+                "miss_rate": 0.04,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.54,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.1926946091766482,
+                  0.3643230022623127
+                ],
+                "save": [
+                  0.09305903191162297,
+                  0.23283733332157835
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 27,
+                "aim": {
+                  "left": 0.53,
+                  "center": 0.0,
+                  "right": 0.47
+                },
+                "goal_line": {
+                  "left": 0.6296296296296297,
+                  "center": 0.037037037037037035,
+                  "right": 0.3333333333333333
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.32075471698113206,
+                  "center": null,
+                  "right": 0.2127659574468085
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "soft": {
+              "episodes": 100,
+              "counts": {
+                "goal": 23,
+                "save": 18,
+                "miss": 5,
+                "striker_fall": 0,
+                "keeper_fall": 54,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.23,
+                "save_rate": 0.18,
+                "miss_rate": 0.05,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.54,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.15843154746876406,
+                  0.32154564856827694
+                ],
+                "save": [
+                  0.11700131654251038,
+                  0.26667536024213084
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 23,
+                "aim": {
+                  "left": 0.53,
+                  "center": 0.0,
+                  "right": 0.47
+                },
+                "goal_line": {
+                  "left": 0.7391304347826086,
+                  "center": 0.043478260869565216,
+                  "right": 0.21739130434782608
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.32075471698113206,
+                  "center": null,
+                  "right": 0.1276595744680851
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "late": {
+              "episodes": 100,
+              "counts": {
+                "goal": 1,
+                "save": 1,
+                "miss": 1,
+                "striker_fall": 0,
+                "keeper_fall": 62,
+                "timeout": 35,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.01,
+                "save_rate": 0.01,
+                "miss_rate": 0.01,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.62,
+                "timeout_rate": 0.35,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.0017673865655472645,
+                  0.0544875247609346
+                ],
+                "save": [
+                  0.0017673865655472645,
+                  0.0544875247609346
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 1,
+                "aim": {
+                  "left": 0.38,
+                  "center": 0.23,
+                  "right": 0.39
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.0,
+                  "center": 0.0,
+                  "right": 0.02564102564102564
+                },
+                "mean_abs_target_y": 0.35346523514064027
+              }
+            },
+            "feint": {
+              "episodes": 100,
+              "counts": {
+                "goal": 7,
+                "save": 5,
+                "miss": 3,
+                "striker_fall": 0,
+                "keeper_fall": 65,
+                "timeout": 20,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.07,
+                "save_rate": 0.05,
+                "miss_rate": 0.03,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.65,
+                "timeout_rate": 0.2,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.034318824364064096,
+                  0.13749671006529757
+                ],
+                "save": [
+                  0.02154336145631356,
+                  0.11175196527208817
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 7,
+                "aim": {
+                  "left": 0.5,
+                  "center": 0.0,
+                  "right": 0.5
+                },
+                "goal_line": {
+                  "left": 0.5714285714285714,
+                  "center": 0.14285714285714285,
+                  "right": 0.2857142857142857
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.1,
+                  "center": null,
+                  "right": 0.04
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "v1": {
+              "episodes": 100,
+              "counts": {
+                "goal": 19,
+                "save": 6,
+                "miss": 5,
+                "striker_fall": 0,
+                "keeper_fall": 62,
+                "timeout": 8,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.19,
+                "save_rate": 0.06,
+                "miss_rate": 0.05,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.62,
+                "timeout_rate": 0.08,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.1251465399270426,
+                  0.27779024070807856
+                ],
+                "save": [
+                  0.02778574526665662,
+                  0.12476968531222507
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 19,
+                "aim": {
+                  "left": 0.01,
+                  "center": 0.16,
+                  "right": 0.83
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.05263157894736842,
+                  "right": 0.9473684210526315
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.0,
+                  "center": 0.0,
+                  "right": 0.2289156626506024
+                },
+                "mean_abs_target_y": 0.5140570934265852
+              }
+            },
+            "v2": {
+              "episodes": 100,
+              "counts": {
+                "goal": 17,
+                "save": 4,
+                "miss": 6,
+                "striker_fall": 1,
+                "keeper_fall": 62,
+                "timeout": 10,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.17,
+                "save_rate": 0.04,
+                "miss_rate": 0.06,
+                "striker_fall_rate": 0.01,
+                "keeper_fall_rate": 0.62,
+                "timeout_rate": 0.1,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.10893476059773155,
+                  0.25548181233642975
+                ],
+                "save": [
+                  0.015663050551848016,
+                  0.09837217232607373
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 17,
+                "aim": {
+                  "left": 0.55,
+                  "center": 0.0,
+                  "right": 0.45
+                },
+                "goal_line": {
+                  "left": 0.5882352941176471,
+                  "center": 0.058823529411764705,
+                  "right": 0.35294117647058826
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.2,
+                  "center": null,
+                  "right": 0.13333333333333333
+                },
+                "mean_abs_target_y": 0.6477609363198282
+              }
+            }
+          },
+          "macro_save_rate": 0.155,
+          "worst_style_save_rate": 0.01,
+          "worst_style": "late",
+          "sim_errors": 0,
+          "early_commits": 752
+        },
+        "center:gate": {
+          "per_style": {
+            "center": {
+              "episodes": 100,
+              "counts": {
+                "goal": 9,
+                "save": 85,
+                "miss": 5,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.09,
+                "save_rate": 0.85,
+                "miss_rate": 0.05,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.04807199516388488,
+                  0.16226374696643667
+                ],
+                "save": [
+                  0.7671626666784216,
+                  0.906940968088377
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 9,
+                "aim": {
+                  "left": 0.0,
+                  "center": 1.0,
+                  "right": 0.0
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.3333333333333333,
+                  "right": 0.6666666666666666
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.09,
+                  "right": null
+                },
+                "mean_abs_target_y": 0.0
+              }
+            },
+            "mixed": {
+              "episodes": 100,
+              "counts": {
+                "goal": 33,
+                "save": 65,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.33,
+                "save_rate": 0.65,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.24562983793895452,
+                  0.4269483966028862
+                ],
+                "save": [
+                  0.5525426042919797,
+                  0.7363589534652197
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.01,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 33,
+                "aim": {
+                  "left": 0.38,
+                  "center": 0.23,
+                  "right": 0.39
+                },
+                "goal_line": {
+                  "left": 0.6060606060606061,
+                  "center": 0.030303030303030304,
+                  "right": 0.36363636363636365
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.5263157894736842,
+                  "center": 0.043478260869565216,
+                  "right": 0.3076923076923077
+                },
+                "mean_abs_target_y": 0.35346523514064027
+              }
+            },
+            "corners": {
+              "episodes": 100,
+              "counts": {
+                "goal": 65,
+                "save": 32,
+                "miss": 3,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.65,
+                "save_rate": 0.32,
+                "miss_rate": 0.03,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.5525426042919797,
+                  0.7363589534652197
+                ],
+                "save": [
+                  0.2366901081545688,
+                  0.4166280225367919
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.02,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 65,
+                "aim": {
+                  "left": 0.53,
+                  "center": 0.0,
+                  "right": 0.47
+                },
+                "goal_line": {
+                  "left": 0.5846153846153846,
+                  "center": 0.015384615384615385,
+                  "right": 0.4
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.7169811320754716,
+                  "center": null,
+                  "right": 0.574468085106383
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "soft": {
+              "episodes": 100,
+              "counts": {
+                "goal": 62,
+                "save": 36,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.62,
+                "save_rate": 0.36,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.5220957382071033,
+                  0.7090255079986562
+                ],
+                "save": [
+                  0.2727107459049014,
+                  0.45764780018837914
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 62,
+                "aim": {
+                  "left": 0.53,
+                  "center": 0.0,
+                  "right": 0.47
+                },
+                "goal_line": {
+                  "left": 0.6290322580645161,
+                  "center": 0.0,
+                  "right": 0.3709677419354839
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.7358490566037735,
+                  "center": null,
+                  "right": 0.48936170212765956
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "late": {
+              "episodes": 100,
+              "counts": {
+                "goal": 39,
+                "save": 57,
+                "miss": 3,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 1,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.39,
+                "save_rate": 0.57,
+                "miss_rate": 0.03,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.01,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.300167219319702,
+                  0.48797163832501844
+                ],
+                "save": [
+                  0.4721521169586435,
+                  0.6626686099947162
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 0.99,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 39,
+                "aim": {
+                  "left": 0.38,
+                  "center": 0.23,
+                  "right": 0.39
+                },
+                "goal_line": {
+                  "left": 0.5897435897435898,
+                  "center": 0.02564102564102564,
+                  "right": 0.38461538461538464
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.5789473684210527,
+                  "center": 0.2608695652173913,
+                  "right": 0.28205128205128205
+                },
+                "mean_abs_target_y": 0.35346523514064027
+              }
+            },
+            "feint": {
+              "episodes": 100,
+              "counts": {
+                "goal": 66,
+                "save": 32,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.66,
+                "save_rate": 0.32,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.5627754565831095,
+                  0.74538620502457
+                ],
+                "save": [
+                  0.2366901081545688,
+                  0.4166280225367919
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.02,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 66,
+                "aim": {
+                  "left": 0.54,
+                  "center": 0.0,
+                  "right": 0.46
+                },
+                "goal_line": {
+                  "left": 0.5909090909090909,
+                  "center": 0.015151515151515152,
+                  "right": 0.3939393939393939
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.7222222222222222,
+                  "center": null,
+                  "right": 0.5869565217391305
+                },
+                "mean_abs_target_y": 0.49334827888011945
+              }
+            },
+            "v1": {
+              "episodes": 100,
+              "counts": {
+                "goal": 79,
+                "save": 19,
+                "miss": 2,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.79,
+                "save_rate": 0.19,
+                "miss_rate": 0.02,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.7001985069803768,
+                  0.8583445046835422
+                ],
+                "save": [
+                  0.1251465399270426,
+                  0.27779024070807856
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.02,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 79,
+                "aim": {
+                  "left": 0.0,
+                  "center": 0.12,
+                  "right": 0.88
+                },
+                "goal_line": {
+                  "left": 0.0,
+                  "center": 0.0,
+                  "right": 1.0
+                },
+                "goal_rate_by_aim": {
+                  "left": null,
+                  "center": 0.16666666666666666,
+                  "right": 0.875
+                },
+                "mean_abs_target_y": 0.4032020547483117
+              }
+            },
+            "v2": {
+              "episodes": 100,
+              "counts": {
+                "goal": 93,
+                "save": 3,
+                "miss": 4,
+                "striker_fall": 0,
+                "keeper_fall": 0,
+                "timeout": 0,
+                "sim_error": 0
+              },
+              "rates": {
+                "goal_rate": 0.93,
+                "save_rate": 0.03,
+                "miss_rate": 0.04,
+                "striker_fall_rate": 0.0,
+                "keeper_fall_rate": 0.0,
+                "timeout_rate": 0.0,
+                "sim_error_rate": 0.0
+              },
+              "ci95": {
+                "goal": [
+                  0.8625032899347025,
+                  0.965681175635936
+                ],
+                "save": [
+                  0.010254338223414816,
+                  0.08452078080402699
+                ]
+              },
+              "striker_fall_after_kick_rate": 0.0,
+              "keeper_commit_rate": 1.0,
+              "sides": {
+                "kicks": 100,
+                "crossed_goal_line": 93,
+                "aim": {
+                  "left": 0.55,
+                  "center": 0.0,
+                  "right": 0.45
+                },
+                "goal_line": {
+                  "left": 0.5698924731182796,
+                  "center": 0.0,
+                  "right": 0.43010752688172044
+                },
+                "goal_rate_by_aim": {
+                  "left": 0.9636363636363636,
+                  "center": null,
+                  "right": 0.8888888888888888
+                },
+                "mean_abs_target_y": 0.6399524470269681
+              }
+            }
+          },
+          "macro_save_rate": 0.41124999999999995,
+          "worst_style_save_rate": 0.03,
+          "worst_style": "v2",
+          "sim_errors": 0,
+          "early_commits": 30
+        }
+      },
+      "comparisons_vs_robust": {
+        "anticipation": {
+          "per_style": {
+            "center": {
+              "only_first_saves": 49,
+              "only_second_saves": 3,
+              "p_exact": 1.042677055806969e-11
+            },
+            "corners": {
+              "only_first_saves": 46,
+              "only_second_saves": 4,
+              "p_exact": 4.461782054931994e-10
+            },
+            "feint": {
+              "only_first_saves": 56,
+              "only_second_saves": 0,
+              "p_exact": 2.7755575615628975e-17
+            },
+            "late": {
+              "only_first_saves": 74,
+              "only_second_saves": 0,
+              "p_exact": 1.05879118406788e-22
+            },
+            "mixed": {
+              "only_first_saves": 47,
+              "only_second_saves": 3,
+              "p_exact": 3.7083225379320734e-11
+            },
+            "soft": {
+              "only_first_saves": 42,
+              "only_second_saves": 2,
+              "p_exact": 1.126636561821218e-10
+            },
+            "v1": {
+              "only_first_saves": 68,
+              "only_second_saves": 1,
+              "p_exact": 2.3716922523119837e-19
+            },
+            "v2": {
+              "only_first_saves": 69,
+              "only_second_saves": 0,
+              "p_exact": 3.3881317890171987e-21
+            }
+          },
+          "macro_gain": 0.5475,
+          "macro_gain_ci95": [
+            0.495,
+            0.59875
+          ],
+          "ci_method": "paired bootstrap; episode seeds clustered across styles"
+        },
+        "center:gate": {
+          "per_style": {
+            "center": {
+              "only_first_saves": 9,
+              "only_second_saves": 4,
+              "p_exact": 0.2668457031250002
+            },
+            "corners": {
+              "only_first_saves": 32,
+              "only_second_saves": 7,
+              "p_exact": 7.025478407740655e-05
+            },
+            "feint": {
+              "only_first_saves": 37,
+              "only_second_saves": 8,
+              "p_exact": 1.5374090196473807e-05
+            },
+            "late": {
+              "only_first_saves": 19,
+              "only_second_saves": 1,
+              "p_exact": 4.005432128906248e-05
+            },
+            "mixed": {
+              "only_first_saves": 18,
+              "only_second_saves": 8,
+              "p_exact": 0.07551869750022956
+            },
+            "soft": {
+              "only_first_saves": 27,
+              "only_second_saves": 5,
+              "p_exact": 0.00011307420209049986
+            },
+            "v1": {
+              "only_first_saves": 54,
+              "only_second_saves": 0,
+              "p_exact": 1.1102230246251552e-16
+            },
+            "v2": {
+              "only_first_saves": 70,
+              "only_second_saves": 0,
+              "p_exact": 1.6940658945086082e-21
+            }
+          },
+          "macro_gain": 0.29125,
+          "macro_gain_ci95": [
+            0.24625,
+            0.33625
+          ],
+          "ci_method": "paired bootstrap; episode seeds clustered across styles"
+        }
+      }
+    }
+  },
+  "raw_report_sha256": {
+    "calibration.json": "8de35ed1b5d12cd6bfb2096da55b152df03eba6ad9359917a463322f60dbf16c",
+    "heldout_realista.json": "337cfd2397c6970dfdb114e1834ff02f217cb90315778e6476e2a3401f30cd24",
+    "heldout_stress.json": "4ed8f73091743dcd92fca8466140f268e35bcd504252e057e6e3e22628645324"
+  }
+}

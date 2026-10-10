@@ -94,6 +94,23 @@ class BHumanTacticalTests(unittest.TestCase):
         self.assertAlmostEqual(reward, -10.02)
         self.assertIsNone(env.world.session)
 
+    def test_duel_preserves_native_failure_reason_and_collects_children(self):
+        from penalty.rl.duel import DuelWorld
+        import numpy as np
+        world = DuelWorld()
+        self.addCleanup(world.close)
+        world.reset(np.random.default_rng(0))
+        children = [bridge.process for bridge in world.sim.bridges.values()]
+
+        def broken():
+            raise RuntimeError('striker: Nonfinite or out-of-range sensor')
+        world._step_window = broken
+        result = world.duel_step(StrikerAction(0., 0, .7, 1.), KeeperAction(0, 0., .5))
+        self.assertEqual(result[2], 'sim_error')
+        self.assertIn('out-of-range sensor', world.record()['sim_error'])
+        self.assertIsNone(world.session)
+        self.assertTrue(all(process.poll() is not None for process in children))
+
 
 if __name__ == '__main__':
     unittest.main()

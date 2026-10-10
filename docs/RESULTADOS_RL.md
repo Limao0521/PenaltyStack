@@ -10,6 +10,7 @@ Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna a
 - **El v2 reparte los tiros 51 % a su izquierda y 49 % a su derecha**, siempre a la esquina, y anota igual por los dos lados. El v1 patea casi siempre a su derecha, así que es predecible.
 - **Portero: ningún entrenado supera a la regla fija "guardia central tras la patada"**, que ataja 0.55. El mejor entrenado (v4) ataja 0.37; el geométrico, 0.18.
 - **Portero que lee la postura del tirador (`anticipation`):** contra el tirador v2 ataja **24 %**, frente a 4 % de la guardia central y 6 % del portero FSM. Contra patadas aleatorias empata con la guardia central, y contra el tirador FSM, que patea al centro, rinde algo menos. Ver la sección 4.
+- **Portero robusto (`robust`):** en ocho estilos reservados ataja **84.6 %** de media (anticipation 48.4 %, center 45.2 %) y **77 %** en su peor estilo. Con incertidumbre de orientación/velocidad y 100 ms de retraso: 70.2 % de media y 57 % en el peor estilo. Son reglas temporales sobre B-Human, sin reentrenar PPO. Ver [PORTERO_ROBUSTO.md](PORTERO_ROBUSTO.md).
 - **El entrenamiento es ~17× más rápido que al inicio**: de ~10 a ~170 transiciones/s en B-Human, con el CPU del 8 % al 100 %. La simulación es idéntica bit a bit.
 
 ## 1. Qué se hizo
@@ -286,3 +287,33 @@ Dentro de cada `run/`:
 - **Duelo de los tiradores contra los porteros entrenados** (v1 y v4) y contra `center`.
 - **`tools/build_motion_runtime.py` no detecta VS 2026.**
 - Sin cambios respecto al plan P1: self-play, residual RL y adaptador NAO.
+
+## 8. Robustez frente a distintos estilos
+
+Se seleccionó una política temporal con cinco estilos y semillas apartadas;
+después se congelaron los parámetros y se jugaron 4800 episodios reservados:
+ocho estilos, tres porteros y dos condiciones de percepción, 100 por pareja.
+Los estilos incluyen objetivos centrales/mixtos/esquinas, tiros suaves,
+disparos demorados, cambios de objetivo y las políticas v1/v2.
+
+`robust` confirma avance del balón, combina proyecciones recientes y activa
+el salto lateral cuando la llegada prevista está a ≤1.8 s. La guardia central
+se mantiene para cruces dentro de ±0.30 m. La postura previa resuelve solo
+ambigüedades cerca del borde. La política conserva los contratos v1 y no usa
+el contacto privilegiado ni la identidad del oponente.
+
+En la condición original, la ganancia media frente a anticipation es de
+36.25 puntos (IC95 pareado 31.63–40.88); en la condición degradada, de 54.75
+puntos (49.50–59.88). Contra el tirador central, robust y center hacen 89/100;
+contra v2, robust hace 90/100 y anticipation 27/100. Los movimientos originales
+permiten superar el ensayo anterior ajustando el momento de activación.
+
+La condición original contiene cinco errores nativos del tirador entre 2400
+episodios; se conservaron en el denominador y se diagnosticaron por separado.
+La condición degradada no contiene errores, pero robust conserva 26/800
+compromisos marcados tempranos. El ruido sigue siendo analítico sobre poses
+de escena; estos resultados no validan percepción ni movimientos en NAO real.
+
+Configuración: `models/rl/keeper_robust_v1.json`. Reportes completos, resumen
+pareado y fuentes de recolección: `docs/validation/rl/robustez_20261010/`.
+El comando `tools/watch_rl.py --keeper robust` permite ver la política.

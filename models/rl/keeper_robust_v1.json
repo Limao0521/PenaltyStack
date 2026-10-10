@@ -1,0 +1,10 @@
+{
+  "corner_y": 0.3,
+  "dive_lead_s": 1.8,
+  "deceleration": 0.0,
+  "min_incoming_speed": 0.12,
+  "confirm_frames": 2,
+  "history": 3,
+  "max_ball_age": 0.25,
+  "pose_threshold": 0.9
+}

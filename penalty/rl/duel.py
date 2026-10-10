@@ -40,6 +40,7 @@ class DuelWorld(BHumanWorld):
         self.keeper_gate = bool(keeper_gate)
         self.keeper_builder = ObservationBuilder()
         self.result = self.kick_action = None
+        self.last_error = None
 
     def _install_controllers(self, rng, options):
         self.striker = TacticalStrikerController(stability=lambda: self._stability('striker'))
@@ -51,6 +52,7 @@ class DuelWorld(BHumanWorld):
         striker_obs, info = super().reset(rng, dict(options or {}))
         self.keeper_builder.reset()
         self.result = self.kick_action = None
+        self.last_error = None
         return striker_obs, self._observe_keeper(), info
 
     def _observe_keeper(self):
@@ -118,6 +120,7 @@ class DuelWorld(BHumanWorld):
                 result = 'timeout'
         except (RuntimeError, ValueError, OSError) as error:
             self.result = 'sim_error'
+            self.last_error = str(error)
             self.close()
             return None, None, 'sim_error', {'sim_error': str(error)}
         self.result = result
@@ -125,7 +128,7 @@ class DuelWorld(BHumanWorld):
 
     def record(self):
         if self.session is None:
-            return {'result': self.result}
+            return dict(result=self.result, **({'sim_error': self.last_error} if self.last_error else {}))
         crossing = self.sim.goal_crossing
         action = self.kick_action
         return {'result': self.result, 'kick_time': self.kick_time, 'contact_time': self.contact_time,
@@ -194,9 +197,11 @@ def make_player(spec, role):
     return make_policy(spec['name'], role)
 
 
-def duel_episode(world, striker, keeper, seed, noise=True, attempts=3):
+def duel_episode(world, striker, keeper, seed, noise=True, attempts=3, keeper_noise_factory=None):
     rng = np.random.default_rng(seed)
     noises = {role: PerceptionNoise() if noise else None for role in ('striker', 'keeper')}
+    if keeper_noise_factory is not None:
+        noises['keeper'] = keeper_noise_factory()
     noise_rng = {role: np.random.default_rng([seed, i]) for i, role in enumerate(('striker', 'keeper'))}
 
     def view(role, observation):

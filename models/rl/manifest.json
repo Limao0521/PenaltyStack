@@ -79,5 +79,27 @@
       "save_rate_patadas_esquinas_realista": 0.553,
       "center_vs_striker_v2": 0.04
     }
+  },
+  "keeper_robust_v1": {
+    "rol": "keeper",
+    "tipo": "política temporal de reglas; B-Human ejecuta los movimientos",
+    "policy": "robust",
+    "archivo": "keeper_robust_v1.json",
+    "commit_after_shot": false,
+    "estado": "recomendado para esta simulación frente a distintos estilos",
+    "seleccion": {
+      "seed": 61001,
+      "episodes_per_style": 12,
+      "styles": 5
+    },
+    "evaluacion": {
+      "bhuman_macro_save_rate": 0.84625,
+      "bhuman_worst_style_save_rate": 0.77,
+      "sensor_stress_macro_save_rate": 0.7025,
+      "sensor_stress_worst_style_save_rate": 0.57,
+      "styles": 8,
+      "episodes_per_style": 100
+    },
+    "report": "docs/validation/rl/robustez_20261010/resumen.json"
   }
 }

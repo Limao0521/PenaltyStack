@@ -102,6 +102,9 @@ def make_policy(name, role, seed=None):
     if role == 'keeper' and name == 'anticipation':
         from penalty.rl.anticipation import AnticipatingKeeperPolicy
         return AnticipatingKeeperPolicy()
+    if role == 'keeper' and name == 'robust':
+        from penalty.rl.robust_keeper import RobustKeeperPolicy
+        return RobustKeeperPolicy()
     if name == 'random':
         return RandomPolicy(4 if role == 'striker' else 3, seed)
     raise ValueError('política desconocida para %s: %s' % (role, name))

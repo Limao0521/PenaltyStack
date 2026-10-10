@@ -5,3 +5,4 @@ models/bhuman/meshes/** -text -diff
 models/rl/**/*.zip -text -diff
 models/rl/**/*.npz -text -diff
 docs/media/** -text -diff
+docs/validation/rl/robustez_20261010/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

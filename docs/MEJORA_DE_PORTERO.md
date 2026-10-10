@@ -2,6 +2,8 @@
 
 2026-10-10, rama `feat/rl-contracts`. Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna afirma equivalencia con el NAO real. Contexto general del entrenamiento: [RESULTADOS_RL.md](RESULTADOS_RL.md).
 
+**Evolución posterior:** [PORTERO_ROBUSTO.md](PORTERO_ROBUSTO.md) evalúa una política temporal contra ocho estilos. Los ensayos nuevos muestran que el momento de activación permite mejorar mucho con las estiradas existentes. Las cifras de este documento corresponden al ensayo inicial; su oráculo de compromiso inmediato tras el contacto no constituye un techo para políticas que también eligen cuándo bloquear.
+
 ## Resumen
 
 - **La postura del tirador delata el lado del tiro.** Desde lo que el portero ya observa (posición del tirador respecto al balón y hacia dónde mira), un clasificador simple acierta el **78 %** de los lados y el **86 %** de los tiros a las esquinas, y ya 2 s antes de la patada acierta el 82 % en las esquinas.
