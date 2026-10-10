@@ -317,3 +317,24 @@ de escena; estos resultados no validan percepción ni movimientos en NAO real.
 Configuración: `models/rl/keeper_robust_v1.json`. Reportes completos, resumen
 pareado y fuentes de recolección: `docs/validation/rl/robustez_20261010/`.
 El comando `tools/watch_rl.py --keeper robust` permite ver la política.
+
+## Integración de cámara — 2026-10-10
+
+Primera etapa ejecutable: `vision_keeper_v2`, reglas temporales que reciben
+RGB desde una cámara en la cabeza de MuJoCo. Estima posición/velocidad con
+calibración y odometría, confirma capturas independientes y no usa orientación
+del tirador. `rl_obs_v2` conserva máscaras explícitas; v1 sigue intacto.
+
+Ensayo preliminar con semillas `65001000000`–`65001000009`, 10 tiros por cada
+uno de los ocho estilos y portero: 74/80 atajadas (92.5 %) frente a 44/80
+(55 %) del base con la misma visión. Ganancia pareada 37.5 puntos, IC95 25–50;
+cero errores y cero compromisos marcados tempranos. No se compara directamente
+con el 84.6 % anterior: cambian semillas y percepción. La calibración,
+odometría y extrínsecos de esta prueba son ideales; no hay resultado físico.
+
+La ruta NAOqi incorpora cámara, tiempos y decisiones en modo de observación;
+el ejecutor de bloqueos sigue pendiente. El adaptador consume snapshots de
+BallModel/ObstacleModel, pero los proveedores de percepción B-Human todavía
+no están activos en este host. Reporte y trazas:
+`docs/validation/rl/vision_20261010/`; uso y límites en
+[VISION_PORTERO.md](VISION_PORTERO.md).

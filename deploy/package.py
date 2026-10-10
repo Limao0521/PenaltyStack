@@ -12,6 +12,9 @@ FILES = (
     'penalty/__init__.py',
     'penalty/control.py',
     'penalty/vision.py',
+    'penalty/perception.py',
+    'penalty/keeper_vision.py',
+    'penalty/nao_vision.py',
     'penalty/nao.py',
     'deploy/run.sh',
 )
@@ -27,6 +30,9 @@ def package(profile_path, output_path):
         raise ValueError('set the physical robot_id before packaging')
     if profile.get('kick_enabled'):
         raise ValueError('physical kick executor is missing')
+    if profile.get('keeper_policy') == 'vision':
+        from penalty.nao_vision import validate_profile
+        validate_profile(profile)
     manifest = {'profile': profile['robot_id'], 'role': profile['role'], 'files': {}}
     profile_data = profile_path.read_bytes()
     manifest['files']['profile.json'] = hashlib.sha256(profile_data).hexdigest()

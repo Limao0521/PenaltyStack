@@ -105,6 +105,9 @@ def make_policy(name, role, seed=None):
     if role == 'keeper' and name == 'robust':
         from penalty.rl.robust_keeper import RobustKeeperPolicy
         return RobustKeeperPolicy()
+    if role == 'keeper' and name == 'vision':
+        from penalty.rl.vision_keeper import VisionKeeperPolicy
+        return VisionKeeperPolicy()
     if name == 'random':
         return RandomPolicy(4 if role == 'striker' else 3, seed)
     raise ValueError('política desconocida para %s: %s' % (role, name))

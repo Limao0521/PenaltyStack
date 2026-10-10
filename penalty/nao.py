@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Adaptador onboard NAOqi 2.8. Python 2.7 compatible.
 
 El modo inicial observa y registra. La marcha exige activación explícita en
@@ -30,6 +31,9 @@ def held(memory, key, seconds, now, since):
 def run(profile_path):
     with open(profile_path, 'r') as stream:
         profile = json.load(stream)
+    if profile.get('keeper_policy') == 'vision':
+        from penalty.nao_vision import run as run_vision
+        return run_vision(profile)
     role = profile['role']
     if role not in ('striker', 'keeper'):
         raise ValueError('invalid role')

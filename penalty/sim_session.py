@@ -282,7 +282,7 @@ class SimulationSession:
                               and self._jump_started[role] else 'block')
             requests[role] = {'motion':motion,'forward':command.forward*1000,
                 'lateral':command.lateral*1000,'turn':command.turn,
-                'head_yaw':command.head_yaw,'head_pitch':0.,
+                'head_yaw':command.head_yaw,'head_pitch':getattr(command, 'head_pitch', 0.),
                 'kick_type':self.manual['kick_type'],
                 'kick_length_mm':self.manual['kick_length_mm'],
                 'block_side':self._keeper_block if role=='keeper' and self._keeper_block is not None else command.block}

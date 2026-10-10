@@ -1,0 +1,22 @@
+{
+  "full_suite": {
+    "command": "python -m unittest discover -s tests -q",
+    "tests": 147,
+    "passed": true,
+    "wall_s": 66.204
+  },
+  "final_focused_suite": {
+    "command": "python -m unittest tests.test_keeper_vision tests.test_package tests.test_control tests.test_vision -q",
+    "tests": 33,
+    "passed": true,
+    "wall_s": 1.29
+  },
+  "original_bhuman_hashes_verified": 559,
+  "python2_grammar_checked_modules": 7,
+  "python2_on_nao_executed": false,
+  "trace_replay_identical_frames": 38,
+  "camera_source": "simulated_camera",
+  "camera_duels": 160,
+  "physical_movements_executed": false,
+  "scope": "ball camera path, versioned keeper, model snapshot adapter; upstream perception providers/hardware calibration pending"
+}

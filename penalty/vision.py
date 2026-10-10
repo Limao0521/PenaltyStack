@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Baseline ligero para la pelota naranja en RGB intercalado.
 
 Adaptación conceptual de los candidatos por color de TriondaBallSpotsProvider.

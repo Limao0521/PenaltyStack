@@ -19,3 +19,18 @@ La segunda orden muestra las operaciones; `--apply` las ejecuta. Los archivos qu
 Por SSH antes de la prueba: `cd /home/nao/PenaltyStack/current && sh deploy/run.sh`. Dejar el proceso ejecutándose onboard; después desconectar Ethernet. El robot espera inmóvil hasta pulsar la parte frontal de la cabeza tras el silbato. Mantener pecho 0,3 s activa ABORT. El proceso termina al agotar 28 s o completar el rol. El lanzador se niega a iniciar si detecta el proceso `bhuman`: ALMotion/NAOqi y LoLA no deben competir por actuadores. Confirmar manualmente el perfil y la identidad de cada robot antes de ejecutar.
 
 Actualmente `motion_enabled=false` deja todo movimiento físico apagado. Para ensayos controlados de marcha, ponerlo en true y establecer `PENALTY_ENABLE_WALK=I_UNDERSTAND` en la sesión onboard. La patada real no se ejecuta ni siquiera en ese modo. Si aparece `KICK_REQUEST_NOT_EXECUTED`, la prueba no es un penal funcional; no contarla como éxito.
+
+## Portero con cámara en modo de observación
+
+`profiles/keeper.vision.example.json` selecciona `keeper_policy=vision`.
+Completar serial y calibración QVGA RGB medida antes de empaquetar: focales,
+centro óptico, radio del balón, identificador y distancia a la línea de gol.
+Se rechazan focales cero, `TO_FILL` y habilitar movimiento/patada/bloqueos.
+El paquete añade seguimiento con odometría y la política portable v2;
+no necesita NumPy, MuJoCo ni Torch en el NAO.
+
+El mismo lanzador registra JSONL con observaciones, tiempos, validez,
+decisión y `executed=false`, respetando START/ABORT y 28 s. La lectura de
+sensores a recepción es una aproximación y debe validarse con grabaciones
+del robot; no se ha hecho una prueba física de este recorrido. Detalles,
+reproducción y alcance de B-Human en [VISION_PORTERO.md](VISION_PORTERO.md).

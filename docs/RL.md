@@ -186,3 +186,17 @@ Pendiente:
 - `--striker-controller/--keeper-controller rl` en el simulador cuando exista un formato de modelo.
 
 Ningún resultado de esta capa afirma equivalencia con hardware.
+
+## Portero con visión — 2026-10-10
+
+`vision_keeper_v2` consume `rl_obs_v2`, con máscaras de medidas desconocidas,
+captura y covarianza de velocidad. El portero recibe el balón desde píxeles,
+proyección calibrada y seguimiento con odometría; no usa postura del rival.
+Los contratos/checkpoints v1 se preservan. En 160 duelos de cámara simulada,
+ocho estilos y semillas nuevas, hizo 74/80 atajadas frente a 44/80 del base.
+Es preliminar y usa sensores/calibración ideales de simulación.
+
+Comando: `tools/evaluate_keeper_vision.py --episodes 10 --workers 4 --seed 65001 --output runs/keeper_vision/camera.json`.
+El modo NAOqi nuevo solo registra decisiones; falta validar en el robot y
+calibrar el ejecutor físico. Diseño, alcance y protocolo de modelos B-Human:
+[VISION_PORTERO.md](VISION_PORTERO.md).

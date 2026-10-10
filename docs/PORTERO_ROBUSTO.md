@@ -169,8 +169,10 @@ entrenadas. Ninguno ejecuta el comportamiento oficial completo de B-Human.
 
 La propuesta de reutilización de visión B-Human, el mapa de fuentes y el
 adaptador con medidas desconocidas están en [VISION_PORTERO.md](VISION_PORTERO.md).
-Es un diseño pendiente de implementación; la detección de un rival en las
-estructuras importadas no entrega su orientación corporal.
+La primera etapa ya está implementada como `vision_keeper_v2`: seguimiento
+RGB con calibración/odometría, `rl_obs_v2`, adaptador de modelos B-Human y
+modo NAOqi de observación. La detección de un rival en las estructuras
+importadas no entrega su orientación corporal.
 
 La mejora táctica, su configuración y las pruebas están implementadas en
 simulación. El portero obtiene la posición del balón y la postura del rival
@@ -181,14 +183,14 @@ la trayectoria del balón y su tiempo de llegada guían el bloqueo.
 Ya existe un detector básico de pelota naranja en `penalty/vision.py` que
 estima distancia y ángulo desde una imagen RGB. Requiere calibración con las
 cámaras del NAO concreto. `penalty/nao.py` lee imágenes mediante NAOqi, pero
-actualmente ejecuta la FSM básica: no construye las observaciones de
-`robust`, no carga esta política y no ejecuta sus bloqueos físicos.
+con el perfil anterior ejecuta la FSM básica. El perfil nuevo
+`keeper.vision.example.json` selecciona `vision`, calcula decisiones desde
+imágenes y las registra; todavía no ejecuta sus bloqueos físicos.
 
 Para trasladar la mejora al robot falta:
 
-1. Seguir el balón entre imágenes con sus tiempos de captura; estimar
-   posición, velocidad, visibilidad y antigüedad en el marco del portero,
-   compensando la orientación de la cámara y de la cabeza.
+1. Calibrar y validar en el NAO el seguimiento temporal y la compensación
+   de cámara/odometría implementados, con imágenes y sensores reales.
 2. Estimar la posición y orientación del tirador a partir de imágenes,
    registrando la incertidumbre y los casos en que no se puede medir.
 3. Conectar cámaras y sensores a un adaptador de observaciones compatible
@@ -200,8 +202,10 @@ Para trasladar la mejora al robot falta:
    en el NAO concreto. Comparar después con el portero base bajo las mismas
    condiciones reales.
 
-La prioridad propuesta es el seguimiento del balón y el tiempo de llegada;
-la postura del rival aporta una pista adicional. Incorporar cámaras permite
+La versión `vision` ya usa seguimiento del balón y tiempo de llegada, con
+la postura del rival deshabilitada. En cámara simulada hizo 74/80 atajadas
+frente a 44/80 del base, en un ensayo preliminar con semillas nuevas;
+ver [VISION_PORTERO.md](VISION_PORTERO.md). Incorporar cámaras permite
 operar con observaciones reales, pero no garantiza mantener la tasa de
 atajadas de la simulación. El **84.6 % no es un resultado en hardware**.
 

@@ -1,0 +1,82 @@
+{
+  "version": "vision_state_v1",
+  "source": "simulated_camera",
+  "capture_s": 0.5039999999999445,
+  "received_s": 0.5039999999999445,
+  "decision_s": 0.5039999999999445,
+  "time_s": 0.5039999999999445,
+  "remaining_time": 27.496000000000056,
+  "calibration_id": "mujoco_nominal_v1_lower",
+  "ball": {
+    "position": [
+      1.194942380581897,
+      0.0005794012254091489
+    ],
+    "velocity": [
+      0.0,
+      0.0
+    ],
+    "position_valid": true,
+    "velocity_valid": false,
+    "visible": true,
+    "age_s": 0.0,
+    "last_seen_s": 0.5039999999999445,
+    "position_covariance": [
+      [
+        0.0002720474360965854,
+        1.2921242123039643e-07
+      ],
+      [
+        1.2921242123039643e-07,
+        3.654432762256096e-05
+      ]
+    ],
+    "velocity_covariance": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "reason": "position_only"
+  },
+  "opponent": {
+    "position": [
+      0.0,
+      0.0
+    ],
+    "yaw": 0.0,
+    "position_valid": false,
+    "yaw_valid": false,
+    "age_s": 40.0,
+    "track_id": null
+  },
+  "sensors": {
+    "gyro": [
+      -0.016657068858829498,
+      0.07597334869213658,
+      0.003148690356546054
+    ]
+  },
+  "camera": {
+    "candidate": {
+      "center": [
+        159.67073170731706,
+        118.01219512195122
+      ],
+      "bounds": [
+        152,
+        112,
+        168,
+        124
+      ],
+      "diameter": 14.0,
+      "pixels": 41
+    },
+    "synchronized": true
+  },
+  "sensor_provenance": "ideal simulated camera extrinsics, IMU and feet odometry"
+}

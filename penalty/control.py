@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """FSM determinista independiente del simulador y del hardware.
 
 Coordenadas: avance positivo hacia el frente del robot; bearing positivo a

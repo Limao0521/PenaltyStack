@@ -28,6 +28,15 @@ def robot_spec(mocap=True):
                                 ('acc', mujoco.mjtSensor.mjSENS_ACCELEROMETER)):
         spec.add_sensor(name='imu_' + suffix, type=sensor_type,
                         objtype=mujoco.mjtObj.mjOBJ_SITE, objname='imu')
+    # Sensor-only additions; RSI3/model originals and physics remain unchanged.
+    # Pinned B-Human RobotDimensions offsets (m) and nominal camera intrinsics.
+    head = spec.body('Head')
+    for name, x, z, tilt in (('upper', .05871, .06364, 1.2),
+                             ('lower', .05071, .01774, 39.7)):
+        angle = math.radians(tilt)
+        # MuJoCo: local -z looks forward, +y is up, +x points image-right.
+        head.add_camera(name='camera_'+name, pos=[x, 0., z], fovy=42.5,
+                        xyaxes=[0., -1., 0., math.sin(angle), 0., math.cos(angle)])
     return spec
 
 

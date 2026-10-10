@@ -1,0 +1,26 @@
+{
+  "robot_id": "NAO_KEEPER_SERIAL_TO_FILL",
+  "role": "keeper",
+  "keeper_policy": "vision",
+  "camera": 1,
+  "motion_enabled": false,
+  "kick_enabled": false,
+  "block_enabled": false,
+  "vision": {
+    "calibration": {
+      "width": 320,
+      "height": 240,
+      "fx": 0,
+      "fy": 0,
+      "cx": 159.5,
+      "cy": 119.5,
+      "ball_radius_m": 0.0325,
+      "calibration_id": "CAMERA_MEASURED_TO_FILL"
+    },
+    "keeper_settings": {
+      "corner_y": 0.3,
+      "dive_lead_s": 1.8,
+      "goal_line_x": -0.12
+    }
+  }
+}

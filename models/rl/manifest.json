@@ -80,6 +80,27 @@
       "center_vs_striker_v2": 0.04
     }
   },
+  "keeper_vision_v2": {
+    "rol": "keeper",
+    "tipo": "reglas temporales desde cámara; sin orientación del rival",
+    "policy": "vision",
+    "archivo": "keeper_vision_v2.json",
+    "observation": "rl_obs_v2",
+    "estado": "integración de cámara simulada validada; NAO solo observación",
+    "evaluacion": {
+      "source": "simulated_camera",
+      "seed": 65001,
+      "episodes_per_style": 10,
+      "styles": 8,
+      "saves": 74,
+      "episodes": 80,
+      "base_saves": 44,
+      "macro_save_rate": 0.925,
+      "base_macro_save_rate": 0.55,
+      "hardware_validated": false
+    },
+    "report": "docs/validation/rl/vision_20261010/camera_heldout.json"
+  },
   "keeper_robust_v1": {
     "rol": "keeper",
     "tipo": "política temporal de reglas; B-Human ejecuta los movimientos",

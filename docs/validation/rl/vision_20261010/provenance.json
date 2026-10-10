@@ -1,0 +1,41 @@
+{
+  "description": "integration source; camera/policy algorithms frozen before seed 65001 collection",
+  "post_collection_changes": "BHumanVisionAdapter (unused by camera benchmark), UTF-8 source cookies, tests/docs/replay; nested cleanup to reap native children even if GL cleanup fails",
+  "seed_development": [
+    64000000000,
+    64002,
+    64003
+  ],
+  "seed_heldout": [
+    65001000000,
+    65001000009
+  ],
+  "files": {
+    "penalty/perception.py": "e22b1ca8f7587882214448dc287adf64978890f6c3dcc3a861fc2dee28216c07",
+    "penalty/keeper_vision.py": "fef98d7778d7ee9c4dbfd770ceef244a81d55affc7ab8572de1c32b0041d7e8c",
+    "penalty/sim_vision.py": "3017a1b67fb44de741668ab1513a80c3010e43c343b50ed521b7461acaf96615",
+    "penalty/rl/vision_contracts.py": "7cd81235639ae58862555e341736c75ad5eca8d2badfefd9de283708d9bfe586",
+    "penalty/rl/vision_keeper.py": "5d09d5fe39ea400f0b7db2cee4a1806519076dd9bc714a0b6ad1143d41a742fe",
+    "penalty/rl/vision_benchmark.py": "35d9deb05f9b9ce2609017d0d1ba7abe32a851b004dc2e3d06d2db526d14b884",
+    "tools/evaluate_keeper_vision.py": "ea1ff398716cc02b73e652a84560eb295812db8f0077ce7d8e19a5b5e79ade13",
+    "penalty/rl/controllers.py": "78e040d274aa5fc329405840785394c05cdadbab9ae981c75472288f6473beee",
+    "penalty/sim_session.py": "13e48389369ebdb6cd1d48bec9bbf64cc4d68776c7463799fc83cee4a520f66b",
+    "penalty/nao_model.py": "6086ad63c7856da63e0733bb9326c67566a70879e5129a631e87dfd38a868a68",
+    "penalty/rl/keeper_benchmark.py": "3e7d2e83bf4c5cc0863d6d1e8efad02d72536fc2ccf1b271ee77d1310b912ccd",
+    "penalty/rl/duel.py": "75025df888928b63df1940acdcc882309e0cdd0a411e943d43ea12fe6d62c27a"
+  },
+  "camera_algorithm_sha256": {
+    "CameraCalibration": "190bbb532611f3f6b5693bd75cef258e05c1561ba3e585fd7ffa42d83ef61e46",
+    "orange_candidate": "51038a5a0f406d7781add5ab8b51f12208fcfd4cfd689090b30f3ff8f79908b3",
+    "BallTracker": "b791da71d0db8bd2dc4f056999ea90f74220eb5c36d61de20ce6891116a6c864",
+    "CameraVision": "ca9c7c2fe250310d36d784ad39d102c897fd0381f1af13fbef9569d418046a3e",
+    "vision_state": "7f4f5a7b98aeb3ddf899508750cca31fcaf99ee8da152bf2ebe230d41d033b57",
+    "rotate_covariance": "204c2136cdd94f917d9dca0e538c58b3233aef34c07a3fb57242f2ae08bce457",
+    "local": "a9cfc5b17154d33d0fdf3f694e64ab2e30444e340f131705e655ad9fcced12c0",
+    "ground": "35e37814c0f582991af6d0215920245d9b7f4c669f5a140ca58993832d50965d",
+    "vector": "118f4f4bb272232a4bc3bcb02bc8f3306b85ddbf73eb9bfbdee240a728cf27c2",
+    "covariance": "d798d187c3ac0ba8daa22f4bb68408b36dd73aaf7d66493d7c774e7be71c02b2",
+    "finite": "7c6b729ad0ebf2ec54aea56a2a21427491d3adabb0a6a891bfaefa0f1ce84a47"
+  },
+  "original_motion_runtime_sha256": "efebe302aa35b3f57b4646419f1b9c0ac9cc784b254c7cdba2d3d7dcff393268"
+}
