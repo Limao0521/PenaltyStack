@@ -34,3 +34,11 @@ decisión y `executed=false`, respetando START/ABORT y 28 s. La lectura de
 sensores a recepción es una aproximación y debe validarse con grabaciones
 del robot; no se ha hecho una prueba física de este recorrido. Detalles,
 reproducción y alcance de B-Human en [VISION_PORTERO.md](VISION_PORTERO.md).
+
+`profiles/keeper.bhuman-vision.example.json` añade el detector original del
+rival: cámara superior VGA y contraste inferior QVGA, con calibración de
+ambas. El recorrido NAOqi está integrado en modo de observación. Requiere
+compilar y validar el host de imágenes para Linux x86-64 del NAO y pasarlo a
+`deploy/package.py --vision-runtime <ruta/bhuman_vision>` con su `.so` fijada
+a su lado. Windows `.exe` y movimientos habilitados se rechazan. Este destino
+no se ha ejecutado en hardware; ver [VISION_BHUMAN_RIVAL.md](VISION_BHUMAN_RIVAL.md).

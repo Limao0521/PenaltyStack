@@ -32,7 +32,10 @@ def run(profile_path):
     with open(profile_path, 'r') as stream:
         profile = json.load(stream)
     if profile.get('keeper_policy') == 'vision':
-        from penalty.nao_vision import run as run_vision
+        if profile.get('vision', {}).get('opponent', {}).get('detector') == 'bhuman':
+            from penalty.nao_opponent_vision import run as run_vision
+        else:
+            from penalty.nao_vision import run as run_vision
         return run_vision(profile)
     role = profile['role']
     if role not in ('striker', 'keeper'):

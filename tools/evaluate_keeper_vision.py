@@ -16,8 +16,12 @@ def main():
     parser.add_argument('--workers', type=int, default=2)
     parser.add_argument('--seed', type=int, default=65001)
     parser.add_argument('--styles', nargs='+', choices=STYLES, default=STYLES)
+    parser.add_argument('--opponent-detector', choices=('none', 'bhuman'), default='none',
+                        help='bhuman selects a NEW upper-camera experiment with native robot inference')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
+    if args.opponent_detector == 'bhuman':
+        from penalty.rl.opponent_benchmark import benchmark
     report = benchmark(args.episodes, args.seed, args.workers, tuple(args.styles))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n', encoding='utf-8')

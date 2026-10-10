@@ -5,8 +5,9 @@ El nuevo portero `vision` obtiene el balón de imágenes RGB, estima su velocida
 y decide cuándo bloquear. En NAOqi existe el mismo recorrido en modo de
 observación: registra la decisión, sin ejecutar movimientos físicos.
 
-La detección del rival de B-Human puede entrar por el adaptador de modelos.
-Sus proveedores todavía no se ejecutan en el host motriz de este repositorio.
+El detector del rival B-Human ya se ejecuta en un proceso local separado:
+red superior y contraste inferior, con proyección/asociación desde píxeles.
+Detalle, ensayos y límites en [VISION_BHUMAN_RIVAL.md](VISION_BHUMAN_RIVAL.md).
 La orientación corporal del tirador continúa desconocida; esta versión decide
 por la trayectoria del balón y no utiliza el predictor de postura.
 
@@ -18,6 +19,7 @@ por la trayectoria del balón y no utiliza el predictor de postura.
 | Proyección | `CameraCalibration.project_ball` | Intrínsecos explícitos, transformación cámara → suelo y radio del balón |
 | Seguimiento | `BallTracker` | Velocidad entre capturas, compensación con odometría, edad y covarianzas |
 | Modelos B-Human | `BHumanVisionAdapter` | Conversión de unidades, tiempos, posición/velocidad y selección del tirador desde snapshots |
+| Rival desde píxeles | `robot_detector.py`, `opponent_perception.py`, `native/bhuman_vision/` | Detector B-Human activo en PC; cámaras superior/inferior, posición con validez y orientación desconocida |
 | Información desconocida | `vision_state_v1` y `rl_obs_v2` | Máscaras separadas para posición/velocidad del balón y posición/yaw del rival |
 | Decisión | `vision_keeper_v2` | Confirma dos capturas, comprueba incertidumbre y estima cruce/llegada |
 | Simulación | `CameraDuelWorld` y `SimulatedKeeperCamera` | Cámara en la cabeza; cabeza guiada por detecciones; bloques originales B-Human |
@@ -118,9 +120,9 @@ en hardware, además de medir retraso, rolling shutter y giros de cabeza.
 
 La revisión importada es SabanaHerons2026
 `2360ab1100ad28f70e190c893f6b095651ff0bbc`. Sus 559 originales conservan los
-hashes de `baseline/motion_manifest.json`. El host C++ actual conserva su
-alcance motriz: no se activaron por artefacto los perceptores ni los pesos
-del detector de robots.
+hashes de `baseline/motion_manifest.json`. El host motriz conserva su alcance;
+el nuevo host de imágenes `native/bhuman_vision/` ejecuta el detector del
+rival con originales importados aparte y pesos de esa misma revisión.
 
 `BHumanVisionAdapter.process` consume un snapshot explícito
 `bhuman_local_models_v1`. El productor debe exportar los modelos **locales**,
@@ -170,9 +172,11 @@ No estima yaw: ni `ObstaclesFieldPercept` ni `ObstacleModel` lo proporcionan.
 `RobotPose` es la pose propia; la velocidad de un rival tampoco dice hacia
 dónde orienta el cuerpo.
 
-Queda por incorporar/ejecutar los proveedores B-Human y publicar sus
-snapshots desde la percepción real. La prueba con píxeles de esta entrega
-usa nuestro detector naranja, no el detector de robots de B-Human.
+Los proveedores completos de BallModel/ObstacleModel y su exportación siguen
+pendientes. El ensayo de 74/80 publicado arriba usa nuestro detector naranja.
+La entrega posterior activa el detector B-Human del rival directamente desde
+imágenes en un componente aislado; sus resultados propios están en
+[VISION_BHUMAN_RIVAL.md](VISION_BHUMAN_RIVAL.md).
 
 ## Uso y despliegue
 

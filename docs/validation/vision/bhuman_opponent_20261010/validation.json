@@ -1,0 +1,47 @@
+{
+  "full_suite": {
+    "command": ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+    "tests": 168,
+    "wall_s": 66.012,
+    "result": "passed"
+  },
+  "final_focused_suite": {
+    "tests": 21,
+    "wall_s": 3.157,
+    "result": "passed",
+    "scope": "robot perception, IPC, NAOqi observation/cleanup, packaging"
+  },
+  "python2_grammar": {
+    "files": [
+      "penalty/__init__.py",
+      "penalty/control.py",
+      "penalty/vision.py",
+      "penalty/perception.py",
+      "penalty/keeper_vision.py",
+      "penalty/nao_vision.py",
+      "penalty/nao.py",
+      "penalty/robot_detector.py",
+      "penalty/opponent_perception.py",
+      "penalty/nao_opponent_vision.py"
+    ],
+    "result": "passed; lib2to3 grammar, not a Python 2 runtime test"
+  },
+  "immutable_motion_files_verified": 559,
+  "rsi3_original_verified": true,
+  "platform_tested": "Windows x64, MSVC 2026, Python 3.11.9",
+  "hardware_executed": false,
+  "linux_host_built": false,
+  "executable_sha256": "6b93c739a0a3a762edc97376cf2534f917f84d2a4d99340f5b9b5ac44d704963",
+  "source_commit_parent": "988d27839cc5ea231d03004b18bde28867ee0039",
+  "source_sha256": {
+    "native/bhuman_vision/main.cpp": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+    "native/bhuman_vision/CMakeLists.txt": "bb8a22254a977bacba7447c892c8a58d091ab59dc8f948f98e28178cc2487eb1",
+    "tools/build_robot_perception.py": "530020dff5644d5ce4f33be8dcef0f56dff1f34253b9c57704b2f3e2468e2834",
+    "penalty/robot_detector.py": "1bec7c7713be46f5f95f63d035e59cbe5a347e9b0b890deb1d5a46b72e1003c9",
+    "penalty/opponent_perception.py": "fe3a02bdd20eb520ca728d298ac00362c66231f8db61b267936af032cf90fd33",
+    "penalty/sim_opponent_vision.py": "73a636ce726fb4acec88ce2fd0b53ca33bd749dcd20418c2988f30064f91c3bb",
+    "penalty/nao_opponent_vision.py": "61b619e5c8a6be6cfaaf9ccd3692be5f4d7831a73ff05e35d70bd5df01fe2ed1",
+    "deploy/package.py": "285cb4a305745b9a1050362d942133b543cbf2173f260484c0a2b8ef6a651259",
+    "tests/test_robot_perception.py": "5a28dae5be7687be4bf86a72f1116be80b0df00cf8254a9cbd45a0fcf72e3a6f"
+  }
+}

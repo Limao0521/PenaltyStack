@@ -174,6 +174,12 @@ RGB con calibración/odometría, `rl_obs_v2`, adaptador de modelos B-Human y
 modo NAOqi de observación. La detección de un rival en las estructuras
 importadas no entrega su orientación corporal.
 
+La integración posterior del detector B-Human del rival ya ejecuta la red
+superior y el contraste inferior desde imágenes, con posición, edad y
+covarianza. El ensayo inicial valida posición en 28/30 capturas; mantiene
+orientación desconocida. Los detalles y el destino NAO pendiente de
+calibración/compilación están en [VISION_BHUMAN_RIVAL.md](VISION_BHUMAN_RIVAL.md).
+
 La mejora táctica, su configuración y las pruebas están implementadas en
 simulación. El portero obtiene la posición del balón y la postura del rival
 desde la escena, con las perturbaciones descritas arriba. La postura del

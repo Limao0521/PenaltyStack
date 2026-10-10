@@ -1,4 +1,13 @@
-# Estado operativo — 2026-10-07
+# Estado operativo — 2026-10-10
+
+## Actualización: percepción del rival
+
+- Rama `codex/mejora-portero`. Detector B-Human activo en proceso local de imágenes: red ONNX superior y contraste/clustering inferior, cuerpos originales compilados. Misma revisión fijada que movimientos; 19 originales/pesos/licencias importados aparte en `heritage/bhuman_robot_perception`, hashes verificados. Los 559 originales y RSI3 intactos.
+- `tools/build_robot_perception.py` compila Windows/MSVC 2022 o 2026; CMake tiene destino Linux pendiente de compilar/probar para NAO. Protocolo `bhuman_robot_pixels_v1`, sin actuadores/red de juego; cierre acotado y recolección del hijo incluso con fallos/colas llenas.
+- `opponent_perception.py`: proyección de pies, cercanía al balón, odometría, edad/covarianza; contraste requiere dos capturas. Camiseta, caída y yaw desconocidos; confianza inferior no medida. No inferir yaw de velocidad. `vision_keeper_v2` sigue decidiendo por balón y los contratos/recompensas publicados no se alteraron.
+- `sim_opponent_vision.py`: conserva balón/cabeza inferiores publicados; ambas imágenes de cabeza alimentan el detector. Prueba de 30 cuadros: posición validada en 28, error mediano 11.4 cm frente al centro de pies; ensayo de 16 episodios/ocho estilos: 1080/1142 cuadros válidos, error mediano 22.8 cm, cero errores. Solo integración preliminar, sensores propios ideales y sin equivalencia con hardware. Fuentes/trazas/cámaras/reportes en `docs/validation/vision/bhuman_opponent_20261010`.
+- NAOqi integrado en observación con `profiles/keeper.bhuman-vision.example.json`: START/ABORT/28 s, dual camera RGB, sin movimientos. Requiere calibración y host Linux x86-64 compatible; paquete exige `--vision-runtime` y `.so` fijada, rechaza Windows y movimientos habilitados. No hubo prueba de hardware. Ver `docs/VISION_BHUMAN_RIVAL.md`.
+- Suite completa: 168 pruebas en 66.0 s; 21 focalizadas tras añadir verificación del cierre NAOqi con fallos de cámaras/log. No cambiar resultados históricos de 74/80 o 84.6 %; no hay mejora de atajadas atribuible a orientación en esta entrega.
 
 ## Objetivo
 

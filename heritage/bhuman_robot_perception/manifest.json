@@ -1,0 +1,43 @@
+{
+  "version": "bhuman_robot_originals_v1",
+  "source": "https://github.com/juanulloa2050/SabanaHerons2026",
+  "commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+  "files": {
+    "License.md": "c4ee5ee79d0367e352106da22bdde4c03c08c67d9bffa8258bec73a005d5012e",
+    "Src/Modules/Perception/PlayersPerceptors/RobotDetector.cpp": "97e4d1939388ebe9397292cb9b48c1def55d36c0d9f61235a28773fe7232b420",
+    "Src/Modules/Perception/PlayersPerceptors/RobotDetector.h": "669af2d4e75561c5d701734025ece99da2abd382311618a91ef939e88e9b73cd",
+    "Src/Libs/ImageProcessing/Resize.cpp": "ec59a2bbb78cbade013faff8098e309fed2d888e2f5338f8439e78e94e36132f",
+    "Src/Libs/ImageProcessing/Resize.h": "6fdebd35160bf2fda3bb6ad9a97dc1d8fc71f9a82ae2f491f014e426e18d4b78",
+    "Src/Libs/ImageProcessing/LabelImage.cpp": "929df6f7fcc5e249764a2e2dd3ff07a0560d1de954f3fb2c4ca1941eff7f0147",
+    "Src/Libs/ImageProcessing/LabelImage.h": "03a1fbf9958c721cf09bfbb589804ca530a4db7a4c43331a6c2780e071669904",
+    "Src/Libs/ImageProcessing/ColorModelConversions.h": "27a4db4fb023802cea75b8ae57d7a5a345e89759b2e65ab1d4c1cf0a26dd05ac",
+    "Src/Modules/Perception/ImagePreprocessors/ECImageProvider.cpp": "36be5a6d7647185d33e66fe323dbfa1ba251894161ca6a28fdf6789e85fdee74",
+    "Config/NeuralNets/RobotDetector/4_anchor_boxes_20230629-220730.cfg": "be46abd6610c069d53b262ab9da25f9d2e8f1724abec9abc1b4b286c58ab9d38",
+    "Config/NeuralNets/RobotDetector/4_anchor_boxes_model_no_activation_20230629-220730.onnx": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+    "Config/NeuralNets/RobotDetector/4_anchor_boxes_model_no_activation_20230629-220730.hdf5": "32840acb25a29a34aa2dfd054adcbb6140463d7b93f86decade6e710102ef2a0",
+    "Util/onnxruntime/LICENSE": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c",
+    "Util/onnxruntime/ThirdPartyNotices.txt": "82eda7fda7b5ae4616364e50272c9abfcbb87f1440d86c018286c71d371bc839",
+    "Util/onnxruntime/VERSION_NUMBER": "ca381b7925e3ec6a025d3c0d5ffe7142e52873e476bc238c42e65fa49ede5dc7",
+    "Util/onnxruntime/GIT_COMMIT_ID": "302f9ee4ceb6ea7554c623e5d8559813a089e9e1ab988a925178c10001dae2f4",
+    "Util/onnxruntime/include/onnxruntime_c_api.h": "63b3108ef13d558e0bf962c237e8568b7f9067e98285c4c6ac1924e1e168e5b7",
+    "Util/onnxruntime/include/onnxruntime_cxx_api.h": "6b77e7c9feba5b5ad09b6ff2b8fbdc3310b99943b0145003fcfb7495df0e3542",
+    "Util/onnxruntime/include/onnxruntime_cxx_inline.h": "754850939ea180c584cfc6ff97e6271a2b672cdc2a4b5f6f2c00e50ceb00e7ae"
+  },
+  "binary_dependencies": {
+    "Util/onnxruntime/lib/Windows/onnxruntime.dll": {
+      "url": "https://raw.githubusercontent.com/juanulloa2050/SabanaHerons2026/2360ab1100ad28f70e190c893f6b095651ff0bbc/Util/onnxruntime/lib/Windows/onnxruntime.dll",
+      "sha256": "45f61e0165ed6eb93800d5cbfbd63fbcfc6ccf070147e597ec09a9ea78188a10",
+      "bytes": 7385520
+    },
+    "Util/onnxruntime/lib/Windows/onnxruntime.lib": {
+      "url": "https://raw.githubusercontent.com/juanulloa2050/SabanaHerons2026/2360ab1100ad28f70e190c893f6b095651ff0bbc/Util/onnxruntime/lib/Windows/onnxruntime.lib",
+      "sha256": "d3a7b4fe39a09cada3e1688cf26f02b5c1e7176eeff4a382010b31b20be26997",
+      "bytes": 2124
+    },
+    "Util/onnxruntime/lib/Linux/libonnxruntime.so.1.10.0": {
+      "url": "https://raw.githubusercontent.com/juanulloa2050/SabanaHerons2026/2360ab1100ad28f70e190c893f6b095651ff0bbc/Util/onnxruntime/lib/Linux/libonnxruntime.so.1.10.0",
+      "sha256": "0db7bb6201cc86370e54cb9ff0baf768a75660a872f4732822d325c84ac3d9d9",
+      "bytes": 14320080
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "validation": "bhuman_opponent_pixel_probe_v1",
+  "seed": 66002,
+  "frames": 30,
+  "capture_interval_s": 0.12,
+  "scene": "existing sim/scene.xml",
+  "opponent_valid_frames": 28,
+  "upper_box_frames": 0,
+  "lower_box_frames": 30,
+  "yaw_valid_frames": 0,
+  "position_error_median_m": 0.11366288445580026,
+  "position_error_p95_m": 0.1240753563116872,
+  "upper_inference_median_ms": 5.1342,
+  "lower_processing_median_ms": 1.32945,
+  "runtime": {
+    "actuators": false,
+    "algorithm_bodies": "original C++ bodies, unmodified",
+    "component": "RobotDetector upper network/preprocessing/decoding/NMS plus original lower contrast/clustering",
+    "generated_algorithms_sha256": "5281abd97b914a7a80583daa75f5a3d074da3fb7bc2e364922b76523b7981ab3",
+    "host_source_sha256": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+    "lower_saturation_adapter": "scalar lighting-independent saturation; not bit-identical to original JIT approximations",
+    "lower_trim_obstacles": false,
+    "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+    "not_executed": [
+      "trimObstacle",
+      "JerseyClassifier",
+      "ObstacleModelProvider",
+      "body/field boundary providers"
+    ],
+    "onnxruntime": "1.10.0",
+    "original_manifest_sha256": "29bfe8a4ac43ed2dfd659a57cf273579cb5046e6ba34149be93914f4f7a16448",
+    "protocol": "bhuman_robot_pixels_v1",
+    "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+    "type": "HELLO"
+  },
+  "reference_network_check": {
+    "source_url": "https://docs.b-human.de/coderelease2023/images/perception/robotdetection/Resolution.png",
+    "input_sha256": "a4fda9e05f9c5504c6d933a3613d8c9884df0908baf0ffd0c33f323c68d7b746",
+    "crop": [
+      618,
+      0,
+      1234,
+      463
+    ],
+    "resize": [
+      640,
+      480
+    ],
+    "calibration": "none: image-only network check, no range claim",
+    "detections": {
+      "actuators": false,
+      "boxes": [
+        {
+          "box": [
+            406.5073547363281,
+            96.24752044677734,
+            497.2738952636719,
+            282.8746337890625
+          ],
+          "confidence": 0.7101462483406067
+        }
+      ],
+      "camera": "upper",
+      "capture_s": 0.0,
+      "height": 480,
+      "inference_ms": 6.7876,
+      "max_confidence": 0.7101462483406067,
+      "method": "original_upper_network",
+      "sequence": 60,
+      "threshold": 0.6,
+      "type": "DETECTIONS",
+      "version": "bhuman_robot_pixels_v1",
+      "width": 640,
+      "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75"
+    }
+  },
+  "sensor_limitations": "ideal simulated own transforms/odometry/IMU; nominal intrinsics; no hardware test; lower ground-edge range differs from body center",
+  "trace_sha256": "ca9d8b91130a5d5f49711a3a2a2b446b20f61380d3edaa405bc683adf751e66c",
+  "source_sha256": {
+    "native/bhuman_vision/main.cpp": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+    "native/bhuman_vision/CMakeLists.txt": "bb8a22254a977bacba7447c892c8a58d091ab59dc8f948f98e28178cc2487eb1",
+    "tools/build_robot_perception.py": "530020dff5644d5ce4f33be8dcef0f56dff1f34253b9c57704b2f3e2468e2834",
+    "penalty/robot_detector.py": "1bec7c7713be46f5f95f63d035e59cbe5a347e9b0b890deb1d5a46b72e1003c9",
+    "penalty/opponent_perception.py": "fe3a02bdd20eb520ca728d298ac00362c66231f8db61b267936af032cf90fd33",
+    "penalty/sim_opponent_vision.py": "73a636ce726fb4acec88ce2fd0b53ca33bd749dcd20418c2988f30064f91c3bb"
+  }
+}

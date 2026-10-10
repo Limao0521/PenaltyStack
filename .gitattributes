@@ -7,3 +7,16 @@ models/rl/**/*.npz -text -diff
 docs/media/** -text -diff
 docs/validation/rl/robustez_20261010/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/validation/rl/vision_20261010/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+heritage/bhuman_robot_perception/** -text -diff
+docs/validation/vision/bhuman_opponent_20261010/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep validation/build source hashes reproducible across Windows/Linux.
+native/bhuman_vision/** text eol=lf
+penalty/robot_detector.py text eol=lf
+penalty/opponent_perception.py text eol=lf
+penalty/sim_opponent_vision.py text eol=lf
+penalty/nao_opponent_vision.py text eol=lf
+tools/build_robot_perception.py text eol=lf
+tests/test_robot_perception.py text eol=lf
+deploy/package.py text eol=lf
