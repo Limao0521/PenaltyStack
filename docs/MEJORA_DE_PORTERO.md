@@ -4,6 +4,8 @@
 
 **Evolución posterior:** [PORTERO_ROBUSTO.md](PORTERO_ROBUSTO.md) evalúa una política temporal contra ocho estilos. Los ensayos nuevos muestran que el momento de activación permite mejorar mucho con las estiradas existentes. Las cifras de este documento corresponden al ensayo inicial; su oráculo de compromiso inmediato tras el contacto no constituye un techo para políticas que también eligen cuándo bloquear.
 
+**Comparación posterior con el base:** en los mismos ocho estilos y semillas, el nuevo `robust` ataja 677/800 (84.6 %) frente a 366/800 (45.8 %) de `scripted`. La referencia aquí llamada «FSM de B-Human» usa las decisiones de la FSM de este proyecto y los movimientos originales de B-Human; no es toda la pila de comportamiento upstream. Ambos conservan el mismo motor. Ver la comparación directa en [PORTERO_ROBUSTO.md](PORTERO_ROBUSTO.md).
+
 ## Resumen
 
 - **La postura del tirador delata el lado del tiro.** Desde lo que el portero ya observa (posición del tirador respecto al balón y hacia dónde mira), un clasificador simple acierta el **78 %** de los lados y el **86 %** de los tiros a las esquinas, y ya 2 s antes de la patada acierta el 82 % en las esquinas.

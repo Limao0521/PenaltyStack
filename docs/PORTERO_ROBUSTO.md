@@ -117,6 +117,48 @@ la estimación de llegada permiten mejorar mucho con las estiradas existentes**.
 El oráculo que se comprometía inmediatamente tras el contacto no era un techo
 para una política que también decide el momento de bloquear.
 
+## Comparación directa con el portero base del proyecto
+
+El documento inicial llama «FSM de B-Human» a la referencia `scripted`.
+Sus decisiones vienen de la FSM del proyecto; B-Human ejecuta los movimientos
+originales. Esta comparación no ejecuta toda la pila de comportamiento del
+proyecto upstream B-Human. Tanto `scripted` como `robust` usan el mismo motor
+de movimiento: cambia la decisión de cuándo bloquear y a qué lado hacerlo.
+
+Se evaluó `scripted` en 800 episodios, con los mismos ocho estilos, las mismas
+semillas base 62001 y la misma percepción de la prueba reservada de `robust`.
+Se reutilizan los registros congelados de `robust`; no se reajustan parámetros.
+El ejecutable, la física, las observaciones y la política robusta conservan
+los hashes de la prueba anterior. Los cambios posteriores de código solo
+añaden diagnósticos, validación de entradas y estadísticas; el informe los
+identifica. Ninguno altera las decisiones ni los resultados de estos episodios.
+
+| Estilo | Base del proyecto (`scripted`) | Nuevo (`robust`) |
+| --- | --- | --- |
+| Centro | 89/100 | 89/100 |
+| Variados (`mixed`) | 63/100 | 83/100 |
+| Esquinas | 45/100 | 82/100 |
+| Suaves | 45/100 | 86/100 |
+| Tardíos | 65/100 | 77/100 |
+| Cambio de objetivo (`feint`) | 36/100 | 78/100 |
+| Tirador v1 | 20/100 | 92/100 |
+| Tirador v2 | 3/100 | 90/100 |
+| **Promedio entre estilos** | **45.8 %** | **84.6 %** |
+
+El nuevo ataja aproximadamente **85 de cada 100**, frente a **46 de cada 100**
+del base, promediando estos estilos en simulación. La mejora pareada es de
+38.875 puntos porcentuales (IC95: 34.00–43.625). Los totales son 677/800 frente
+a 366/800. Al centro empatan; la mejora se concentra en los tiros laterales.
+El portero base tuvo dos errores de sensores del tirador, en las mismas
+combinaciones de estilo y semilla que `robust`; ambos los cuentan como no
+atajadas. Los demás resultados incluyen goles, tiros fuera y timeouts: no
+todo penal que no se ataja es un gol.
+
+El reporte original del base es `bhuman_base_realista.json`; el análisis
+pareado, con procedencia y hashes, es `comparacion_bhuman_base.json`, ambos
+en `docs/validation/rl/robustez_20261010/`. La prueba adicional usa la condición
+original de percepción; no añade una comparación con `scripted` bajo `stress`.
+
 ## Métricas y archivos
 
 La media da el mismo peso a cada estilo. El mínimo por estilo permite detectar
@@ -141,6 +183,9 @@ conserva sus hashes.
 
 # Otra muestra independiente con percepción degradada
 .\.venv\Scripts\python.exe tools/evaluate_keeper_robustness.py --condition stress --episodes 100 --seed 63001 --workers 12 --output runs/keeper_robust/heldout_stress.json
+
+# Portero base del proyecto sobre las mismas semillas del nuevo
+.\.venv\Scripts\python.exe tools/evaluate_keeper_robustness.py --keepers scripted --episodes 100 --seed 62001 --workers 16 --output runs/keeper_robust/bhuman_base_realista.json
 
 # Ver la política contra el tirador v2
 .\.venv\Scripts\python.exe tools/watch_rl.py --striker models/rl/striker_v2 --keeper robust --shots 4 --live
