@@ -65,5 +65,19 @@
       "geometric": 0.18,
       "center_tras_la_patada": 0.55
     }
+  },
+  "kick_side_predictor": {
+    "rol": "keeper",
+    "tipo": "predictor del lado del tiro (regresión logística) para el portero anticipation",
+    "archivo": "kick_side_predictor.json",
+    "episodios": 566,
+    "acierto_validacion_cruzada": 0.781,
+    "acierto_esquinas": 0.856,
+    "estado": "mejor portero contra tiradores que patean a las esquinas",
+    "evaluacion": {
+      "save_rate_vs_striker_v2_duelo": 0.24,
+      "save_rate_patadas_esquinas_realista": 0.553,
+      "center_vs_striker_v2": 0.04
+    }
   }
 }

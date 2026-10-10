@@ -388,7 +388,8 @@ def _prevent_sleep(active):
 
 # The first one sets the docs/RL.md gates. 'center' is the fixed centre guard a
 # keeper can fall back to; beating it shows the keeper reads the shot.
-BASELINES = {'striker': ('scripted',), 'keeper': ('geometric', 'center')}
+# 'anticipation' reads the striker's pose (penalty.rl.anticipation).
+BASELINES = {'striker': ('scripted',), 'keeper': ('geometric', 'center', 'anticipation')}
 
 
 def evaluate_stage(stage, policy_dir, workers, seed):

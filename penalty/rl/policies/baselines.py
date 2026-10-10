@@ -99,6 +99,9 @@ def make_policy(name, role, seed=None):
         return GeometricKeeperPolicy()
     if role == 'keeper' and name == 'center':
         return CenterGuardKeeperPolicy()
+    if role == 'keeper' and name == 'anticipation':
+        from penalty.rl.anticipation import AnticipatingKeeperPolicy
+        return AnticipatingKeeperPolicy()
     if name == 'random':
         return RandomPolicy(4 if role == 'striker' else 3, seed)
     raise ValueError('política desconocida para %s: %s' % (role, name))

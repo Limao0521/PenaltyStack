@@ -1,6 +1,7 @@
 """PPO training plumbing: save/load of trained policies, the plan,
 convergence detection, safety stops and the restart supervisor."""
 import importlib.util
+import math
 from pathlib import Path
 import sys
 import tempfile
@@ -356,13 +357,14 @@ class ExplorationTests(unittest.TestCase):
             self.assertEqual(stages[name].backend_options['kick_time_range'], (3., 9.))
         self.assertEqual((keeper.eval_every, keeper.window), (5, 200))
         self.assertEqual(stages['striker_bhuman_scripted'].backend_options['ball_jitter'], .05)
-        self.assertEqual(BASELINES['keeper'], ('geometric', 'center'))
+        self.assertEqual(BASELINES['keeper'], ('geometric', 'center', 'anticipation'))
         action = make_policy('center', 'keeper')(np.zeros(19, np.float32))
         np.testing.assert_allclose(action, [0., 1., 0.])
 
     def test_player_spec(self):
         from penalty.rl.duel import player_spec
-        self.assertEqual(player_spec('scripted'), ('scripted', {'kind': 'baseline', 'name': 'scripted'}))
+        self.assertEqual(player_spec('scripted'), ('scripted', {'kind': 'baseline', 'name': 'scripted', 'gate': False}))
+        self.assertTrue(player_spec('center:gate')[1]['gate'])
         name, spec = player_spec('v4=models/rl/keeper_v4:gate')
         self.assertEqual((name, spec['kind'], spec['role'], spec['gate'], spec['history']),
                          ('v4', 'trained', 'keeper', True, 6))
@@ -373,6 +375,50 @@ class ExplorationTests(unittest.TestCase):
         from penalty.rl.training import Stage, worker_specs
         with self.assertRaises(ValueError):
             worker_specs(Stage('s', 'striker', 'bhuman', 'static', eval_every=1), 2, 0)
+
+
+class AnticipationTests(unittest.TestCase):
+    def observation(self, ball=(1.2, 0.), opponent=(1.45, .1), yaw=math.pi, speed=0.):
+        from penalty.rl.contracts import FIELD
+        o = np.zeros(19, np.float32)
+        o[FIELD['ball_x']], o[FIELD['ball_y']] = ball
+        o[FIELD['opponent_x']], o[FIELD['opponent_y']] = opponent
+        o[FIELD['opponent_yaw']], o[FIELD['ball_vx']] = yaw, -speed
+        return o
+
+    def test_pose_features(self):
+        from penalty.rl.anticipation import pose_features, side_class
+        x = pose_features(self.observation(yaw=math.pi - .2))
+        np.testing.assert_allclose(x[2:4], [.25, .1], atol=1e-6)
+        self.assertAlmostEqual(x[6], 1.2*math.tan(.2), places=5)  # heading line at the keeper's line
+        self.assertEqual([side_class(y) for y in (.5, 0., -.5)], [2, 1, 0])
+
+    def test_predictor_fit_and_round_trip(self):
+        from penalty.rl.anticipation import KickSidePredictor
+        rng = np.random.default_rng(0)
+        y = rng.integers(0, 3, 600)
+        x = rng.normal(size=(600, 7))
+        x[:, 6] += (y - 1)*4.  # the pointing feature separates the classes (4 sigma)
+        model = KickSidePredictor.fit(x, y, metadata={'episodes': 600})
+        self.assertGreater(np.mean(model.probabilities(x).argmax(1) == y), .9)
+        with tempfile.TemporaryDirectory() as directory:
+            model.save(Path(directory)/'p.json')
+            loaded = KickSidePredictor.load(Path(directory)/'p.json')
+        np.testing.assert_allclose(loaded.probabilities(x[:5]), model.probabilities(x[:5]))
+        self.assertEqual(loaded.metadata['episodes'], 600)
+
+    def test_policy_waits_then_dives_when_confident(self):
+        from penalty.rl.anticipation import AnticipatingKeeperPolicy, KickSidePredictor
+        from penalty.rl.contracts import BLOCK_CENTER, BLOCK_LEFT, KeeperAction
+        weights = np.zeros((8, 3))
+        weights[6] = [-4., 0., 4.]  # pointing_y > 0 -> keeper's left
+        policy = AnticipatingKeeperPolicy(KickSidePredictor(np.zeros(7), np.ones(7), weights), threshold=.75)
+        static = KeeperAction.from_normalized(policy(self.observation(yaw=math.pi - .5)))
+        self.assertLess(static.trigger, .5)
+        confident = KeeperAction.from_normalized(policy(self.observation(yaw=math.pi - .5, speed=1.)))
+        self.assertEqual((confident.block_side, confident.trigger >= .5), (BLOCK_LEFT, True))
+        unsure = KeeperAction.from_normalized(policy(self.observation(yaw=math.pi, speed=1.)))
+        self.assertEqual(unsure.block_side, BLOCK_CENTER)
 
 
 class SupervisorTests(unittest.TestCase):

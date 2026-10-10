@@ -180,7 +180,7 @@ def player_spec(text):
     name, _, rest = text.rpartition('=') if '=' in text else ('', '', text)
     path = rest[:-len(':gate')] if rest.endswith(':gate') else rest
     if not is_policy_dir(path):
-        return name or path, {'kind': 'baseline', 'name': path}
+        return name or path, {'kind': 'baseline', 'name': path, 'gate': rest.endswith(':gate')}
     from pathlib import Path
     return name or Path(path).name, dict(export_trained(path), gate=rest.endswith(':gate'))
 

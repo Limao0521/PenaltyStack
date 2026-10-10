@@ -9,6 +9,7 @@ Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna a
 - **Tirador a usar: v2** (`models/rl/striker_v2`). En B-Human, con variación de posiciones y ruido de percepción, anota el 97 % contra el portero estático y el 96 % contra el portero FSM (100 penales nuevos cada uno). En el duelo contra el portero FSM anota 91.5 % con ruido y 94 % sin ruido; el tirador FSM original, 6–7 %.
 - **El v2 reparte los tiros 51 % a su izquierda y 49 % a su derecha**, siempre a la esquina, y anota igual por los dos lados. El v1 patea casi siempre a su derecha, así que es predecible.
 - **Portero: ningún entrenado supera a la regla fija "guardia central tras la patada"**, que ataja 0.55. El mejor entrenado (v4) ataja 0.37; el geométrico, 0.18.
+- **Portero que lee la postura del tirador (`anticipation`):** contra el tirador v2 ataja **24 %**, frente a 4 % de la guardia central y 6 % del portero FSM. Contra patadas aleatorias empata con la guardia central, y contra el tirador FSM, que patea al centro, rinde algo menos. Ver la sección 4.
 - **El entrenamiento es ~17× más rápido que al inicio**: de ~10 a ~170 transiciones/s en B-Human, con el CPU del 8 % al 100 %. La simulación es idéntica bit a bit.
 
 ## 1. Qué se hizo
@@ -152,7 +153,48 @@ En `docs/media/rl/` hay 6 penales del duelo con la condición realista (variaci�
 
 Para verlos en vivo en el visor de MuJoCo, o para grabar otros, usa `tools/watch_rl.py` (ver Comandos).
 
-## 4. Hallazgos
+## 4. Portero que lee al tirador (anticipación)
+
+Documento completo: [MEJORA_DE_PORTERO.md](MEJORA_DE_PORTERO.md).
+
+Para apuntar fuera del centro, el tirador táctico rodea el balón, así que su postura antes de patear delata el lado. El portero ya recibía la posición y la orientación del rival en su observación, pero el RL nunca aprendió a usarlas: en el mundo sintético el rival está quieto y no da pistas.
+
+**Se puede predecir el lado.** En 599 penales de B-Human (patadas a las esquinas con variación), un clasificador sobre la postura del tirador, tal como la ve el portero, acertó:
+
+| Momento | Acierto (3 lados) | Solo tiros a las esquinas |
+| --- | --- | --- |
+| Al patear | 77 % | 87 % |
+| 1 s antes | 77 % | 85 % |
+| 2 s antes | 74 % | 82 % |
+
+El balón termina en el lado apuntado solo el 73 % de las veces: las patadas de B-Human son imprecisas.
+
+**Anticipar tiene un techo.** Un oráculo que conoce el lado real y se compromete en la primera decisión tras la patada ataja 0.62, frente a 0.57 de la guardia central. Aun en el lado correcto, las estiradas de B-Human atajan 0.59 (derecha del portero) y 0.46 (izquierda); la guardia central ante tiros al centro, 0.83. El límite es la estirada.
+
+**Componentes:**
+- `penalty/rl/anticipation.py`:
+  - *Variables de la postura:* posición del tirador respecto al balón, su orientación y el punto donde la línea de su mirada cruza la línea del portero.
+  - *Predictor:* regresión logística de 3 clases.
+  - *`AnticipatingKeeperPolicy`:* espera a que el balón se mueva y entonces se lanza al lado predicho si la probabilidad es ≥ 0.75; si no, se agacha al centro. No depende del filtro `commit_after_shot`.
+- `tools/fit_kick_predictor.py` genera `models/rl/kick_side_predictor.json`: 566 penales, acierto en validación cruzada de 78 % (86 % en las esquinas).
+- El portero `anticipation` está en `make_policy` y en los baselines del portero.
+
+**Resultados** (`docs/validation/rl/anticipacion_20261010/`, penales que el predictor nunca vio, con ruido):
+
+| Portero | Patadas aleatorias (300) | vs tirador v2 (duelo, 200) | vs tirador FSM (duelo, 200) |
+| --- | --- | --- | --- |
+| **anticipation** | 0.553 [0.50–0.61] | **0.240** [0.19–0.30] | 0.835 [0.78–0.88] |
+| Guardia central tras la patada | 0.593 [0.54–0.65] | 0.040 [0.02–0.08] | 0.950 |
+| FSM de B-Human | — | 0.060 | 0.905 |
+| RL v4 | 0.353 [0.30–0.41] | 0.205 [0.15–0.27] | 0.620 |
+| Geométrico | 0.213 [0.17–0.26] | — | — |
+
+- **Contra el tirador v2, que patea siempre a las esquinas**, leer su postura multiplica las atajadas por 6 respecto a la guardia central, y supera al portero FSM y, por poco, al RL v4.
+- **Contra patadas aleatorias** (25 % al centro e imprecisas) empata con la guardia central.
+- **Contra el tirador FSM**, que patea siempre al centro, se lanza de lado alguna vez de más y pierde ~11 puntos.
+- **Momento de reacción:** un prototipo que se comprometía en el instante exacto del contacto (dato privilegiado de la simulación) dio 0.60 frente a 0.57 con patadas aleatorias; la versión integrada detecta la patada por el movimiento del balón, como haría el robot real. El umbral 0.75 se eligió con el prototipo.
+
+## 5. Hallazgos
 
 - En esta simulación **agacharse al centro rinde más que lanzarse**. Las patadas B-Human son imprecisas (con apuntado a las esquinas, 21 % salen fuera) y la estirada lateral rinde poco. Contra patadas a las esquinas, con variación y ruido:
 
@@ -168,7 +210,7 @@ Para verlos en vivo en el visor de MuJoCo, o para grabar otros, usa `tools/watch
 - **Con acciones recortadas a [-1, 1], el bono de entropía infla la exploración:** los episodios de entrenamiento se vuelven casi aleatorios (en v1, 0.26 de atajadas al entrenar contra 0.79 sin ruido).
 - **Medir la convergencia con episodios de entrenamiento engaña** cuando hay mucho ruido de exploración; por eso ahora se mide sin ruido.
 
-## 5. Dónde está cada cosa
+## 6. Dónde está cada cosa
 
 ### Código (en git)
 
@@ -179,6 +221,7 @@ Para verlos en vivo en el visor de MuJoCo, o para grabar otros, usa `tools/watch
 | `penalty/rl/duel.py`, `tools/duel_rl.py` | Duelo entre políticas |
 | `tools/watch_rl.py` | Ver penales en vivo en el visor de MuJoCo o grabarlos en MP4 (necesita `imageio[ffmpeg]`) |
 | `penalty/rl/metrics.py` | Métricas, incluida `sides` (hacia qué lado patea el tirador) |
+| `penalty/rl/anticipation.py`, `tools/fit_kick_predictor.py` | Portero `anticipation` y su predictor del lado (`models/rl/kick_side_predictor.json`) |
 | `penalty/rl/bhuman_world.py` | Variación, distribución de patadas y filtro del portero en B-Human |
 | `penalty/rl/synthetic.py` | Filtro y tiempos del portero sintético |
 | `penalty/rl/wrappers.py`, `evaluation.py` | `PerceptionNoise`; opción `perception_noise` de los entornos |
@@ -196,6 +239,7 @@ Para verlos en vivo en el visor de MuJoCo, o para grabar otros, usa `tools/watch
 | `docs/validation/rl/ppo_v3_keeper_20261010_detenida/` | `progress.json` de la corrida detenida |
 | `docs/validation/rl/duelo_tiradores_vs_portero_fsm_20261010.json` | Duelo: resumen por pareja con `sides` y el registro de cada penal |
 | `docs/validation/rl/calibracion_20261010/` | Velocidad por número de workers y pasos por episodio |
+| `docs/validation/rl/anticipacion_20261010/` | Evaluación del portero `anticipation` y de los baselines (3×100) y duelo de porteros contra los tiradores FSM y v2 |
 | `docs/media/rl/` | Videos de los penales |
 
 ### Copias completas (solo en este PC: `runs/` no está en git)
@@ -235,9 +279,10 @@ Dentro de cada `run/`:
 .\.venv\Scripts\python.exe tools\watch_rl.py --striker models\rl\striker_v2 --keeper scripted --seeds 50000000 50000002 --video runs\videos
 ```
 
-## 6. Pendiente
+## 7. Pendiente
 
-- **Un portero que supere a la guardia central.** Opciones: reentrenar solo en B-Human sin el arranque sintético, que le enseñó a lanzarse, o mejorar la estirada en el runtime nativo (los `BlockParameters` siguen sin exponerse).
+- **Mejorar la estirada**, que es el límite del portero: aun en el lado correcto ataja 0.46–0.59. Opciones: probar los otros 3 movimientos de portero de B-Human que no se usan (`squatArmsBackRight` y `squatWideArmsBackLeft/Right`, agacharse con las piernas abiertas) y exponer los `BlockParameters` en el runtime nativo.
+- **Dar al RL la predicción del lado** como entrada, o entrenarlo contra el tirador v2, para que combine anticipación y guardia central según el rival.
 - **Duelo de los tiradores contra los porteros entrenados** (v1 y v4) y contra `center`.
 - **`tools/build_motion_runtime.py` no detecta VS 2026.**
 - Sin cambios respecto al plan P1: self-play, residual RL y adaptador NAO.
