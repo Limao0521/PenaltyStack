@@ -231,6 +231,44 @@ class RandomizationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 BHumanWorld('keeper', 'random_kicks', **options)
 
+    def test_synthetic_commit_after_shot(self):
+        from penalty.rl.contracts import KeeperAction
+        from penalty.rl.evaluation import make_env
+        dive = KeeperAction(1, 1., .5).to_normalized()
+        legacy = make_env('keeper', 'synthetic', 'synthetic', {'kick_time_range': (2., 2.)})
+        legacy.reset(seed=0)
+        self.assertEqual(legacy.step(dive)[4]['outcome'], 'keeper_fall')
+        gated = make_env('keeper', 'synthetic', 'synthetic',
+                         {'kick_time_range': (2., 2.), 'commit_after_shot': True})
+        gated.reset(seed=0)
+        infos = [gated.step(dive)[4] for _ in range(19)]  # t < 2 s: before the kick
+        self.assertTrue(all(i['safety'] == 'waiting_for_shot' and i['outcome'] is None for i in infos))
+        while True:
+            *_, terminated, truncated, info = gated.step(dive)
+            if terminated or truncated:
+                break
+        self.assertNotEqual(info['outcome'], 'keeper_fall')
+        self.assertFalse(info['episode_record']['early_dive'])
+
+    def test_side_summary(self):
+        from penalty.rl.metrics import shot_side, side_summary
+        self.assertEqual([shot_side(y) for y in (.5, .1, -.5)], ['left', 'center', 'right'])
+        records = [{'outcome': 'goal', 'target_y': .65, 'goal_line_y': .55},
+                   {'outcome': 'blocked', 'target_y': .6, 'goal_line_y': None},
+                   {'result': 'goal', 'target_y': -.65, 'goal_line_y': -.6},
+                   {'outcome': 'timeout', 'target_y': None, 'goal_line_y': None}]
+        sides = side_summary(records)
+        self.assertEqual((sides['kicks'], sides['crossed_goal_line']), (3, 2))
+        self.assertAlmostEqual(sides['aim']['left'], 2/3)
+        self.assertEqual(sides['goal_line'], {'left': .5, 'center': 0., 'right': .5})
+        self.assertEqual(sides['goal_rate_by_aim'], {'left': .5, 'center': None, 'right': 1.})
+
+    def test_striker_records_carry_sides(self):
+        from penalty.rl.evaluation import evaluate
+        summary = evaluate('striker', 'scripted', opponent='static', episodes=20, seeds=(3,))['summary']
+        self.assertEqual(summary['sides']['kicks'], 20)
+        self.assertEqual(summary['sides']['aim']['center'], 1.)  # the scripted shot is centred
+
     def test_perception_noise_option(self):
         from penalty.rl.evaluation import make_env
         from penalty.rl.wrappers import PerceptionNoiseWrapper
@@ -256,7 +294,9 @@ class ExplorationTests(unittest.TestCase):
                             norm_reward=False)
         model = AsyncPPO('MlpPolicy', venv, n_steps=600, batch_size=100, device='cpu',
                          policy_kwargs={'net_arch': [128, 128]})
-        model.max_std = .5
+        model.min_std, model.max_std = .2, .5
+        with torch.no_grad():
+            model.policy.log_std.copy_(torch.log(torch.tensor([.1, 2., .3, 1.])))
         seen = {'eval': 0, 'train': 0}
 
         class Count(BaseCallback):
@@ -274,7 +314,7 @@ class ExplorationTests(unittest.TestCase):
             self.assertTrue(model.collect_rollouts(venv, callback, None, 600))
         finally:
             model.collector.close()
-        self.assertTrue((model.policy.log_std.exp() <= .5 + 1e-6).all())
+        np.testing.assert_allclose(model.policy.log_std.exp().detach().numpy(), [.2, .5, .3, .5], rtol=1e-5)
         self.assertGreater(seen['eval'], 0)
         self.assertAlmostEqual(seen['eval']/(seen['eval'] + seen['train']), 1/3, delta=.1)
         buffer = model.rollout_buffer
@@ -310,11 +350,24 @@ class ExplorationTests(unittest.TestCase):
         self.assertTrue(all(s.backend_options.get('perception_noise') for s in stages.values()))
         keeper = stages['keeper_bhuman_random_kicks']
         self.assertEqual(keeper.backend_options['shot_target'], (.3, .65))
+        for name in ('keeper_synth_easy', 'keeper_synth_full', 'keeper_bhuman_random_kicks'):
+            self.assertTrue(stages[name].backend_options['commit_after_shot'])
+        for name in ('keeper_synth_easy', 'keeper_synth_full'):
+            self.assertEqual(stages[name].backend_options['kick_time_range'], (3., 9.))
         self.assertEqual((keeper.eval_every, keeper.window), (5, 200))
         self.assertEqual(stages['striker_bhuman_scripted'].backend_options['ball_jitter'], .05)
         self.assertEqual(BASELINES['keeper'], ('geometric', 'center'))
         action = make_policy('center', 'keeper')(np.zeros(19, np.float32))
         np.testing.assert_allclose(action, [0., 1., 0.])
+
+    def test_player_spec(self):
+        from penalty.rl.duel import player_spec
+        self.assertEqual(player_spec('scripted'), ('scripted', {'kind': 'baseline', 'name': 'scripted'}))
+        name, spec = player_spec('v4=models/rl/keeper_v4:gate')
+        self.assertEqual((name, spec['kind'], spec['role'], spec['gate'], spec['history']),
+                         ('v4', 'trained', 'keeper', True, 6))
+        name, spec = player_spec('models/rl/striker_v2')
+        self.assertEqual((name, spec['role'], spec['gate']), ('striker_v2', 'striker', False))
 
     def test_eval_every_one_is_rejected(self):
         from penalty.rl.training import Stage, worker_specs

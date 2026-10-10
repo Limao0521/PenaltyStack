@@ -60,10 +60,13 @@ class BHumanWorld:
 
     def __init__(self, role, opponent='scripted', seed=0, record_dir=None, simulator_factory=None,
                  kick_parameters=None, ball_jitter=0., start_jitter=(0., 0.), shot_target=None,
-                 center_shots=0., shot_power=(.25, 1.)):
+                 center_shots=0., shot_power=(.25, 1.), commit_after_shot=False):
         """ball_jitter: ± metres around the penalty mark per episode.
         start_jitter: (± metres, ± rad) per robot from the nominal start pose.
-        shot_target/center_shots/shot_power: random_kicks distribution (sample_shot)."""
+        shot_target/center_shots/shot_power: random_kicks distribution (sample_shot).
+        commit_after_shot: keeper safety filter; a guard or dive requested before
+        the opponent touches the ball is ignored (info['safety'] = 'waiting_for_shot')."""
+        self.commit_after_shot = bool(commit_after_shot)
         allowed = STRIKER_OPPONENTS if role == 'striker' else KEEPER_OPPONENTS
         if role not in ('striker', 'keeper') or opponent not in allowed:
             raise ValueError('combinación rol/oponente no soportada por B-Human: %s/%s' % (role, opponent))
@@ -355,7 +358,9 @@ class BHumanWorld:
         keeper, session = self.keeper, self.session
         details = {'unapplied': ['amplitude']}
         early = False
-        if action.fires and keeper.block is None:
+        if action.fires and keeper.block is None and self.commit_after_shot and self.contact_time is None:
+            details['safety'] = 'waiting_for_shot'
+        elif action.fires and keeper.block is None:
             self.commit_time = session.penalty_time
             self.commit_side = action.block_side
             early = self.contact_time is None or self._ball_speed() < .15
@@ -399,9 +404,16 @@ class BHumanWorld:
             return {'sim_error': True}
         if self.role == 'striker':
             if self.kick_time is None:
-                return {'ball_speed': None, 'target_error': None, 'kick_time': None}
+                return {'ball_speed': None, 'target_error': None, 'kick_time': None,
+                        'target_y': None, 'goal_line_y': None}
             record = self._kick_record()
-            return {k: record[k] for k in ('ball_speed', 'target_error', 'kick_time', 'crossing_y')}
+            values = {k: record[k] for k in ('ball_speed', 'target_error', 'kick_time', 'crossing_y',
+                                             'target_y')}
+            # crossing_y falls back to where the ball stopped; this one only exists
+            # when the ball crossed the goal line (striker's view, + = left).
+            crossing = self.sim.goal_crossing
+            values['goal_line_y'] = None if crossing is None else -crossing[1]
+            return values
         crossing = self.sim.goal_crossing
         shot_y = crossing[1] if crossing is not None else self._ball_xy()[1]
         reaction = None

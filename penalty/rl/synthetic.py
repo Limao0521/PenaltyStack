@@ -178,20 +178,25 @@ class SyntheticStrikerWorld(_World):
 
     def episode_record(self):
         kick = self.kick or {}
-        return {name: kick.get(name) for name in ('ball_speed', 'target_error', 'kick_time',
-                                                  'crossing_y')}
+        record = {name: kick.get(name) for name in ('ball_speed', 'target_error', 'kick_time',
+                                                    'crossing_y', 'target_y')}
+        record['goal_line_y'] = kick.get('crossing_y')  # already the goal-line crossing here
+        return record
 
 
 class SyntheticKeeperWorld(_World):
     """Stage-1 keeper curriculum: sampled straight shots from the mark."""
 
     def __init__(self, opponent='synthetic', speed_range=(1.5, 4.), target_range=(-.7, .7),
-                 kick_time_range=(.5, 3.)):
+                 kick_time_range=(.5, 3.), commit_after_shot=False):
+        """commit_after_shot: safety filter; a commit before the kick is ignored
+        (info['safety'] = 'waiting_for_shot') instead of committing."""
         if opponent not in KEEPER_OPPONENTS:
             raise ValueError('oponente sintético desconocido: %s' % opponent)
         self.opponent = opponent
         self.speed_range, self.target_range = speed_range, target_range
         self.kick_time_range = kick_time_range
+        self.commit_after_shot = bool(commit_after_shot)
         super().__init__()
 
     def reset(self, rng, options):
@@ -225,7 +230,9 @@ class SyntheticKeeperWorld(_World):
         self.time += DT
         details = {'unapplied': []}
         early = False
-        if action.fires and self.commit is None:
+        if action.fires and self.commit is None and self.commit_after_shot and start < self.kick_at:
+            details['safety'] = 'waiting_for_shot'
+        elif action.fires and self.commit is None:
             arrival = None if self.crossing is None else self.kick_at + self.crossing[0]
             early = start < self.kick_at or (arrival is not None and arrival - start > 1.)
             self.commit = {'side': action.block_side, 'amplitude': action.amplitude,

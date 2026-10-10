@@ -63,28 +63,24 @@ class DelayedObservationWrapper(gym.ObservationWrapper):
         return observation
 
 
-class PerceptionNoiseWrapper(gym.ObservationWrapper):
-    """Gaussian ball/opponent/IMU noise and ball dropout.
+class PerceptionNoise:
+    """Gaussian ball/opponent/IMU noise and ball dropout for one robot.
 
     During dropout the ball estimate is held, `ball_age` grows by the
-    control period and `ball_visible` is 0. Uses the env's np_random so the
-    noise is reproducible from reset(seed=...).
+    control period and `ball_visible` is 0.
     """
 
-    def __init__(self, env, ball_sigma=.03, ball_sigma_per_m=.03, opponent_sigma=.05,
-                 gyro_sigma=.02, dropout=.05):
-        super().__init__(env)
+    def __init__(self, ball_sigma=.03, ball_sigma_per_m=.03, opponent_sigma=.05,
+                 gyro_sigma=.02, dropout=.05, control_dt=.1):
         self.ball_sigma, self.ball_sigma_per_m = ball_sigma, ball_sigma_per_m
         self.opponent_sigma, self.gyro_sigma, self.dropout = opponent_sigma, gyro_sigma, dropout
-        self.control_dt = getattr(env.unwrapped, 'control_dt', .1)
+        self.control_dt = control_dt
         self._held = None
 
-    def reset(self, **kwargs):
+    def reset(self):
         self._held = None
-        return super().reset(**kwargs)
 
-    def observation(self, observation):
-        rng = self.env.unwrapped.np_random
+    def __call__(self, observation, rng):
         obs = np.array(observation, dtype=np.float32)
         ball = [FIELD[n] for n in ('ball_x', 'ball_y', 'ball_vx', 'ball_vy')]
         if self._held is not None and rng.random() < self.dropout:
@@ -102,3 +98,25 @@ class PerceptionNoiseWrapper(gym.ObservationWrapper):
         obs = np.clip(obs, OBS_LOW, OBS_HIGH)
         self._held = obs.copy()
         return obs
+
+
+class PerceptionNoiseWrapper(gym.ObservationWrapper):
+    """PerceptionNoise on an environment. Uses the env's np_random so the
+    noise is reproducible from reset(seed=...)."""
+
+    def __init__(self, env, ball_sigma=.03, ball_sigma_per_m=.03, opponent_sigma=.05,
+                 gyro_sigma=.02, dropout=.05):
+        super().__init__(env)
+        self.noise = PerceptionNoise(ball_sigma, ball_sigma_per_m, opponent_sigma, gyro_sigma, dropout,
+                                     getattr(env.unwrapped, 'control_dt', .1))
+
+    @property
+    def dropout(self):
+        return self.noise.dropout
+
+    def reset(self, **kwargs):
+        self.noise.reset()
+        return super().reset(**kwargs)
+
+    def observation(self, observation):
+        return self.noise(observation, self.env.unwrapped.np_random)

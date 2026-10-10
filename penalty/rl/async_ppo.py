@@ -196,17 +196,19 @@ class AsyncCollector:
 
 class AsyncPPO(PPO):
     """PPO whose rollouts come from an AsyncCollector; n_steps is the number
-    of transitions per update across all workers. max_std caps the Gaussian
-    exploration noise before every rollout (actions live in [-1, 1])."""
+    of transitions per update across all workers. min_std/max_std bound the
+    Gaussian exploration noise before every rollout (actions live in [-1, 1])."""
 
     collector = None
-    max_std = None
+    min_std = max_std = None
 
     def _excluded_save_params(self):
-        return super()._excluded_save_params() + ['collector', 'max_std']
+        return super()._excluded_save_params() + ['collector', 'min_std', 'max_std']
 
     def collect_rollouts(self, env, callback, rollout_buffer, n_rollout_steps):
-        if self.max_std is not None:
+        low = None if self.min_std is None else math.log(self.min_std)
+        high = None if self.max_std is None else math.log(self.max_std)
+        if low is not None or high is not None:
             with th.no_grad():
-                self.policy.log_std.clamp_(max=math.log(self.max_std))
+                self.policy.log_std.clamp_(min=low, max=high)
         return self.collector.collect(self, self.get_vec_normalize_env(), callback, self.n_steps)

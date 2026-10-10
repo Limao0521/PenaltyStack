@@ -12,7 +12,7 @@
 - `deploy/`: empaquetado y despliegue Ethernet con ruta aislada.
 - `heritage/`: recursos estrictamente seleccionados de SabanaHerons2026 y procedencia.
 - `baseline/`: originales sin modificar usados por el runtime y como referencia para RL.
-- `penalty/rl/`, `penalty/skills/`, `penalty/optimization/`: RL táctico (contratos, entornos Gymnasium sintético/B-Human, recompensas versionadas, skills acotadas, búsqueda). Diseño en `docs/rl/`, estado en `docs/RL.md`.
+- `penalty/rl/`, `penalty/skills/`, `penalty/optimization/`: RL táctico (contratos, entornos Gymnasium sintético/B-Human, recompensas versionadas, skills acotadas, búsqueda; entrenamiento asíncrono en `async_ppo.py`/`actors.py`, duelo entre políticas en `duel.py`). Diseño en `docs/rl/`, estado en `docs/RL.md`, corridas y resultados en `docs/RESULTADOS_RL.md`.
 
 ## Comandos
 
@@ -24,6 +24,9 @@
 - `python -m unittest tests.test_rl_contracts tests.test_rl_envs tests.test_rl_bhuman -v`
 - `python tools/evaluate_rl.py --role keeper --policy geometric --episodes 100 --seeds 0 1 2 3 4`
 - `python tools/train_rl.py --hours 48 --workers 30` (PPO hasta convergencia, `--hours` es tope; B-Human con recolección asíncrona; supervisado con reinicio; `--output <dir> --resume` para continuar)
+- `python tools/duel_rl.py --strikers scripted v2=models/rl/striker_v2 --keepers scripted v4=models/rl/keeper_v4:gate --episodes 200 --workers 30` (duelo en B-Human; `:gate` para porteros entrenados con `commit_after_shot`)
+- `python tools/watch_rl.py --striker models/rl/striker_v2 --keeper scripted --shots 4 --live` (visor de MuJoCo; `--video <carpeta>` graba MP4)
+- Modelos entrenados en `models/rl/` (ver `manifest.json`); reportes en `docs/validation/rl/`.
 - `python deploy/package.py --profile profiles/striker.example.json --output dist/striker.tar.gz`
 
 ## Restricciones

@@ -26,12 +26,14 @@ L1 B-Human                  -> FSM compartida + MotionEngine original en MuJoCo
 | `penalty/rl/striker_env.py`, `keeper_env.py`, `envs.py` | `PenaltyStrikerEnv` y `PenaltyKeeperEnv` compatibles con Gymnasium. |
 | `penalty/rl/synthetic.py` | Mundo analítico para currículo etapa 1 y pruebas rápidas. |
 | `penalty/rl/bhuman_world.py` | Mundo B-Human/MuJoCo sobre `SimulationSession`. |
-| `penalty/rl/rewards.py`, `metrics.py` | `striker_reward_v1`, `keeper_reward_v1`, tasas con IC95 de Wilson. |
+| `penalty/rl/rewards.py`, `metrics.py` | `striker_reward_v1`, `keeper_reward_v1`, tasas con IC95 de Wilson; `sides` del tirador (hacia dónde apunta y por dónde cruza la línea de gol). |
 | `penalty/rl/policies/baselines.py` | Baselines scripted (equivalentes a la FSM), geométrica de portero y aleatoria. |
 | `penalty/rl/evaluation.py`, `tools/evaluate_rl.py` | Benchmark multi-semilla, multiproceso, throughput e informe con procedencia. |
 | `penalty/rl/run_metadata.py` | Commit, estado sucio, versiones, hashes y plataforma de cada ejecución. |
 | `penalty/rl/training.py`, `tools/train_rl.py` | Currículo PPO, convergencia, protecciones, checkpoints y supervisor con reinicio. |
 | `penalty/rl/async_ppo.py`, `actors.py` | Recolección asíncrona para B-Human: workers con política numpy y `AsyncPPO`. |
+| `penalty/rl/duel.py`, `tools/duel_rl.py`, `tools/watch_rl.py` | Duelo entre políticas; ver penales en el visor de MuJoCo o grabarlos en MP4. |
+| `models/rl/`, `docs/validation/rl/`, `docs/media/rl/` | Políticas entrenadas (con `manifest.json`), reportes y curvas, y videos. |
 | `penalty/skills/` | `KickParameters`, `BlockParameters`, `ParameterizedSkill` (`reset/apply/bounds`). |
 | `penalty/optimization/` | Búsqueda aleatoria acotada, CMA-ES, objetivos `kick_objective_v1`/`block_objective_v1`, `kick_search`. |
 
@@ -125,7 +127,8 @@ env = ObservationHistory(PerceptionNoiseWrapper(PenaltyKeeperEnv(backend='synthe
 
 - Todas las etapas usan ruido de percepción; las B-Human añaden ±5 cm de balón y ±5 cm/±0.1 rad de pose inicial. El tirador v1 bajó de 1.00 a 0.81 de goles con esa variación; el portero v1 cayó a 0.09 de atajadas con 85 % de caídas.
 - El portero entrena contra patadas a las esquinas: 3/4 apuntan a |y| 0.3–0.65 m, 1/4 al centro, con alcance de 1960–2900 mm. Aun así, la guardia central inmediata ataja 0.48 y el geométrico 0.28 (100 episodios): las patadas B-Human son imprecisas (21 % fuera) y la estirada lateral rinde poco. Por eso el reporte del portero añade el baseline `center` y la compuerta `primary_ge_center`. Superarla muestra que lee el tiro.
-- En B-Human no hay bono de entropía y la desviación de la Gaussiana se limita a 0.5 antes de cada rollout. Con las acciones recortadas a [-1, 1], el bono la había inflado (portero 0.7–0.8; gatillo del tirador 20) y los episodios de entrenamiento eran casi aleatorios: 0.26 de atajadas al entrenar contra 0.79 sin ruido.
+- Filtro de seguridad del portero (`commit_after_shot`, sintético y B-Human): una guardia o estirada pedida antes de que el rival toque el balón se ignora (`info['safety'] = 'waiting_for_shot'`). Así no tira el robot al suelo sin tiro y no puede comprometerse adivinando. En `ppo_v2` el portero sintético había aprendido tiros a los 0.5–3 s; en B-Human el rival patea a los 3.1–7.4 s (p10–p90, mediana 5.7 s), así que se lanzaba en la primera decisión y caía antes del tiro (0.13 de atajadas, 79 % `keeper_fall`). Con episodios de ~3 decisiones, la etapa solo hizo 27 actualizaciones PPO en una hora. Con tiros a los 3–9 s y sin filtro, PPO tampoco aprendió a esperar 30–90 decisiones (0.13–0.20 tras 3 M pasos sintéticos). Con el filtro: 0.636 en 1.5 M pasos (geométrico 0.672, guardia central 0.366).
+- En B-Human no hay bono de entropía y la desviación de la Gaussiana se mantiene entre 0.2 y 0.5 antes de cada rollout. Con las acciones recortadas a [-1, 1], el bono la había inflado (portero 0.7–0.8; gatillo del tirador 20) y los episodios de entrenamiento eran casi aleatorios: 0.26 de atajadas al entrenar contra 0.79 sin ruido.
 
 **Convergencia (etapas B-Human).** Cada worker juega 1 de cada 5 episodios con la acción media, como se usaría la política. Esos episodios no entran al rollout de PPO y forman ventanas de 200 para la convergencia y el mejor checkpoint. Sin `eval_every`, se usan los episodios de entrenamiento en ventanas de 1000. Una ventana mejora si su tasa principal (`goal_rate` o `save_rate`) supera a la mejor por más del error estándar de la diferencia entre dos ventanas (≈5 puntos con 200 episodios y p=0.5). La etapa converge con 4 ventanas seguidas sin mejora y al menos 60 min de etapa. El tiempo que libera pasa a las etapas pendientes, y `--hours` queda como tope. Al cerrar, si la última ventana es claramente peor que la mejor, se restaura `<rol>/<etapa>_best`. Que se estanque no garantiza el óptimo: PPO puede volver a mejorar después de una meseta.
 
@@ -145,7 +148,8 @@ env = ObservationHistory(PerceptionNoiseWrapper(PenaltyKeeperEnv(backend='synthe
 - Puntos de control cada 10 min y al interrumpir con Ctrl+C. `--output <carpeta> --resume` continúa: las etapas sintéticas incompletas se repiten, las de B-Human conservan el estado de convergencia y usan el tiempo restante.
 - Windows no entra en suspensión mientras entrena.
 - Evaluar un modelo en las condiciones de una etapa: `tools/evaluate_rl.py --role keeper --stage keeper_bhuman_random_kicks --policy runs/train/<fecha>/keeper/latest --episodes 100 --seeds 20000 20001 20002 20003 20004 --workers 30` (`--policy center` o `geometric` para los baselines).
-- Resultado guardado de la primera corrida: `runs/results/ppo_v1_20261009/` (modelos, logs, evaluación 5×100, `resumen.json` y parche del código que la produjo).
+- Duelo entre políticas (cross-play en B-Human, `penalty/rl/duel.py`): `tools/duel_rl.py --strikers scripted v2=<dir> --keepers scripted v4=<dir>:gate --episodes 200 --workers 30 --conditions realista sin_ruido`. Los dos controladores tácticos deciden cada 0.1 s con su propia observación y ruido; tras la patada el episodio no se adelanta, porque el portero sigue decidiendo hasta comprometerse. Todas las parejas juegan las mismas semillas (comparación pareada). `:gate` activa `commit_after_shot` para porteros entrenados con él. La inferencia de los workers es numpy (sin torch).
+- Corridas, resultados y ubicación de modelos y reportes: [RESULTADOS_RL.md](RESULTADOS_RL.md).
 
 Rendimiento medido el 2026-10-09 (Ryzen 9 8940HX, 16 núcleos/32 hilos, 31 GB, enchufado, modo de energía "Máximo rendimiento"):
 
@@ -169,12 +173,13 @@ Hecho (P0, Agente A completo y partes no entrenables de B/C/E):
 - Recompensas y objetivos versionados, métricas primarias/secundarias, baselines scripted y geométrica.
 - Skills con límites duros y rechazo de valores inválidos; búsqueda aleatoria y CMA-ES.
 - Evaluación multi-semilla/multiproceso con throughput y procedencia.
+- Entrenamiento PPO (2026-10-08 a 10, [RESULTADOS_RL.md](RESULTADOS_RL.md)): recolección asíncrona, convergencia con episodios sin ruido, protecciones, condiciones robustas y duelo entre políticas. El tirador v2 pasa las compuertas (0.96 frente a 0.02 del scripted contra el portero FSM, con variación y ruido). El portero v4 supera al geométrico (0.37 frente a 0.18), pero no a la guardia central tras la patada (0.55).
 
 Pendiente:
 
-- Resultados de entrenamiento PPO: el pipeline está listo y probado de punta a punta; falta la corrida larga y revisar las compuertas (`goal_rate ≥ baseline`, caídas ≤ baseline + 5 %).
+- Un portero entrenado que supere a la guardia central.
 - Exponer parámetros de patada/bloqueo en el runtime nativo generado (días 4–6).
-- Self-play, `opponent_pool.py`, matriz cross-play (P1).
+- Self-play y `opponent_pool.py` (P1). La matriz cross-play ya se puede medir con `tools/duel_rl.py`.
 - Residual RL (P1), `penalty/rl/runtime.py` y adaptador de observación para NAO (Agente F).
 - `--striker-controller/--keeper-controller rl` en el simulador cuando exista un formato de modelo.
 

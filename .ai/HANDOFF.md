@@ -34,3 +34,12 @@ Guardar integración y corregir patadas/recuperación lateral. El usuario diseñ
 - Siguiente: PPO (instalar stable-baselines3/torch), exponer parámetros de patada en runtime generado, self-play, adaptador NAO.
 
 - 2026-10-07: PPO nocturno listo (`tools/train_rl.py`, `penalty/rl/training.py`); prueba corta de 9 etapas completada sin fallos. Lanzar `tools/train_rl.py --hours 10 --workers 8` y revisar `runs/train/<fecha>/report.json`.
+
+## Entrenamiento RL — 2026-10-08 a 10
+
+- Rama `feat/rl-contracts`, todo subido: código, `docs/RESULTADOS_RL.md`, modelos (`models/rl/`, con `manifest.json`), reportes y curvas (`docs/validation/rl/`) y videos (`docs/media/rl/`). Suite: 112 pruebas.
+- Qué se hizo, resultados y dónde está cada cosa: `docs/RESULTADOS_RL.md`. Las copias completas, con todos los checkpoints y los logs de consola, solo están en este PC, en `runs/results/`.
+- Tirador a usar: `models/rl/striker_v2`. Anota 0.96 contra el portero FSM con variación y ruido, y 91.5 % en el duelo; reparte los tiros 51/49 entre las dos esquinas.
+- Portero: ningún entrenado supera la guardia central tras la patada (0.55). El mejor es el v4 (0.37); el geométrico, 0.18.
+- PC de entrenamiento: solo VS Build Tools 2026 (el runtime se compila a mano con el generador "Visual Studio 18 2026"), Smart App Control desactivado y modo de energía "Máximo rendimiento".
+- Siguiente: portero entrenado solo en B-Human o mejor estirada nativa; duelo contra porteros entrenados.

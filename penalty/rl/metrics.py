@@ -9,6 +9,33 @@ from penalty.rl.rewards import STRIKER_OUTCOMES as STRIKER_PRIMARY
 STRIKER_SECONDARY = ('ball_speed', 'target_error', 'kick_time')
 KEEPER_SECONDARY = ('reaction_time',)
 KEEPER_FLAGS = ('wrong_side', 'early_dive', 'contact', 'fallen')
+SIDES = ('left', 'center', 'right')
+SIDE_Y = .2  # m on the goal line; the keeper's side bins (synthetic.SIDE_THRESHOLD)
+
+
+def shot_side(y):
+    """Striker's view: positive y is the striker's left, i.e. the keeper's right."""
+    return 'left' if y > SIDE_Y else 'right' if y < -SIDE_Y else 'center'
+
+
+def side_summary(records):
+    """Where the striker aimed (target_y, every kick) and where the ball crossed
+    the goal line (goal_line_y, when it did), in the striker's view."""
+    def rates(values):
+        return {side: sum(shot_side(y) == side for y in values)/len(values) if values else 0.
+                for side in SIDES}
+
+    def scored(record):
+        return (record.get('outcome') or record.get('result')) == 'goal'
+
+    aimed = [r for r in records if r.get('target_y') is not None]
+    crossed = [r['goal_line_y'] for r in records if r.get('goal_line_y') is not None]
+    by_aim = {side: [r for r in aimed if shot_side(r['target_y']) == side] for side in SIDES}
+    return {'kicks': len(aimed), 'crossed_goal_line': len(crossed),
+            'aim': rates([r['target_y'] for r in aimed]), 'goal_line': rates(crossed),
+            'goal_rate_by_aim': {side: sum(map(scored, group))/len(group) if group else None
+                                 for side, group in by_aim.items()},
+            'mean_abs_target_y': float(np.mean([abs(r['target_y']) for r in aimed])) if aimed else None}
 
 
 def wilson_interval(successes, total, z=1.96):
@@ -49,6 +76,8 @@ def summarize(records, role):
             summary['rates'][flag + '_rate'] = count/total if total else 0.
     secondary = STRIKER_SECONDARY if role == 'striker' else KEEPER_SECONDARY
     summary['secondary'] = {name: _mean_std([r.get(name) for r in records]) for name in secondary}
+    if role == 'striker':
+        summary['sides'] = side_summary(records)
     summary['mean_return'] = _mean_std([r.get('return') for r in records])
     summary['mean_steps'] = _mean_std([r.get('steps') for r in records])
     return summary

@@ -147,10 +147,18 @@ class Watchdog(threading.Thread):
 # Robustness for every policy: perception noise (PerceptionNoiseWrapper
 # defaults); in B-Human also ±5 cm ball, ±5 cm/±0.1 rad start poses.
 NOISE = {'perception_noise': True}
+# Keeper: synthetic shots at the B-Human kick times (the random_kicks opponent
+# touches the ball at 3.1-7.4 s, p10-p90, median 5.7 s, 60 episodes on
+# 2026-10-10) and a safety filter that ignores any commit before the kick.
+# ppo_v2 learned 0.5-3 s shots, dived at once in B-Human and fell before every
+# shot; with 3-9 s and no filter PPO never learned to wait 30-90 decisions
+# (0.13-0.20 saves after 3M synthetic steps, ppo_v3_keeper).
+KEEPER_TIMING = dict(NOISE, kick_time_range=(3., 9.), commit_after_shot=True)
 VARIATION = dict(NOISE, ball_jitter=.05, start_jitter=(.05, .1))
 # Keeper opponent: 3/4 of kicks aimed at |y| 0.3-0.65 m, 1/4 at the centre,
 # 1960-2900 mm reach. The original uniform kicks rewarded a fixed centre guard.
-CORNER_KICKS = dict(VARIATION, shot_target=(.3, .65), center_shots=.25, shot_power=(.5, 1.))
+CORNER_KICKS = dict(VARIATION, shot_target=(.3, .65), center_shots=.25, shot_power=(.5, 1.),
+                    commit_after_shot=True)
 # B-Human: 100 held-out evaluation episodes; convergence on windows of 200
 # deterministic episodes, one in every 5 each worker plays.
 BHUMAN_EVAL = {'eval_episodes': 100, 'window': 200, 'eval_every': 5}
@@ -170,9 +178,10 @@ def overnight_plan(roles=ROLES):
                          backend_options=dict(NOISE))]
     if 'keeper' in roles:
         stages += [Stage('keeper_synth_easy', 'keeper', 'synthetic', 'synthetic', 1_500_000,
-                         backend_options=dict(NOISE, speed_range=(1.5, 2.5), target_range=(-.6, .6))),
+                         backend_options=dict(KEEPER_TIMING, speed_range=(1.5, 2.5),
+                                              target_range=(-.6, .6))),
                    Stage('keeper_synth_full', 'keeper', 'synthetic', 'synthetic', 3_500_000,
-                         backend_options=dict(NOISE))]
+                         backend_options=dict(KEEPER_TIMING))]
     bhuman = []
     if 'striker' in roles:
         bhuman += [Stage('striker_bhuman_static', 'striker', 'bhuman', 'static', share=.4,
@@ -195,8 +204,10 @@ PPO_SETTINGS = {
     # per PPO update across all of them. No entropy bonus and std <= max_std:
     # with actions clipped to [-1, 1] the bonus inflated the noise until
     # training episodes were near random (std 0.7-20 in ppo_v1_20261009).
+    # std >= min_std: the keeper arrived from synthetic with a trigger std of
+    # 0.13 and never explored waiting (ppo_v2_20261010).
     'bhuman': {'rollout': 4096, 'batch_size': 256, 'learning_rate': 1e-4, 'ent_coef': 0.,
-               'target_kl': .03, 'max_std': .5},
+               'target_kl': .03, 'min_std': .2, 'max_std': .5},
 }
 # Same observation/action spaces as the B-Human role; the learner's placeholder.
 PLACEHOLDER_OPPONENT = {'striker': 'empty', 'keeper': 'synthetic'}
@@ -496,7 +507,7 @@ def _run_stage(stage, output, progress, deadline, workers, seed, PPO, VecNormali
                                      progress.data.setdefault('convergence', {}).get(stage.name))
     settings = dict(PPO_SETTINGS[stage.backend])
     settings.pop('n_envs', None)
-    max_std = settings.pop('max_std', None)
+    min_std, max_std = settings.pop('min_std', None), settings.pop('max_std', None)
     run_seed = seed + len(progress.data['completed'])
     algorithm, collector = PPO, None
     if stage.backend == 'bhuman':
@@ -542,7 +553,7 @@ def _run_stage(stage, output, progress, deadline, workers, seed, PPO, VecNormali
     stop = 'budget'
     try:
         if stage.backend == 'bhuman':
-            model.max_std = max_std
+            model.min_std, model.max_std = min_std, max_std
             collector = model.collector = AsyncCollector(worker_specs(stage, workers, run_seed))
         model.learn(budget, callback=callback, reset_num_timesteps=False, progress_bar=False)
         stop = callback.stop_reason or 'budget'

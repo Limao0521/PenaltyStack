@@ -50,6 +50,38 @@ class BHumanTacticalTests(unittest.TestCase):
         self.assertTrue(record['early_dive'])
         self.assertTrue(record['fallen'])
 
+    def test_commit_after_shot_waits_for_the_kick(self):
+        env = make_env('keeper', 'bhuman', 'scripted', {'commit_after_shot': True})
+        self.addCleanup(env.close)
+        env.reset(seed=0)
+        _, _, terminated, _, info = env.step(KeeperAction(1, 1., .5).to_normalized())
+        self.assertEqual(info['safety'], 'waiting_for_shot')
+        self.assertFalse(terminated)
+        record = rollout(env, lambda _observation: KeeperAction(1, 1., .5).to_normalized(), seed=0)
+        self.assertNotEqual(record['outcome'], 'keeper_fall')
+        self.assertFalse(record['early_dive'])
+        self.assertIsNotNone(record['reaction_time'])
+
+    def test_duel_scripted_players_and_keeper_gate(self):
+        from penalty.rl.duel import RESULTS, DuelWorld, duel_episode, make_player, summarize_duels
+        striker = make_player({'kind': 'baseline', 'name': 'scripted'}, 'striker')
+        keeper = make_player({'kind': 'baseline', 'name': 'scripted'}, 'keeper')
+        world = DuelWorld(seed=0)
+        self.addCleanup(world.close)
+        record = duel_episode(world, striker, keeper, seed=0, noise=False)
+        # Same decisions as the shared FSM penalty: centred shot, blocked.
+        self.assertEqual(record['result'], 'save')
+        self.assertGreater(record['contact_time'], 0)
+        self.assertEqual(summarize_duels([record])['rates']['save_rate'], 1.)
+        dive = lambda _observation: KeeperAction(1, 1., .5).to_normalized()  # noqa: E731
+        self.assertEqual(duel_episode(world, striker, dive, seed=0, noise=False)['result'], 'keeper_fall')
+        gated = DuelWorld(seed=0, keeper_gate=True)
+        self.addCleanup(gated.close)
+        record = duel_episode(gated, striker, dive, seed=0, noise=False)
+        self.assertIn(record['result'], RESULTS)
+        self.assertNotEqual(record['result'], 'keeper_fall')
+        self.assertGreaterEqual(record['commit_time'], record['contact_time'])
+
     def test_native_failure_ends_episode_as_sim_error(self):
         env = self.env('striker', 'scripted')
         env.reset(seed=0)
