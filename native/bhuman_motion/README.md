@@ -5,7 +5,7 @@ Fuentes originales: `baseline/bhuman`, revisión SabanaHerons2026
 se conservan en `baseline/motion_manifest.json`. El checkout de origen no
 interviene en la compilación ni ejecución posterior.
 
-Desde la raíz del proyecto, con Visual Studio 2022 Build Tools y CMake:
+Desde la raíz del proyecto, con Visual Studio 2022 o 2026 Build Tools y CMake:
 
 ```powershell
 .\.venv\Scripts\python.exe tools/build_motion_runtime.py
@@ -96,8 +96,13 @@ y el orden original Joints, incluyendo ambas manos y HipYawPitch derecho.
 en mm/s y turn en rad/s. Patada admite forwardFastLeft/forwardFastRight,
 `kick_length_mm` entre 1500 y 3500 (por defecto 2500), y ball[2] en milímetros
 del plano robot. El alcance solicitado alimenta KickLengthConverter original;
-no garantiza esa distancia recorrida en MuJoCo. Block usa center/left/right; las fases
-son genuflectStand, keeperJumpLeft y su espejo. Cabeza usa head_yaw/head_pitch
+no garantiza esa distancia recorrida en MuJoCo. Block admite seis defensas:
+center/center_right (genuflectStand y espejo), wide_left/wide_right
+(genuflectStandDefender y espejo), left/right (keeperJumpLeft y espejo).
+prepare solicita sitDownKeeper como preparación separada. HELLO anuncia
+keeper_defenses_v2; el protocolo 1 y las tres solicitudes antiguas se conservan.
+Detalle y validación en [DEFENSAS_PORTERO.md](../../docs/DEFENSAS_PORTERO.md).
+Cabeza usa head_yaw/head_pitch
 en radianes. Getup solicita stand: el motor original decide la recuperación
 según FallDownState, sin forzar estados inventados. Después de que el salto
 lateral entra en `keeperJumpLeft`, la sesión solicita getup/stand una vez.

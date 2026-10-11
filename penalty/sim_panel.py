@@ -2,6 +2,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from penalty.keeper_defenses import BLOCK_REQUEST_NAMES
+
 
 class ControlPanel:
     def __init__(self, session, root=None):
@@ -53,7 +55,7 @@ class ControlPanel:
         self.block_side = tk.StringVar(value='center')
         for i,(label,variable,values) in enumerate([
                 ('Patada',self.kick_type,['forwardFastLeft','forwardFastRight']),
-                ('Bloqueo',self.block_side,['center','left','right'])],start=len(defaults)):
+                ('Defensa / preparación',self.block_side,BLOCK_REQUEST_NAMES)],start=len(defaults)):
             ttk.Label(manual,text=label).grid(row=i,column=0,sticky='w')
             ttk.Combobox(manual,textvariable=variable,values=values,state='readonly',width=22).grid(row=i,column=1,sticky='w')
         actions = ttk.Frame(manual)

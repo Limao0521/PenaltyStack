@@ -1,0 +1,11 @@
+{
+  "validation": "keeper_defenses_replay_v1",
+  "trace": "watch_balanced/trace.jsonl",
+  "trace_sha256": "7a0d0ec563983011437290810fa11a7bb51b824e88fd84b30ed10a27db6f8254",
+  "frames": 87,
+  "named_action_differences": [],
+  "full_decision_differences": [],
+  "portable_v2_prediction_side_trigger_differences": [],
+  "published_array_v2_side_trigger_differences": [],
+  "scope": "One recorded mixed-style penalty. Random/boundary/invalid-state compatibility checks are in tests/test_keeper_library.py."
+}

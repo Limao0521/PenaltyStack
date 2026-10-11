@@ -1,0 +1,197 @@
+{
+  "validation": "keeper_defenses_validation_bundle_v1",
+  "source_parent_head": "9064d50c3dcb12fd58b34be6d29ad0a0a573879c",
+  "source_branch": "codex/mejora-portero",
+  "working_tree_changes_included": true,
+  "source_hash_scope": "Exact Windows working-copy bytes at validation; existing source checkout line endings may differ on another platform. New Python sources are LF-pinned. Original baseline and raw evidence are byte-preserved by .gitattributes.",
+  "sources": [
+    {
+      "file": "native/bhuman_motion/main.cpp",
+      "sha256": "b9312148d55c44def4f0aa5c3157e22b8513b3ee69dba7b1baf893dc694c0adb"
+    },
+    {
+      "file": "native/bhuman_motion/CMakeLists.txt",
+      "sha256": "79e241bdca908667f2bee6a1594b0954088e18e3cdb50ff40089a2b8a4181928"
+    },
+    {
+      "file": "tools/build_motion_runtime.py",
+      "sha256": "1eec0dc9b5447020139dc6ad9549c812e98cd43a3759b217f95b4442945219d5"
+    },
+    {
+      "file": "penalty/sim_session.py",
+      "sha256": "8ebf093a58f08de63e7d1a989f92983bae7a9b0cbe8fb39b671ea4dd72ba9e8c"
+    },
+    {
+      "file": "penalty/sim_panel.py",
+      "sha256": "163ab8833d74e143c0e2011acc0c95865672b24c37ff0ab3a918f4d5dcc79810"
+    },
+    {
+      "file": "penalty/keeper_defenses.py",
+      "sha256": "c579d8ddb9f9334de6f5fa294fe3ab92ca7a01570e874b64937646271b5a2eb2"
+    },
+    {
+      "file": "penalty/keeper_library.py",
+      "sha256": "203e4fb66563243e2ef205b00fcb19cb28cb1ed91179b7fedad01e2ed2f60bbf"
+    },
+    {
+      "file": "penalty/keeper_vision.py",
+      "sha256": "fef98d7778d7ee9c4dbfd770ceef244a81d55affc7ab8572de1c32b0041d7e8c"
+    },
+    {
+      "file": "penalty/rl/defense_benchmark.py",
+      "sha256": "64dc6dacf59c3c14135fae1f3829875090fee8b3b8cea1e112657d76c4715f57"
+    },
+    {
+      "file": "penalty/rl/contracts.py",
+      "sha256": "4586713716032729d76b4b50ef5e03043f2587ee98a67e77177f22de631ce258"
+    },
+    {
+      "file": "penalty/rl/vision_keeper.py",
+      "sha256": "5d09d5fe39ea400f0b7db2cee4a1806519076dd9bc714a0b6ad1143d41a742fe"
+    },
+    {
+      "file": "penalty/rl/vision_contracts.py",
+      "sha256": "7cd81235639ae58862555e341736c75ad5eca8d2badfefd9de283708d9bfe586"
+    },
+    {
+      "file": "penalty/rl/orientation_contracts.py",
+      "sha256": "d684579ab16d30ced698698ffff3fd8f496beb7cea4a179f2961ba784399d3e8"
+    },
+    {
+      "file": "tools/evaluate_keeper_defenses.py",
+      "sha256": "80f070fb7085c5e4dcbc736762c048de882946226a6dbb13cdf2e360978974e0"
+    },
+    {
+      "file": "tools/validate_keeper_defenses.py",
+      "sha256": "faa9f29b1bdf2cc4400e5e04af3ceed1c15d7f9849d493cb68c9ccad9ee23df4"
+    },
+    {
+      "file": "tools/watch_keeper_defenses.py",
+      "sha256": "524606a3d019f28f4d3e2ef5041f6a2c6efbf5fa64372ab53506d7ca17e90172"
+    },
+    {
+      "file": "tests/test_motion_runtime.py",
+      "sha256": "860a9f53e2f974d5092a75337de73613d462a1e1bf33c78e4d44844308e9d780"
+    },
+    {
+      "file": "tests/test_keeper_defense_runtime.py",
+      "sha256": "e6c8a0d8c61371b218d60af46cb74d6a84e0ddad5d3bbb98e0f927abb28b013b"
+    },
+    {
+      "file": "tests/test_keeper_defense_integration.py",
+      "sha256": "8abf7eb7c15c0b4e57eb16797b9920a0b5d39dba81596b37e017d13d4baba01c"
+    },
+    {
+      "file": "tests/test_keeper_library.py",
+      "sha256": "3ea54a10c2bff920004f7f5f3ecea83d168f70f3ca2e2c9f18aa1e06976f6cd7"
+    }
+  ],
+  "runtime": {
+    "file": "native/bhuman_motion/build/Release/bhuman_motion.exe",
+    "sha256": "5158f601abae26be845f89ee2d44b7a3567eb0ee8a90a279a91223eeb2dff27c",
+    "hello": {
+      "capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "cycle_s": 0.012,
+      "joint_names": [
+        "headYaw",
+        "headPitch",
+        "lShoulderPitch",
+        "lShoulderRoll",
+        "lElbowYaw",
+        "lElbowRoll",
+        "lWristYaw",
+        "lHand",
+        "rShoulderPitch",
+        "rShoulderRoll",
+        "rElbowYaw",
+        "rElbowRoll",
+        "rWristYaw",
+        "rHand",
+        "lHipYawPitch",
+        "lHipRoll",
+        "lHipPitch",
+        "lKneePitch",
+        "lAnklePitch",
+        "lAnkleRoll",
+        "rHipYawPitch",
+        "rHipRoll",
+        "rHipPitch",
+        "rKneePitch",
+        "rAnklePitch",
+        "rAnkleRoll"
+      ],
+      "keeper_defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "keeper_preparations": [
+        "prepare"
+      ],
+      "motions": [
+        "stand",
+        "walk",
+        "kick",
+        "block",
+        "getup"
+      ],
+      "protocol": 1,
+      "provenance": {
+        "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+        "host_source_sha256": "edf0c2acef8cf961e302de67f55639c97a26c4b6c3fa7b2aa4ab98749ff85f02",
+        "inputs_profile": "mujoco-truth-v2",
+        "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+        "original_file_count": 559,
+        "simulation_calibration": {
+          "ball_radius": "INIT geometry in mm",
+          "inertial_angle": "original removeZRotation and angle-axis",
+          "left_forward_stroke_ms": 100,
+          "right_forward_stroke_ms": 200
+        },
+        "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+      },
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "type": "HELLO"
+    },
+    "children_collected": true
+  },
+  "baseline": {
+    "commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+    "files_verified": 559,
+    "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+    "rsi3_sha256": "73f8c9a78b35fbdd18e6e407193924b2d1996812ff78cd405377cc57b0981369"
+  },
+  "environment": {
+    "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "mujoco": "3.3.7",
+    "numpy": "2.4.6"
+  },
+  "checks": {
+    "unit_tests": 221,
+    "unit_tests_wall_s": 85.311,
+    "physical_requests_passed": 7,
+    "camera_replayed_frames": 87,
+    "duel_runs": 80,
+    "unique_paired_cases": 16,
+    "independent_episode_seeds": 2,
+    "sim_errors": 0
+  },
+  "omitted_regenerable_assets": [
+    "motions/defensas.gif",
+    "motions/preparacion.gif"
+  ],
+  "limitations": [
+    "Simulation only; ideal sensor readings explicitly traced.",
+    "Camera inference pauses the MuJoCo physical clock.",
+    "The striker benchmark consumes privileged scene observations with declared noise.",
+    "Two seed clusters are insufficient for a save-rate superiority claim.",
+    "Physical primitive validation uses one initial stance and no shot.",
+    "The balanced mode selects four defenses; wide guards remain separate experimental variants."
+  ]
+}

@@ -171,7 +171,9 @@ Comparaciones pareadas (bootstrap por semilla; «solo A ataja / solo B ataja»):
 | v5 − v5 balón (orientación) | +0.2 pp | 0.0 a +0.8 | 1 / 0 |
 | v5 − FSM base | +38.5 pp | +30.2 a +46.5 | 188 / 34 |
 
-v3 y v4 coinciden en todas sus decisiones con v2. La única diferencia es un
+v3 coincide en las decisiones válidas con v2. v4 cambia una decisión de lado
+y momento en `feint`, semilla `70001000007`: centro a 10.800 s frente a derecha
+a 11.808 s; ambas reciben gol. La atajada adicional de v3/v4 corresponde a un
 tiempo de espera del detector en un penal de v2. En v4 la postura estuvo
 disponible en 379/400 penales, cambió una decisión y no retuvo ningún centro.
 El modelo de orientación, verificado en las trazas del observador de estas
@@ -196,13 +198,15 @@ Atajadas por cruce libre real (observador en las mismas semillas, 350 tiros):
 v5 pide el centro con mediana 1.76 s antes de la llegada en tiros centrales.
 v2 lo pide con mediana 2.68 s. Esperar pierde 15 atajadas con |cruce| <0.25 m,
 y las ganancias en la frontera derecha (+6) y las esquinas lejanas (+3) no lo
-compensan. La sonda de desarrollo era pequeña y no midió tiros centrales con
-centro tardío. La mejora de la frontera derecha sí se confirma.
+compensan. La sonda de desarrollo incluyó 25 tiros centrales con centro tardío,
+pero la muestra no anticipó la regresión final. La mejora de la frontera
+derecha sí se confirma.
 
 ### Conclusiones
 
 1. La percepción de v2 ya resuelve el lado con la trayectoria del balón. La
-   orientación, incluso bien usada, no cambia decisiones en este sistema.
+   orientación cambia alguna decisión, pero no produce una mejora general
+   demostrada en este experimento.
    Para que importara habría que predecir el pie de golpeo (±12–15 cm de
    desvío) y, aun así, el residuo (5–9 cm) seguiría siendo peor que el balón
    tras dos capturas.
@@ -219,6 +223,10 @@ centro tardío. La mejora de la frontera derecha sí se confirma.
    en el NAO.
 
 ## Reproducir
+
+Ampliación posterior del catálogo de movimientos y explicación del predictor:
+[DEFENSAS_PORTERO.md](DEFENSAS_PORTERO.md). Los resultados anteriores se
+conservan como referencia; la biblioteca nueva tiene versión v6.
 
 ```powershell
 # Duelo pareado (mismos tiros para todos los porteros).

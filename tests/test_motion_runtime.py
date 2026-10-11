@@ -57,6 +57,11 @@ class NativeMotionRuntimeTests(unittest.TestCase):
         self.assertEqual(hello['source_commit'], '2360ab1100ad28f70e190c893f6b095651ff0bbc')
         self.assertEqual(len(hello['joint_names']), 26)
         self.assertEqual(hello['cycle_s'], .012)
+        self.assertEqual(hello['protocol'], 1)
+        self.assertIn('keeper_defenses_v2', hello['capabilities'])
+        self.assertEqual(hello['keeper_defenses'],
+                         ['center', 'center_right', 'wide_left', 'wide_right', 'left', 'right'])
+        self.assertEqual(hello['keeper_preparations'], ['prepare'])
 
     def test_original_stand_and_walk_generate_joint_commands(self):
         # Constant ideal sensors test the native motion providers, not physical
@@ -101,8 +106,12 @@ class NativeMotionRuntimeTests(unittest.TestCase):
 
     def test_original_keeper_keyframes_and_mirror(self):
         for side, expected, mirror in (('center','genuflectStand',False),
+                                      ('center_right','genuflectStand',True),
+                                      ('wide_left','genuflectStandDefender',False),
+                                      ('wide_right','genuflectStandDefender',True),
                                       ('left','keeperJumpLeft',False),
-                                      ('right','keeperJumpLeft',True)):
+                                      ('right','keeperJumpLeft',True),
+                                      ('prepare','sitDownKeeper',False)):
             with self.subTest(side=side):
                 result, messages = run_native([{'motion':'stand'}] * 170 +
                     [{'motion':'block','block_side':side}] * 220)
@@ -112,6 +121,13 @@ class NativeMotionRuntimeTests(unittest.TestCase):
                 self.assertTrue(active)
                 self.assertEqual(active[-1]['motion_info']['keyframe'], expected)
                 self.assertEqual(active[-1]['motion_info']['mirror'], mirror)
+
+    def test_unknown_keeper_block_request_is_rejected(self):
+        result, messages = run_native([{'motion':'block','block_side':'unknown_guard'}])
+        self.assertEqual(result.returncode, 2)
+        self.assertEqual(messages[-1]['type'], 'ERROR')
+        self.assertEqual(messages[-1]['code'], 'INVALID_FRAME')
+        self.assertIn('Unknown block side', messages[-1]['message'])
 
     def test_oversized_or_truncated_messages_fail(self):
         for payload, code in (('[' * 65537 + '\n', 'MESSAGE_SIZE'),

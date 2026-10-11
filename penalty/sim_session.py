@@ -10,6 +10,7 @@ import time
 import uuid
 
 from penalty.control import Command, Observation, PenaltyController
+from penalty.keeper_defenses import BLOCK_REQUEST_NAMES
 from penalty.motion_contract import CYCLE_S, ROOT, SOURCE_COMMIT
 
 
@@ -170,7 +171,7 @@ class SimulationSession:
             request[name] = number
         if request.get('kick_type','forwardFastLeft') not in ('forwardFastLeft','forwardFastRight'):
             raise ValueError('tipo de patada desconocido')
-        if request.get('block_side','center') not in ('center','left','right'):
+        if request.get('block_side','center') not in BLOCK_REQUEST_NAMES:
             raise ValueError('lado de bloqueo desconocido')
         length=float(request.get('kick_length_mm',2500.))
         if not math.isfinite(length) or not 1500. <= length <= 3500.:

@@ -277,8 +277,16 @@ public:
     {
       motion.motion = MotionRequest::dive;
       const std::string side = request.value("block_side", "center");
-      if(side != "center" && side != "left" && side != "right") throw std::runtime_error("Unknown block side");
-      motion.diveRequest = side == "left" ? MotionRequest::Dive::jumpLeft : side == "right" ? MotionRequest::Dive::jumpRight : MotionRequest::Dive::squatArmsBackLeft;
+      // Each request selects an existing upstream motion. The original
+      // KeyframeMotionRequest mapping owns the keyframes and their mirrors.
+      if(side == "center") motion.diveRequest = MotionRequest::Dive::squatArmsBackLeft;
+      else if(side == "center_right") motion.diveRequest = MotionRequest::Dive::squatArmsBackRight;
+      else if(side == "wide_left") motion.diveRequest = MotionRequest::Dive::squatWideArmsBackLeft;
+      else if(side == "wide_right") motion.diveRequest = MotionRequest::Dive::squatWideArmsBackRight;
+      else if(side == "left") motion.diveRequest = MotionRequest::Dive::jumpLeft;
+      else if(side == "right") motion.diveRequest = MotionRequest::Dive::jumpRight;
+      else if(side == "prepare") motion.diveRequest = MotionRequest::Dive::prepare;
+      else throw std::runtime_error("Unknown block side");
     }
     else throw std::runtime_error("Unknown motion request");
     auto& head = rep<HeadMotionRequest>("HeadMotionRequest");
@@ -353,6 +361,9 @@ int main()
   json names=json::array(); FOREACH_ENUM(Joints::Joint,joint) names.push_back(TypeRegistry::getEnumName(joint));
   std::cout << json({{"type","HELLO"},{"protocol",1},{"source_commit",revision},{"cycle_s",.012},
                     {"joint_names",names},{"motions",{"stand","walk","kick","block","getup"}},
+                    {"capabilities",{"keeper_defenses_v2"}},
+                    {"keeper_defenses",{"center","center_right","wide_left","wide_right","left","right"}},
+                    {"keeper_preparations",{"prepare"}},
                     {"provenance",json::parse(provenance_json)}}).dump() << std::endl;
   std::unique_ptr<Runtime> runtime;
   std::string line;

@@ -16,6 +16,42 @@ import io
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 NATIVE = ROOT / 'native' / 'bhuman_motion'
 DEPS = NATIVE / 'dependencies'
+VS_GENERATORS = {17: 'Visual Studio 17 2022', 18: 'Visual Studio 18 2026'}
+
+
+def cmake_cache(path):
+    """Read configured tooling so rebuilding keeps the same CMake generator."""
+    if not path.is_file():
+        return {}
+    values = {}
+    for line in path.read_text(encoding='utf-8').splitlines():
+        if line and not line.startswith(('#', '//')) and ':' in line and '=' in line:
+            key, value = line.split('=', 1)
+            values[key.split(':', 1)[0]] = value
+    return values
+
+
+def visual_studio(installations, cache):
+    """Select installed MSVC 2022/2026, preserving an existing build's instance."""
+    candidates = []
+    for install in installations:
+        major = int(install['installationVersion'].split('.')[0])
+        if major in VS_GENERATORS:
+            candidates.append((major, install['installationPath'], VS_GENERATORS[major]))
+    generator = cache.get('CMAKE_GENERATOR')
+    if generator:
+        if generator not in VS_GENERATORS.values():
+            raise RuntimeError('Unsupported cached CMake generator: ' + generator)
+        candidates = [item for item in candidates if item[2] == generator]
+        instance = cache.get('CMAKE_GENERATOR_INSTANCE')
+        if instance:
+            requested = pathlib.Path(instance).resolve()
+            candidates = [item for item in candidates if pathlib.Path(item[1]).resolve() == requested]
+    if not candidates:
+        raise RuntimeError('Install the configured Visual Studio 2022 or 2026 Build Tools '
+                           'with Desktop development with C++')
+    _, installation, generator = max(candidates, key=lambda item: item[0])
+    return installation, generator
 
 
 def dependency(name, url, expected=None):
@@ -110,14 +146,20 @@ def main():
     args = parser.parse_args()
     prepare()
     vswhere = pathlib.Path('C:/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe')
-    vs = subprocess.check_output([str(vswhere), '-latest', '-products', '*', '-requires',
+    installations = json.loads(subprocess.check_output([str(vswhere), '-all', '-products', '*', '-requires',
                                  'Microsoft.VisualStudio.Component.VC.Tools.x86.x64',
-                                 '-property', 'installationPath'], text=True).strip()
-    if not vs:
-        raise RuntimeError('Install Visual Studio 2022 Build Tools: Desktop development with C++')
-    cmake = shutil.which('cmake') or str(pathlib.Path(vs) / 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe')
+                                 '-format', 'json'], text=True))
+    cache = cmake_cache(NATIVE / 'build/CMakeCache.txt')
+    vs, generator = visual_studio(installations, cache)
+    bundled_cmake = pathlib.Path(vs) / 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe'
+    cached_cmake = pathlib.Path(cache.get('CMAKE_COMMAND', ''))
+    cmake = (str(cached_cmake) if cached_cmake.is_file() else
+             str(bundled_cmake) if bundled_cmake.is_file() else shutil.which('cmake'))
+    if not cmake:
+        raise RuntimeError('CMake is missing from Visual Studio and PATH')
     subprocess.run([cmake, '-S', str(NATIVE), '-B', str(NATIVE / 'build'), '-G',
-                    'Visual Studio 17 2022', '-A', 'x64', '-DCMAKE_POLICY_VERSION_MINIMUM=3.5'], check=True)
+                    generator, '-A', 'x64', '-DCMAKE_GENERATOR_INSTANCE=' + vs,
+                    '-DCMAKE_POLICY_VERSION_MINIMUM=3.5'], check=True)
     if not args.configure_only:
         subprocess.run([cmake, '--build', str(NATIVE / 'build'), '--config', 'Release',
                         '--parallel', '4'], check=True)

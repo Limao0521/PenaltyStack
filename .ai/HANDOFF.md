@@ -1,5 +1,15 @@
 # Estado operativo — 2026-10-10
 
+## Actualización: seis defensas originales y biblioteca v6 (2026-10-10)
+
+- Rama `codex/mejora-portero`. Host recompilado: `center`, `center_right`, `wide_left`, `wide_right`, `left`, `right`; `prepare` separado. HELLO anuncia `keeper_defenses_v2` sin romper protocolo 1. Panel manual acepta las siete solicitudes; el simulador automático general conserva la FSM anterior.
+- Nuevo `keeper_action_v2` con nombre de defensa; contratos, objetivos y recompensas publicados intactos. `VisionLibraryKeeper` (`vision_keeper_v6`, experimental) compone v2: idéntica trayectoria, confirmación y activación. `balanced` elige centro según signo del cruce y conserva saltos; elige cuatro defensas. Las anchas se evalúan en modos separados. No hay entrenamiento nuevo ni modificaciones de keyframes.
+- Predictor: RGB y sensores propios, dos capturas entrantes, mediana hasta tres cruces lineales a x=-0.12 m. Centro entre ±0.30 m se activa al confirmar; saltos con llegada ≤1.8 s. Primera defensa fija y límite 28 s. Yaw del rival se mide pero v2/v6 no lo usa; extrapola balón ya en movimiento, no intención previa.
+- Suite: 221 pruebas pasan (85.311 s). MuJoCo: 7/7 solicitudes ejecutadas y recuperadas con apoyo estable adicional 1 s, hijos recogidos; una postura/semilla, sin tiro. Traza: 87/87 acciones exactas y cero diferencias de lado/activación frente al adaptador publicado v2.
+- Integración: 80 ejecuciones, ocho estilos por dos semillas, cinco variantes pareadas, cero `sim_error`. Por 16 casos: original 8 atajadas; centro espejado 11; ancho izquierdo 8; ancho derecho 9; `balanced` 11. Muestra preliminar, sólo dos clusters de semilla: no usar el IC bootstrap para declarar superioridad. Salto derecho validado por separado, no seleccionado por estos casos.
+- Evidencia congelada y hashes: `docs/validation/vision/keeper_defenses_v6`; explicación `docs/DEFENSAS_PORTERO.md`. CLI: `tools/watch_keeper_defenses.py --mode balanced --style v2 --live`, `tools/validate_keeper_defenses.py`, `tools/evaluate_keeper_defenses.py`. GIF regenerables en `runs/keeper_defenses/motions`; PNG y trazas en el reporte.
+- Sólo simulación: sensores ideales y reloj físico pausado durante inferencia explícitos. 559 originales B-Human y RSI3 preservados. No habilitar movimiento físico sin calibración y ensayos incrementales; no afirmar latencia/rendimiento de hardware.
+
 ## Actualización: revisión de visión, portero v4/v5 (2026-10-11)
 
 - v3 no usaba la orientación: exige postura ≤0.5 s antes del compromiso; en 200 penales de desarrollo la última postura válida estaba 0.7–2.8 s antes. La línea del torso predice el cruce con ~0.18 m de error (depende del pie); el balón da ~3 cm con dos capturas.

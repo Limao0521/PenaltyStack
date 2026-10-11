@@ -1,0 +1,5402 @@
+{
+  "benchmark": "keeper_defense_benchmark_v1",
+  "camera_pipeline": "keeper_sensor_camera_v2",
+  "action_version": "keeper_action_v2",
+  "catalog": {
+    "version": "keeper_defenses_v2",
+    "defenses": {
+      "center": {
+        "request": "squatArmsBackLeft",
+        "keyframe": "genuflectStand",
+        "mirror": false
+      },
+      "center_right": {
+        "request": "squatArmsBackRight",
+        "keyframe": "genuflectStand",
+        "mirror": true
+      },
+      "wide_left": {
+        "request": "squatWideArmsBackLeft",
+        "keyframe": "genuflectStandDefender",
+        "mirror": false
+      },
+      "wide_right": {
+        "request": "squatWideArmsBackRight",
+        "keyframe": "genuflectStandDefender",
+        "mirror": true
+      },
+      "left": {
+        "request": "jumpLeft",
+        "keyframe": "keeperJumpLeft",
+        "mirror": false
+      },
+      "right": {
+        "request": "jumpRight",
+        "keyframe": "keeperJumpLeft",
+        "mirror": true
+      }
+    },
+    "preparations": {
+      "prepare": {
+        "request": "prepare",
+        "keyframe": "sitDownKeeper",
+        "mirror": false
+      }
+    },
+    "learned_joint_trajectories": false,
+    "amplitude_scaling": false
+  },
+  "seed": 72001,
+  "episode_seeds": [
+    72001000000,
+    72001000001
+  ],
+  "episodes_per_style": 2,
+  "styles": [
+    "center",
+    "mixed",
+    "corners",
+    "soft",
+    "late",
+    "feint",
+    "v1",
+    "v2"
+  ],
+  "modes": {
+    "original": {
+      "policy": "vision_keeper_v6",
+      "core_policy": "vision_keeper_v2",
+      "mode": "original",
+      "settings": {
+        "corner_y": 0.3,
+        "dive_lead_s": 1.8,
+        "min_incoming_speed": 0.12,
+        "confirm_frames": 2,
+        "history": 3,
+        "max_ball_age": 0.25,
+        "sigma_margin": 1.5,
+        "goal_line_x": -0.12
+      },
+      "action_version": "keeper_action_v2",
+      "defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "inputs": "vision_state_v2 ball measurements only",
+      "orientation_used": false,
+      "experimental": true
+    },
+    "center_right": {
+      "policy": "vision_keeper_v6",
+      "core_policy": "vision_keeper_v2",
+      "mode": "center_right",
+      "settings": {
+        "corner_y": 0.3,
+        "dive_lead_s": 1.8,
+        "min_incoming_speed": 0.12,
+        "confirm_frames": 2,
+        "history": 3,
+        "max_ball_age": 0.25,
+        "sigma_margin": 1.5,
+        "goal_line_x": -0.12
+      },
+      "action_version": "keeper_action_v2",
+      "defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "inputs": "vision_state_v2 ball measurements only",
+      "orientation_used": false,
+      "experimental": true
+    },
+    "wide_left": {
+      "policy": "vision_keeper_v6",
+      "core_policy": "vision_keeper_v2",
+      "mode": "wide_left",
+      "settings": {
+        "corner_y": 0.3,
+        "dive_lead_s": 1.8,
+        "min_incoming_speed": 0.12,
+        "confirm_frames": 2,
+        "history": 3,
+        "max_ball_age": 0.25,
+        "sigma_margin": 1.5,
+        "goal_line_x": -0.12
+      },
+      "action_version": "keeper_action_v2",
+      "defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "inputs": "vision_state_v2 ball measurements only",
+      "orientation_used": false,
+      "experimental": true
+    },
+    "wide_right": {
+      "policy": "vision_keeper_v6",
+      "core_policy": "vision_keeper_v2",
+      "mode": "wide_right",
+      "settings": {
+        "corner_y": 0.3,
+        "dive_lead_s": 1.8,
+        "min_incoming_speed": 0.12,
+        "confirm_frames": 2,
+        "history": 3,
+        "max_ball_age": 0.25,
+        "sigma_margin": 1.5,
+        "goal_line_x": -0.12
+      },
+      "action_version": "keeper_action_v2",
+      "defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "inputs": "vision_state_v2 ball measurements only",
+      "orientation_used": false,
+      "experimental": true
+    },
+    "balanced": {
+      "policy": "vision_keeper_v6",
+      "core_policy": "vision_keeper_v2",
+      "mode": "balanced",
+      "settings": {
+        "corner_y": 0.3,
+        "dive_lead_s": 1.8,
+        "min_incoming_speed": 0.12,
+        "confirm_frames": 2,
+        "history": 3,
+        "max_ball_age": 0.25,
+        "sigma_margin": 1.5,
+        "goal_line_x": -0.12
+      },
+      "action_version": "keeper_action_v2",
+      "defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "inputs": "vision_state_v2 ball measurements only",
+      "orientation_used": false,
+      "experimental": true
+    }
+  },
+  "wall_s": 252.96749500001897,
+  "perception": "rendered RGB, B-Human robot detector, own encoder/IMU/FSR sensor pipeline",
+  "prediction": "unchanged vision_keeper_v2 ball trajectory and commitment timing; orientation unused",
+  "sensor_limitations": "ideal simulated sensor readings, estimated contact odometry; physics pauses during camera inference; no hardware equivalence",
+  "striker_perception": "privileged scene observation plus PerceptionNoise v1",
+  "order": "modes rotated per seed; all modes share each style/seed/reset conditions",
+  "summary": {
+    "original": {
+      "per_style": {
+        "center": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 1.0,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.0
+          }
+        },
+        "mixed": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "corners": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "soft": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "late": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.5,
+              "center": 0.0,
+              "right": 0.5
+            },
+            "goal_rate_by_aim": {
+              "left": 1.0,
+              "center": 1.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "feint": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "v1": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.0
+            },
+            "mean_abs_target_y": 0.38759650513529775
+          }
+        },
+        "v2": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 0.5,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 1.0
+            },
+            "mean_abs_target_y": 0.65
+          }
+        }
+      },
+      "macro_save_rate": 0.5,
+      "worst_style_save_rate": 0.0,
+      "worst_style": "late",
+      "sim_errors": 0,
+      "early_commits": 0
+    },
+    "center_right": {
+      "per_style": {
+        "center": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 1.0,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.0
+          }
+        },
+        "mixed": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "corners": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "soft": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "late": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "feint": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "v1": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.0
+            },
+            "mean_abs_target_y": 0.38759650513529775
+          }
+        },
+        "v2": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 0.5,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 1.0
+            },
+            "mean_abs_target_y": 0.65
+          }
+        }
+      },
+      "macro_save_rate": 0.6875,
+      "worst_style_save_rate": 0.0,
+      "worst_style": "v2",
+      "sim_errors": 0,
+      "early_commits": 0
+    },
+    "wide_left": {
+      "per_style": {
+        "center": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 1.0,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.0
+          }
+        },
+        "mixed": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "corners": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "soft": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "late": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "feint": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 1.0
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "v1": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.0
+            },
+            "mean_abs_target_y": 0.38759650513529775
+          }
+        },
+        "v2": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 0.5,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 1.0
+            },
+            "mean_abs_target_y": 0.65
+          }
+        }
+      },
+      "macro_save_rate": 0.5,
+      "worst_style_save_rate": 0.0,
+      "worst_style": "feint",
+      "sim_errors": 0,
+      "early_commits": 0
+    },
+    "wide_right": {
+      "per_style": {
+        "center": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 1.0,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.0
+          }
+        },
+        "mixed": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "corners": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "soft": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "late": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 1.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "feint": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "v1": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.0
+            },
+            "mean_abs_target_y": 0.38759650513529775
+          }
+        },
+        "v2": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 0.5,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 1.0
+            },
+            "mean_abs_target_y": 0.65
+          }
+        }
+      },
+      "macro_save_rate": 0.5625,
+      "worst_style_save_rate": 0.0,
+      "worst_style": "v2",
+      "sim_errors": 0,
+      "early_commits": 0
+    },
+    "balanced": {
+      "per_style": {
+        "center": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 1.0,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.0
+          }
+        },
+        "mixed": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "corners": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "soft": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "late": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.5,
+              "center": 0.5,
+              "right": 0.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": null
+            },
+            "mean_abs_target_y": 0.3224989395588636
+          }
+        },
+        "feint": {
+          "episodes": 2,
+          "counts": {
+            "goal": 1,
+            "save": 1,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.5,
+            "save_rate": 0.5,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.09452865480086614,
+              0.9054713451991339
+            ],
+            "save": [
+              0.09452865480086614,
+              0.9054713451991339
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 1,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.5
+            },
+            "mean_abs_target_y": 0.4647972106933594
+          }
+        },
+        "v1": {
+          "episodes": 2,
+          "counts": {
+            "goal": 0,
+            "save": 2,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 0.0,
+            "save_rate": 1.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.0,
+              0.6576280471103807
+            ],
+            "save": [
+              0.34237195288961925,
+              1.0
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 1.0,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 0,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 0.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 0.0
+            },
+            "mean_abs_target_y": 0.38759650513529775
+          }
+        },
+        "v2": {
+          "episodes": 2,
+          "counts": {
+            "goal": 2,
+            "save": 0,
+            "miss": 0,
+            "striker_fall": 0,
+            "keeper_fall": 0,
+            "timeout": 0,
+            "sim_error": 0
+          },
+          "rates": {
+            "goal_rate": 1.0,
+            "save_rate": 0.0,
+            "miss_rate": 0.0,
+            "striker_fall_rate": 0.0,
+            "keeper_fall_rate": 0.0,
+            "timeout_rate": 0.0,
+            "sim_error_rate": 0.0
+          },
+          "ci95": {
+            "goal": [
+              0.34237195288961925,
+              1.0
+            ],
+            "save": [
+              0.0,
+              0.6576280471103807
+            ]
+          },
+          "striker_fall_after_kick_rate": 0.0,
+          "keeper_commit_rate": 0.5,
+          "sides": {
+            "kicks": 2,
+            "crossed_goal_line": 2,
+            "aim": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_line": {
+              "left": 0.0,
+              "center": 0.0,
+              "right": 1.0
+            },
+            "goal_rate_by_aim": {
+              "left": null,
+              "center": null,
+              "right": 1.0
+            },
+            "mean_abs_target_y": 0.65
+          }
+        }
+      },
+      "macro_save_rate": 0.6875,
+      "worst_style_save_rate": 0.0,
+      "worst_style": "v2",
+      "sim_errors": 0,
+      "early_commits": 0
+    }
+  },
+  "defense_counts": {
+    "original": {
+      "center": 10,
+      "left": 5,
+      "none": 1
+    },
+    "center_right": {
+      "center_right": 10,
+      "left": 5,
+      "none": 1
+    },
+    "wide_left": {
+      "wide_left": 10,
+      "left": 5,
+      "none": 1
+    },
+    "wide_right": {
+      "wide_right": 10,
+      "left": 5,
+      "none": 1
+    },
+    "balanced": {
+      "center": 6,
+      "center_right": 4,
+      "left": 5,
+      "none": 1
+    }
+  },
+  "comparisons": {
+    "center_right_vs_original": {
+      "per_style": {
+        "center": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "corners": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "feint": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "late": {
+          "only_first_saves": 2,
+          "only_second_saves": 0,
+          "p_exact": 0.5
+        },
+        "mixed": {
+          "only_first_saves": 1,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "soft": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v1": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v2": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        }
+      },
+      "macro_gain": 0.1875,
+      "macro_gain_ci95": [
+        0.125,
+        0.25
+      ],
+      "ci_method": "paired bootstrap; episode seeds clustered across styles"
+    },
+    "wide_left_vs_original": {
+      "per_style": {
+        "center": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "corners": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "feint": {
+          "only_first_saves": 0,
+          "only_second_saves": 1,
+          "p_exact": 1.0
+        },
+        "late": {
+          "only_first_saves": 1,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "mixed": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "soft": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v1": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v2": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        }
+      },
+      "macro_gain": 0.0,
+      "macro_gain_ci95": [
+        0.0,
+        0.0
+      ],
+      "ci_method": "paired bootstrap; episode seeds clustered across styles"
+    },
+    "wide_right_vs_original": {
+      "per_style": {
+        "center": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "corners": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "feint": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "late": {
+          "only_first_saves": 1,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "mixed": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "soft": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v1": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v2": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        }
+      },
+      "macro_gain": 0.0625,
+      "macro_gain_ci95": [
+        0.0,
+        0.125
+      ],
+      "ci_method": "paired bootstrap; episode seeds clustered across styles"
+    },
+    "balanced_vs_original": {
+      "per_style": {
+        "center": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "corners": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "feint": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "late": {
+          "only_first_saves": 2,
+          "only_second_saves": 0,
+          "p_exact": 0.5
+        },
+        "mixed": {
+          "only_first_saves": 1,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "soft": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v1": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        },
+        "v2": {
+          "only_first_saves": 0,
+          "only_second_saves": 0,
+          "p_exact": 1.0
+        }
+      },
+      "macro_gain": 0.1875,
+      "macro_gain_ci95": [
+        0.125,
+        0.25
+      ],
+      "ci_method": "paired bootstrap; episode seeds clustered across styles"
+    }
+  },
+  "records": {
+    "original": {
+      "center": [
+        {
+          "result": "save",
+          "kick_time": 0.8039999999999115,
+          "contact_time": 2.9159999999996793,
+          "commit_time": 4.403999999999515,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 45,
+          "visible_frames": 44,
+          "velocity_frames": 43,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.2120184662297197,
+            "time_to_line": 2.643932108878368,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 2.8439999999996872,
+          "commit_time": 3.107999999999658,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 32,
+          "visible_frames": 31,
+          "velocity_frames": 30,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.006403664864254935,
+            "time_to_line": 2.309925665438872,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        }
+      ],
+      "mixed": [
+        {
+          "result": "save",
+          "kick_time": 0.5039999999999445,
+          "contact_time": 2.81999999999969,
+          "commit_time": 2.99999999999967,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 31,
+          "visible_frames": 30,
+          "velocity_frames": 29,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10742888472863661,
+            "time_to_line": 2.377484530689677,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 3.5039999999996145,
+          "contact_time": 6.167999999999637,
+          "commit_time": 8.60400000000045,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": -0.3670708384079983,
+          "goal_line_y": 0.3670708384079983,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 87,
+          "visible_frames": 86,
+          "velocity_frames": 85,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.2821906960111856,
+            "time_to_line": 2.165787274789851,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        }
+      ],
+      "corners": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.107999999999617,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 62,
+          "visible_frames": 61,
+          "velocity_frames": 60,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13657041897876762,
+            "time_to_line": 2.283829570466999,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 7.608000000000118,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.32035707157101345,
+          "goal_line_y": -0.32035707157101345,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 77,
+          "visible_frames": 76,
+          "velocity_frames": 75,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.413886899618427,
+            "time_to_line": 1.5173192005058092,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "soft": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.503999999999749,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.31917139887809753,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 66,
+          "visible_frames": 65,
+          "velocity_frames": 64,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.11705532967022972,
+            "time_to_line": 2.7996564503534267,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 8.208000000000318,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.4890258222591105,
+          "goal_line_y": -0.4890258222591105,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.41425279527902603,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 83,
+          "visible_frames": 82,
+          "velocity_frames": 81,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.31732152355682947,
+            "time_to_line": 1.788432179926206,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "late": [
+        {
+          "result": "goal",
+          "kick_time": 6.707999999999817,
+          "contact_time": 9.312000000000687,
+          "commit_time": 9.504000000000751,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": 0.4875153657448428,
+          "goal_line_y": -0.4875153657448428,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 96,
+          "visible_frames": 95,
+          "velocity_frames": 94,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10033963712995614,
+            "time_to_line": 2.250221420380245,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.708000000000819,
+          "contact_time": 11.772000000001508,
+          "commit_time": 12.504000000001753,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": -0.38378614317051174,
+          "goal_line_y": 0.38378614317051174,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 126,
+          "visible_frames": 125,
+          "velocity_frames": 124,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.29744083615717626,
+            "time_to_line": 2.751669460807979,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        }
+      ],
+      "feint": [
+        {
+          "result": "save",
+          "kick_time": 5.903999999999549,
+          "contact_time": 8.148000000000298,
+          "commit_time": 8.30400000000035,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 84,
+          "visible_frames": 83,
+          "velocity_frames": 82,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.22082858436851782,
+            "time_to_line": 2.22172458488888,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.300000000000683,
+          "contact_time": 11.460000000001404,
+          "commit_time": 11.604000000001452,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.34740175068275997,
+          "goal_line_y": -0.34740175068275997,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 117,
+          "visible_frames": 116,
+          "velocity_frames": 115,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.45751665370992867,
+            "time_to_line": 1.545451755471883,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v1": [
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 3.563999999999608,
+          "commit_time": 4.703999999999482,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.20271879881620408,
+          "kick_side": 0,
+          "kick_power": 0.24129348993301392,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 48,
+          "visible_frames": 47,
+          "velocity_frames": 46,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13414521135920837,
+            "time_to_line": 2.833994149221037,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 5.999999999999581,
+          "contact_time": 8.280000000000342,
+          "commit_time": 10.104000000000951,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.5724742114543915,
+          "kick_side": 0,
+          "kick_power": 0.4474560357630253,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 102,
+          "visible_frames": 101,
+          "velocity_frames": 100,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.59173652913728,
+            "time_to_line": 1.7824751024301668,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v2": [
+        {
+          "result": "goal",
+          "kick_time": 4.703999999999482,
+          "contact_time": 7.440000000000062,
+          "commit_time": 10.500000000001084,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.6123957990643235,
+          "goal_line_y": -0.6123957990643235,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.5267286971211433,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000000,
+          "mode": "original",
+          "steps": 106,
+          "visible_frames": 105,
+          "velocity_frames": 104,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.6564714636020794,
+            "time_to_line": 1.777281378831438,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.5079999999994165,
+          "contact_time": 7.692000000000146,
+          "commit_time": null,
+          "commit_side": null,
+          "early_dive": false,
+          "crossing_world_y": 0.605191089940088,
+          "goal_line_y": -0.605191089940088,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.3161507397890091,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": null,
+          "seed": 72001000001,
+          "mode": "original",
+          "steps": 131,
+          "visible_frames": 115,
+          "velocity_frames": 116,
+          "keeper_decision": {
+            "reason": "stale_ball",
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "original",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        }
+      ]
+    },
+    "center_right": {
+      "center": [
+        {
+          "result": "save",
+          "kick_time": 0.8039999999999115,
+          "contact_time": 2.9159999999996793,
+          "commit_time": 4.403999999999515,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 45,
+          "visible_frames": 44,
+          "velocity_frames": 43,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.2120184662297197,
+            "time_to_line": 2.643932108878368,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 2.8439999999996872,
+          "commit_time": 3.107999999999658,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 32,
+          "visible_frames": 31,
+          "velocity_frames": 30,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.006403664864254935,
+            "time_to_line": 2.309925665438872,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "mixed": [
+        {
+          "result": "save",
+          "kick_time": 0.5039999999999445,
+          "contact_time": 2.81999999999969,
+          "commit_time": 2.99999999999967,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 31,
+          "visible_frames": 30,
+          "velocity_frames": 29,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10742888472863661,
+            "time_to_line": 2.377484530689677,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 3.5039999999996145,
+          "contact_time": 6.167999999999637,
+          "commit_time": 8.60400000000045,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 87,
+          "visible_frames": 86,
+          "velocity_frames": 85,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.2821906960111856,
+            "time_to_line": 2.165787274789851,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "corners": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.107999999999617,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 62,
+          "visible_frames": 61,
+          "velocity_frames": 60,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13657041897876762,
+            "time_to_line": 2.283829570466999,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 7.608000000000118,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.32035707157101345,
+          "goal_line_y": -0.32035707157101345,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 77,
+          "visible_frames": 76,
+          "velocity_frames": 75,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.413886899618427,
+            "time_to_line": 1.5173192005058092,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "soft": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.503999999999749,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.31917139887809753,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 66,
+          "visible_frames": 65,
+          "velocity_frames": 64,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.11705532967022972,
+            "time_to_line": 2.7996564503534267,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 8.208000000000318,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.4890258222591105,
+          "goal_line_y": -0.4890258222591105,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.41425279527902603,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 83,
+          "visible_frames": 82,
+          "velocity_frames": 81,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.31732152355682947,
+            "time_to_line": 1.788432179926206,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "late": [
+        {
+          "result": "save",
+          "kick_time": 6.707999999999817,
+          "contact_time": 9.312000000000687,
+          "commit_time": 9.504000000000751,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 96,
+          "visible_frames": 95,
+          "velocity_frames": 94,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10033963712995614,
+            "time_to_line": 2.250221420380245,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 9.708000000000819,
+          "contact_time": 11.772000000001508,
+          "commit_time": 12.504000000001753,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 126,
+          "visible_frames": 125,
+          "velocity_frames": 124,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.29744083615717626,
+            "time_to_line": 2.751669460807979,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "feint": [
+        {
+          "result": "save",
+          "kick_time": 5.903999999999549,
+          "contact_time": 8.148000000000298,
+          "commit_time": 8.30400000000035,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 84,
+          "visible_frames": 83,
+          "velocity_frames": 82,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.22082858436851782,
+            "time_to_line": 2.22172458488888,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.300000000000683,
+          "contact_time": 11.460000000001404,
+          "commit_time": 11.604000000001452,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.34740175068275997,
+          "goal_line_y": -0.34740175068275997,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 117,
+          "visible_frames": 116,
+          "velocity_frames": 115,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.45751665370992867,
+            "time_to_line": 1.545451755471883,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v1": [
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 3.563999999999608,
+          "commit_time": 4.703999999999482,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.20271879881620408,
+          "kick_side": 0,
+          "kick_power": 0.24129348993301392,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 48,
+          "visible_frames": 47,
+          "velocity_frames": 46,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13414521135920837,
+            "time_to_line": 2.833994149221037,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 5.999999999999581,
+          "contact_time": 8.280000000000342,
+          "commit_time": 10.104000000000951,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.5724742114543915,
+          "kick_side": 0,
+          "kick_power": 0.4474560357630253,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 102,
+          "visible_frames": 101,
+          "velocity_frames": 100,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.59173652913728,
+            "time_to_line": 1.7824751024301668,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v2": [
+        {
+          "result": "goal",
+          "kick_time": 4.703999999999482,
+          "contact_time": 7.440000000000062,
+          "commit_time": 10.500000000001084,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.6123957990643235,
+          "goal_line_y": -0.6123957990643235,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.5267286971211433,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000000,
+          "mode": "center_right",
+          "steps": 106,
+          "visible_frames": 105,
+          "velocity_frames": 104,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.6564714636020794,
+            "time_to_line": 1.777281378831438,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.5079999999994165,
+          "contact_time": 7.692000000000146,
+          "commit_time": null,
+          "commit_side": null,
+          "early_dive": false,
+          "crossing_world_y": 0.605191089940088,
+          "goal_line_y": -0.605191089940088,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.3161507397890091,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": null,
+          "seed": 72001000001,
+          "mode": "center_right",
+          "steps": 131,
+          "visible_frames": 115,
+          "velocity_frames": 116,
+          "keeper_decision": {
+            "reason": "stale_ball",
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "center_right",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        }
+      ]
+    },
+    "wide_left": {
+      "center": [
+        {
+          "result": "save",
+          "kick_time": 0.8039999999999115,
+          "contact_time": 2.9159999999996793,
+          "commit_time": 4.403999999999515,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 45,
+          "visible_frames": 44,
+          "velocity_frames": 43,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.2120184662297197,
+            "time_to_line": 2.643932108878368,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 2.8439999999996872,
+          "commit_time": 3.107999999999658,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 32,
+          "visible_frames": 31,
+          "velocity_frames": 30,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.006403664864254935,
+            "time_to_line": 2.309925665438872,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        }
+      ],
+      "mixed": [
+        {
+          "result": "save",
+          "kick_time": 0.5039999999999445,
+          "contact_time": 2.81999999999969,
+          "commit_time": 2.99999999999967,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 31,
+          "visible_frames": 30,
+          "velocity_frames": 29,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10742888472863661,
+            "time_to_line": 2.377484530689677,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 3.5039999999996145,
+          "contact_time": 6.167999999999637,
+          "commit_time": 8.60400000000045,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": -0.4460668002286836,
+          "goal_line_y": 0.4460668002286836,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 87,
+          "visible_frames": 86,
+          "velocity_frames": 85,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.2821906960111856,
+            "time_to_line": 2.165787274789851,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        }
+      ],
+      "corners": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.107999999999617,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 62,
+          "visible_frames": 61,
+          "velocity_frames": 60,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13657041897876762,
+            "time_to_line": 2.283829570466999,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 7.608000000000118,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.32035707157101345,
+          "goal_line_y": -0.32035707157101345,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 77,
+          "visible_frames": 76,
+          "velocity_frames": 75,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.413886899618427,
+            "time_to_line": 1.5173192005058092,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "soft": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.503999999999749,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.31917139887809753,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 66,
+          "visible_frames": 65,
+          "velocity_frames": 64,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.11705532967022972,
+            "time_to_line": 2.7996564503534267,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 8.208000000000318,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.4890258222591105,
+          "goal_line_y": -0.4890258222591105,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.41425279527902603,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 83,
+          "visible_frames": 82,
+          "velocity_frames": 81,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.31732152355682947,
+            "time_to_line": 1.788432179926206,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "late": [
+        {
+          "result": "save",
+          "kick_time": 6.707999999999817,
+          "contact_time": 9.312000000000687,
+          "commit_time": 9.504000000000751,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 96,
+          "visible_frames": 95,
+          "velocity_frames": 94,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10033963712995614,
+            "time_to_line": 2.250221420380245,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.708000000000819,
+          "contact_time": 11.772000000001508,
+          "commit_time": 12.504000000001753,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": -0.46927356031834977,
+          "goal_line_y": 0.46927356031834977,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 126,
+          "visible_frames": 125,
+          "velocity_frames": 124,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.29744083615717626,
+            "time_to_line": 2.751669460807979,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        }
+      ],
+      "feint": [
+        {
+          "result": "goal",
+          "kick_time": 5.903999999999549,
+          "contact_time": 8.148000000000298,
+          "commit_time": 8.30400000000035,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": 0.2247157771806125,
+          "goal_line_y": -0.2247157771806125,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 84,
+          "visible_frames": 83,
+          "velocity_frames": 82,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.22082858436851782,
+            "time_to_line": 2.22172458488888,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.300000000000683,
+          "contact_time": 11.460000000001404,
+          "commit_time": 11.604000000001452,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.34740175068275997,
+          "goal_line_y": -0.34740175068275997,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 117,
+          "visible_frames": 116,
+          "velocity_frames": 115,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.45751665370992867,
+            "time_to_line": 1.545451755471883,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v1": [
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 3.563999999999608,
+          "commit_time": 4.703999999999482,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.20271879881620408,
+          "kick_side": 0,
+          "kick_power": 0.24129348993301392,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 48,
+          "visible_frames": 47,
+          "velocity_frames": 46,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13414521135920837,
+            "time_to_line": 2.833994149221037,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 5.999999999999581,
+          "contact_time": 8.280000000000342,
+          "commit_time": 10.104000000000951,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.5724742114543915,
+          "kick_side": 0,
+          "kick_power": 0.4474560357630253,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 102,
+          "visible_frames": 101,
+          "velocity_frames": 100,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.59173652913728,
+            "time_to_line": 1.7824751024301668,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v2": [
+        {
+          "result": "goal",
+          "kick_time": 4.703999999999482,
+          "contact_time": 7.440000000000062,
+          "commit_time": 10.500000000001084,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.6123957990643235,
+          "goal_line_y": -0.6123957990643235,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.5267286971211433,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000000,
+          "mode": "wide_left",
+          "steps": 106,
+          "visible_frames": 105,
+          "velocity_frames": 104,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.6564714636020794,
+            "time_to_line": 1.777281378831438,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.5079999999994165,
+          "contact_time": 7.692000000000146,
+          "commit_time": null,
+          "commit_side": null,
+          "early_dive": false,
+          "crossing_world_y": 0.605191089940088,
+          "goal_line_y": -0.605191089940088,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.3161507397890091,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": null,
+          "seed": 72001000001,
+          "mode": "wide_left",
+          "steps": 131,
+          "visible_frames": 115,
+          "velocity_frames": 116,
+          "keeper_decision": {
+            "reason": "stale_ball",
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_left",
+            "selected_defense": "wide_left",
+            "core_side": 0
+          }
+        }
+      ]
+    },
+    "wide_right": {
+      "center": [
+        {
+          "result": "save",
+          "kick_time": 0.8039999999999115,
+          "contact_time": 2.9159999999996793,
+          "commit_time": 4.403999999999515,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 45,
+          "visible_frames": 44,
+          "velocity_frames": 43,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.2120184662297197,
+            "time_to_line": 2.643932108878368,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 2.8439999999996872,
+          "commit_time": 3.107999999999658,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 32,
+          "visible_frames": 31,
+          "velocity_frames": 30,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.006403664864254935,
+            "time_to_line": 2.309925665438872,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "mixed": [
+        {
+          "result": "save",
+          "kick_time": 0.5039999999999445,
+          "contact_time": 2.81999999999969,
+          "commit_time": 2.99999999999967,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 31,
+          "visible_frames": 30,
+          "velocity_frames": 29,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10742888472863661,
+            "time_to_line": 2.377484530689677,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 3.5039999999996145,
+          "contact_time": 6.167999999999637,
+          "commit_time": 8.60400000000045,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": -0.29174966652390855,
+          "goal_line_y": 0.29174966652390855,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 87,
+          "visible_frames": 86,
+          "velocity_frames": 85,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.2821906960111856,
+            "time_to_line": 2.165787274789851,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "corners": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.107999999999617,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 62,
+          "visible_frames": 61,
+          "velocity_frames": 60,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13657041897876762,
+            "time_to_line": 2.283829570466999,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 7.608000000000118,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.32035707157101345,
+          "goal_line_y": -0.32035707157101345,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 77,
+          "visible_frames": 76,
+          "velocity_frames": 75,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.413886899618427,
+            "time_to_line": 1.5173192005058092,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "soft": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.503999999999749,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.31917139887809753,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 66,
+          "visible_frames": 65,
+          "velocity_frames": 64,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.11705532967022972,
+            "time_to_line": 2.7996564503534267,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 8.208000000000318,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.4890258222591105,
+          "goal_line_y": -0.4890258222591105,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.41425279527902603,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 83,
+          "visible_frames": 82,
+          "velocity_frames": 81,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.31732152355682947,
+            "time_to_line": 1.788432179926206,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "late": [
+        {
+          "result": "save",
+          "kick_time": 6.707999999999817,
+          "contact_time": 9.312000000000687,
+          "commit_time": 9.504000000000751,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 96,
+          "visible_frames": 95,
+          "velocity_frames": 94,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10033963712995614,
+            "time_to_line": 2.250221420380245,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.708000000000819,
+          "contact_time": 11.772000000001508,
+          "commit_time": 12.504000000001753,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": -0.28313316255482707,
+          "goal_line_y": 0.28313316255482707,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 126,
+          "visible_frames": 125,
+          "velocity_frames": 124,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.29744083615717626,
+            "time_to_line": 2.751669460807979,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "feint": [
+        {
+          "result": "save",
+          "kick_time": 5.903999999999549,
+          "contact_time": 8.148000000000298,
+          "commit_time": 8.30400000000035,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 84,
+          "visible_frames": 83,
+          "velocity_frames": 82,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.22082858436851782,
+            "time_to_line": 2.22172458488888,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.300000000000683,
+          "contact_time": 11.460000000001404,
+          "commit_time": 11.604000000001452,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.34740175068275997,
+          "goal_line_y": -0.34740175068275997,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 117,
+          "visible_frames": 116,
+          "velocity_frames": 115,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.45751665370992867,
+            "time_to_line": 1.545451755471883,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v1": [
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 3.563999999999608,
+          "commit_time": 4.703999999999482,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.20271879881620408,
+          "kick_side": 0,
+          "kick_power": 0.24129348993301392,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "wide_right",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 48,
+          "visible_frames": 47,
+          "velocity_frames": 46,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13414521135920837,
+            "time_to_line": 2.833994149221037,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 5.999999999999581,
+          "contact_time": 8.280000000000342,
+          "commit_time": 10.104000000000951,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.5724742114543915,
+          "kick_side": 0,
+          "kick_power": 0.4474560357630253,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 102,
+          "visible_frames": 101,
+          "velocity_frames": 100,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.59173652913728,
+            "time_to_line": 1.7824751024301668,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v2": [
+        {
+          "result": "goal",
+          "kick_time": 4.703999999999482,
+          "contact_time": 7.440000000000062,
+          "commit_time": 10.500000000001084,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.6123957990643235,
+          "goal_line_y": -0.6123957990643235,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.5267286971211433,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000000,
+          "mode": "wide_right",
+          "steps": 106,
+          "visible_frames": 105,
+          "velocity_frames": 104,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.6564714636020794,
+            "time_to_line": 1.777281378831438,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.5079999999994165,
+          "contact_time": 7.692000000000146,
+          "commit_time": null,
+          "commit_side": null,
+          "early_dive": false,
+          "crossing_world_y": 0.605191089940088,
+          "goal_line_y": -0.605191089940088,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.3161507397890091,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": null,
+          "seed": 72001000001,
+          "mode": "wide_right",
+          "steps": 131,
+          "visible_frames": 115,
+          "velocity_frames": 116,
+          "keeper_decision": {
+            "reason": "stale_ball",
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "wide_right",
+            "selected_defense": "wide_right",
+            "core_side": 0
+          }
+        }
+      ]
+    },
+    "balanced": {
+      "center": [
+        {
+          "result": "save",
+          "kick_time": 0.8039999999999115,
+          "contact_time": 2.9159999999996793,
+          "commit_time": 4.403999999999515,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 45,
+          "visible_frames": 44,
+          "velocity_frames": 43,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.2120184662297197,
+            "time_to_line": 2.643932108878368,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 2.8439999999996872,
+          "commit_time": 3.107999999999658,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0,
+          "kick_side": 0,
+          "kick_power": 0.7142857164144516,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 32,
+          "visible_frames": 31,
+          "velocity_frames": 30,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.006403664864254935,
+            "time_to_line": 2.309925665438872,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        }
+      ],
+      "mixed": [
+        {
+          "result": "save",
+          "kick_time": 0.5039999999999445,
+          "contact_time": 2.81999999999969,
+          "commit_time": 2.99999999999967,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 31,
+          "visible_frames": 30,
+          "velocity_frames": 29,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10742888472863661,
+            "time_to_line": 2.377484530689677,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 3.5039999999996145,
+          "contact_time": 6.167999999999637,
+          "commit_time": 8.60400000000045,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 87,
+          "visible_frames": 86,
+          "velocity_frames": 85,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.2821906960111856,
+            "time_to_line": 2.165787274789851,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "corners": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.107999999999617,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 62,
+          "visible_frames": 61,
+          "velocity_frames": 60,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13657041897876762,
+            "time_to_line": 2.283829570466999,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 7.608000000000118,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.32035707157101345,
+          "goal_line_y": -0.32035707157101345,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 77,
+          "visible_frames": 76,
+          "velocity_frames": 75,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.413886899618427,
+            "time_to_line": 1.5173192005058092,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "soft": [
+        {
+          "result": "save",
+          "kick_time": 3.707999999999592,
+          "contact_time": 5.855999999999533,
+          "commit_time": 6.503999999999749,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.31917139887809753,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 66,
+          "visible_frames": 65,
+          "velocity_frames": 64,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.11705532967022972,
+            "time_to_line": 2.7996564503534267,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.003999999999449,
+          "contact_time": 7.356000000000034,
+          "commit_time": 8.208000000000318,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.4890258222591105,
+          "goal_line_y": -0.4890258222591105,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.41425279527902603,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 83,
+          "visible_frames": 82,
+          "velocity_frames": 81,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.31732152355682947,
+            "time_to_line": 1.788432179926206,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "late": [
+        {
+          "result": "save",
+          "kick_time": 6.707999999999817,
+          "contact_time": 9.312000000000687,
+          "commit_time": 9.504000000000751,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.0965577445924282,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 96,
+          "visible_frames": 95,
+          "velocity_frames": 94,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.10033963712995614,
+            "time_to_line": 2.250221420380245,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 9.708000000000819,
+          "contact_time": 11.772000000001508,
+          "commit_time": 12.504000000001753,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": 0.548440134525299,
+          "kick_side": 0,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center_right",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 126,
+          "visible_frames": 125,
+          "velocity_frames": 124,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": -0.29744083615717626,
+            "time_to_line": 2.751669460807979,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center_right",
+            "core_side": 0
+          }
+        }
+      ],
+      "feint": [
+        {
+          "result": "save",
+          "kick_time": 5.903999999999549,
+          "contact_time": 8.148000000000298,
+          "commit_time": 8.30400000000035,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.3588126987218857,
+          "kick_side": 1,
+          "kick_power": 0.6729284822940826,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 84,
+          "visible_frames": 83,
+          "velocity_frames": 82,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.22082858436851782,
+            "time_to_line": 2.22172458488888,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 9.300000000000683,
+          "contact_time": 11.460000000001404,
+          "commit_time": 11.604000000001452,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.34740175068275997,
+          "goal_line_y": -0.34740175068275997,
+          "target_y": -0.5707817226648331,
+          "kick_side": 1,
+          "kick_power": 0.9106319844722748,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 117,
+          "visible_frames": 116,
+          "velocity_frames": 115,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.45751665370992867,
+            "time_to_line": 1.545451755471883,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v1": [
+        {
+          "result": "save",
+          "kick_time": 1.007999999999889,
+          "contact_time": 3.563999999999608,
+          "commit_time": 4.703999999999482,
+          "commit_side": 0,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.20271879881620408,
+          "kick_side": 0,
+          "kick_power": 0.24129348993301392,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "center",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 48,
+          "visible_frames": 47,
+          "velocity_frames": 46,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.13414521135920837,
+            "time_to_line": 2.833994149221037,
+            "side": 0,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        },
+        {
+          "result": "save",
+          "kick_time": 5.999999999999581,
+          "contact_time": 8.280000000000342,
+          "commit_time": 10.104000000000951,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": null,
+          "goal_line_y": null,
+          "target_y": -0.5724742114543915,
+          "kick_side": 0,
+          "kick_power": 0.4474560357630253,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 102,
+          "visible_frames": 101,
+          "velocity_frames": 100,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.59173652913728,
+            "time_to_line": 1.7824751024301668,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        }
+      ],
+      "v2": [
+        {
+          "result": "goal",
+          "kick_time": 4.703999999999482,
+          "contact_time": 7.440000000000062,
+          "commit_time": 10.500000000001084,
+          "commit_side": 1,
+          "early_dive": false,
+          "crossing_world_y": 0.6123957990643235,
+          "goal_line_y": -0.6123957990643235,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.5267286971211433,
+          "striker_fallen": false,
+          "keeper_fallen": true,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": "left",
+          "seed": 72001000000,
+          "mode": "balanced",
+          "steps": 106,
+          "visible_frames": 105,
+          "velocity_frames": 104,
+          "keeper_decision": {
+            "reason": "committed",
+            "crossing_y": 0.6564714636020794,
+            "time_to_line": 1.777281378831438,
+            "side": 1,
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "left",
+            "core_side": 1
+          }
+        },
+        {
+          "result": "goal",
+          "kick_time": 5.5079999999994165,
+          "contact_time": 7.692000000000146,
+          "commit_time": null,
+          "commit_side": null,
+          "early_dive": false,
+          "crossing_world_y": 0.605191089940088,
+          "goal_line_y": -0.605191089940088,
+          "target_y": -0.65,
+          "kick_side": 0,
+          "kick_power": 0.3161507397890091,
+          "striker_fallen": false,
+          "keeper_fallen": false,
+          "keeper_action": "keeper_action_v2",
+          "commit_defense": null,
+          "seed": 72001000001,
+          "mode": "balanced",
+          "steps": 131,
+          "visible_frames": 115,
+          "velocity_frames": 116,
+          "keeper_decision": {
+            "reason": "stale_ball",
+            "pose_prior_used": false,
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "selected_defense": "center",
+            "core_side": 0
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,451 @@
+{
+  "validation": "keeper_defenses_physical_validation_v1",
+  "catalog": {
+    "version": "keeper_defenses_v2",
+    "defenses": {
+      "center": {
+        "request": "squatArmsBackLeft",
+        "keyframe": "genuflectStand",
+        "mirror": false
+      },
+      "center_right": {
+        "request": "squatArmsBackRight",
+        "keyframe": "genuflectStand",
+        "mirror": true
+      },
+      "wide_left": {
+        "request": "squatWideArmsBackLeft",
+        "keyframe": "genuflectStandDefender",
+        "mirror": false
+      },
+      "wide_right": {
+        "request": "squatWideArmsBackRight",
+        "keyframe": "genuflectStandDefender",
+        "mirror": true
+      },
+      "left": {
+        "request": "jumpLeft",
+        "keyframe": "keeperJumpLeft",
+        "mirror": false
+      },
+      "right": {
+        "request": "jumpRight",
+        "keyframe": "keeperJumpLeft",
+        "mirror": true
+      }
+    },
+    "preparations": {
+      "prepare": {
+        "request": "prepare",
+        "keyframe": "sitDownKeeper",
+        "mirror": false
+      }
+    },
+    "learned_joint_trajectories": false,
+    "amplitude_scaling": false
+  },
+  "seed": 71001,
+  "hold_s": 3.0,
+  "executed_on_hardware": false,
+  "physics": "MuJoCo free robot roots, original B-Human targets, servos and contacts",
+  "sensor_limitations": "ideal simulated encoders/IMU and contact FSR; own torso quaternion ideal for original low-level engine",
+  "render_only_changes": "hide striker visual group for the frontal camera; contacts unchanged",
+  "ball_velocity_written": false,
+  "active_root_trajectories_written": false,
+  "learned_joint_trajectories": false,
+  "limitations": "No shot, save-rate estimate, hardware equivalence or maximum coverage claim; one initial stance and seed.",
+  "recovery_gate": "stand + upright + torso above 0.28 m + both robots stable for 0.5 s, then keeper upright with both feet loaded for at least 1 s; deadline 28 s",
+  "passed": true,
+  "cases": [
+    {
+      "name": "center",
+      "kind": "defense",
+      "expected_request": "squatArmsBackLeft",
+      "expected_keyframe": "genuflectStand",
+      "expected_mirror": false,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 250,
+      "keyframe_frames": 250,
+      "mirror_transients": [],
+      "last_active_mirror": false,
+      "max_joint_change_rad": 1.6254846410251411,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "hold guard then manual getup",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 6.804,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 7.812,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012,
+        "getUp": 3.012,
+        "walk": 5.52
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "center.frames.jsonl",
+      "trace_sha256": "889c2de50781a5726f1f7d7b457714dd1a94feec39e88faa90032fd284a16d59"
+    },
+    {
+      "name": "center_right",
+      "kind": "defense",
+      "expected_request": "squatArmsBackRight",
+      "expected_keyframe": "genuflectStand",
+      "expected_mirror": true,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 249,
+      "keyframe_frames": 250,
+      "mirror_transients": [
+        {
+          "time_s": 0.012,
+          "mirror": false
+        }
+      ],
+      "last_active_mirror": true,
+      "max_joint_change_rad": 1.6255722483048431,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "hold guard then manual getup",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 6.78,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 7.788,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012,
+        "getUp": 3.012,
+        "walk": 5.52
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "center_right.frames.jsonl",
+      "trace_sha256": "4d79f80a85039d8e4649b5ced1fa78260e7995221495f5208ca412cfafb541c6"
+    },
+    {
+      "name": "wide_left",
+      "kind": "defense",
+      "expected_request": "squatWideArmsBackLeft",
+      "expected_keyframe": "genuflectStandDefender",
+      "expected_mirror": false,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 250,
+      "keyframe_frames": 250,
+      "mirror_transients": [],
+      "last_active_mirror": false,
+      "max_joint_change_rad": 1.6254846410251411,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "hold guard then manual getup",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 7.38,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 8.388,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012,
+        "getUp": 3.012,
+        "walk": 5.808
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "wide_left.frames.jsonl",
+      "trace_sha256": "6b5323d62a833e48227d1b64489d9c7850eabc0de5ed7aa5e0e97eccf1d59467"
+    },
+    {
+      "name": "wide_right",
+      "kind": "defense",
+      "expected_request": "squatWideArmsBackRight",
+      "expected_keyframe": "genuflectStandDefender",
+      "expected_mirror": true,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 249,
+      "keyframe_frames": 250,
+      "mirror_transients": [
+        {
+          "time_s": 0.012,
+          "mirror": false
+        }
+      ],
+      "last_active_mirror": true,
+      "max_joint_change_rad": 1.6255722483048431,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "hold guard then manual getup",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 7.38,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 8.388,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012,
+        "getUp": 3.012,
+        "walk": 5.82
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "wide_right.frames.jsonl",
+      "trace_sha256": "ea9e31851346d57c578a46d55b10dd8278110eeb7f08963e5365c418ba20e6a7"
+    },
+    {
+      "name": "left",
+      "kind": "defense",
+      "expected_request": "jumpLeft",
+      "expected_keyframe": "keeperJumpLeft",
+      "expected_mirror": false,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 140,
+      "keyframe_frames": 140,
+      "mirror_transients": [],
+      "last_active_mirror": false,
+      "max_joint_change_rad": 2.994257568676065,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "automatic getup after original jump is accepted",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 12.996,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 14.004,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012,
+        "getUp": 1.692,
+        "walk": 6.504
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "left.frames.jsonl",
+      "trace_sha256": "f86d387378eae9ef469f35993ee8f8a4cb3f2c91bc1eff26fb7d56074ed37d05"
+    },
+    {
+      "name": "right",
+      "kind": "defense",
+      "expected_request": "jumpRight",
+      "expected_keyframe": "keeperJumpLeft",
+      "expected_mirror": true,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 139,
+      "keyframe_frames": 140,
+      "mirror_transients": [
+        {
+          "time_s": 0.012,
+          "mirror": false
+        }
+      ],
+      "last_active_mirror": true,
+      "max_joint_change_rad": 2.9889847729198173,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "automatic getup after original jump is accepted",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 8.316,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 9.324,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012,
+        "getUp": 1.692,
+        "walk": 7.008
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "right.frames.jsonl",
+      "trace_sha256": "d5a8426770e96b3538075652847a550089a1d2fac24e37678511f0e80e5c8f48"
+    },
+    {
+      "name": "prepare",
+      "kind": "preparation",
+      "expected_request": "prepare",
+      "expected_keyframe": "sitDownKeeper",
+      "expected_mirror": false,
+      "seed": 71001,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "runtime_capabilities": [
+        "keeper_defenses_v2"
+      ],
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 250,
+      "keyframe_frames": 250,
+      "mirror_transients": [],
+      "last_active_mirror": false,
+      "max_joint_change_rad": 1.283232908710892,
+      "motion_executed": true,
+      "manual_recovery_request_time_s": 3.0,
+      "release_behavior": "hold guard then manual getup",
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 4.572,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 5.58,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "phases_first_seen_s": {
+        "stand": 0.0,
+        "keyframeMotion": 0.012
+      },
+      "passed": true,
+      "children_collected": true,
+      "trace": "prepare.frames.jsonl",
+      "trace_sha256": "0b65e6285e5f54e4e4bf4f6cfe516a41de36f3bbdf12354839aca5a526f7e7ba"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "center.frames.jsonl",
+      "bytes": 175558,
+      "sha256": "889c2de50781a5726f1f7d7b457714dd1a94feec39e88faa90032fd284a16d59"
+    },
+    {
+      "file": "center_recovered.png",
+      "bytes": 83047,
+      "sha256": "f4b9fcfcc31ad26e90dbadc29bdde949deb602bbc62b08f67cd4a39eb2a705a9"
+    },
+    {
+      "file": "center_right.frames.jsonl",
+      "bytes": 178636,
+      "sha256": "4d79f80a85039d8e4649b5ced1fa78260e7995221495f5208ca412cfafb541c6"
+    },
+    {
+      "file": "center_right_recovered.png",
+      "bytes": 82078,
+      "sha256": "94fb838da37207263e3d65af012ea9218970c15a9c5530cb79eb7f37538ee680"
+    },
+    {
+      "file": "defensas.gif",
+      "bytes": 10874382,
+      "sha256": "885176ace32c674a770bc2d78cb0e56f85ba76d8e5757660e9ea4e3f0e569e83"
+    },
+    {
+      "file": "guardias.png",
+      "bytes": 941583,
+      "sha256": "24209346182513eb4fbb3397ca47f5924443f62af369febedde78a4b00fb24ea"
+    },
+    {
+      "file": "left.frames.jsonl",
+      "bytes": 308836,
+      "sha256": "f86d387378eae9ef469f35993ee8f8a4cb3f2c91bc1eff26fb7d56074ed37d05"
+    },
+    {
+      "file": "left_recovered.png",
+      "bytes": 77596,
+      "sha256": "d5694e0438dbb9811861df28809f36b893a2bff9840f60527bb26dca03cfd636"
+    },
+    {
+      "file": "preparacion.gif",
+      "bytes": 2518032,
+      "sha256": "171033420bf59966488ee4d9d2e8bb5c8bc51b8fbe0c915f9f541ab179d3f85c"
+    },
+    {
+      "file": "preparacion.png",
+      "bytes": 241106,
+      "sha256": "402e54c08c53b15c81fbe2050404ab72e98d9dc8d79f794781418cc4ba8fce8a"
+    },
+    {
+      "file": "prepare.frames.jsonl",
+      "bytes": 126150,
+      "sha256": "0b65e6285e5f54e4e4bf4f6cfe516a41de36f3bbdf12354839aca5a526f7e7ba"
+    },
+    {
+      "file": "prepare_recovered.png",
+      "bytes": 81759,
+      "sha256": "d5f7c43aae68927ffddf6a12a6672841eb994be087cd10465be7f99f50f56a10"
+    },
+    {
+      "file": "right.frames.jsonl",
+      "bytes": 206479,
+      "sha256": "d5a8426770e96b3538075652847a550089a1d2fac24e37678511f0e80e5c8f48"
+    },
+    {
+      "file": "right_recovered.png",
+      "bytes": 79014,
+      "sha256": "a37da08960b74a68f90f5d3384d51b44207933ff9028b9bb5bf5d603084ddf11"
+    },
+    {
+      "file": "saltos.png",
+      "bytes": 477150,
+      "sha256": "3b31b7ecc128b74726ffa8f9b6dcdfb216404de4853daccd2f7c98b67626d577"
+    },
+    {
+      "file": "wide_left.frames.jsonl",
+      "bytes": 192378,
+      "sha256": "6b5323d62a833e48227d1b64489d9c7850eabc0de5ed7aa5e0e97eccf1d59467"
+    },
+    {
+      "file": "wide_left_recovered.png",
+      "bytes": 82806,
+      "sha256": "ec7a643ef070746cb30c4d21208c1756b37ed8e83474829a7cab2bc521be4199"
+    },
+    {
+      "file": "wide_right.frames.jsonl",
+      "bytes": 192948,
+      "sha256": "ea9e31851346d57c578a46d55b10dd8278110eeb7f08963e5365c418ba20e6a7"
+    },
+    {
+      "file": "wide_right_recovered.png",
+      "bytes": 81777,
+      "sha256": "2174c93e96add37e0b67df8986067f25c3196bedeb9838131bb0f3b6683f4896"
+    }
+  ]
+}
