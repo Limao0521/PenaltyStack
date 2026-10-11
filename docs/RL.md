@@ -20,6 +20,10 @@ Búsqueda de ajustes reales de duración y articulaciones de las defensas,
 ejecutados por B-Human sobre v2 `balanced`:
 [ENTRENAMIENTO_MOVIMIENTO_PORTERO.md](ENTRENAMIENTO_MOVIMIENTO_PORTERO.md).
 
+Reentrenamiento táctico de v2 contra el portero visual `balanced`, con
+calibración de salidas saturadas y prueba pareada independiente:
+[ENTRENAMIENTO_TIRADOR_VISUAL.md](ENTRENAMIENTO_TIRADOR_VISUAL.md).
+
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
 ```

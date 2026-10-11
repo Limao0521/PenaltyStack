@@ -1,0 +1,54 @@
+{
+  "version": "striker_failed_rollout_recovery_audit_v1",
+  "created_utc": "2026-10-11T21:08:13.107971+00:00",
+  "phase": "training resumed; no validation/test result available",
+  "run_fingerprint": "dea1c26dc1fe338f884b86edccea6ef84e988dd65a0e3b7529c2e131b35fb7ed",
+  "source_files_verified_unchanged": 116,
+  "recovery_json": "recovery-1791752773979233800.json",
+  "recovery_sha256": "ed3ac4de5d5ead96440bd1b26aee92669f523da8917346d435cb7d7847c37ba9",
+  "previous_complete_checkpoint": "checkpoints/update_0004",
+  "previous_checkpoint_policy_hashes_verified": {
+    "model.zip": "34b7758fd7a52e2c91184c49674e68e7039d6698b83fc24afca5f10784321ed1",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "fe89291a38a6809e73cdfa859b7b1681e9476802899a88dc8abde9c6875dc176"
+  },
+  "previous_resume_state_sha256": "a75f57cdc314bd06a2c3a0cb9226d34c855517e2de06ac2565fe7c78409359c7",
+  "reserved_seed_indices": [
+    70,
+    843
+  ],
+  "next_minimum_seed": 91001000844,
+  "reserve_bound_verified": 774,
+  "reserve_reason": "At most one initial reset and n_steps completed-episode resets per worker. New seeds are above all possible unfinished-rollout reset indices; the old checkpoint episode_start already exceeds prior live seeds.",
+  "saved_previous_episode_records_preserved_exactly": 47,
+  "latest_immutable_checkpoint_verified": "checkpoints/update_0006",
+  "optimized_training_transitions": 4608,
+  "new_completed_episode_records_after_resume": 29,
+  "new_completed_episode_seeds_all_above_reserved_range": true,
+  "normalization_arrays_remain_frozen": true,
+  "failure_history": {
+    "known_failed_collectors": 1,
+    "original_failing_episode_seed": null,
+    "original_sim_error_cause": null,
+    "original_log_sha256": "5ab7f39ce782a371a60c33e0065d70ac4792a984af6c3b49a57518aadf58205e",
+    "original_failure_record_not_preserved": true,
+    "failed_rollout_was_not_optimized": true,
+    "number_of_other_physical_trials_or_transitions_in_failed_rollout": null,
+    "total_physical_episodes_or_transitions_not_claimed": true,
+    "global_zero_errors_not_claimed": true
+  },
+  "diagnostic_wrapper": {
+    "path": "runs/striker_retrain/resume_with_diagnostics.py",
+    "sha256": "b16e07316a2edeaab335a6ea0e727c27e47f40f71c774beec5e0e1482505fafb",
+    "method": "sys.settrace in learner callback exception only; writes the existing episode record when result is sim_error; does not mutate policy/action/environment/sampling RNG",
+    "changes_outside_frozen_sources": "reserve training agenda and attach diagnostics, explicitly recorded recovery, rather than modifying frozen experiment sources"
+  },
+  "physics_executed_by_auditor": false,
+  "validation_test_seeds_consumed_by_auditor": false,
+  "performance_improvement_claimed": false,
+  "remaining_checks": [
+    "Final trained-policy selection and blind paired test",
+    "Full failed-episode evidence if another failure occurs",
+    "Distinguish completed optimized transitions from discarded physical collection work"
+  ]
+}

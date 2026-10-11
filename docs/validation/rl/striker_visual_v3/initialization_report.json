@@ -1,0 +1,32 @@
+{
+  "version": "striker_policy_init_v2",
+  "fingerprint": "dea1c26dc1fe338f884b86edccea6ef84e988dd65a0e3b7529c2e131b35fb7ed",
+  "calibration_sha256": "fadff1ae4598e3c08d373d9074e98eaefcee221bc949cd7341394c4b68ca1a70",
+  "policy_sha256": {
+    "model.zip": "23c069541c921481f484fab0c87a7d0fef53d43b357eafec6ba86cdea1cdb032",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "5f6b249cc0f323eff9a25b391a91d8262a95ae26f8e0dafd453935c8786b3bd0"
+  },
+  "proof": {
+    "version": "striker_policy_init_v2",
+    "action_head_row_scales": [
+      0.1337672346745401,
+      0.02157656441062049,
+      0.3501386873106254,
+      0.021433359490509642
+    ],
+    "unchanged_parameters_sha256": "6bf42b8a9846100c963ac0ea1f63fbadd30cbb63ab8d0aa6a632c7fd3e31b986",
+    "actor_features_and_value_unchanged": true,
+    "action_head_adam_state_reset": true,
+    "max_weight_change": 1.130938172340393,
+    "max_bias_change": 0.13729584217071533
+  },
+  "normalization_sha256": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+  "action_std": [
+    0.421378493309021,
+    0.37938404083251953,
+    0.4480622112751007,
+    0.369113564491272
+  ],
+  "selected_as_trained_candidate": false
+}

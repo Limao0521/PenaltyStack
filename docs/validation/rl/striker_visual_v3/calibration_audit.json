@@ -1,0 +1,61 @@
+{
+  "version": "striker_calibration_independent_audit_v1",
+  "created_utc": "2026-10-11T16:14:13.891940+00:00",
+  "calibration_report_sha256": "fadff1ae4598e3c08d373d9074e98eaefcee221bc949cd7341394c4b68ca1a70",
+  "base_hashes_match": true,
+  "recomputed_every_raw_mean_from_frozen_policy": true,
+  "max_raw_mean_error": 0.0,
+  "max_normalization_error": 0.0,
+  "clips_match_exactly": true,
+  "unique_calibration_physics_seeds": 8,
+  "calibration_seed_namespace": 90001,
+  "train_validation_test_namespaces": [
+    91001,
+    92001,
+    93001
+  ],
+  "total_forward_rows": 629,
+  "eligible_pre_release_rows": 380,
+  "excluded_post_release_rows": 249,
+  "pre_release_statistics_recomputed": {
+    "p95_absolute_mean": [
+      5.606754163863622,
+      34.75993609208853,
+      2.14200837319824,
+      34.99218124587927
+    ],
+    "action_head_row_scales": [
+      0.1337672346745401,
+      0.02157656441062049,
+      0.3501386873106254,
+      0.021433359490509642
+    ],
+    "raw_mean_clip_fraction": [
+      0.9657894736842105,
+      0.9789473684210527,
+      0.41578947368421054,
+      0.9842105263157894
+    ],
+    "scaled_mean_clip_fraction": [
+      0.002631578947368421,
+      0.0,
+      0.010526315789473684,
+      0.0
+    ],
+    "calibration_rows": 380,
+    "target_p95_absolute_mean": 0.75
+  },
+  "outcomes": [
+    "save",
+    "save",
+    "save",
+    "save",
+    "save",
+    "save",
+    "save",
+    "save"
+  ],
+  "selection_test_not_used": true,
+  "simulation_only": true,
+  "auditor_reran_physics": false
+}

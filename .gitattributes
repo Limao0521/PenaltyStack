@@ -89,3 +89,15 @@ models/bhuman/README.md text eol=crlf
 models/rl/striker_v1/config.json text eol=crlf
 models/rl/striker_v2/config.json text eol=crlf
 tools/build_motion_runtime.py text eol=crlf
+
+# Reproducible striker retraining sources and frozen physical evidence.
+penalty/rl/striker_calibration.py text eol=lf
+penalty/rl/striker_retraining.py text eol=lf
+penalty/rl/striker_visual_env.py text eol=lf
+penalty/rl/training.py text eol=crlf
+penalty/rl/rewards.py text eol=crlf
+tools/*striker*retraining.py text eol=lf
+tools/retrain_striker.py text eol=lf
+tests/test_striker_*.py text eol=lf
+docs/validation/rl/striker_visual_v3/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+models/rl/striker_visual_v3/** -text -diff

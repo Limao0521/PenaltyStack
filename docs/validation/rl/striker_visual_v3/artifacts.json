@@ -1,0 +1,31 @@
+{
+  "version": "striker_visual_artifact_checksums_v1",
+  "run_fingerprint": "dea1c26dc1fe338f884b86edccea6ef84e988dd65a0e3b7529c2e131b35fb7ed",
+  "model_files": {
+    "models/rl/striker_visual_v3/config.json": "0033aa2e9bb6918cd2178a667659dce16eee4cf99cb746ca01a19f254f2a8e8d",
+    "models/rl/striker_visual_v3/model.zip": "6e5f921a581bd24f788286e60b0c94084b2a309cb9abf5c75cc8990091cd934d",
+    "models/rl/striker_visual_v3/obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "models/rl/striker_visual_v3/README.md": "3f83673869c027f9aff160df44532e4b9ebe293f2c36676ffa29ed17b2f17612"
+  },
+  "report_files": {
+    "calibration_audit.json": "b0d75342c4a98f85b882beedf7273387a7be6b1ed1b5c3a5f5b5d52a5bd75c8c",
+    "complete_run.zip": "6dfa4bd6873e00adfcdabd68520113b1c135e7e8fa696ebe5c88726338211b3e",
+    "completed_training_audit.json": "1c37e4dbeaae420044040a3ba5c901ea170100e9b23ac1ef8c59df43f2198e42",
+    "design_audit.json": "800d0c2559a4b57474f274bd35f199479d8a413abc25665da9951c43690ad72a",
+    "env_parity.json": "3aae967f62dd6d7a44fed7c6f3a5bbcd590580d7b0cc39d50829fd6b23812f2e",
+    "failure_history.json": "a4b37e1404cb6220b637c1cb366387f5f374927dd9cc55348a0f8deead78d4e3",
+    "final_audit.json": "cae500c1521554676c3c7cd64c84d5947d04ca07d3ce75c8936d1cbdec691538",
+    "full_tests.log": "b92156326561cf91c0ca2c4464afe9d301844069b36bdb47b55fcab1f6223a0e",
+    "initialization_report.json": "016ed8107da242a864bd22652ecde2cb4713eb081c628f36c7781afa6ac56e01",
+    "README.md": "624353c78c802b5e6c40dce9e3a9cb2a0b56d921b6bc708ac2264e48c71a28ea",
+    "recovery_audit.json": "5d2fe0c010bcb5caa0d08ba96804e8834d5beadf59b3a5f7514d7caf59acf85c",
+    "results.json": "164af9caeb768f7ee49dc43d7d7381d3add6fe88754717a57bf44af89c290edb",
+    "run_manifest.json": "86d28937ee500d718a7edd86850a45b3fca9b51723d89cc1e363ad5a9950403d",
+    "selection.json": "9306f5442f9732c0d3691196fe90e5611065a7193761dc2f74c9e2241007574b",
+    "test_report.json": "e710d72f40fb5023091df0b33e6882c9dc05486f0d13600eed622606b665d63e",
+    "training_report.json": "95840674fd73c219681063946d399e827a40de76b1ede21de915a5ba4815a1d6",
+    "validation_audit.json": "1f83b70922c13d86ee5145186cd6d8bf23445c2465db73050b60261cd964e140",
+    "validation_report.json": "2bf83ae0cb9b92ab695ac4b2db80eab11731d5ab7477468606c109a25f788f39",
+    "warmstart_audit.json": "8f9facc0ddc42f9e88ca47a8ae08473a613c73a56ebeebc80b8b24ef9293e687"
+  }
+}

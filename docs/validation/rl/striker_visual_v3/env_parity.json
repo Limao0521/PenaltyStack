@@ -1,0 +1,938 @@
+{
+  "version": "striker_visual_env_physical_parity_v1",
+  "reserved_seeds_used": false,
+  "episodes": 4,
+  "rows": [
+    {
+      "seed": 94001000000,
+      "equal": {
+        "result": true,
+        "steps": true,
+        "visible_frames": true,
+        "velocity_frames": true,
+        "first_trigger": true,
+        "requested_defense": true,
+        "no_commit": true,
+        "striker_fallen": true,
+        "keeper_fallen": true,
+        "reset_engine_seed": true,
+        "reset_ball_xy": true,
+        "reset_start_offsets": true
+      },
+      "old": {
+        "result": "goal",
+        "kick_time": 3.899999999999571,
+        "contact_time": 5.963999999999569,
+        "commit_time": 8.700000000000482,
+        "commit_side": 1,
+        "early_dive": false,
+        "crossing_world_y": 0.6724381258050326,
+        "goal_line_y": -0.6724381258050326,
+        "target_y": -0.65,
+        "kick_side": 0,
+        "kick_power": 0.4719737209379673,
+        "striker_fallen": false,
+        "keeper_fallen": true,
+        "keeper_action": "keeper_action_v2",
+        "commit_defense": "left",
+        "seed": 94001000000,
+        "steps": 88,
+        "visible_frames": 87,
+        "velocity_frames": 86,
+        "keeper_decision": {
+          "reason": "committed",
+          "crossing_y": 0.6994985141733155,
+          "time_to_line": 1.7316341534127695,
+          "side": 1,
+          "pose_prior_used": false,
+          "policy": "vision_keeper_v6",
+          "core_policy": "vision_keeper_v2",
+          "mode": "balanced",
+          "selected_defense": "left",
+          "core_side": 1
+        },
+        "selector_context": {
+          "version": "keeper_defense_context_v1",
+          "values": [
+            0.6994985141733155,
+            1.7316341534127695,
+            0.38430026601538864,
+            0.3916612237244969,
+            -0.291227950789429,
+            0.17777270668987522,
+            0.0,
+            0.0034442803960219475,
+            0.0036065518613125898
+          ]
+        },
+        "first_trigger": {
+          "time_s": 8.700000000000482,
+          "capture_s": 8.700000000000482,
+          "core_side": 1,
+          "crossing_y": 0.6994985141733155,
+          "time_to_line": 1.7316341534127695
+        },
+        "requested_defense": "left",
+        "no_commit": false,
+        "context_digest": "daa250e788b6e45f1b5f5b3b99c86fa7de106c3cb52701d2800a8523fa5f8d53",
+        "reset_info": {
+          "backend": "bhuman",
+          "privileged_inputs": [
+            "scene ball position",
+            "scene robot/opponent poses",
+            "torso orientation"
+          ],
+          "synthetic_inputs": [
+            "hand positions",
+            "motor currents/temperatures",
+            "joint wear"
+          ],
+          "opponent": "scripted",
+          "engine_seed": 611171660,
+          "trial": "06f6ded0ed104a1d8cdb24f599292563",
+          "ball_xy": [
+            0.07873195100353722,
+            0.022057130512865855
+          ],
+          "start_offsets": {
+            "striker": [
+              0.01570141827061669,
+              0.007551423388034786,
+              0.05079092416936029
+            ],
+            "keeper": [
+              -0.024872631103096746,
+              0.032560093422759936,
+              0.06591742111488777
+            ]
+          }
+        },
+        "runtime_provenance": {
+          "motion": {
+            "capabilities": [
+              "keeper_defenses_v2",
+              "keeper_motion_skill_v1"
+            ],
+            "cycle_s": 0.012,
+            "joint_names": [
+              "headYaw",
+              "headPitch",
+              "lShoulderPitch",
+              "lShoulderRoll",
+              "lElbowYaw",
+              "lElbowRoll",
+              "lWristYaw",
+              "lHand",
+              "rShoulderPitch",
+              "rShoulderRoll",
+              "rElbowYaw",
+              "rElbowRoll",
+              "rWristYaw",
+              "rHand",
+              "lHipYawPitch",
+              "lHipRoll",
+              "lHipPitch",
+              "lKneePitch",
+              "lAnklePitch",
+              "lAnkleRoll",
+              "rHipYawPitch",
+              "rHipRoll",
+              "rHipPitch",
+              "rKneePitch",
+              "rAnklePitch",
+              "rAnkleRoll"
+            ],
+            "keeper_defenses": [
+              "center",
+              "center_right",
+              "wide_left",
+              "wide_right",
+              "left",
+              "right"
+            ],
+            "keeper_motion_skill": {
+              "bounds": {
+                "arm_spread_rad": [
+                  -0.08,
+                  0.12
+                ],
+                "guard_knee_offset_rad": [
+                  0.0,
+                  0.1
+                ],
+                "guard_time_scale": [
+                  0.85,
+                  1.15
+                ],
+                "jump_time_scale": [
+                  0.85,
+                  1.15
+                ]
+              },
+              "units": {
+                "arm_spread_rad": "rad",
+                "guard_knee_offset_rad": "rad",
+                "guard_time_scale": "duration multiplier",
+                "jump_time_scale": "duration multiplier"
+              },
+              "version": "keeper_motion_skill_v1"
+            },
+            "keeper_preparations": [
+              "prepare"
+            ],
+            "motions": [
+              "stand",
+              "walk",
+              "kick",
+              "block",
+              "getup"
+            ],
+            "protocol": 1,
+            "provenance": {
+              "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+              "host_source_sha256": "6de64760a0ea212a89f172eff8c64fbb44024e36e0ca2d5d379f4b763b4c2351",
+              "inputs_profile": "mujoco-truth-v2",
+              "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+              "original_file_count": 559,
+              "simulation_calibration": {
+                "ball_radius": "INIT geometry in mm",
+                "inertial_angle": "original removeZRotation and angle-axis",
+                "left_forward_stroke_ms": 100,
+                "right_forward_stroke_ms": 200
+              },
+              "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+            },
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "robot_detector": {
+            "actuators": false,
+            "algorithm_bodies": "original C++ bodies, unmodified",
+            "component": "RobotDetector upper network/preprocessing/decoding/NMS plus original lower contrast/clustering",
+            "generated_algorithms_sha256": "5281abd97b914a7a80583daa75f5a3d074da3fb7bc2e364922b76523b7981ab3",
+            "host_source_sha256": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+            "lower_saturation_adapter": "scalar lighting-independent saturation; not bit-identical to original JIT approximations",
+            "lower_trim_obstacles": false,
+            "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+            "not_executed": [
+              "trimObstacle",
+              "JerseyClassifier",
+              "ObstacleModelProvider",
+              "body/field boundary providers"
+            ],
+            "onnxruntime": "1.10.0",
+            "original_manifest_sha256": "29bfe8a4ac43ed2dfd659a57cf273579cb5046e6ba34149be93914f4f7a16448",
+            "protocol": "bhuman_robot_pixels_v1",
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "sensor": "MuJoCo jointpos/gyro/accelerometer sensors; contact-derived own FSR; encoder FK, gyro/gravity attitude and support-foot odometry; nominal geometry, ideal sensor readings, drift/slip possible; no world pose sensors",
+          "inference_clock": "wall processing measured; simulated physics time not delayed"
+        }
+      },
+      "new": {
+        "result": "goal",
+        "kick_time": 3.899999999999571,
+        "contact_time": 5.963999999999569,
+        "commit_time": 8.700000000000482,
+        "commit_side": 1,
+        "early_dive": false,
+        "crossing_world_y": 0.6724381258050326,
+        "goal_line_y": -0.6724381258050326,
+        "target_y": -0.65,
+        "kick_side": 0,
+        "kick_power": 0.4719737209379673,
+        "striker_fallen": false,
+        "keeper_fallen": true,
+        "keeper_action": "keeper_action_v2",
+        "commit_defense": "left",
+        "outcome": "goal",
+        "seed": 94001000000,
+        "episode_seed": 94001000000,
+        "split": "train",
+        "worker_index": 0,
+        "steps": 88,
+        "fallen": false,
+        "duration_s": 10.199999809265137,
+        "visible_frames": 87,
+        "velocity_frames": 86,
+        "keeper_decision": {
+          "reason": "committed",
+          "crossing_y": 0.6994985141733155,
+          "time_to_line": 1.7316341534127695,
+          "side": 1,
+          "pose_prior_used": false,
+          "policy": "vision_keeper_v6",
+          "core_policy": "vision_keeper_v2",
+          "mode": "balanced",
+          "selected_defense": "left",
+          "core_side": 1
+        },
+        "first_trigger": {
+          "time_s": 8.700000000000482,
+          "capture_s": 8.700000000000482,
+          "core_side": 1,
+          "crossing_y": 0.6994985141733155,
+          "time_to_line": 1.7316341534127695
+        },
+        "requested_defense": "left",
+        "no_commit": false,
+        "reset_info": {
+          "backend": "bhuman",
+          "privileged_inputs": [
+            "scene ball position",
+            "scene robot/opponent poses",
+            "torso orientation"
+          ],
+          "synthetic_inputs": [
+            "hand positions",
+            "motor currents/temperatures",
+            "joint wear"
+          ],
+          "opponent": "scripted",
+          "engine_seed": 611171660,
+          "trial": "a437058146ea4ea2969d4886c7a9bb81",
+          "ball_xy": [
+            0.07873195100353722,
+            0.022057130512865855
+          ],
+          "start_offsets": {
+            "striker": [
+              0.01570141827061669,
+              0.007551423388034786,
+              0.05079092416936029
+            ],
+            "keeper": [
+              -0.024872631103096746,
+              0.032560093422759936,
+              0.06591742111488777
+            ]
+          }
+        },
+        "runtime_provenance": {
+          "motion": {
+            "capabilities": [
+              "keeper_defenses_v2",
+              "keeper_motion_skill_v1"
+            ],
+            "cycle_s": 0.012,
+            "joint_names": [
+              "headYaw",
+              "headPitch",
+              "lShoulderPitch",
+              "lShoulderRoll",
+              "lElbowYaw",
+              "lElbowRoll",
+              "lWristYaw",
+              "lHand",
+              "rShoulderPitch",
+              "rShoulderRoll",
+              "rElbowYaw",
+              "rElbowRoll",
+              "rWristYaw",
+              "rHand",
+              "lHipYawPitch",
+              "lHipRoll",
+              "lHipPitch",
+              "lKneePitch",
+              "lAnklePitch",
+              "lAnkleRoll",
+              "rHipYawPitch",
+              "rHipRoll",
+              "rHipPitch",
+              "rKneePitch",
+              "rAnklePitch",
+              "rAnkleRoll"
+            ],
+            "keeper_defenses": [
+              "center",
+              "center_right",
+              "wide_left",
+              "wide_right",
+              "left",
+              "right"
+            ],
+            "keeper_motion_skill": {
+              "bounds": {
+                "arm_spread_rad": [
+                  -0.08,
+                  0.12
+                ],
+                "guard_knee_offset_rad": [
+                  0.0,
+                  0.1
+                ],
+                "guard_time_scale": [
+                  0.85,
+                  1.15
+                ],
+                "jump_time_scale": [
+                  0.85,
+                  1.15
+                ]
+              },
+              "units": {
+                "arm_spread_rad": "rad",
+                "guard_knee_offset_rad": "rad",
+                "guard_time_scale": "duration multiplier",
+                "jump_time_scale": "duration multiplier"
+              },
+              "version": "keeper_motion_skill_v1"
+            },
+            "keeper_preparations": [
+              "prepare"
+            ],
+            "motions": [
+              "stand",
+              "walk",
+              "kick",
+              "block",
+              "getup"
+            ],
+            "protocol": 1,
+            "provenance": {
+              "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+              "host_source_sha256": "6de64760a0ea212a89f172eff8c64fbb44024e36e0ca2d5d379f4b763b4c2351",
+              "inputs_profile": "mujoco-truth-v2",
+              "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+              "original_file_count": 559,
+              "simulation_calibration": {
+                "ball_radius": "INIT geometry in mm",
+                "inertial_angle": "original removeZRotation and angle-axis",
+                "left_forward_stroke_ms": 100,
+                "right_forward_stroke_ms": 200
+              },
+              "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+            },
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "robot_detector": {
+            "actuators": false,
+            "algorithm_bodies": "original C++ bodies, unmodified",
+            "component": "RobotDetector upper network/preprocessing/decoding/NMS plus original lower contrast/clustering",
+            "generated_algorithms_sha256": "5281abd97b914a7a80583daa75f5a3d074da3fb7bc2e364922b76523b7981ab3",
+            "host_source_sha256": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+            "lower_saturation_adapter": "scalar lighting-independent saturation; not bit-identical to original JIT approximations",
+            "lower_trim_obstacles": false,
+            "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+            "not_executed": [
+              "trimObstacle",
+              "JerseyClassifier",
+              "ObstacleModelProvider",
+              "body/field boundary providers"
+            ],
+            "onnxruntime": "1.10.0",
+            "original_manifest_sha256": "29bfe8a4ac43ed2dfd659a57cf273579cb5046e6ba34149be93914f4f7a16448",
+            "protocol": "bhuman_robot_pixels_v1",
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "sensor": "MuJoCo jointpos/gyro/accelerometer sensors; contact-derived own FSR; encoder FK, gyro/gravity attitude and support-foot odometry; nominal geometry, ideal sensor readings, drift/slip possible; no world pose sensors",
+          "inference_clock": "wall processing measured; simulated physics time not delayed"
+        },
+        "environment": {
+          "observation": "rl_obs_v1",
+          "striker_action": "striker_action_v1",
+          "keeper_action": "keeper_action_v2",
+          "environment": "striker_visual_keeper_env_v1",
+          "role": "striker",
+          "backend": "bhuman",
+          "opponent": "vision_v2_balanced",
+          "reward": "striker_visual_reward_v2",
+          "keeper_mode": "balanced",
+          "finite_horizon_s": 28.0,
+          "timeout_is_terminal": true,
+          "keeper_policy": {
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "settings": {
+              "corner_y": 0.3,
+              "dive_lead_s": 1.8,
+              "min_incoming_speed": 0.12,
+              "confirm_frames": 2,
+              "history": 3,
+              "max_ball_age": 0.25,
+              "sigma_margin": 1.5,
+              "goal_line_x": -0.12
+            },
+            "action_version": "keeper_action_v2",
+            "defenses": [
+              "center",
+              "center_right",
+              "wide_left",
+              "wide_right",
+              "left",
+              "right"
+            ],
+            "inputs": "vision_state_v2 ball measurements only",
+            "orientation_used": false,
+            "experimental": true
+          },
+          "camera_pipeline": "keeper_sensor_camera_v2",
+          "perception": {
+            "striker": "privileged scene rl_obs_v1 plus PerceptionNoise v1",
+            "keeper": "rendered RGB; own simulated encoders/IMU/FSR and estimated contact odometry",
+            "limitations": "ideal own simulated sensors; physics pauses during RGB inference; simulation only, no physical NAO equivalence"
+          },
+          "hardware_validated": false,
+          "learned_joint_trajectories": false,
+          "keeper_motion_profile": null
+        },
+        "return": 8.239999999999998
+      },
+      "children_collected": true
+    },
+    {
+      "seed": 94001000001,
+      "equal": {
+        "result": true,
+        "steps": true,
+        "visible_frames": true,
+        "velocity_frames": true,
+        "first_trigger": true,
+        "requested_defense": true,
+        "no_commit": true,
+        "striker_fallen": true,
+        "keeper_fallen": true,
+        "reset_engine_seed": true,
+        "reset_ball_xy": true,
+        "reset_start_offsets": true
+      },
+      "old": {
+        "result": "save",
+        "kick_time": null,
+        "contact_time": 0.0,
+        "commit_time": null,
+        "commit_side": null,
+        "early_dive": false,
+        "crossing_world_y": null,
+        "goal_line_y": null,
+        "target_y": 0.4551983177661896,
+        "kick_side": 1,
+        "kick_power": 1.0,
+        "striker_fallen": false,
+        "keeper_fallen": false,
+        "keeper_action": "keeper_action_v2",
+        "commit_defense": null,
+        "seed": 94001000001,
+        "steps": 23,
+        "visible_frames": 0,
+        "velocity_frames": 0,
+        "keeper_decision": {
+          "reason": "stale_ball",
+          "pose_prior_used": false,
+          "policy": "vision_keeper_v6",
+          "core_policy": "vision_keeper_v2",
+          "mode": "balanced",
+          "selected_defense": "center",
+          "core_side": 0
+        },
+        "selector_context": null,
+        "first_trigger": null,
+        "requested_defense": null,
+        "no_commit": true,
+        "context_digest": null,
+        "reset_info": {
+          "backend": "bhuman",
+          "privileged_inputs": [
+            "scene ball position",
+            "scene robot/opponent poses",
+            "torso orientation"
+          ],
+          "synthetic_inputs": [
+            "hand positions",
+            "motor currents/temperatures",
+            "joint wear"
+          ],
+          "opponent": "scripted",
+          "engine_seed": 1382967293,
+          "trial": "7c9bba2dc7b64888a67d1630272612ad",
+          "ball_xy": [
+            0.1459938404099664,
+            0.0038739659714949054
+          ],
+          "start_offsets": {
+            "striker": [
+              -0.038776391109853627,
+              0.03193417165842512,
+              -0.017503731557412402
+            ],
+            "keeper": [
+              0.03748171035274117,
+              0.025012801997273612,
+              -0.09000906563780642
+            ]
+          }
+        },
+        "runtime_provenance": {
+          "motion": {
+            "capabilities": [
+              "keeper_defenses_v2",
+              "keeper_motion_skill_v1"
+            ],
+            "cycle_s": 0.012,
+            "joint_names": [
+              "headYaw",
+              "headPitch",
+              "lShoulderPitch",
+              "lShoulderRoll",
+              "lElbowYaw",
+              "lElbowRoll",
+              "lWristYaw",
+              "lHand",
+              "rShoulderPitch",
+              "rShoulderRoll",
+              "rElbowYaw",
+              "rElbowRoll",
+              "rWristYaw",
+              "rHand",
+              "lHipYawPitch",
+              "lHipRoll",
+              "lHipPitch",
+              "lKneePitch",
+              "lAnklePitch",
+              "lAnkleRoll",
+              "rHipYawPitch",
+              "rHipRoll",
+              "rHipPitch",
+              "rKneePitch",
+              "rAnklePitch",
+              "rAnkleRoll"
+            ],
+            "keeper_defenses": [
+              "center",
+              "center_right",
+              "wide_left",
+              "wide_right",
+              "left",
+              "right"
+            ],
+            "keeper_motion_skill": {
+              "bounds": {
+                "arm_spread_rad": [
+                  -0.08,
+                  0.12
+                ],
+                "guard_knee_offset_rad": [
+                  0.0,
+                  0.1
+                ],
+                "guard_time_scale": [
+                  0.85,
+                  1.15
+                ],
+                "jump_time_scale": [
+                  0.85,
+                  1.15
+                ]
+              },
+              "units": {
+                "arm_spread_rad": "rad",
+                "guard_knee_offset_rad": "rad",
+                "guard_time_scale": "duration multiplier",
+                "jump_time_scale": "duration multiplier"
+              },
+              "version": "keeper_motion_skill_v1"
+            },
+            "keeper_preparations": [
+              "prepare"
+            ],
+            "motions": [
+              "stand",
+              "walk",
+              "kick",
+              "block",
+              "getup"
+            ],
+            "protocol": 1,
+            "provenance": {
+              "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+              "host_source_sha256": "6de64760a0ea212a89f172eff8c64fbb44024e36e0ca2d5d379f4b763b4c2351",
+              "inputs_profile": "mujoco-truth-v2",
+              "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+              "original_file_count": 559,
+              "simulation_calibration": {
+                "ball_radius": "INIT geometry in mm",
+                "inertial_angle": "original removeZRotation and angle-axis",
+                "left_forward_stroke_ms": 100,
+                "right_forward_stroke_ms": 200
+              },
+              "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+            },
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "robot_detector": {
+            "actuators": false,
+            "algorithm_bodies": "original C++ bodies, unmodified",
+            "component": "RobotDetector upper network/preprocessing/decoding/NMS plus original lower contrast/clustering",
+            "generated_algorithms_sha256": "5281abd97b914a7a80583daa75f5a3d074da3fb7bc2e364922b76523b7981ab3",
+            "host_source_sha256": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+            "lower_saturation_adapter": "scalar lighting-independent saturation; not bit-identical to original JIT approximations",
+            "lower_trim_obstacles": false,
+            "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+            "not_executed": [
+              "trimObstacle",
+              "JerseyClassifier",
+              "ObstacleModelProvider",
+              "body/field boundary providers"
+            ],
+            "onnxruntime": "1.10.0",
+            "original_manifest_sha256": "29bfe8a4ac43ed2dfd659a57cf273579cb5046e6ba34149be93914f4f7a16448",
+            "protocol": "bhuman_robot_pixels_v1",
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "sensor": "MuJoCo jointpos/gyro/accelerometer sensors; contact-derived own FSR; encoder FK, gyro/gravity attitude and support-foot odometry; nominal geometry, ideal sensor readings, drift/slip possible; no world pose sensors",
+          "inference_clock": "wall processing measured; simulated physics time not delayed"
+        }
+      },
+      "new": {
+        "result": "save",
+        "kick_time": null,
+        "contact_time": 0.0,
+        "commit_time": null,
+        "commit_side": null,
+        "early_dive": false,
+        "crossing_world_y": null,
+        "goal_line_y": null,
+        "target_y": 0.4551983177661896,
+        "kick_side": 1,
+        "kick_power": 1.0,
+        "striker_fallen": false,
+        "keeper_fallen": false,
+        "keeper_action": "keeper_action_v2",
+        "commit_defense": null,
+        "outcome": "save",
+        "seed": 94001000001,
+        "episode_seed": 94001000001,
+        "split": "train",
+        "worker_index": 0,
+        "steps": 23,
+        "fallen": false,
+        "duration_s": 2.303999900817871,
+        "visible_frames": 0,
+        "velocity_frames": 0,
+        "keeper_decision": {
+          "reason": "stale_ball",
+          "pose_prior_used": false,
+          "policy": "vision_keeper_v6",
+          "core_policy": "vision_keeper_v2",
+          "mode": "balanced",
+          "selected_defense": "center",
+          "core_side": 0
+        },
+        "first_trigger": null,
+        "requested_defense": null,
+        "no_commit": true,
+        "reset_info": {
+          "backend": "bhuman",
+          "privileged_inputs": [
+            "scene ball position",
+            "scene robot/opponent poses",
+            "torso orientation"
+          ],
+          "synthetic_inputs": [
+            "hand positions",
+            "motor currents/temperatures",
+            "joint wear"
+          ],
+          "opponent": "scripted",
+          "engine_seed": 1382967293,
+          "trial": "6f5c2f5929b74327927643e15de33bdc",
+          "ball_xy": [
+            0.1459938404099664,
+            0.0038739659714949054
+          ],
+          "start_offsets": {
+            "striker": [
+              -0.038776391109853627,
+              0.03193417165842512,
+              -0.017503731557412402
+            ],
+            "keeper": [
+              0.03748171035274117,
+              0.025012801997273612,
+              -0.09000906563780642
+            ]
+          }
+        },
+        "runtime_provenance": {
+          "motion": {
+            "capabilities": [
+              "keeper_defenses_v2",
+              "keeper_motion_skill_v1"
+            ],
+            "cycle_s": 0.012,
+            "joint_names": [
+              "headYaw",
+              "headPitch",
+              "lShoulderPitch",
+              "lShoulderRoll",
+              "lElbowYaw",
+              "lElbowRoll",
+              "lWristYaw",
+              "lHand",
+              "rShoulderPitch",
+              "rShoulderRoll",
+              "rElbowYaw",
+              "rElbowRoll",
+              "rWristYaw",
+              "rHand",
+              "lHipYawPitch",
+              "lHipRoll",
+              "lHipPitch",
+              "lKneePitch",
+              "lAnklePitch",
+              "lAnkleRoll",
+              "rHipYawPitch",
+              "rHipRoll",
+              "rHipPitch",
+              "rKneePitch",
+              "rAnklePitch",
+              "rAnkleRoll"
+            ],
+            "keeper_defenses": [
+              "center",
+              "center_right",
+              "wide_left",
+              "wide_right",
+              "left",
+              "right"
+            ],
+            "keeper_motion_skill": {
+              "bounds": {
+                "arm_spread_rad": [
+                  -0.08,
+                  0.12
+                ],
+                "guard_knee_offset_rad": [
+                  0.0,
+                  0.1
+                ],
+                "guard_time_scale": [
+                  0.85,
+                  1.15
+                ],
+                "jump_time_scale": [
+                  0.85,
+                  1.15
+                ]
+              },
+              "units": {
+                "arm_spread_rad": "rad",
+                "guard_knee_offset_rad": "rad",
+                "guard_time_scale": "duration multiplier",
+                "jump_time_scale": "duration multiplier"
+              },
+              "version": "keeper_motion_skill_v1"
+            },
+            "keeper_preparations": [
+              "prepare"
+            ],
+            "motions": [
+              "stand",
+              "walk",
+              "kick",
+              "block",
+              "getup"
+            ],
+            "protocol": 1,
+            "provenance": {
+              "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+              "host_source_sha256": "6de64760a0ea212a89f172eff8c64fbb44024e36e0ca2d5d379f4b763b4c2351",
+              "inputs_profile": "mujoco-truth-v2",
+              "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+              "original_file_count": 559,
+              "simulation_calibration": {
+                "ball_radius": "INIT geometry in mm",
+                "inertial_angle": "original removeZRotation and angle-axis",
+                "left_forward_stroke_ms": 100,
+                "right_forward_stroke_ms": 200
+              },
+              "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+            },
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "robot_detector": {
+            "actuators": false,
+            "algorithm_bodies": "original C++ bodies, unmodified",
+            "component": "RobotDetector upper network/preprocessing/decoding/NMS plus original lower contrast/clustering",
+            "generated_algorithms_sha256": "5281abd97b914a7a80583daa75f5a3d074da3fb7bc2e364922b76523b7981ab3",
+            "host_source_sha256": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+            "lower_saturation_adapter": "scalar lighting-independent saturation; not bit-identical to original JIT approximations",
+            "lower_trim_obstacles": false,
+            "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+            "not_executed": [
+              "trimObstacle",
+              "JerseyClassifier",
+              "ObstacleModelProvider",
+              "body/field boundary providers"
+            ],
+            "onnxruntime": "1.10.0",
+            "original_manifest_sha256": "29bfe8a4ac43ed2dfd659a57cf273579cb5046e6ba34149be93914f4f7a16448",
+            "protocol": "bhuman_robot_pixels_v1",
+            "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+            "type": "HELLO"
+          },
+          "sensor": "MuJoCo jointpos/gyro/accelerometer sensors; contact-derived own FSR; encoder FK, gyro/gravity attitude and support-foot odometry; nominal geometry, ideal sensor readings, drift/slip possible; no world pose sensors",
+          "inference_clock": "wall processing measured; simulated physics time not delayed"
+        },
+        "environment": {
+          "observation": "rl_obs_v1",
+          "striker_action": "striker_action_v1",
+          "keeper_action": "keeper_action_v2",
+          "environment": "striker_visual_keeper_env_v1",
+          "role": "striker",
+          "backend": "bhuman",
+          "opponent": "vision_v2_balanced",
+          "reward": "striker_visual_reward_v2",
+          "keeper_mode": "balanced",
+          "finite_horizon_s": 28.0,
+          "timeout_is_terminal": true,
+          "keeper_policy": {
+            "policy": "vision_keeper_v6",
+            "core_policy": "vision_keeper_v2",
+            "mode": "balanced",
+            "settings": {
+              "corner_y": 0.3,
+              "dive_lead_s": 1.8,
+              "min_incoming_speed": 0.12,
+              "confirm_frames": 2,
+              "history": 3,
+              "max_ball_age": 0.25,
+              "sigma_margin": 1.5,
+              "goal_line_x": -0.12
+            },
+            "action_version": "keeper_action_v2",
+            "defenses": [
+              "center",
+              "center_right",
+              "wide_left",
+              "wide_right",
+              "left",
+              "right"
+            ],
+            "inputs": "vision_state_v2 ball measurements only",
+            "orientation_used": false,
+            "experimental": true
+          },
+          "camera_pipeline": "keeper_sensor_camera_v2",
+          "perception": {
+            "striker": "privileged scene rl_obs_v1 plus PerceptionNoise v1",
+            "keeper": "rendered RGB; own simulated encoders/IMU/FSR and estimated contact odometry",
+            "limitations": "ideal own simulated sensors; physics pauses during RGB inference; simulation only, no physical NAO equivalence"
+          },
+          "hardware_validated": false,
+          "learned_joint_trajectories": false,
+          "keeper_motion_profile": null
+        },
+        "return": -10.459999999999999
+      },
+      "children_collected": true
+    }
+  ]
+}

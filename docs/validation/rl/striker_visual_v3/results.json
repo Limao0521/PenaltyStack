@@ -1,0 +1,242 @@
+{
+  "version": "striker_visual_results_export_v1",
+  "run_fingerprint": "dea1c26dc1fe338f884b86edccea6ef84e988dd65a0e3b7529c2e131b35fb7ed",
+  "status": "experimental",
+  "promoted": false,
+  "selected_update": 16,
+  "test_used_for_selection": false,
+  "hardware_validated": false,
+  "initialization": "striker_policy_init_v2",
+  "training_transitions": 18432,
+  "selected_checkpoint_training_transitions": 12288,
+  "training_transitions_scope": "completed optimized PPO transitions; excludes discarded physical rollout work of unknown size",
+  "training_failure_history_sha256": "a4b37e1404cb6220b637c1cb366387f5f374927dd9cc55348a0f8deead78d4e3",
+  "zero_training_errors_claimed": false,
+  "validation_summary": {
+    "episodes": 32,
+    "counts": {
+      "goal": 4,
+      "save": 28
+    },
+    "goal_rate": 0.125,
+    "save_rate": 0.875,
+    "goal_ci95": [
+      0.04970053844474301,
+      0.2806864978482796
+    ],
+    "sim_errors": 0,
+    "striker_fall_rate": 0.0,
+    "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+  },
+  "validation_promotion_candidate": {
+    "update": 0,
+    "policy": "frozen/striker_v2",
+    "policy_sha256": {
+      "model.zip": "8b82ddf261dc967e70798ad22ad72a12d6b69eec7b5565b4ed9a6790ef044452",
+      "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+      "config.json": "a3cf3c277e0a8e555973b400a4d17a4487df635c4e94538a9bab1c5710f9ab99"
+    },
+    "summary": {
+      "episodes": 32,
+      "counts": {
+        "goal": 7,
+        "save": 25
+      },
+      "goal_rate": 0.21875,
+      "save_rate": 0.78125,
+      "goal_ci95": [
+        0.11023696931531854,
+        0.3875533079044484
+      ],
+      "sim_errors": 0,
+      "striker_fall_rate": 0.0,
+      "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+    }
+  },
+  "validation_prefers_trained_over_v2": false,
+  "initialization_diagnostic": {
+    "summary": {
+      "episodes": 32,
+      "counts": {
+        "goal": 2,
+        "save": 30
+      },
+      "goal_rate": 0.0625,
+      "save_rate": 0.9375,
+      "goal_ci95": [
+        0.017310203195157234,
+        0.2014746724800358
+      ],
+      "sim_errors": 0,
+      "striker_fall_rate": 0.0,
+      "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+    },
+    "vs_v2": {
+      "episodes": 32,
+      "goal_gain": -0.15625,
+      "goal_gain_ci95": [
+        -0.28125,
+        -0.03125
+      ],
+      "candidate_only_goals": 0,
+      "baseline_only_goals": 5,
+      "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+    },
+    "eligible_for_selection": false
+  },
+  "summaries": {
+    "balanced": {
+      "v2": {
+        "episodes": 100,
+        "counts": {
+          "goal": 16,
+          "save": 84
+        },
+        "goal_rate": 0.16,
+        "save_rate": 0.84,
+        "goal_ci95": [
+          0.10095202349473717,
+          0.24420444558894414
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "selected": {
+        "episodes": 100,
+        "counts": {
+          "goal": 12,
+          "miss": 1,
+          "save": 87
+        },
+        "goal_rate": 0.12,
+        "save_rate": 0.87,
+        "goal_ci95": [
+          0.06999337365267776,
+          0.19812268002908368
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.01,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      }
+    },
+    "motion": {
+      "v2": {
+        "episodes": 100,
+        "counts": {
+          "goal": 26,
+          "save": 74
+        },
+        "goal_rate": 0.26,
+        "save_rate": 0.74,
+        "goal_ci95": [
+          0.18404578126986462,
+          0.35371172631861636
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "selected": {
+        "episodes": 100,
+        "counts": {
+          "goal": 15,
+          "miss": 1,
+          "save": 84
+        },
+        "goal_rate": 0.15,
+        "save_rate": 0.84,
+        "goal_ci95": [
+          0.09305903191162297,
+          0.23283733332157835
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.01,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      }
+    },
+    "scripted": {
+      "v2": {
+        "episodes": 100,
+        "counts": {
+          "goal": 91,
+          "save": 9
+        },
+        "goal_rate": 0.91,
+        "save_rate": 0.09,
+        "goal_ci95": [
+          0.8377362530335634,
+          0.9519280048361151
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "selected": {
+        "episodes": 100,
+        "counts": {
+          "goal": 38,
+          "miss": 1,
+          "save": 61
+        },
+        "goal_rate": 0.38,
+        "save_rate": 0.61,
+        "goal_ci95": [
+          0.2909744920013438,
+          0.47790426179289663
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.01,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      }
+    }
+  },
+  "paired_comparisons": {
+    "balanced": {
+      "episodes": 100,
+      "goal_gain": -0.04,
+      "goal_gain_ci95": [
+        -0.12,
+        0.04
+      ],
+      "candidate_only_goals": 7,
+      "baseline_only_goals": 11,
+      "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+    },
+    "motion": {
+      "episodes": 100,
+      "goal_gain": -0.11,
+      "goal_gain_ci95": [
+        -0.21,
+        -0.01
+      ],
+      "candidate_only_goals": 8,
+      "baseline_only_goals": 19,
+      "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+    },
+    "scripted": {
+      "episodes": 100,
+      "goal_gain": -0.53,
+      "goal_gain_ci95": [
+        -0.63,
+        -0.43
+      ],
+      "candidate_only_goals": 1,
+      "baseline_only_goals": 54,
+      "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+    }
+  },
+  "selected_policy_sha256": {
+    "model.zip": "6e5f921a581bd24f788286e60b0c94084b2a309cb9abf5c75cc8990091cd934d",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "0033aa2e9bb6918cd2178a667659dce16eee4cf99cb746ca01a19f254f2a8e8d"
+  },
+  "selection_sha256": "9306f5442f9732c0d3691196fe90e5611065a7193761dc2f74c9e2241007574b",
+  "test_report_sha256": "e710d72f40fb5023091df0b33e6882c9dc05486f0d13600eed622606b665d63e",
+  "resume_state_sha256": "9bef5aa6ad6b64fc1aa97d5da8d7397ba9ce83a39238b297efb4452e34a145f9",
+  "complete_run_zip_sha256": "6dfa4bd6873e00adfcdabd68520113b1c135e7e8fa696ebe5c88726338211b3e",
+  "original_frozen_input_count": 116,
+  "original_frozen_input_bytes": 16419216,
+  "zip_entry_count": 587,
+  "limitations": "MuJoCo B-Human physics only, no physical NAO validation. The keeper uses RGB ball perception and simulated encoder/IMU/FSR sensors; physics pauses during RGB inference. The striker still receives rl_obs_v1 privileged scene measurements with PerceptionNoise v1, as striker_v2 did. The opponent is our v2 balanced keeper, not a complete official B-Human team. This bounded fine-tuning pilot does not establish convergence. Original observation normalization remains frozen during this pilot. Resuming restores PPO/optimizer/RNG checkpoints but starts fresh physical episodes with previously unused training seeds; no exact simulator-state replay."
+}

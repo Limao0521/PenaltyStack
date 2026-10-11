@@ -1,5 +1,43 @@
 # Estado operativo — 2026-10-11
 
+## Actualización: tirador reentrenado contra v2 balanced (2026-10-11)
+
+- Rama `codex/mejora-portero`. Nueva corrida `striker_visual_retraining_v1`,
+  entorno `striker_visual_keeper_env_v1`, recompensa `striker_visual_reward_v2`.
+  Rival principal visual v2 balanced con movimiento original; salto ajustado
+  experimental y FSM propia son controles de prueba. Tirador conserva
+  `rl_obs_v1` de escena con PerceptionNoise v1, 19 campos/4 acciones. Portero
+  usa RGB y sensores propios ideales; no hardware ni B-Human oficial completo.
+- Warm start parcial desde v2: calibración ocho semillas 90001 fuera de splits,
+  escala p95 de cuatro filas/sesgos de cabeza, conserva latentes/value al
+  inicializar y resetea sólo los momentos Adam de la cabeza de acciones. PPO entrena las redes; conserva
+  NPZ original byte a byte (c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60).
+  La semilla efectiva RNG es 91001; el campo PPO.seed heredado sigue siendo 0.
+- 24 updates ×128×6 =18 432 transiciones optimizadas; 301 episodios incorporados
+  (31 goal,263 save,4 miss,3 timeout). Fallo conocido al recolectar tras CP4:
+  detalle original/volumen de rollout descartado desconocidos. Recuperación
+  CP4+RNG, reserva 70–843 (774 índices), fuentes iguales y nuevas semillas.
+  No afirmar cero errores globales ni contar esa cifra como todo el trabajo físico.
+- Validación32×5=160 duelos: v2 7 goles, init2, CP8 cero, CP16 cuatro, CP24 cuatro.
+  Selección entrenada CP16 por empate/anterior; promoción separada favorece v2.
+  Modelo `models/rl/striker_visual_v3` experimental: 6 065 174 timesteps,
+  de los cuales12 288 nuevos. Model SHA6e5f921a581bd24f788286e60b0c94084b2a309cb9abf5c75cc8990091cd934d.
+- Test fijado antes de aprender: 100pares×3rivales=600 duelos, bases91001/92001/93001
+  disjuntas y modelo congelado antes de prueba. Goles v2/nuevo: balanced16/12,
+  salto ajustado26/15, FSM91/38. Diferencias−4pp IC[-12,+4],−11pp[-21,-1],−53pp[-63,-43].
+  Cada rival registra un miss nuevo, separado de save; sin sim_error en los760
+  duelos val/test. Mantener v2 recomendado; candidato nuevo no mejora, sin promoción.
+- Diagnóstico descriptivo ante balanced: objetivos solicitados dentro de ±0.30 m,
+  v2 2/100 y candidato 53/100; ≥0.60 m, v2 93/100 y candidato 0/100. Potencia media
+  solicitada 0.75/0.63. No prueba causal aislada de PPO: también cambió la inicialización.
+- 337 pruebas pasan, paridad física dos pares94001 exacta, 116inputs y559
+  originales preservados. Diseño `docs/ENTRENAMIENTO_TIRADOR_VISUAL.md`, reporte
+  `docs/validation/rl/striker_visual_v3/` y ZIP con corrida completa, 24 checkpoints,
+  optimizer/RNG, frozen/calibración, evaluaciones y inputs/runtime. DLL ONNX adicional
+  etiquetada fuera de116hashes originales. Corrida local `runs/striker_retrain/visual_v3`.
+  `tools/retrain_striker.py --stage all` congela/entrena/selecciona/prueba;
+  `--resume` exige configuración/fuentes iguales y la selección bloquea entrenar más.
+
 ## Actualización: entrenamiento de movimiento B-Human del portero (2026-10-11)
 
 - Rama `codex/mejora-portero`. Nueva skill `keeper_motion_skill_v1`: cuatro parámetros reales acotados de duración de guardia/salto, shoulder roll y knee pitch de guardias, sobre copia de keyframes en el factory nativo; sin modificar baseline. B-Human conserva balance, interpolación, espejado, rigidez, ramas y recuperación. Perfil fijo desde el primer bloqueo; nominal/omisión conservan el camino original. Núcleo visual v2 y selección `balanced` sin cambios; no continúa PPO táctico ni aprende articulaciones desde cero.

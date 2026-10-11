@@ -1,0 +1,75 @@
+{
+  "version": "striker_retraining_design_audit_v1",
+  "phase": "pre-training draft review; runner still being edited",
+  "created_utc": "2026-10-11T16:13:25.857132+00:00",
+  "read_only_source_review": true,
+  "auditor_modified_source_files": false,
+  "warmstart_audit": "warmstart_audit.json",
+  "manual_forward_diagnostic": "warmstart_action_probe.json",
+  "manual_diagnostic_is_not_performance": true,
+  "accepted_method": {
+    "base": "models/rl/striker_v2",
+    "opponent_primary": "visual keeper v2 + balanced + original B-Human motions",
+    "opponent_motion_is_secondary_experimental": true,
+    "observation": "published rl_obs_v1, 19 fields, privileged striker scene plus PerceptionNoise v1",
+    "actions": "published striker_action_v1, 4 bounded tactical outputs",
+    "new_reward": "striker_visual_reward_v2: each step -0.02, terminal actual goal +10, every other terminal -10",
+    "timeout_observed_finite_horizon": "28 s, terminated without bootstrap",
+    "normalization": "striker_v2 frozen observation statistics throughout training and evaluation",
+    "warmstart": "actor features and value pretrained; measured row scaling of action head with only its incompatible Adam state discarded",
+    "calibration": "8 actual physics episodes in separate 90001 seed namespace; pre-release observations only; no validation/test used",
+    "training_provisional": "24 PPO updates x 128 steps x 6 physical workers = 18432 new transitions, validation checkpoints 8/16/24",
+    "validation": "32 new paired episodes per eligible checkpoint and original v2; initialized policy diagnostic only, not selection",
+    "test": "100 new paired episodes per striker per keeper, selected once from validation, no test tuning",
+    "main_metric": "actual goals / all scheduled penalties; misses, falls, timeouts, simulation failures stay denominator",
+    "uncertainty": "paired goal-indicator bootstrap plus per-policy binomial intervals",
+    "scope": "bounded simulation pilot; no convergence or hardware equivalence"
+  },
+  "review_findings": [
+    {
+      "id": "saturated_action_head",
+      "status": "addressed in method; actual calibration pending audit",
+      "evidence": "v2 outputs can be far outside [-1,1] while Gaussian std only 0.37-0.45; ordinary clipping may eliminate effective aim/foot exploration",
+      "resolution": "measure actual raw means, scale rows once before frozen run, retain initialized diagnostic comparator"
+    },
+    {
+      "id": "post_shot_horizon",
+      "status": "documented",
+      "evidence": "new duel continues tactical steps until visual keeper commitment; unlike old single-role env, post-release striker actions have no effect",
+      "resolution": "new environment/reward version and baseline evaluated in same new environment"
+    },
+    {
+      "id": "paired_reset_metadata",
+      "status": "runner draft fix requested",
+      "evidence": "trial counter can differ even when physical engine seed/layout are identical",
+      "resolution": "compare engine_seed/ball_xy/start_offsets, excluding administrative trial"
+    },
+    {
+      "id": "evaluation_motion_argument",
+      "status": "runner draft fix requested",
+      "resolution": "motion_model only supplied when keeper_mode=motion"
+    },
+    {
+      "id": "calibration_schema_binding",
+      "status": "runner draft fix requested",
+      "resolution": "use action_head_row_scales and verify calibration version, input base hashes, separate seeds, pre-release filtering, no test use"
+    },
+    {
+      "id": "child_cleanup_evidence",
+      "status": "runner draft fix requested",
+      "resolution": "measure actual Popen completion after finally; do not hardcode children_collected=True; fallback must handle all psutil errors"
+    },
+    {
+      "id": "wall_guard_last_checkpoint",
+      "status": "runner clarification requested",
+      "resolution": "state whether validation time counts in wall cap; validate final completed checkpoint when wall guard triggers"
+    }
+  ],
+  "snapshot_hashes": {
+    "penalty/rl/striker_visual_env.py": "a1f992ae2e1cb0318bf50523cd010f48d535ce8daffeb130da557c62641ae208",
+    "penalty/rl/striker_retraining.py": "5172771463e72b9695f43957b7811b32708db9e924ee9a7f41ec09ee789651cd",
+    "penalty/rl/striker_calibration.py": "efb584f6ff4d7f45c3f87cd7558833345de967cac212c9fdf576ae8e0ba96642",
+    "tools/retrain_striker.py": "02e140f319f4440c89fe7ae8f6507cad11421bb6774683b223710599278ac211"
+  },
+  "approval": "method reasonable; final source and actual calibration audit still pending"
+}

@@ -1,0 +1,24 @@
+{
+  "version": "striker_rollout_failure_history_v1",
+  "phase": "training, validation and blind test completed",
+  "initial_failure": {
+    "completed_updates_preserved": 4,
+    "optimized_transitions_preserved": 3072,
+    "exception": "sim_error during PPO collection; stop without selecting",
+    "source_log": "support/visual_v3.log",
+    "episode_record_available": false,
+    "cause_identified": false,
+    "partial_rollout_was_not_optimized": true,
+    "partial_physics_transition_count_unknown": true,
+    "checkpoint_weights_optimizer_rng_preserved": true
+  },
+  "recovery": "Same frozen trainer/configuration; fresh episodes after reserving the maximum possible partial rollout seed range. Diagnostic tracing captures any further sim_error record without changing actions or learning.",
+  "do_not_claim_zero_training_errors": true,
+  "validation_and_test_are_separate": true,
+  "known_training_sim_errors": 1,
+  "validation_episodes": 160,
+  "validation_sim_errors": 0,
+  "blind_test_episodes": 600,
+  "blind_test_sim_errors": 0,
+  "total_physical_training_transitions_known": false
+}

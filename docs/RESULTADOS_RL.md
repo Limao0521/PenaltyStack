@@ -4,6 +4,58 @@ Periodo: 2026-10-08 a 2026-10-10, rama `feat/rl-contracts`. Las corridas ppo_v1 
 
 Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna afirma equivalencia con el NAO real.
 
+## Reentrenamiento contra el portero visual — 2026-10-11
+
+La corrida corta `striker_visual_v3` **no superó al tirador v2**. Se mantiene
+`models/rl/striker_v2` como recomendado. El candidato nuevo se conserva en
+`models/rl/striker_visual_v3` como experimental, elegido por validación antes
+de la prueba independiente. No sustituye a v2 ni cambia su modelo.
+
+Se realizaron 24 actualizaciones PPO y 18 432 transiciones optimizadas
+contra nuestro portero visual v2 `balanced`, con movimientos B-Human
+originales. La validación eligió el checkpoint 16: 4/32 goles, empatado con
+el 24; v2 obtuvo 7/32. La inicialización calibrada sin PPO obtuvo 2/32.
+El modelo seleccionado incorpora 12 288 transiciones nuevas; la corrida
+completa incorpora 18 432 y conserva los 24 checkpoints.
+
+Prueba de **600 penales nuevos**, 100 por tirador y rival, con semillas y
+posiciones iniciales emparejadas dentro de cada rival:
+
+| Rival | Goles v2 | Goles candidato | Diferencia de goles, IC95 pareado |
+| --- | ---: | ---: | --- |
+| Visual v2 `balanced`, movimiento original | 16/100 | 12/100 | −4 puntos [−12, +4] |
+| Visual v2 `balanced`, salto ajustado | 26/100 | 15/100 | −11 puntos [−21, −1] |
+| FSM base propia, motor B-Human | 91/100 | 38/100 | −53 puntos [−63, −43] |
+
+Los intervalos de las dos comparaciones secundarias son descriptivos, sin
+corrección por comparaciones múltiples. Los goles cuentan todos los penales
+programados; cada rival registró un tiro fallado del candidato, contabilizado
+aparte de las atajadas. No hubo errores de simulación en validación o prueba.
+
+En los 100 penales ante el portero principal, el candidato solicitó objetivos
+más centrados: 53 dentro de ±0.30 m frente a dos de v2; ninguno a ≥0.60 m del
+centro frente a 93 de v2. La potencia media solicitada bajó de 0.75 a 0.63.
+Son decisiones tácticas observadas, no una prueba de causalidad: el piloto
+cambió tanto la inicialización como el entrenamiento PPO.
+
+Hubo un fallo durante la recolección del entrenamiento: se preservó el
+checkpoint 4 y se reanudó con semillas nuevas, reservando 774 índices. El
+detalle y el volumen físico del rollout descartado no quedaron conservados;
+no se afirma cero errores globales ni se equiparan transiciones optimizadas
+con todas las transiciones físicas ejecutadas.
+
+El tirador conserva observación privilegiada de escena con ruido; el
+portero utiliza RGB y sensores propios ideales simulados. La FSM de control
+es del proyecto, no el comportamiento oficial completo de B-Human. No se
+aprendieron trayectorias articulares y esta corrida no demuestra convergencia.
+Suite: 337 pruebas pasan; paridad física de entorno comprobada en dos pares
+fuera de las particiones. Los 559 originales y los modelos anteriores se
+conservan intactos.
+
+Método: [ENTRENAMIENTO_TIRADOR_VISUAL.md](ENTRENAMIENTO_TIRADOR_VISUAL.md).
+Resultados, auditorías y copia completa de corrida e inputs:
+[reporte versionado](validation/rl/striker_visual_v3/README.md).
+
 ## Resumen
 
 - **Tirador a usar: v2** (`models/rl/striker_v2`). En B-Human, con variación de posiciones y ruido de percepción, anota el 97 % contra el portero estático y el 96 % contra el portero FSM (100 penales nuevos cada uno). En el duelo contra el portero FSM anota 91.5 % con ruido y 94 % sin ruido; el tirador FSM original, 6–7 %.
