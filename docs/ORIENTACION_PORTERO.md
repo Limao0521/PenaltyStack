@@ -1,5 +1,7 @@
 # Orientación del tirador desde cámaras y sensores simulados
 
+> 2026-10-11: v3 nunca llegaba a usar la postura (ventana de 0.5 s). La revisión, v4/v5 y el experimento pareado están en [PORTERO_FUSION.md](PORTERO_FUSION.md).
+
 2026-10-10. **Implementado en MuJoCo:** el portero estima el giro corporal
 del rival desde imágenes RGB. Sus encoders, IMU y apoyos de los pies estiman
 la transformación de la cámara y compensan el movimiento propio.

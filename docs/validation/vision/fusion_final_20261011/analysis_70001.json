@@ -1,0 +1,1040 @@
+{
+ "report": "final_70001.json",
+ "seed": 70001,
+ "episodes_per_style": 50,
+ "table": {
+  "scripted": {
+   "saves": {
+    "center": 40,
+    "mixed": 19,
+    "corners": 13,
+    "soft": 17,
+    "late": 27,
+    "feint": 14,
+    "v1": 8,
+    "v2": 3
+   },
+   "episodes": {
+    "center": 50,
+    "mixed": 50,
+    "corners": 50,
+    "soft": 50,
+    "late": 50,
+    "feint": 50,
+    "v1": 50,
+    "v2": 50
+   },
+   "macro": 0.35250000000000004,
+   "worst": "v2",
+   "worst_rate": 0.06,
+   "sim_errors": 23,
+   "early_commits": 1
+  },
+  "vision": {
+   "saves": {
+    "center": 43,
+    "mixed": 32,
+    "corners": 39,
+    "soft": 37,
+    "late": 38,
+    "feint": 36,
+    "v1": 38,
+    "v2": 36
+   },
+   "episodes": {
+    "center": 50,
+    "mixed": 50,
+    "corners": 50,
+    "soft": 50,
+    "late": 50,
+    "feint": 50,
+    "v1": 50,
+    "v2": 50
+   },
+   "macro": 0.7475,
+   "worst": "mixed",
+   "worst_rate": 0.64,
+   "sim_errors": 1,
+   "early_commits": 0
+  },
+  "pose": {
+   "saves": {
+    "center": 43,
+    "mixed": 32,
+    "corners": 39,
+    "soft": 38,
+    "late": 38,
+    "feint": 36,
+    "v1": 38,
+    "v2": 36
+   },
+   "episodes": {
+    "center": 50,
+    "mixed": 50,
+    "corners": 50,
+    "soft": 50,
+    "late": 50,
+    "feint": 50,
+    "v1": 50,
+    "v2": 50
+   },
+   "macro": 0.75,
+   "worst": "mixed",
+   "worst_rate": 0.64,
+   "sim_errors": 0,
+   "early_commits": 0
+  },
+  "pose_v4": {
+   "saves": {
+    "center": 43,
+    "mixed": 32,
+    "corners": 39,
+    "soft": 38,
+    "late": 38,
+    "feint": 36,
+    "v1": 38,
+    "v2": 36
+   },
+   "episodes": {
+    "center": 50,
+    "mixed": 50,
+    "corners": 50,
+    "soft": 50,
+    "late": 50,
+    "feint": 50,
+    "v1": 50,
+    "v2": 50
+   },
+   "macro": 0.75,
+   "worst": "mixed",
+   "worst_rate": 0.64,
+   "sim_errors": 1,
+   "early_commits": 0
+  },
+  "ball_v5": {
+   "saves": {
+    "center": 37,
+    "mixed": 37,
+    "corners": 38,
+    "soft": 41,
+    "late": 30,
+    "feint": 35,
+    "v1": 39,
+    "v2": 37
+   },
+   "episodes": {
+    "center": 50,
+    "mixed": 50,
+    "corners": 50,
+    "soft": 50,
+    "late": 50,
+    "feint": 50,
+    "v1": 50,
+    "v2": 50
+   },
+   "macro": 0.735,
+   "worst": "late",
+   "worst_rate": 0.6,
+   "sim_errors": 0,
+   "early_commits": 0
+  },
+  "full_v5": {
+   "saves": {
+    "center": 37,
+    "mixed": 38,
+    "corners": 38,
+    "soft": 41,
+    "late": 30,
+    "feint": 35,
+    "v1": 39,
+    "v2": 37
+   },
+   "episodes": {
+    "center": 50,
+    "mixed": 50,
+    "corners": 50,
+    "soft": 50,
+    "late": 50,
+    "feint": 50,
+    "v1": 50,
+    "v2": 50
+   },
+   "macro": 0.7375,
+   "worst": "late",
+   "worst_rate": 0.6,
+   "sim_errors": 0,
+   "early_commits": 0
+  }
+ },
+ "comparisons": {
+  "vision_vs_scripted": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 7,
+     "only_second_saves": 4,
+     "p_exact": 0.5488281250000008
+    },
+    "corners": {
+     "only_first_saves": 27,
+     "only_second_saves": 1,
+     "p_exact": 2.1606683731078797e-07
+    },
+    "feint": {
+     "only_first_saves": 24,
+     "only_second_saves": 2,
+     "p_exact": 1.0490417480468821e-05
+    },
+    "late": {
+     "only_first_saves": 14,
+     "only_second_saves": 3,
+     "p_exact": 0.012725830078125012
+    },
+    "mixed": {
+     "only_first_saves": 18,
+     "only_second_saves": 5,
+     "p_exact": 0.01062202453613287
+    },
+    "soft": {
+     "only_first_saves": 26,
+     "only_second_saves": 6,
+     "p_exact": 0.0005350527353584663
+    },
+    "v1": {
+     "only_first_saves": 30,
+     "only_second_saves": 0,
+     "p_exact": 1.8626451492309587e-09
+    },
+    "v2": {
+     "only_first_saves": 33,
+     "only_second_saves": 0,
+     "p_exact": 2.328306436538702e-10
+    }
+   },
+   "macro_gain": 0.395,
+   "macro_gain_ci95": [
+    0.3175,
+    0.4725
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "pose_vs_vision": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "corners": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "feint": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "late": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "mixed": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "soft": {
+     "only_first_saves": 1,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v1": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v2": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    }
+   },
+   "macro_gain": 0.0025,
+   "macro_gain_ci95": [
+    0.0,
+    0.0075
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "pose_v4_vs_vision": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "corners": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "feint": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "late": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "mixed": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "soft": {
+     "only_first_saves": 1,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v1": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v2": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    }
+   },
+   "macro_gain": 0.0025,
+   "macro_gain_ci95": [
+    0.0,
+    0.0075
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "ball_v5_vs_vision": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 1,
+     "only_second_saves": 7,
+     "p_exact": 0.07031249999999992
+    },
+    "corners": {
+     "only_first_saves": 5,
+     "only_second_saves": 6,
+     "p_exact": 1.0
+    },
+    "feint": {
+     "only_first_saves": 4,
+     "only_second_saves": 5,
+     "p_exact": 0.9999999999999973
+    },
+    "late": {
+     "only_first_saves": 3,
+     "only_second_saves": 11,
+     "p_exact": 0.05737304687500017
+    },
+    "mixed": {
+     "only_first_saves": 11,
+     "only_second_saves": 6,
+     "p_exact": 0.3323059082031255
+    },
+    "soft": {
+     "only_first_saves": 5,
+     "only_second_saves": 1,
+     "p_exact": 0.21875000000000017
+    },
+    "v1": {
+     "only_first_saves": 3,
+     "only_second_saves": 2,
+     "p_exact": 1.0
+    },
+    "v2": {
+     "only_first_saves": 2,
+     "only_second_saves": 1,
+     "p_exact": 1.0
+    }
+   },
+   "macro_gain": -0.0125,
+   "macro_gain_ci95": [
+    -0.0575,
+    0.03
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "full_v5_vs_ball_v5": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "corners": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "feint": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "late": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "mixed": {
+     "only_first_saves": 1,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "soft": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v1": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v2": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    }
+   },
+   "macro_gain": 0.0025,
+   "macro_gain_ci95": [
+    0.0,
+    0.0075
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "full_v5_vs_vision": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 1,
+     "only_second_saves": 7,
+     "p_exact": 0.07031249999999992
+    },
+    "corners": {
+     "only_first_saves": 5,
+     "only_second_saves": 6,
+     "p_exact": 1.0
+    },
+    "feint": {
+     "only_first_saves": 4,
+     "only_second_saves": 5,
+     "p_exact": 0.9999999999999973
+    },
+    "late": {
+     "only_first_saves": 3,
+     "only_second_saves": 11,
+     "p_exact": 0.05737304687500017
+    },
+    "mixed": {
+     "only_first_saves": 12,
+     "only_second_saves": 6,
+     "p_exact": 0.23788452148437497
+    },
+    "soft": {
+     "only_first_saves": 5,
+     "only_second_saves": 1,
+     "p_exact": 0.21875000000000017
+    },
+    "v1": {
+     "only_first_saves": 3,
+     "only_second_saves": 2,
+     "p_exact": 1.0
+    },
+    "v2": {
+     "only_first_saves": 2,
+     "only_second_saves": 1,
+     "p_exact": 1.0
+    }
+   },
+   "macro_gain": -0.01,
+   "macro_gain_ci95": [
+    -0.055,
+    0.0325
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "full_v5_vs_scripted": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 5,
+     "only_second_saves": 8,
+     "p_exact": 0.5810546874999993
+    },
+    "corners": {
+     "only_first_saves": 29,
+     "only_second_saves": 4,
+     "p_exact": 1.092860475182538e-05
+    },
+    "feint": {
+     "only_first_saves": 27,
+     "only_second_saves": 6,
+     "p_exact": 0.0003240634687244865
+    },
+    "late": {
+     "only_first_saves": 12,
+     "only_second_saves": 9,
+     "p_exact": 0.6636238098144553
+    },
+    "mixed": {
+     "only_first_saves": 22,
+     "only_second_saves": 3,
+     "p_exact": 0.0001565217971801759
+    },
+    "soft": {
+     "only_first_saves": 28,
+     "only_second_saves": 4,
+     "p_exact": 1.9301194697618454e-05
+    },
+    "v1": {
+     "only_first_saves": 31,
+     "only_second_saves": 0,
+     "p_exact": 9.313225746154776e-10
+    },
+    "v2": {
+     "only_first_saves": 34,
+     "only_second_saves": 0,
+     "p_exact": 1.164153218269349e-10
+    }
+   },
+   "macro_gain": 0.385,
+   "macro_gain_ci95": [
+    0.3025,
+    0.465
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  },
+  "pose_v4_vs_pose": {
+   "per_style": {
+    "center": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "corners": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "feint": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "late": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "mixed": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "soft": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v1": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    },
+    "v2": {
+     "only_first_saves": 0,
+     "only_second_saves": 0,
+     "p_exact": 1.0
+    }
+   },
+   "macro_gain": 0.0,
+   "macro_gain_ci95": [
+    0.0,
+    0.0
+   ],
+   "ci_method": "paired bootstrap; episode seeds clustered across styles"
+  }
+ },
+ "decision_diagnostics": {
+  "scripted": {
+   "episodes": 400,
+   "pose_available": 0,
+   "pose_changed_side": 0,
+   "held_centre": 0,
+   "v3_prior_used": 0
+  },
+  "vision": {
+   "episodes": 400,
+   "pose_available": 0,
+   "pose_changed_side": 0,
+   "held_centre": 0,
+   "v3_prior_used": 0
+  },
+  "pose": {
+   "episodes": 400,
+   "pose_available": 0,
+   "pose_changed_side": 0,
+   "held_centre": 0,
+   "v3_prior_used": 0
+  },
+  "pose_v4": {
+   "episodes": 400,
+   "pose_available": 379,
+   "pose_changed_side": 1,
+   "held_centre": 0,
+   "v3_prior_used": 0
+  },
+  "ball_v5": {
+   "episodes": 400,
+   "pose_available": 0,
+   "pose_changed_side": 0,
+   "held_centre": 0,
+   "v3_prior_used": 0
+  },
+  "full_v5": {
+   "episodes": 400,
+   "pose_available": 386,
+   "pose_changed_side": 2,
+   "held_centre": 0,
+   "v3_prior_used": 0
+  }
+ },
+ "truth_seeds": 350,
+ "saves_by_crossing": {
+  "scripted": {
+   "0.00-0.15": [
+    43,
+    51
+   ],
+   "0.15-0.25": [
+    41,
+    72
+   ],
+   "0.25-0.30": [
+    10,
+    21
+   ],
+   "0.30-0.35": [
+    10,
+    29
+   ],
+   "0.35-0.45": [
+    12,
+    53
+   ],
+   "0.45-0.60": [
+    2,
+    99
+   ],
+   "0.60-2.00": [
+    0,
+    25
+   ]
+  },
+  "vision": {
+   "0.00-0.15": [
+    48,
+    51
+   ],
+   "0.15-0.25": [
+    49,
+    72
+   ],
+   "0.25-0.30": [
+    12,
+    21
+   ],
+   "0.30-0.35": [
+    13,
+    29
+   ],
+   "0.35-0.45": [
+    47,
+    53
+   ],
+   "0.45-0.60": [
+    91,
+    99
+   ],
+   "0.60-2.00": [
+    10,
+    25
+   ]
+  },
+  "pose": {
+   "0.00-0.15": [
+    49,
+    51
+   ],
+   "0.15-0.25": [
+    49,
+    72
+   ],
+   "0.25-0.30": [
+    12,
+    21
+   ],
+   "0.30-0.35": [
+    13,
+    29
+   ],
+   "0.35-0.45": [
+    47,
+    53
+   ],
+   "0.45-0.60": [
+    91,
+    99
+   ],
+   "0.60-2.00": [
+    10,
+    25
+   ]
+  },
+  "pose_v4": {
+   "0.00-0.15": [
+    49,
+    51
+   ],
+   "0.15-0.25": [
+    49,
+    72
+   ],
+   "0.25-0.30": [
+    12,
+    21
+   ],
+   "0.30-0.35": [
+    13,
+    29
+   ],
+   "0.35-0.45": [
+    47,
+    53
+   ],
+   "0.45-0.60": [
+    91,
+    99
+   ],
+   "0.60-2.00": [
+    10,
+    25
+   ]
+  },
+  "ball_v5": {
+   "0.00-0.15": [
+    40,
+    51
+   ],
+   "0.15-0.25": [
+    42,
+    72
+   ],
+   "0.25-0.30": [
+    14,
+    21
+   ],
+   "0.30-0.35": [
+    15,
+    29
+   ],
+   "0.35-0.45": [
+    48,
+    53
+   ],
+   "0.45-0.60": [
+    91,
+    99
+   ],
+   "0.60-2.00": [
+    13,
+    25
+   ]
+  },
+  "full_v5": {
+   "0.00-0.15": [
+    40,
+    51
+   ],
+   "0.15-0.25": [
+    42,
+    72
+   ],
+   "0.25-0.30": [
+    15,
+    21
+   ],
+   "0.30-0.35": [
+    15,
+    29
+   ],
+   "0.35-0.45": [
+    48,
+    53
+   ],
+   "0.45-0.60": [
+    91,
+    99
+   ],
+   "0.60-2.00": [
+    13,
+    25
+   ]
+  }
+ },
+ "saves_by_crossing_and_action": {
+  "scripted": {
+   "0.00-0.15 centro": [
+    43,
+    47
+   ],
+   "0.15-0.25 centro": [
+    41,
+    67
+   ],
+   "0.25-0.30 centro": [
+    10,
+    20
+   ],
+   "0.30-0.35 centro": [
+    10,
+    26
+   ],
+   "0.35-0.45 centro": [
+    11,
+    47
+   ],
+   "0.35-0.45 lado correcto": [
+    1,
+    1
+   ],
+   "0.45-0.60 centro": [
+    0,
+    94
+   ],
+   "0.45-0.60 lado correcto": [
+    2,
+    2
+   ],
+   "0.60-2.00 centro": [
+    0,
+    24
+   ]
+  },
+  "vision": {
+   "0.00-0.15 centro": [
+    48,
+    50
+   ],
+   "0.15-0.25 centro": [
+    45,
+    68
+   ],
+   "0.15-0.25 lado correcto": [
+    4,
+    4
+   ],
+   "0.25-0.30 centro": [
+    10,
+    18
+   ],
+   "0.25-0.30 lado correcto": [
+    2,
+    3
+   ],
+   "0.30-0.35 centro": [
+    4,
+    8
+   ],
+   "0.30-0.35 lado correcto": [
+    9,
+    21
+   ],
+   "0.35-0.45 lado correcto": [
+    47,
+    52
+   ],
+   "0.45-0.60 lado correcto": [
+    91,
+    97
+   ],
+   "0.60-2.00 lado correcto": [
+    10,
+    20
+   ]
+  },
+  "pose": {
+   "0.00-0.15 centro": [
+    49,
+    51
+   ],
+   "0.15-0.25 centro": [
+    45,
+    68
+   ],
+   "0.15-0.25 lado correcto": [
+    4,
+    4
+   ],
+   "0.25-0.30 centro": [
+    10,
+    18
+   ],
+   "0.25-0.30 lado correcto": [
+    2,
+    3
+   ],
+   "0.30-0.35 centro": [
+    4,
+    8
+   ],
+   "0.30-0.35 lado correcto": [
+    9,
+    21
+   ],
+   "0.35-0.45 lado correcto": [
+    47,
+    52
+   ],
+   "0.45-0.60 lado correcto": [
+    91,
+    97
+   ],
+   "0.60-2.00 lado correcto": [
+    10,
+    20
+   ]
+  },
+  "pose_v4": {
+   "0.00-0.15 centro": [
+    49,
+    51
+   ],
+   "0.15-0.25 centro": [
+    45,
+    67
+   ],
+   "0.15-0.25 lado correcto": [
+    4,
+    4
+   ],
+   "0.25-0.30 centro": [
+    10,
+    18
+   ],
+   "0.25-0.30 lado correcto": [
+    2,
+    3
+   ],
+   "0.30-0.35 centro": [
+    4,
+    9
+   ],
+   "0.30-0.35 lado correcto": [
+    9,
+    20
+   ],
+   "0.35-0.45 lado correcto": [
+    47,
+    52
+   ],
+   "0.45-0.60 lado correcto": [
+    91,
+    97
+   ],
+   "0.60-2.00 lado correcto": [
+    10,
+    20
+   ]
+  },
+  "ball_v5": {
+   "0.00-0.15 centro": [
+    40,
+    51
+   ],
+   "0.15-0.25 centro": [
+    42,
+    72
+   ],
+   "0.25-0.30 centro": [
+    12,
+    18
+   ],
+   "0.25-0.30 lado correcto": [
+    2,
+    3
+   ],
+   "0.30-0.35 centro": [
+    7,
+    12
+   ],
+   "0.30-0.35 lado correcto": [
+    8,
+    17
+   ],
+   "0.35-0.45 lado correcto": [
+    48,
+    52
+   ],
+   "0.45-0.60 lado correcto": [
+    91,
+    98
+   ],
+   "0.60-2.00 lado correcto": [
+    13,
+    25
+   ]
+  },
+  "full_v5": {
+   "0.00-0.15 centro": [
+    40,
+    51
+   ],
+   "0.15-0.25 centro": [
+    42,
+    72
+   ],
+   "0.25-0.30 centro": [
+    13,
+    19
+   ],
+   "0.25-0.30 lado correcto": [
+    2,
+    2
+   ],
+   "0.30-0.35 centro": [
+    7,
+    11
+   ],
+   "0.30-0.35 lado correcto": [
+    8,
+    18
+   ],
+   "0.35-0.45 lado correcto": [
+    48,
+    52
+   ],
+   "0.45-0.60 lado correcto": [
+    91,
+    98
+   ],
+   "0.60-2.00 lado correcto": [
+    13,
+    25
+   ]
+  }
+ }
+}

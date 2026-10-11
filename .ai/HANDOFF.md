@@ -1,5 +1,12 @@
 # Estado operativo — 2026-10-10
 
+## Actualización: revisión de visión, portero v4/v5 (2026-10-11)
+
+- v3 no usaba la orientación: exige postura ≤0.5 s antes del compromiso; en 200 penales de desarrollo la última postura válida estaba 0.7–2.8 s antes. La línea del torso predice el cruce con ~0.18 m de error (depende del pie); el balón da ~3 cm con dos capturas.
+- Nuevo `penalty/keeper_fusion.py`: `pose_v4` (v2 + postura congelada al dejar el balón su reposo, fusión calibrada y retención de centro contradicho) y `full_v5`/`ball_v5` (mínimos cuadrados, centro a 1.8 s, límites 0.35 m izq./0.30 m der.). Modelo `models/vision/kick_heading_v1.json` ajustado en semillas 69001.
+- Hallazgo de movimiento: la guardia central `squatArmsBackLeft` es asimétrica y falla al lado derecho si se pide temprano; existe `squatArmsBackRight` (no usado: requiere recompilar el host).
+- Test final Windows (semillas 70001, 50 por estilo, pareado): FSM base 35.2 %, v2 74.8 %, v3 75.0 % (postura usada 0/400), v4 75.0 % (1 decisión cambiada), v5 balón 73.5 %, v5 73.8 %. v2−FSM +39.5 pp (IC95 31.8–47.2); v4−v2 y v5−v5balón +0.2 pp; v5balón−v2 −1.2 pp (IC95 −5.8 a +3.0): el centro tardío pierde tiros centrales y gana en la frontera derecha. Recomendación: mantener v2. Resultados en `docs/validation/vision/fusion_final_20261011`; detalle en `docs/PORTERO_FUSION.md`. Para repetir sólo el duelo: `run_keeper_fusion_step2.bat`. Cambios sin commit.
+
 ## Actualización: orientación visual y sensores propios
 
 - Rama `codex/mejora-portero`. Nueva ruta `keeper_sensor_camera_v2`: B-Human aporta cajas originales; `nao_visual_yaw_v1` compara RGB con 2294 referencias NAO para estimar yaw corporal. Referencias/manifest/posturas reproducibles en `models/vision/nao_yaw_v1`. Dominio simulado únicamente, no modelo de hardware.

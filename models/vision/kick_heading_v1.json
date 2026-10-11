@@ -1,0 +1,17 @@
+{
+ "version": "kick_heading_v1",
+ "intercept": 0.029443816412367846,
+ "slope": 1.2019075449781602,
+ "sigma": 0.2205782505441758,
+ "ball_sigma": [
+  0.03949409819485707,
+  0.024746591303328725,
+  0.02,
+  0.02,
+  0.02,
+  0.02,
+  0.02,
+  0.02
+ ],
+ "provenance": "observer traces observer_69001.frames.jsonl; 170 kicks with frozen pre-shot heading; leave-one-style-out robust sigma; simulated camera pipeline only"
+}

@@ -1,0 +1,15 @@
+................................................................................................................................   ventana 1 (sin ruido): goal_rate 1.000 (mejor 1.000, sin mejora 0/9) caídas 0.000 sim_error 0.000
+................el entrenamiento terminó con código 1 (fallos seguidos 1/2); se reanuda desde el último checkpoint en 30 s
+el entrenamiento terminó con código 1 (fallos seguidos 2/2); se reanuda desde el último checkpoint en 30 s
+3 fallos seguidos; se detiene
+.el entrenamiento terminó con código 1 (fallos seguidos 1/1); se reanuda desde el último checkpoint en 30 s
+el entrenamiento terminó con código 1 (fallos seguidos 0/1); se reanuda desde el último checkpoint en 30 s
+el entrenamiento terminó con código 1 (fallos seguidos 1/1); se reanuda desde el último checkpoint en 30 s
+.el entrenamiento terminó con código 1 (fallos seguidos 1/3); se reanuda desde el último checkpoint en 30 s
+el entrenamiento terminó con código 75 (fallos seguidos 2/3); se reanuda desde el último checkpoint en 30 s
+....................................................
+----------------------------------------------------------------------
+Ran 198 tests in 78.995s
+
+OK
+{"time_s": 30.551999999993946, "result": "blocked", "kick_count": 1, "kick_contact_count": 1, "block_contacts": 153, "ball_position": [-0.6708930826003866, 0.09952017363900827, 0.03239442532848075], "robots": {"striker": {"phase": "stand", "motion": "stand", "fall_state": "upright", "fallen": false, "fsr": [0.5682622276321475, 0.6594787165286164, 0.6190515547554076, 0.7184525643619569, 0.7003774929718068, 0.6481268362456634, 0.7510545794060911, 0.6948388350419287], "position": [0.3183527541998837, 0.07256319082667902, 0.31372187392805684], "state": "STOP"}, "keeper": {"phase": "keyframeMotion", "motion": "block", "fall_state": "falling", "fallen": false, "fsr": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], "position": [-1.160982888451824, 0.03659738929723801, 0.14076707814896297], "state": "STOP"}}, "state": "FINISHED", "message": "Ensayo terminado. Puedes repetir o reiniciar.", "error": "", "trial": "d9a1524ddcc143b4b067585aeb09129a", "penalty_time_s": 28.0, "speed": 1.0, "mode": "penalty", "role": "striker"}
