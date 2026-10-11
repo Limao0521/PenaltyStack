@@ -1,0 +1,13 @@
+test: 152/160 cases cached; 6 workers
+[153/160] test / center / 76001000020 (23.1 s)
+[154/160] test / corners / 76001020020 (29.9 s)
+[155/160] test / soft / 76001030020 (39.6 s)
+[156/160] test / mixed / 76001010020 (43.5 s)
+[157/160] test / late / 76001040020 (50.3 s)
+[158/160] test / feint / 76001050020 (53.0 s)
+[159/160] test / v1 / 76001060020 (59.8 s)
+[160/160] test / v2 / 76001070020 (71.3 s)
+learned: 135/160 saves; sim_error=0; no_commit=12; defenses={'center': 0, 'center_right': 53, 'wide_left': 1, 'wide_right': 0, 'left': 67, 'right': 27, 'none': 12}
+original: 128/160 saves; sim_error=0; no_commit=12; defenses={'center': 58, 'center_right': 0, 'wide_left': 0, 'wide_right': 0, 'left': 63, 'right': 27, 'none': 12}
+balanced: 134/160 saves; sim_error=0; no_commit=12; defenses={'center': 34, 'center_right': 24, 'wide_left': 0, 'wide_right': 0, 'left': 63, 'right': 27, 'none': 12}
+Blind final test: C:\Users\juanu\Documents\PenaltyStack\runs\keeper_selector\v1\heldout_report.json

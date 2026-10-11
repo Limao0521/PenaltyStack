@@ -45,7 +45,7 @@ Los valores de sensores son ideales simulados; la cámara usa odometría/actitud
 | `wide_right` | Siempre guardia ancha derecha | Iguales a v2 |
 | `balanced` | `center_right` para cruce negativo, `center` para el resto | Iguales a v2 |
 
-**Disponibilidad de seis defensas no significa que un único modo las elija todas.** `balanced` elige cuatro; las dos guardias anchas son variantes experimentales. Sus tiempos y cobertura se deben medir antes de introducir una selección adaptativa de las seis. No se ha entrenado una política nueva ni movimientos articulares.
+**Disponibilidad de seis defensas no significa que un único modo las elija todas.** `balanced` elige cuatro; las dos guardias anchas son variantes experimentales. Esta entrega v6 no entrenó una política nueva ni movimientos articulares. El experimento posterior de selección entre las seis conserva el núcleo v2 y se documenta aparte en [ENTRENAMIENTO_SELECTOR_PORTERO.md](ENTRENAMIENTO_SELECTOR_PORTERO.md).
 
 En los registros se separan `commit_side` (zona central/izquierda/derecha del núcleo) y `commit_defense` (plantilla realmente solicitada). Una guardia ancha que sustituye el centro sigue siendo una decisión central para comparar el predictor.
 
@@ -91,7 +91,7 @@ Resultados y visualizaciones congelados en [keeper_defenses_v6](validation/visio
 
 El centro espejado es un candidato para evaluar con más casos. Dos semillas independientes son insuficientes para interpretar el bootstrap del JSON como prueba de mejora; sus intervalos quedan registrados, pero no fundamentan una conclusión competitiva. Las semillas tampoco ejercitaron el salto derecho en este duelo: su ejecución y recuperación sí se validaron por separado. Los porcentajes de este ensayo no son comparables directamente con los 400 penales del reporte anterior.
 
-Seis movimientos disponibles permiten estudiar la selección de defensa; no se entrenaron trayectorias nuevas. v2 sigue siendo el control publicado y v6 es experimental. El siguiente ensayo de eficacia requiere nuevas semillas y más casos por estilo antes de adoptar una variante.
+Seis movimientos disponibles permiten estudiar la selección de defensa; no se entrenaron trayectorias nuevas. v2 sigue siendo el control publicado y v6 es experimental. Los resultados anteriores corresponden al ensayo de integración v6. La comparación posterior del selector entrenado utiliza nuevas semillas y un reporte independiente, enlazado desde [ENTRENAMIENTO_SELECTOR_PORTERO.md](ENTRENAMIENTO_SELECTOR_PORTERO.md).
 
 Fuentes: `penalty/keeper_defenses.py`, `keeper_library.py`, `rl/defense_benchmark.py`, `native/bhuman_motion/main.cpp`; configuración y mapeos originales de B-Human preservados. Antecedentes: [PORTERO_FUSION.md](PORTERO_FUSION.md).
 

@@ -1,0 +1,281 @@
+{
+  "version": "keeper_selector_training_v1",
+  "fingerprint": "dc16dd0022ae2c10662fef1a1cdca1471f8a48ddfbb469824e4c823f85d2b9fa",
+  "model_path": "C:\\Users\\juanu\\Documents\\PenaltyStack\\models\\vision\\keeper_selector_v1.json",
+  "model_sha256": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+  "model": "keeper_defense_selector_model_v1",
+  "policy": "vision_keeper_selector_v1",
+  "fit_report": {
+    "training_rows": 96,
+    "training_contexts": 91,
+    "excluded_no_context": 5,
+    "masked_error_targets": 0,
+    "measured_targets_by_defense": {
+      "center": 91,
+      "center_right": 91,
+      "wide_left": 91,
+      "wide_right": 91,
+      "left": 91,
+      "right": 91
+    },
+    "validation_rows": 48,
+    "training_seed_count": 96,
+    "validation_seed_count": 48,
+    "epochs": 1500,
+    "optimizer": "NumPy full-batch Adam; BCE + L2 weights; style-balanced row weights",
+    "feature_formula": "z=clip((camera_context-train_mean)/train_std,-8,8); concat(z,crossing_z^2,arrival_z^2,crossing_z*arrival_z)",
+    "selection": "validation macro save rate, worst style, larger fallback margin, larger L2",
+    "candidates": [
+      {
+        "macro_save_rate": 0.8125,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.6666666666666666,
+          "late": 0.5,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 5,
+          "center_right": 6,
+          "wide_left": 0,
+          "wide_right": 12,
+          "left": 15,
+          "right": 10
+        },
+        "regularization": 0.001,
+        "tie_margin": 0.0,
+        "training_bce": 0.181037713698206
+      },
+      {
+        "macro_save_rate": 0.8125,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.6666666666666666,
+          "late": 0.5,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 5,
+          "center_right": 6,
+          "wide_left": 0,
+          "wide_right": 12,
+          "left": 15,
+          "right": 10
+        },
+        "regularization": 0.001,
+        "tie_margin": 0.03,
+        "training_bce": 0.181037713698206
+      },
+      {
+        "macro_save_rate": 0.7916666666666666,
+        "worst_style_save_rate": 0.3333333333333333,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.6666666666666666,
+          "late": 0.3333333333333333,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 9,
+          "center_right": 6,
+          "wide_left": 0,
+          "wide_right": 8,
+          "left": 15,
+          "right": 10
+        },
+        "regularization": 0.001,
+        "tie_margin": 0.08,
+        "training_bce": 0.181037713698206
+      },
+      {
+        "macro_save_rate": 0.8125,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.6666666666666666,
+          "late": 0.5,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 5,
+          "center_right": 9,
+          "wide_left": 0,
+          "wide_right": 9,
+          "left": 15,
+          "right": 10
+        },
+        "regularization": 0.01,
+        "tie_margin": 0.0,
+        "training_bce": 0.25212496368132625
+      },
+      {
+        "macro_save_rate": 0.8125,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.6666666666666666,
+          "late": 0.5,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 5,
+          "center_right": 9,
+          "wide_left": 0,
+          "wide_right": 9,
+          "left": 15,
+          "right": 10
+        },
+        "regularization": 0.01,
+        "tie_margin": 0.03,
+        "training_bce": 0.25212496368132625
+      },
+      {
+        "macro_save_rate": 0.7708333333333333,
+        "worst_style_save_rate": 0.3333333333333333,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.6666666666666666,
+          "late": 0.3333333333333333,
+          "feint": 0.8333333333333334,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 12,
+          "center_right": 6,
+          "wide_left": 0,
+          "wide_right": 4,
+          "left": 16,
+          "right": 10
+        },
+        "regularization": 0.01,
+        "tie_margin": 0.08,
+        "training_bce": 0.25212496368132625
+      },
+      {
+        "macro_save_rate": 0.8125,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.5,
+          "late": 0.6666666666666666,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 5,
+          "center_right": 15,
+          "wide_left": 1,
+          "wide_right": 0,
+          "left": 18,
+          "right": 9
+        },
+        "regularization": 0.1,
+        "tie_margin": 0.0,
+        "training_bce": 0.4064212678581344
+      },
+      {
+        "macro_save_rate": 0.8125,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 1.0,
+          "soft": 0.5,
+          "late": 0.6666666666666666,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 5,
+          "center_right": 14,
+          "wide_left": 1,
+          "wide_right": 0,
+          "left": 19,
+          "right": 9
+        },
+        "regularization": 0.1,
+        "tie_margin": 0.03,
+        "training_bce": 0.4064212678581344
+      },
+      {
+        "macro_save_rate": 0.7708333333333334,
+        "worst_style_save_rate": 0.5,
+        "per_style": {
+          "center": 1.0,
+          "mixed": 0.6666666666666666,
+          "corners": 0.8333333333333334,
+          "soft": 0.5,
+          "late": 0.5,
+          "feint": 1.0,
+          "v1": 0.8333333333333334,
+          "v2": 0.8333333333333334
+        },
+        "defense_counts": {
+          "center": 11,
+          "center_right": 10,
+          "wide_left": 0,
+          "wide_right": 0,
+          "left": 18,
+          "right": 9
+        },
+        "regularization": 0.1,
+        "tie_margin": 0.08,
+        "training_bce": 0.4064212678581344
+      }
+    ],
+    "selected_validation": {
+      "macro_save_rate": 0.8125,
+      "worst_style_save_rate": 0.5,
+      "per_style": {
+        "center": 1.0,
+        "mixed": 0.6666666666666666,
+        "corners": 1.0,
+        "soft": 0.5,
+        "late": 0.6666666666666666,
+        "feint": 1.0,
+        "v1": 0.8333333333333334,
+        "v2": 0.8333333333333334
+      },
+      "defense_counts": {
+        "center": 5,
+        "center_right": 14,
+        "wide_left": 1,
+        "wide_right": 0,
+        "left": 19,
+        "right": 9
+      }
+    },
+    "sim_error_handling": "mask BCE labels; evaluation keeps errors in denominator",
+    "seed": 74001
+  },
+  "test_used_for_fit": false
+}

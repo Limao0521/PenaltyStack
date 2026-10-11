@@ -1,0 +1,42 @@
+{
+  "version": "keeper_selector_runtime_checks_v1",
+  "initial_watch": {
+    "seed": 77001000000,
+    "style": "mixed",
+    "result": "miss",
+    "commit_defense": null,
+    "commit_time": null,
+    "steps": 10
+  },
+  "additional_attempts": [
+    {
+      "seed": 77001000001,
+      "style": "mixed",
+      "result": "save",
+      "commit_defense": "center_right",
+      "commit_time": 2.699999999999703,
+      "committed": true,
+      "steps": 28,
+      "output": "runs\\keeper_selector\\watch_77001000001",
+      "replay_exact_match": true,
+      "wall_s": 7.687678199989023
+    }
+  ],
+  "additional_attempt_count": 1,
+  "stopped_at_first_commit": true,
+  "maximum_additional_attempts": 3,
+  "model_sha256_before": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+  "model_sha256_after": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+  "model_intact": true,
+  "excluded_from_blind_test": true,
+  "used_for_fit_or_model_selection": false,
+  "script_sha256": "cc55506c87e05f4a1d16c59d2326e29d6feb4cc4d05873bf02501b44aec9c3e2",
+  "frozen_source_verification": {
+    "hash_count": 103,
+    "mismatches": [],
+    "all_match_run_manifest": true
+  },
+  "script_path": "runs/keeper_selector/check_runtime.py",
+  "replay_script_sha256": "f656be44765056e8853403de5142f5d43d719462d030c506e27df3d14c08f06a",
+  "replay_script_path": "runs/keeper_selector/watch/replay_watch.py"
+}

@@ -13,6 +13,9 @@ L1 B-Human                  -> FSM compartida + MotionEngine original en MuJoCo
 Catálogo de seis defensas originales, biblioteca visual v6 con predicción v2
 y ensayo pareado: [DEFENSAS_PORTERO.md](DEFENSAS_PORTERO.md).
 
+Entrenamiento de la elección entre seis defensas sobre el núcleo visual v2:
+[ENTRENAMIENTO_SELECTOR_PORTERO.md](ENTRENAMIENTO_SELECTOR_PORTERO.md).
+
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
 ```

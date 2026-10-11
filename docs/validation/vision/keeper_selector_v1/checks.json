@@ -1,0 +1,140 @@
+{
+  "version": "keeper_selector_verification_v1",
+  "created_utc": "2026-10-11T04:44:30.968470+00:00",
+  "full_suite_before_blind_module": {
+    "passed": 252,
+    "seconds": 102.039,
+    "log": "tests.log"
+  },
+  "additional_blind_module_tests": {
+    "passed": 14,
+    "seconds": 1.447,
+    "command": ".venv/Scripts/python.exe -m unittest tests.test_selector_heldout -v"
+  },
+  "training_summary": {
+    "contexts": 96,
+    "eligible_contexts": 91,
+    "paired_contexts": 96,
+    "pairing_mismatches": 0,
+    "no_commit_contexts": 5,
+    "duels": 576,
+    "sim_errors": 0,
+    "no_commit_duels": 30,
+    "saves_by_defense": {
+      "center": 38,
+      "center_right": 43,
+      "wide_left": 37,
+      "wide_right": 41,
+      "left": 54,
+      "right": 39
+    },
+    "training_labels_by_defense": {
+      "center": 91,
+      "center_right": 91,
+      "wide_left": 91,
+      "wide_right": 91,
+      "left": 91,
+      "right": 91
+    },
+    "result_counts": {
+      "save": 252,
+      "goal": 324
+    }
+  },
+  "validation_summary": {
+    "contexts": 48,
+    "eligible_contexts": 43,
+    "paired_contexts": 48,
+    "pairing_mismatches": 0,
+    "no_commit_contexts": 5,
+    "duels": 288,
+    "sim_errors": 0,
+    "no_commit_duels": 30,
+    "saves_by_defense": {
+      "center": 22,
+      "center_right": 26,
+      "wide_left": 20,
+      "wide_right": 21,
+      "left": 25,
+      "right": 21
+    },
+    "training_labels_by_defense": {
+      "center": 43,
+      "center_right": 43,
+      "wide_left": 43,
+      "wide_right": 43,
+      "left": 43,
+      "right": 43
+    },
+    "result_counts": {
+      "save": 135,
+      "goal": 147,
+      "miss": 6
+    }
+  },
+  "physical_targets_checked": 804,
+  "mean_and_scale_exactly_training_only": true,
+  "train_validation_seeds_disjoint": true,
+  "all_training_sources_unchanged": true,
+  "frozen_source_count": 103,
+  "regularization": 0.1,
+  "tie_margin": 0.03,
+  "model_sha256": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+  "test_used_for_fit": false,
+  "hardware_validated": false,
+  "heldout": {
+    "cases": 160,
+    "duels": 480,
+    "reused_cases": 152,
+    "new_cases": 8,
+    "prefix_cases_checked": 160,
+    "prefix_differences": 0,
+    "model_sha256": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+    "frozen_model_and_protocol_intact": true,
+    "exploratory_report_intact": true,
+    "sim_error_counts": {
+      "learned": 0,
+      "original": 0,
+      "balanced": 0
+    },
+    "no_commit_counts": {
+      "learned": 12,
+      "original": 12,
+      "balanced": 12
+    },
+    "episodes_per_style": 20,
+    "indices": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  "runtime_trace": {
+    "attempts": 2,
+    "frames": 38,
+    "exact_match": true,
+    "model_intact": true,
+    "excluded_from_blind_test": true,
+    "first_committed_seed": 77001000001,
+    "defense": "center_right",
+    "first_trigger_equal_v2": true,
+    "live_gui_manually_tested": false
+  }
+}

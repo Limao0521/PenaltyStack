@@ -1,0 +1,40 @@
+{
+  "version": "keeper_selector_trace_replay_v1",
+  "seed": 77001000000,
+  "style": "mixed",
+  "counts": {
+    "frames": 10,
+    "action_mismatches": 0,
+    "decision_mismatches": 0,
+    "v2_core_decision_mismatches": 0,
+    "v2_trigger_mismatches": 0,
+    "learned_trigger_frames": 0,
+    "v2_trigger_frames": 0
+  },
+  "errors": [],
+  "exact_match": true,
+  "first_trigger": null,
+  "v2_first_trigger": null,
+  "first_trigger_equal": true,
+  "prediction": null,
+  "last_decision": {
+    "reason": "waiting_for_shot",
+    "pose_prior_used": false,
+    "policy": "vision_keeper_selector_v1",
+    "core_policy": "vision_keeper_v2",
+    "core_side": 0,
+    "selected_defense": "center",
+    "original_defense": "center",
+    "context_version": "keeper_defense_context_v1",
+    "context_error": null,
+    "scores": null
+  },
+  "model_scores_exercised": false,
+  "model_sha256_before": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+  "model_sha256_after": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+  "model_intact": true,
+  "trace_sha256": "5e3fc911ed54576fd5c29ab2142910f0f6e2c125907613c8f15c5aa834af00cc",
+  "replay_script_sha256": "f656be44765056e8853403de5142f5d43d719462d030c506e27df3d14c08f06a",
+  "limitations": "This seed ended without commitment. The replay verifies exact waiting and v2 gating but does not exercise learned defense selection.",
+  "simulator_or_native_hosts_launched_by_replay": false
+}

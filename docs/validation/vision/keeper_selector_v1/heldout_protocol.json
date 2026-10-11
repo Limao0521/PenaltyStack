@@ -1,0 +1,44 @@
+{
+  "version": "keeper_selector_blind_test_protocol_v1",
+  "created_utc": "2026-10-11T04:12:48.226895+00:00",
+  "run_fingerprint": "dc16dd0022ae2c10662fef1a1cdca1471f8a48ddfbb469824e4c823f85d2b9fa",
+  "styles": [
+    "center",
+    "mixed",
+    "corners",
+    "soft",
+    "late",
+    "feint",
+    "v1",
+    "v2"
+  ],
+  "test_base": 76001,
+  "episode_indices": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20
+  ],
+  "episodes_per_style": 20,
+  "excluded_episode_indices": [
+    0
+  ],
+  "reason": "The integration smoke used test index 0 for center and mixed. Exclude index 0 for every style, maintaining equal style weights, and add index 20. Protocol fixed before fitting and before any production test result.",
+  "model_weights_may_be_adjusted_with_test": false
+}

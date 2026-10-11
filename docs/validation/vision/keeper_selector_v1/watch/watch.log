@@ -1,0 +1,17 @@
+{
+  "result": "miss",
+  "defense": null,
+  "decision": {
+    "reason": "waiting_for_shot",
+    "pose_prior_used": false,
+    "policy": "vision_keeper_selector_v1",
+    "core_policy": "vision_keeper_v2",
+    "core_side": 0,
+    "selected_defense": "center",
+    "original_defense": "center",
+    "context_version": "keeper_defense_context_v1",
+    "context_error": null,
+    "scores": null
+  },
+  "trace": "C:\\Users\\juanu\\Documents\\PenaltyStack\\runs\\keeper_selector\\watch\\trace.jsonl"
+}

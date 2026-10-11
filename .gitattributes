@@ -42,3 +42,15 @@ tools/validate_keeper_defenses.py text eol=lf
 tools/watch_keeper_defenses.py text eol=lf
 tests/test_keeper_defense*.py text eol=lf
 tests/test_keeper_library.py text eol=lf
+penalty/keeper_selector.py text eol=lf
+penalty/rl/selector_training.py text eol=lf
+tools/train_keeper_selector.py text eol=lf
+tools/watch_keeper_selector.py text eol=lf
+tests/test_keeper_selector.py text eol=lf
+tests/test_selector_training.py text eol=lf
+penalty/rl/selector_heldout.py text eol=lf
+tools/evaluate_keeper_selector_heldout.py text eol=lf
+tests/test_selector_heldout.py text eol=lf
+docs/validation/vision/keeper_selector_v1/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve the exact frozen model bytes bound by the physical test reports.
+models/vision/keeper_selector_v1.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

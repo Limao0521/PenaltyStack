@@ -1,0 +1,27 @@
+{
+  "result": "save",
+  "defense": "center_right",
+  "decision": {
+    "reason": "committed",
+    "crossing_y": -0.0002544753221291121,
+    "time_to_line": 1.785875319363248,
+    "side": 0,
+    "pose_prior_used": false,
+    "policy": "vision_keeper_selector_v1",
+    "core_policy": "vision_keeper_v2",
+    "core_side": 0,
+    "selected_defense": "center_right",
+    "original_defense": "center",
+    "context_version": "keeper_defense_context_v1",
+    "context_error": null,
+    "scores": [
+      0.5164832384068497,
+      0.6656164874234944,
+      0.503930734712853,
+      0.6374177075719327,
+      0.504066912499608,
+      0.37761788316140754
+    ]
+  },
+  "trace": "C:\\Users\\juanu\\Documents\\PenaltyStack\\runs\\keeper_selector\\watch_77001000001\\trace.jsonl"
+}

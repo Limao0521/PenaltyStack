@@ -122,5 +122,57 @@
       "episodes_per_style": 100
     },
     "report": "docs/validation/rl/robustez_20261010/resumen.json"
+  },
+  "keeper_defense_selector_v1": {
+    "rol": "keeper",
+    "tipo": "selector contextual de seis defensas originales; núcleo visual v2 conservado",
+    "archivo": "models/vision/keeper_selector_v1.json",
+    "policy": "vision_keeper_selector_v1",
+    "core_policy": "vision_keeper_v2",
+    "context": "keeper_defense_context_v1",
+    "objective": "keeper_defense_outcome_v1",
+    "learned_joint_trajectories": false,
+    "orientation_used": false,
+    "estado": "experimental; no demuestra mejora adicional frente a balanced",
+    "entrenamiento": {
+      "seed_base": 74001,
+      "casos": 96,
+      "contextos_elegibles": 91,
+      "duelos": 576
+    },
+    "validacion": {
+      "seed_base": 75001,
+      "casos": 48,
+      "contextos_elegibles": 43,
+      "duelos": 288,
+      "regularization": 0.1,
+      "tie_margin": 0.03
+    },
+    "evaluacion": {
+      "seed_base": 76001,
+      "indices": [
+        1,
+        20
+      ],
+      "episodes_per_style": 20,
+      "styles": 8,
+      "episodes": 160,
+      "saves": 135,
+      "original_saves": 128,
+      "balanced_saves": 134,
+      "macro_save_rate": 0.84375,
+      "worst_style_save_rate": 0.75,
+      "gain_vs_original_ci95": [
+        0.0,
+        0.09375
+      ],
+      "gain_vs_balanced_ci95": [
+        -0.03125,
+        0.04375
+      ],
+      "hardware_validated": false
+    },
+    "sha256": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+    "report": "docs/validation/vision/keeper_selector_v1/heldout_report.json"
   }
 }

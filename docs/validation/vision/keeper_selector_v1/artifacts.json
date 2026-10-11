@@ -1,0 +1,35 @@
+{
+  "version": "keeper_selector_artifact_manifest_v1",
+  "sha256": {
+    "check_runtime.py": "cc55506c87e05f4a1d16c59d2326e29d6feb4cc4d05873bf02501b44aec9c3e2",
+    "checks.json": "6b3be258af1c2294c6ecd8a8bfa4f09295c96b8b9354ba270d699233006e5d3a",
+    "fit_report.json": "13906b218f801b963a5f414c9aae5ddf30f66190bb36e5c101a1246bc7bb49fc",
+    "heldout.log": "36b55ec69b6a07c741759dad6ffc28d5840287340bc25146b2cd70402ee0d8dc",
+    "heldout_protocol.json": "d9b5842c3c0f881cb1c8d602f699fb58a5686612af41294f867d7c9601de01f5",
+    "heldout_report.json": "daf463e94a9a93b7097a17fa5cd851ef25821c8900be6f1910461b9f6e07830a",
+    "provenance.json": "e5e811afa8c90870811cb0c80631a70b24b651e20850ab7389a9df0701d6c523",
+    "README.md": "d36fc7dad95e05269f8d773e0ea0404fab502249d3795431433c87f010e47d1f",
+    "replay_watch.py": "f656be44765056e8853403de5142f5d43d719462d030c506e27df3d14c08f06a",
+    "run_manifest.json": "4baf82fa139d960b86c98aaa20a96cdcd2a2dccebb892dd021e60bfbdef87068",
+    "selected_case_rows.json": "4c80c90e51e61d6c9d4b716d6e77253b9ce6a6848691da679c8287782e80de8a",
+    "test_report.json": "22c0754274c583280a538000a714f1d12a3cfbcdf0c4dce516f1e890470e357a",
+    "tests.log": "6288d9bab914db22338c7949052ca70a00c0e747671eb7dc155c9285eb0f03b9",
+    "train_dataset.json": "83aa2b063966a74692873274443e021a2f7b3a749a65d3fd049e3d585b1883b3",
+    "training.log": "e408e4808ef9bffdd9088838637bf489b09999128ac12595dfa70e7cc1790041",
+    "validation_dataset.json": "242324c7cea85d080ab69651f1c89b7c1217aab1fd8acb0b144ca71c17b953ee",
+    "watch/episode.json": "eef0f3e85ea57dec05a00d695921fa5dff7aa82d7eb82907b39b51643571ed89",
+    "watch/replay.json": "ba6a1bc4cff4453cd2678ef10179fc8f8f6368284274ccfade572153d9b8783e",
+    "watch/trace.jsonl": "5e3fc911ed54576fd5c29ab2142910f0f6e2c125907613c8f15c5aa834af00cc",
+    "watch/watch.log": "c86d50dd3561bb8d56521fb9b67e88569d806d28bfbef86094c459075ada29cb",
+    "watch_77001000001/episode.json": "30dab65c7a232952013d54ca475ef0f28ed5e8229b0a9e6c3145aca3509e02a7",
+    "watch_77001000001/replay.json": "f266932162c4b728ceef6ef8ad932674e5d0f6edf7edeed5f1547ccaf89927f3",
+    "watch_77001000001/trace.jsonl": "1e48e36153873cf4b9ffac2d53690903578bcad0ef4b7892123b35bdfaef5cd4",
+    "watch_77001000001/watch.log": "f6bd2acd2f30d01ff8424112fcc7511dc0607fb4ecc2222b3cc7edf1f0bd339e",
+    "watch_attempts.json": "f41bb3b40cdce7c49abe3b62105f76f0d612ba41fa5d3bdc612737452e7d56ca"
+  },
+  "external_model": {
+    "path": "models/vision/keeper_selector_v1.json",
+    "sha256": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
+    "weights_unchanged_after_test": true
+  }
+}
