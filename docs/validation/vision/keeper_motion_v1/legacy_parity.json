@@ -1,0 +1,46 @@
+{
+  "audit": "keeper_motion_legacy_parity_v1",
+  "seed": 80003,
+  "excluded_field": "profile_requested",
+  "fields_compared": [
+    "fall_state",
+    "fsr_kg",
+    "gyro_rad_s",
+    "keyframe",
+    "measured_angles_rad",
+    "measured_velocity_rad_s",
+    "mirror",
+    "output_angles_rad",
+    "output_stiffness",
+    "phase",
+    "request_defense",
+    "request_motion",
+    "sequence",
+    "stable",
+    "time_s",
+    "torso_position_m"
+  ],
+  "cases": [
+    {
+      "defense": "center",
+      "frames": 652,
+      "identical": true,
+      "sha256": {
+        "runs\\keeper_motion\\smoke_nominal\\center.frames.jsonl": "71605f572351de2cdef3c2c89dc7f31fb4399f6e386bb766f756eea3def9e013",
+        "runs\\keeper_motion\\smoke_legacy\\center.frames.jsonl": "28e88abae50434eb42dddae5ed0488ebffa5862e7683615fb5e6eab20f4e4cc6"
+      }
+    },
+    {
+      "defense": "right",
+      "frames": 778,
+      "identical": true,
+      "sha256": {
+        "runs\\keeper_motion\\smoke_nominal\\right.frames.jsonl": "ad250464bfc45931252740b24369d28e6112e2dce0412a86fa5e58b5b0062119",
+        "runs\\keeper_motion\\smoke_legacy\\right.frames.jsonl": "c29d243de9d1c8a6a543183763f6ddc1217e8c05eba57d1e7ce9e1bb924aabce"
+      }
+    }
+  ],
+  "total_frames": 1430,
+  "passed": true,
+  "simulation_only": true
+}

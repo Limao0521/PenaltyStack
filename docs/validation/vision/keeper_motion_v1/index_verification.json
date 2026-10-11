@@ -1,0 +1,213 @@
+{
+  "version": "keeper_motion_git_bytes_v1",
+  "exact_source_blobs": [
+    "penalty/keeper_selector.py",
+    "penalty/rl/selector_training.py",
+    "tools/train_keeper_selector.py",
+    "penalty/keeper_defenses.py",
+    "penalty/keeper_library.py",
+    "penalty/keeper_vision.py",
+    "penalty/rl/defense_benchmark.py",
+    "penalty/rl/keeper_benchmark.py",
+    "penalty/rl/duel.py",
+    "penalty/rl/actors.py",
+    "penalty/rl/async_ppo.py",
+    "penalty/physical_sim.py",
+    "penalty/sim_sensors.py",
+    "penalty/sim_orientation.py",
+    "penalty/sim_opponent_vision.py",
+    "penalty/sim_vision.py",
+    "penalty/perception.py",
+    "penalty/robot_detector.py",
+    "penalty/opponent_perception.py",
+    "penalty/opponent_orientation.py",
+    "models/bhuman/NaoV6H25.rsi3",
+    "models/vision/nao_yaw_v1/manifest.json",
+    "models/vision/nao_yaw_v1/templates.npz",
+    "heritage/bhuman_robot_perception/manifest.json",
+    "heritage/bhuman_robot_perception/Config/NeuralNets/RobotDetector/4_anchor_boxes_model_no_activation_20230629-220730.onnx",
+    "models/bhuman/License.md",
+    "models/bhuman/meshes/naoHeadPitchV6_0.obj",
+    "models/bhuman/meshes/naoHeadPitchV6_1.obj",
+    "models/bhuman/meshes/naoHeadPitchV6_2.obj",
+    "models/bhuman/meshes/naoHeadPitchV6_3.obj",
+    "models/bhuman/meshes/naoHeadPitchV6_4.obj",
+    "models/bhuman/meshes/naoHeadPitchV6_5.obj",
+    "models/bhuman/meshes/naoHeadYaw_0.obj",
+    "models/bhuman/meshes/naoLAnklePitch_0.obj",
+    "models/bhuman/meshes/naoLAnkleRollV6_0.obj",
+    "models/bhuman/meshes/naoLAnkleRollV6_1.obj",
+    "models/bhuman/meshes/naoLAnkleRollV6_2.obj",
+    "models/bhuman/meshes/naoLAnkleRollV6_3.obj",
+    "models/bhuman/meshes/naoLElbowRoll_0.obj",
+    "models/bhuman/meshes/naoLHipPitch_0.obj",
+    "models/bhuman/meshes/naoLHipPitch_1.obj",
+    "models/bhuman/meshes/naoLHipRoll_0.obj",
+    "models/bhuman/meshes/naoLHipYawPitch_0.obj",
+    "models/bhuman/meshes/naoLHipYawPitch_1.obj",
+    "models/bhuman/meshes/naoLKneePitchV6_0.obj",
+    "models/bhuman/meshes/naoLKneePitchV6_1.obj",
+    "models/bhuman/meshes/naoLKneePitchV6_2.obj",
+    "models/bhuman/meshes/naoLShoulderPitch_0.obj",
+    "models/bhuman/meshes/naoLShoulderRollV6_0.obj",
+    "models/bhuman/meshes/naoLShoulderRollV6_1.obj",
+    "models/bhuman/meshes/naoLShoulderRollV6_2.obj",
+    "models/bhuman/meshes/naoRAnklePitch_0.obj",
+    "models/bhuman/meshes/naoRAnkleRollV6_0.obj",
+    "models/bhuman/meshes/naoRAnkleRollV6_1.obj",
+    "models/bhuman/meshes/naoRAnkleRollV6_2.obj",
+    "models/bhuman/meshes/naoRAnkleRollV6_3.obj",
+    "models/bhuman/meshes/naoRElbowRoll_0.obj",
+    "models/bhuman/meshes/naoRHipPitch_0.obj",
+    "models/bhuman/meshes/naoRHipPitch_1.obj",
+    "models/bhuman/meshes/naoRHipRoll_0.obj",
+    "models/bhuman/meshes/naoRHipYawPitch_0.obj",
+    "models/bhuman/meshes/naoRHipYawPitch_1.obj",
+    "models/bhuman/meshes/naoRKneePitchV6_0.obj",
+    "models/bhuman/meshes/naoRKneePitchV6_1.obj",
+    "models/bhuman/meshes/naoRKneePitchV6_2.obj",
+    "models/bhuman/meshes/naoRShoulderPitch_0.obj",
+    "models/bhuman/meshes/naoRShoulderRollV6_0.obj",
+    "models/bhuman/meshes/naoRShoulderRollV6_1.obj",
+    "models/bhuman/meshes/naoRShoulderRollV6_2.obj",
+    "models/bhuman/meshes/naoTorsoV6_0.obj",
+    "models/bhuman/meshes/naoTorsoV6_2.obj",
+    "models/bhuman/meshes/naoTorsoV6_3.obj",
+    "models/bhuman/meshes/naoTorsoV6_jersey.obj",
+    "models/bhuman/meshes/naoWristYawV6_0.obj",
+    "models/bhuman/meshes/naoWristYawV6_1.obj",
+    "models/bhuman/meshes/naoWristYawV6_2.obj",
+    "models/rl/striker_v1/model.zip",
+    "models/rl/striker_v1/obs_norm.npz",
+    "models/rl/striker_v2/model.zip",
+    "models/rl/striker_v2/obs_norm.npz",
+    "penalty/rl/motion_training.py",
+    "penalty/rl/motion_world.py",
+    "penalty/skills/keeper_motion.py",
+    "tools/train_keeper_motion.py",
+    "tools/validate_keeper_motion.py",
+    "tools/watch_keeper_motion.py",
+    "native/bhuman_motion/main.cpp",
+    "native/bhuman_motion/factories.h",
+    "native/bhuman_motion/keyframe_factory.cpp",
+    "penalty/rl/selector_heldout.py"
+  ],
+  "original_text_blobs_restored_by_crlf_checkout": [
+    {
+      "path": "penalty/rl/bhuman_world.py",
+      "git_blob_lf_sha256": "7ea3925196911fbf2b4718b558eb9997f568ba48bc7cf24c4f3c44d1069f3764",
+      "checkout_crlf_sha256": "f9cf6c0b80b945f60a207912f3f21e62eb9003e602658509de192bdebc06b98c"
+    },
+    {
+      "path": "penalty/rl/observation.py",
+      "git_blob_lf_sha256": "4a9fe7a603420b476a266535a1d4b5ac6101bae23e91963c9957e56be3ed62a9",
+      "checkout_crlf_sha256": "1d4a4ebcc0166c28587c9d858017fd2b135ae26921419ea165d63bb9629d5a37"
+    },
+    {
+      "path": "penalty/rl/contracts.py",
+      "git_blob_lf_sha256": "387aad6ee35dc35f87b0118956e6c82517a51c09bb76ee68ce21d6caec562fb2",
+      "checkout_crlf_sha256": "4586713716032729d76b4b50ef5e03043f2587ee98a67e77177f22de631ce258"
+    },
+    {
+      "path": "penalty/rl/wrappers.py",
+      "git_blob_lf_sha256": "2a91074ec9b144a17222f5fe635f22f313aac58c4264e3c65a095f9e24940fc2",
+      "checkout_crlf_sha256": "f3e802c628c10630db307657e62fea93ce898987370da3e5d82b0fe5747f0100"
+    },
+    {
+      "path": "penalty/rl/policies/trained.py",
+      "git_blob_lf_sha256": "5226abdbcc2dfa8332501f8dcb6feb67f5f8470fd70efc0bcd80c5fa30481b80",
+      "checkout_crlf_sha256": "ea601f61085479537a69a4fedd3a84bed1a7dfc1cdd041f998cd0c24fa21f21b"
+    },
+    {
+      "path": "penalty/rl/controllers.py",
+      "git_blob_lf_sha256": "74120caf452f2df90b2f6d6808779c107ffa01a1360dbd1aaddfbd17e66dec36",
+      "checkout_crlf_sha256": "78e040d274aa5fc329405840785394c05cdadbab9ae981c75472288f6473beee"
+    },
+    {
+      "path": "penalty/rl/geometry.py",
+      "git_blob_lf_sha256": "ed6180d154d758bfd8f8b0ec25eab7a503b9c205eecf8b978d250eee76cb1959",
+      "checkout_crlf_sha256": "1faeaec8f927c27c49fe83653f30f1efcaa444476c84b39069809e4c37e90a68"
+    },
+    {
+      "path": "penalty/sim_session.py",
+      "git_blob_lf_sha256": "76691183b522407ccff72b470df51bc742bfb14f24da7688298e63a327854951",
+      "checkout_crlf_sha256": "8ebf093a58f08de63e7d1a989f92983bae7a9b0cbe8fb39b671ea4dd72ba9e8c"
+    },
+    {
+      "path": "penalty/control.py",
+      "git_blob_lf_sha256": "e2bf328656ab7d32e9b313188a4fcc3e7b0c9df79d545f4620900c4abffb780e",
+      "checkout_crlf_sha256": "3e8232c55d8ebb7be6cffb38a069f9faea5050b3b699daf8cb7a4b1d34aa925c"
+    },
+    {
+      "path": "penalty/bhuman_bridge.py",
+      "git_blob_lf_sha256": "20a51308dd8f8610e4d1d9051e50f8a894be59479b11bd3d934c253cff1d1470",
+      "checkout_crlf_sha256": "e1ffe6b55081324402ca3f36780d172ab1f3a4026b044ec3f5efefa0491e4a7f"
+    },
+    {
+      "path": "penalty/motion_contract.py",
+      "git_blob_lf_sha256": "964de0ec362ddb40dbaaf1fda1743347959eef6db9933ea564dd3cd25508349b",
+      "checkout_crlf_sha256": "99964a4fe3f43429cdb82e6be352e541978d694a6f740c9069655a04931eddcb"
+    },
+    {
+      "path": "penalty/vision.py",
+      "git_blob_lf_sha256": "54e4c1e2f0e63e9da6d62cae0489693674a0594299782aa6d26f3ae9af43e9b4",
+      "checkout_crlf_sha256": "36bb6a6100d8317a21663d895a904da5f748540b3cd427dd433fe61ec6195fed"
+    },
+    {
+      "path": "penalty/nao_model.py",
+      "git_blob_lf_sha256": "05e20f13fb62181acc46822c0a30cf30e488b04c02ba37b9b533503db27f7999",
+      "checkout_crlf_sha256": "6086ad63c7856da63e0733bb9326c67566a70879e5129a631e87dfd38a868a68"
+    },
+    {
+      "path": "penalty/skills/kick.py",
+      "git_blob_lf_sha256": "6c77a32a27615c86c10e632bc0adf7edf06d6d168cbe35b599f3410c64cea4a4",
+      "checkout_crlf_sha256": "c7950afb75be3fe4ac6fecfd41af44b5a30db88d1f32b4a4897111036fe7fe4c"
+    },
+    {
+      "path": "sim/scene.xml",
+      "git_blob_lf_sha256": "6209274c90ee1df3e8c7d03b20184c7f18be9211e511b9b082435204a61ea65b",
+      "checkout_crlf_sha256": "40380f2f228408094041e190860fcbb1e635114b2b3a041cb393520367ec3ff3"
+    },
+    {
+      "path": "baseline/motion_manifest.json",
+      "git_blob_lf_sha256": "73b64829949a15c9b0996184e75f9fd0d0a6b1078a33408b32497d774d92bc81",
+      "checkout_crlf_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053"
+    },
+    {
+      "path": "models/bhuman/initial_pose.json",
+      "git_blob_lf_sha256": "463e19a92e72bc99644594ca4ba1077208730c09fddfca3460cb88a910172974",
+      "checkout_crlf_sha256": "d1f6bce254dd1fe4e2dc154b162a252a632b3a93e5ef2c7f2d7e5d4a0ba27d19"
+    },
+    {
+      "path": "models/bhuman/nao.xml",
+      "git_blob_lf_sha256": "79620645e7d378fc8c88399619f0c11998a24ecdb613f4282a85dcf318bd7e7a",
+      "checkout_crlf_sha256": "adbad2ab8baf8639ed682aec7aefeaa953d231dea952b24c4bec340f74104a25"
+    },
+    {
+      "path": "models/bhuman/README.md",
+      "git_blob_lf_sha256": "0fe20f7c415e87bc0ac41a316231444d3747b12b53e519086c870bdfbcb618d4",
+      "checkout_crlf_sha256": "5bc33117e743c3c37770148e9965c69fac6539886e89f4b318bb032bc5c91e7d"
+    },
+    {
+      "path": "models/rl/striker_v1/config.json",
+      "git_blob_lf_sha256": "7cef1d3e86d941e2cfbfa57c9c7e21400c1bd65bb70c275260a747c70c7a21a6",
+      "checkout_crlf_sha256": "cbf70dfe09194e3b677bcd9f5e5bf12857b776a0731ea7db675865ec078b3ba5"
+    },
+    {
+      "path": "models/rl/striker_v2/config.json",
+      "git_blob_lf_sha256": "fb1190e756a74174e3dcc300b2aefa902c9925d76bdac886d011be3c92e0baef",
+      "checkout_crlf_sha256": "a3cf3c277e0a8e555973b400a4d17a4487df635c4e94538a9bab1c5710f9ab99"
+    },
+    {
+      "path": "tools/build_motion_runtime.py",
+      "git_blob_lf_sha256": "b9920494984bf9f2e818e85374bec267759585ae3af30765a7ab91539e1123dd",
+      "checkout_crlf_sha256": "1eec0dc9b5447020139dc6ad9549c812e98cd43a3759b217f95b4442945219d5"
+    }
+  ],
+  "runtime_only_not_committed": [
+    "native/bhuman_motion/build/Release/bhuman_motion.exe",
+    "native/bhuman_motion/build/vision/Release/bhuman_vision.exe"
+  ],
+  "passed": true,
+  "model_and_reports_preserve_exact_bytes": true
+}

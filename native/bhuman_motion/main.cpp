@@ -94,6 +94,9 @@ class Runtime
   unsigned lastKick = 0;
   int64_t lastSequence = -1;
   int64_t lastTime = -12;
+  bool keeperMotionLatched = false;
+  json keeperMotionRequest = nullptr, keeperMotionSummary = nullptr;
+  NativeKeeperMotionParameters keeperMotionParameters;
 
   template<class T> T& rep(const char* name) { return static_cast<T&>(board[name]); }
   template<class T> T& allocate(const char* name) { return board.alloc<T>(name); }
@@ -162,6 +165,26 @@ class Runtime
     float x = request[name].get<float>();
     if(!std::isfinite(x) || std::abs(x) > bound) throw std::runtime_error("Invalid request scalar");
     return x;
+  }
+  static NativeKeeperMotionParameters keeperSkill(const json& skill)
+  {
+    if(!skill.is_object() || skill.size() != 2 || !skill.contains("version") ||
+       skill.at("version") != "keeper_motion_skill_v1" || !skill.contains("parameters"))
+      throw std::runtime_error("Invalid keeper_motion_skill_v1 contract");
+    const auto& values = skill.at("parameters");
+    if(!values.is_object() || values.size() != 4)
+      throw std::runtime_error("Keeper motion skill requires exactly four parameters");
+    const auto number = [&](const char* name, double low, double high)
+    {
+      if(!values.contains(name) || !values.at(name).is_number())
+        throw std::runtime_error("Keeper motion skill parameter must be numeric");
+      const double value = values.at(name).get<double>();
+      if(!std::isfinite(value) || value < low || value > high)
+        throw std::runtime_error("Keeper motion skill parameter outside bounds");
+      return static_cast<float>(value);
+    };
+    return {number("guard_time_scale",.85,1.15), number("jump_time_scale",.85,1.15),
+            number("arm_spread_rad",-.08,.12), number("guard_knee_offset_rad",0.,.10)};
   }
 
 public:
@@ -254,6 +277,9 @@ public:
     const json& request = message.at("request");
     auto& motion = rep<MotionRequest>("MotionRequest");
     const std::string action = request.at("motion");
+    if(request.contains("keeper_motion_skill") && (role != "keeper" || action != "block"))
+      throw std::runtime_error("Keeper motion skill is only valid for keeper block requests");
+    bool applyKeeperMotion = false;
     motion = MotionRequest();
     motion.walkSpeed = Pose2f(scalar(request,"turn",0,3),scalar(request,"forward",0,500),scalar(request,"lateral",0,300));
     if(action == "stand" || action == "getup") motion.motion = MotionRequest::stand;
@@ -277,6 +303,27 @@ public:
     {
       motion.motion = MotionRequest::dive;
       const std::string side = request.value("block_side", "center");
+      if(side == "prepare" && request.contains("keeper_motion_skill"))
+        throw std::runtime_error("Keeper preparation does not support a trained motion profile");
+      if(side != "prepare" && role == "keeper")
+      {
+        const json profile = request.contains("keeper_motion_skill") ? request.at("keeper_motion_skill") : json(nullptr);
+        if(keeperMotionLatched)
+        {
+          if(profile != keeperMotionRequest)
+            throw std::runtime_error("Keeper motion skill cannot change or be omitted after the first block");
+        }
+        else
+        {
+          keeperMotionLatched = true;
+          keeperMotionRequest = profile;
+          if(request.contains("keeper_motion_skill"))
+          {
+            keeperMotionParameters = keeperSkill(profile);
+            applyKeeperMotion = true;
+          }
+        }
+      }
       // Each request selects an existing upstream motion. The original
       // KeyframeMotionRequest mapping owns the keyframes and their mirrors.
       if(side == "center") motion.diveRequest = MotionRequest::Dive::squatArmsBackLeft;
@@ -292,6 +339,9 @@ public:
     auto& head = rep<HeadMotionRequest>("HeadMotionRequest");
     head.pan = scalar(request,"head_yaw",0,2.1f); head.tilt = scalar(request,"head_pitch",0,.8f);
     if(!constructed) construct();
+    if(applyKeeperMotion)
+      keeperMotionSummary = json::parse(applyNativeKeeperMotionSkill(modules.at("KeyframeMotionEngine"),
+          keeperMotionParameters, rep<JointLimits>("JointLimits")));
     for(const auto& name : sensorOrder) update(name);
     for(const auto& name : generatorOrder) update(name);
     // The 100 ms right strike has 0.2 rad knee tracking lag in this plant.
@@ -338,7 +388,7 @@ public:
         rep<TorsoMatrix>("TorsoMatrix"),rep<RobotModel>("RobotModel"),rep<RobotDimensions>("RobotDimensions"),
         motion.odometryData,rep<OdometryDataPreview>("OdometryDataPreview"),
         motion.kickType==KickInfo::forwardFastLeft)*motion.ballEstimate.position;
-    return { {"type","OUTPUT"},{"trial",trial},{"sequence",sequence},{"angles",targets},{"stiffness",stiffness},
+    json output = { {"type","OUTPUT"},{"trial",trial},{"sequence",sequence},{"angles",targets},{"stiffness",stiffness},
        {"phase",TypeRegistry::getEnumName(info.executedPhase)},{"motion",action},{"busy",info.isKicking() || info.executedPhase == MotionPhase::keyframeMotion || info.executedPhase == MotionPhase::getUp},
        {"kick_completed",completed},{"odometry",{odometry.translation.x(),odometry.translation.y(),static_cast<float>(odometry.rotation)}},
        {"motion_info",{{"last_kick_timestamp",info.lastKickTimestamp},{"keyframe",TypeRegistry::getEnumName(info.executedKeyframeMotion.keyframeMotion)},
@@ -349,6 +399,14 @@ public:
                        {"inertial_angle",{static_cast<float>(inertial.angle.x()),static_cast<float>(inertial.angle.y()),static_cast<float>(inertial.angle.z())}},
                        {"ground_contact",rep<GroundContactState>("GroundContactState").contact},
                        {"support",rep<FootSupport>("FootSupport").support}}} };
+    if(!keeperMotionSummary.is_null())
+    {
+      output["keeper_motion_skill"] = keeperMotionSummary;
+      // Full immutable endpoint details are emitted at application; subsequent
+      // 12 ms frames carry the compact confirmation to keep IPC bounded.
+      keeperMotionSummary.erase("blocks");
+    }
+    return output;
   }
 };
 
@@ -361,7 +419,12 @@ int main()
   json names=json::array(); FOREACH_ENUM(Joints::Joint,joint) names.push_back(TypeRegistry::getEnumName(joint));
   std::cout << json({{"type","HELLO"},{"protocol",1},{"source_commit",revision},{"cycle_s",.012},
                     {"joint_names",names},{"motions",{"stand","walk","kick","block","getup"}},
-                    {"capabilities",{"keeper_defenses_v2"}},
+                    {"capabilities",{"keeper_defenses_v2","keeper_motion_skill_v1"}},
+                    {"keeper_motion_skill",{{"version","keeper_motion_skill_v1"},
+                      {"bounds",{{"guard_time_scale",{.85,1.15}},{"jump_time_scale",{.85,1.15}},
+                                 {"arm_spread_rad",{-.08,.12}},{"guard_knee_offset_rad",{0.,.10}}}},
+                      {"units",{{"guard_time_scale","duration multiplier"},{"jump_time_scale","duration multiplier"},
+                                {"arm_spread_rad","rad"},{"guard_knee_offset_rad","rad"}}}}},
                     {"keeper_defenses",{"center","center_right","wide_left","wide_right","left","right"}},
                     {"keeper_preparations",{"prepare"}},
                     {"provenance",json::parse(provenance_json)}}).dump() << std::endl;

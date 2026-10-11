@@ -174,5 +174,71 @@
     },
     "sha256": "1dfe42fabccd5ec775ef961d573b4370c5a935ef94d5433bdafd03f4bd356f7c",
     "report": "docs/validation/vision/keeper_selector_v1/heldout_report.json"
+  },
+  "keeper_motion_profile_v1": {
+    "rol": "keeper",
+    "tipo": "búsqueda de cuatro ajustes reales acotados de movimientos B-Human sobre v2 balanced",
+    "archivo": "models/vision/keeper_motion_v1.json",
+    "model_version": "keeper_motion_profile_model_v1",
+    "skill": "keeper_motion_skill_v1",
+    "objective": "keeper_motion_outcome_v2",
+    "core_policy": "vision_keeper_v2",
+    "selection_mode": "balanced",
+    "actual_parameterized_motion": true,
+    "full_joint_policy_learned": false,
+    "orientation_used": false,
+    "estado": "experimental; dos atajadas extra, sin mejora general demostrada; no promover",
+    "parameters": {
+      "guard_time_scale": 1.0,
+      "jump_time_scale": 0.85,
+      "arm_spread_rad": 0.0,
+      "guard_knee_offset_rad": 0.0
+    },
+    "entrenamiento": {
+      "seed_base": 81001,
+      "casos": 32,
+      "perfiles": 16,
+      "duelos": 512
+    },
+    "validacion": {
+      "seed_base": 82001,
+      "casos": 64,
+      "perfiles": 3,
+      "duelos": 192,
+      "selected_candidate": "candidate_02",
+      "saves": 56,
+      "original_saves": 54
+    },
+    "evaluacion": {
+      "seed_base": 83001,
+      "episodes_per_style": 20,
+      "styles": 8,
+      "episodes": 160,
+      "duels": 320,
+      "saves": 136,
+      "balanced_saves": 134,
+      "macro_save_rate": 0.85,
+      "balanced_save_rate": 0.8375,
+      "worst_style_save_rate": 0.75,
+      "balanced_worst_style_save_rate": 0.7,
+      "gain_vs_balanced": 0.0125,
+      "gain_vs_balanced_ci95": [
+        -0.018750000000000003,
+        0.049999999999999996
+      ],
+      "paired_wins": 5,
+      "paired_losses": 3,
+      "no_commit_per_profile": 12,
+      "sim_errors": 0,
+      "hardware_validated": false
+    },
+    "safety": {
+      "passed_cases": 96,
+      "defenses": 6,
+      "profiles": 16,
+      "initial_pose_coverage": "una postura por perfil, sin tiro"
+    },
+    "sha256": "e797f90d7b9889406a6e0aa08a2ff83925a9c84c55905d285cc90b353974cb7e",
+    "report": "docs/validation/vision/keeper_motion_v1/test_report.json"
   }
 }

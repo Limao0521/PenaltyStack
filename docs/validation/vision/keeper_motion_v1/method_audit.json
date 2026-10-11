@@ -1,0 +1,674 @@
+{
+  "audit": "keeper_motion_independent_method_audit_v1",
+  "created_utc": "2026-10-11T13:08:02.612277+00:00",
+  "run_fingerprint": "5902a2313917d8fec7ddc64760cdf795ffcbead3d3656445d052ca85c7541d2a",
+  "inputs": {
+    "run_manifest_sha256": "9db2c4b4dc21a79cfcd600e7675da827e28aded5d5bb72ff5363401aab8083e0",
+    "safety_report_sha256": "d4a2b03336a3fde3a7ddaaf80d026b23287f25db63e6a0dc1da90a7949d375ff"
+  },
+  "failures": [],
+  "passed": true,
+  "baseline": {
+    "file_count": 559,
+    "different_files": [],
+    "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+    "rsi3_sha256": "73f8c9a78b35fbdd18e6e407193924b2d1996812ff78cd405377cc57b0981369"
+  },
+  "frozen_sources": {
+    "count": 114,
+    "different_files": []
+  },
+  "seeds": {
+    "bases": {
+      "train": 81001,
+      "validation": 82001,
+      "test": 83001
+    },
+    "independent_cases": {
+      "train": 32,
+      "validation": 64,
+      "test": 160
+    },
+    "disjoint": true
+  },
+  "safety": {
+    "profiles": 16,
+    "defenses_per_profile": 6,
+    "passed_cases": 96,
+    "trace_frames_checked": 74291,
+    "native_joint_endpoints_checked": 3072,
+    "stable_stand_time_range_s": [
+      6.768,
+      22.356
+    ],
+    "max_joint_velocity_by_profile_rad_s": {
+      "nominal": 17.047568776623194,
+      "candidate_01": 17.047568776623194,
+      "candidate_02": 19.55224734295264,
+      "candidate_03": 16.009862588095796,
+      "candidate_04": 67.17488979342713,
+      "candidate_05": 48.42520046749938,
+      "candidate_06": 17.61423013910207,
+      "candidate_07": 44.44043641547034,
+      "candidate_08": 15.020934409510172,
+      "candidate_09": 18.44217422829283,
+      "candidate_10": 66.72942107346026,
+      "candidate_11": 14.346288239735307,
+      "candidate_12": 58.44793732273277,
+      "candidate_13": 60.723526288968316,
+      "candidate_14": 18.05537513205929,
+      "candidate_15": 18.159183295006205
+    },
+    "trace_checks": [
+      {
+        "profile": "nominal",
+        "defense": "center",
+        "frames": 652,
+        "sha256": "66be879959a52df7032d7aea443d7ee03c742dc190c7e39d4506020be19eb304"
+      },
+      {
+        "profile": "nominal",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "6a763047e785423c8dbe1b9503e9b2c6ab75cddcc9c868eaf2307402c5b829c6"
+      },
+      {
+        "profile": "nominal",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "9a9cb34f09020aeb1f0f10b8107533ccdcda78180034f9854bb572df1e0fad96"
+      },
+      {
+        "profile": "nominal",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "1060a108200226a3c4bf61340229aaf336c51992fdbe96fbb192c2bb67528525"
+      },
+      {
+        "profile": "nominal",
+        "defense": "left",
+        "frames": 1168,
+        "sha256": "0c7b437247868d0ea05af6de660d927b1ed73966f603798a7819370890037b71"
+      },
+      {
+        "profile": "nominal",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "b30a88c7f9d6cb26baa07b40455245a56367c24f7d950ad5ccc6a070daa2ec15"
+      },
+      {
+        "profile": "candidate_01",
+        "defense": "center",
+        "frames": 650,
+        "sha256": "c09a76e2bb49d4f853df279969b7ea489053a952affc731d9c6528ba89aeac77"
+      },
+      {
+        "profile": "candidate_01",
+        "defense": "center_right",
+        "frames": 651,
+        "sha256": "0805e1dc189b371eee6f5d6ca11520696d2e52c9ee589a13f7c9bd43ef6e3e9a"
+      },
+      {
+        "profile": "candidate_01",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "a87c7f1aeb907397b35d4e6431c298091898298c5dc0fcbd5ac5e591cc00c958"
+      },
+      {
+        "profile": "candidate_01",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "842606ebf635a45805ca00a4c31d82865b899106471c1754539ee8e2afe66afa"
+      },
+      {
+        "profile": "candidate_01",
+        "defense": "left",
+        "frames": 1168,
+        "sha256": "b718b764d844402eee55b78fde6b18de08137372db131e7862442c7ab5acb834"
+      },
+      {
+        "profile": "candidate_01",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "53e495ab66a29c6c3fde2046fbcf9a407d97bb18d06e75cfd410b52ab5e4ff23"
+      },
+      {
+        "profile": "candidate_02",
+        "defense": "center",
+        "frames": 652,
+        "sha256": "e0592ae8bc7d1ebc9cea4653c8001098b9a45ed9777bcdbca0935392c1aef9e6"
+      },
+      {
+        "profile": "candidate_02",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "1d8ba408ba88e412cdb42e511f8ead786372c6345299f6fdee9b69b98815b9e3"
+      },
+      {
+        "profile": "candidate_02",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "37a39a89bf72c9e5347fd709f96952e1bc3e704a6e72b52ccab68f7075697613"
+      },
+      {
+        "profile": "candidate_02",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "b5086c9648cfe35329e7ba64932dd00b8b81f223426320c65325fe64bd7454b6"
+      },
+      {
+        "profile": "candidate_02",
+        "defense": "left",
+        "frames": 778,
+        "sha256": "c39d6ffffae5da06c72ca0e18f4bdb4c9395dc4c9ca7d6008bd6a74b5b1d3766"
+      },
+      {
+        "profile": "candidate_02",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "bc5c6a372ab47ddbd931e9c9ba9151fc6aba1f20425638b9a0d6cad17d56aa1c"
+      },
+      {
+        "profile": "candidate_03",
+        "defense": "center",
+        "frames": 652,
+        "sha256": "bfb9110f8d9c227511250fb95413acc068ea2a705ba678cffb2fed92253c5a02"
+      },
+      {
+        "profile": "candidate_03",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "225471ce27aa3910049a1b8800e4873e1e745f6995eb265a8da15367612fd53c"
+      },
+      {
+        "profile": "candidate_03",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "e7b071c2e800252aa8206ad4066226c21c7b2bb2f4d4a5bf7d233b569fb79589"
+      },
+      {
+        "profile": "candidate_03",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "a07c1d47eb8f3b5715043b1d11ea6721e33e6496348ec51b519d63acac194949"
+      },
+      {
+        "profile": "candidate_03",
+        "defense": "left",
+        "frames": 787,
+        "sha256": "fdadb3a007c243fe1d3d6991b1a88f9aab8615ef3baea082069115d9982af2db"
+      },
+      {
+        "profile": "candidate_03",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "c75ca04845f7b9f4e65bdf233e85846a9cf70378f4c869b940f43636f6873b04"
+      },
+      {
+        "profile": "candidate_04",
+        "defense": "center",
+        "frames": 856,
+        "sha256": "67692faa1204e51266acf883496128302b7327e1a674ffec018dc1f55242ad48"
+      },
+      {
+        "profile": "candidate_04",
+        "defense": "center_right",
+        "frames": 856,
+        "sha256": "99fa077aed755a6cea70996f8c00c86c8863539237c2c98c05d94942d1b90f77"
+      },
+      {
+        "profile": "candidate_04",
+        "defense": "wide_left",
+        "frames": 856,
+        "sha256": "82a7521d4514951d5b7a84d319eb13bcaf4ba02146964eb7fde839f3b88d5c92"
+      },
+      {
+        "profile": "candidate_04",
+        "defense": "wide_right",
+        "frames": 856,
+        "sha256": "c18ac7b7fdbaa2b30b707a35365836b228ce2155ebfd9d3941875dc314708a7b"
+      },
+      {
+        "profile": "candidate_04",
+        "defense": "left",
+        "frames": 1168,
+        "sha256": "16f204e8e54816762cf63131a3394d4ca0774a3dec8cf629ed186d6d2609db2e"
+      },
+      {
+        "profile": "candidate_04",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "edc86d4e6731553c716f34f87112aea47518e0f0d3e5f1c3b1431e7eeea96d5a"
+      },
+      {
+        "profile": "candidate_05",
+        "defense": "center",
+        "frames": 856,
+        "sha256": "2a7d1d85efa7e4d3187f519e4bf8b7b8e97c7baad85e08307a5b18b925a47a59"
+      },
+      {
+        "profile": "candidate_05",
+        "defense": "center_right",
+        "frames": 856,
+        "sha256": "e9b4cfbdb357bb009e9b6b496736384491e2dabf9f96f68811f2ebfd1d5abb82"
+      },
+      {
+        "profile": "candidate_05",
+        "defense": "wide_left",
+        "frames": 856,
+        "sha256": "7dd1eb488203d33b341c90082e0bc0e77dccfae66d4df95ee819bdb58f4e5a79"
+      },
+      {
+        "profile": "candidate_05",
+        "defense": "wide_right",
+        "frames": 856,
+        "sha256": "0532d96e286a90f64b4c1d7482a33da07558894579d49bfc5d47cdabda69729d"
+      },
+      {
+        "profile": "candidate_05",
+        "defense": "left",
+        "frames": 778,
+        "sha256": "4603307e0d30a9b638c1f69db75db951f7a219a0f1bb6a1ed2fb71c7f2281430"
+      },
+      {
+        "profile": "candidate_05",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "90dc2bffe378ebc31786d0fb93fac01707da2866744c7a4cf28fb25edc93e77e"
+      },
+      {
+        "profile": "candidate_06",
+        "defense": "center",
+        "frames": 652,
+        "sha256": "3036865f3f2be56c1b4ff2d312e4eea8196b195ba20996802f6e1560eea6d88d"
+      },
+      {
+        "profile": "candidate_06",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "4f4cc05739b7b1e08524c273b16dee37899d49fe34f37b08e2e67e6c2c0d015a"
+      },
+      {
+        "profile": "candidate_06",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "794a2ca6fabcc28b2552cd2e5aa628912d4c24ef96bfaf265144ee673b2ec41c"
+      },
+      {
+        "profile": "candidate_06",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "f2802950ccc86ed0f686767871b932cb42e5769580546fe6df9fd8da389f9d35"
+      },
+      {
+        "profile": "candidate_06",
+        "defense": "left",
+        "frames": 787,
+        "sha256": "53979df3cf4bd0bd53671348e5475d92a2f2e381a16fdeb40d9f13a707396709"
+      },
+      {
+        "profile": "candidate_06",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "8468907454db75e943a1b4c71a9ee849896db0967a26297311a768b0fd9284c8"
+      },
+      {
+        "profile": "candidate_07",
+        "defense": "center",
+        "frames": 650,
+        "sha256": "2c06d4654740344647d25a06c7fc54b064c7775faa7b4ef565fc00b00187ae1b"
+      },
+      {
+        "profile": "candidate_07",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "d2d70bd8e1c1c116a814a42b803d24d91c9e2baaea77f1a533708b7cafae1e9c"
+      },
+      {
+        "profile": "candidate_07",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "64937cb5a04e012bcbf3f9bc3cacd178d2b425a38f7a5745b75f29a43778204e"
+      },
+      {
+        "profile": "candidate_07",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "9f76ec3b4adfaa5dbd045b18ebc7708e128708002e7f9befec9c042b0b11b329"
+      },
+      {
+        "profile": "candidate_07",
+        "defense": "left",
+        "frames": 778,
+        "sha256": "c9d3b3926d4ad5c23afb6fb6761a8672c2054772957b170cf9afe65a6d066dc3"
+      },
+      {
+        "profile": "candidate_07",
+        "defense": "right",
+        "frames": 727,
+        "sha256": "c634f4a5464658246efff2d00e7cb89bce1d4aadf2abd929dd7332db1fa7f5c2"
+      },
+      {
+        "profile": "candidate_08",
+        "defense": "center",
+        "frames": 653,
+        "sha256": "fa925cc0ef5ea3d3a36c0f1a0326c0ab4d58089f18b286fd8b781bc2a0b58e52"
+      },
+      {
+        "profile": "candidate_08",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "4a9ce38939fd00bef78c9237957b2d30aa02af1c12e2cd91f2afb01080071942"
+      },
+      {
+        "profile": "candidate_08",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "828fb974a6919c9867906319b531cd938fa09329466150347d4015aaa5161774"
+      },
+      {
+        "profile": "candidate_08",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "1f6374c4e7d83d4e1d776741cf4124a577834b07ceff4ff48ffcbe703244b417"
+      },
+      {
+        "profile": "candidate_08",
+        "defense": "left",
+        "frames": 778,
+        "sha256": "7846e07661de16305e171306a986478004b056c99122138681f2a52b85d85048"
+      },
+      {
+        "profile": "candidate_08",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "ef5819c74a76d74bf9e02b9b8144cc15ca449c62fed72ed8a18eada4dc584cbb"
+      },
+      {
+        "profile": "candidate_09",
+        "defense": "center",
+        "frames": 652,
+        "sha256": "848eb1ede7878ff1592b624776af8a410e47a6920c6c0cfc488610211e04751b"
+      },
+      {
+        "profile": "candidate_09",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "cff65e2dee4945faadf0d77b14445a07563c2a23acc4c364b2afcff80d9f6453"
+      },
+      {
+        "profile": "candidate_09",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "78f7f10a145f9e548703bbfe849bf4f35c30d466b8ebc25d7ed8aeaec5753704"
+      },
+      {
+        "profile": "candidate_09",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "22f800f04dde15291f70da60a6246d9b1fe254e4fde877f3f01dc85783152ee1"
+      },
+      {
+        "profile": "candidate_09",
+        "defense": "left",
+        "frames": 778,
+        "sha256": "6cfed076a3aa985fa0eacd157ca7ab2c18e41948896cf968aa696fc870fc2c36"
+      },
+      {
+        "profile": "candidate_09",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "e59fb52d32ac98abb08324f87a99f95c6142476cd6afe98b2f48867a979bef9f"
+      },
+      {
+        "profile": "candidate_10",
+        "defense": "center",
+        "frames": 856,
+        "sha256": "2628b0e484a4e289b0cb536bdbe9490c4deff03bfd47ad66da3665be3721c2de"
+      },
+      {
+        "profile": "candidate_10",
+        "defense": "center_right",
+        "frames": 856,
+        "sha256": "96a66849628414649fa2a65ed999a0d93b9f8a1b9b8a6f90552a7361d9005c7e"
+      },
+      {
+        "profile": "candidate_10",
+        "defense": "wide_left",
+        "frames": 856,
+        "sha256": "7e258f59712eab414357f0dad56cc2f085ed159970ced9380c6159ca4421c629"
+      },
+      {
+        "profile": "candidate_10",
+        "defense": "wide_right",
+        "frames": 856,
+        "sha256": "e7c2e25cb5c1713dd455f31821a8b8b47d44763aa26bb3d7403725f01909467e"
+      },
+      {
+        "profile": "candidate_10",
+        "defense": "left",
+        "frames": 785,
+        "sha256": "ee83c5012b44c7bf4ca94444d63ca5c4a32b2448077db2433ba819998711a6f6"
+      },
+      {
+        "profile": "candidate_10",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "80739a7e5feb5964f8b5c38417addc2e8306e0bc5b7ce399ebb46a9baba23d6b"
+      },
+      {
+        "profile": "candidate_11",
+        "defense": "center",
+        "frames": 652,
+        "sha256": "6fd2dd1bc517c60af3572357a5c7ba59a49cd65458d914670a8d2b9db04c7791"
+      },
+      {
+        "profile": "candidate_11",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "17627fbeb869e30b9ce18fdbf895a5b56d27602a0de8acb7648f1f48ee2bd6ef"
+      },
+      {
+        "profile": "candidate_11",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "e352666f17c4f7b18eb36a8582797a7063095d2f4e7d1b6ec84e3ae1c38c591e"
+      },
+      {
+        "profile": "candidate_11",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "20fc5208e5183670943cccd472a5ac82800fdb0ec8f759c9e42f8d0296f421f3"
+      },
+      {
+        "profile": "candidate_11",
+        "defense": "left",
+        "frames": 786,
+        "sha256": "bf73de206f2eb594ce8eb0bf4d5327da4c38ac964bfb9283b156b87405d09c06"
+      },
+      {
+        "profile": "candidate_11",
+        "defense": "right",
+        "frames": 1948,
+        "sha256": "3e670b22aec913b9ce4df1570acd684fe09484f0eb0465932ba3ac34f87e916f"
+      },
+      {
+        "profile": "candidate_12",
+        "defense": "center",
+        "frames": 856,
+        "sha256": "87ce4270a0de1701d4377b73b270ae49ac0a5ec5cf40e54494f4fb66d369903f"
+      },
+      {
+        "profile": "candidate_12",
+        "defense": "center_right",
+        "frames": 856,
+        "sha256": "28ab4b70e2727177d55c109756e9d8638b52979891574f87f8501417b8fa89ae"
+      },
+      {
+        "profile": "candidate_12",
+        "defense": "wide_left",
+        "frames": 856,
+        "sha256": "7ca35982aa0a9933f2acefc68016d412ba6ef62650aac11eeae9a0ff0a178281"
+      },
+      {
+        "profile": "candidate_12",
+        "defense": "wide_right",
+        "frames": 856,
+        "sha256": "e02479511fd527d1f176de2a243a644150ca4153a09f3c9b2046c3fe72ae02e4"
+      },
+      {
+        "profile": "candidate_12",
+        "defense": "left",
+        "frames": 784,
+        "sha256": "57eee1af50140ccf2d901cf3b0b3bac1bced0f32d83f01624c8d58062ce875e7"
+      },
+      {
+        "profile": "candidate_12",
+        "defense": "right",
+        "frames": 809,
+        "sha256": "8f3c341975ec8f52c2d77d3b283455b24e2f7ebc4f055a8e18202393524743e5"
+      },
+      {
+        "profile": "candidate_13",
+        "defense": "center",
+        "frames": 856,
+        "sha256": "3724ea799484e96b6755aa4985e44fd617faa02c896023e80954f7b83b8b32e0"
+      },
+      {
+        "profile": "candidate_13",
+        "defense": "center_right",
+        "frames": 856,
+        "sha256": "28b4f7a364772dbe08d46304d2aa3dff12b047b123ee58d90e2e0f686a9d8bde"
+      },
+      {
+        "profile": "candidate_13",
+        "defense": "wide_left",
+        "frames": 856,
+        "sha256": "6a02e399a21c7314416c863f2641decfe81947414bfac8bd01c3ac4be034d52f"
+      },
+      {
+        "profile": "candidate_13",
+        "defense": "wide_right",
+        "frames": 856,
+        "sha256": "6e89c73a73a99ac6ceeaf4bb8ed156c098742244b01ab7089d67757897d478da"
+      },
+      {
+        "profile": "candidate_13",
+        "defense": "left",
+        "frames": 788,
+        "sha256": "70e92c05855bc060f167c721884ed9214b129a40f2ddf4305b2a5d26ed479845"
+      },
+      {
+        "profile": "candidate_13",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "5ec19f041717ad5fdfd2ee4573b7fdb23fc789e564832b29937250a7ebcabe66"
+      },
+      {
+        "profile": "candidate_14",
+        "defense": "center",
+        "frames": 649,
+        "sha256": "a33fe0665788fe2d4a6513f3fad22891b780e51732dfe21242ec620220741574"
+      },
+      {
+        "profile": "candidate_14",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "f4b881499a478594645c16a47dec299679667cda33eea0aab98b7273046b7e63"
+      },
+      {
+        "profile": "candidate_14",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "6ff512b7de42136df566edcca5a36ac989877ffc7e8c3de53eb4f82080a94d64"
+      },
+      {
+        "profile": "candidate_14",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "c7471768bf495280a35c5564461fc9ae9cda506fc660d18ce4b8ac7cb6c7f181"
+      },
+      {
+        "profile": "candidate_14",
+        "defense": "left",
+        "frames": 778,
+        "sha256": "fddc36ecfc72e9f0a198376dd133ea56069509546d9bfa3ade2ce8f475de8e2e"
+      },
+      {
+        "profile": "candidate_14",
+        "defense": "right",
+        "frames": 778,
+        "sha256": "5ae914d67061c14182e3ec606f6b459da2c092f401f3edb42718eed64aa10f6f"
+      },
+      {
+        "profile": "candidate_15",
+        "defense": "center",
+        "frames": 653,
+        "sha256": "e1b09e044d4023bb74815d1c851de72da3c1531a4d9433fbe1385699ab54bb8c"
+      },
+      {
+        "profile": "candidate_15",
+        "defense": "center_right",
+        "frames": 650,
+        "sha256": "f3855242a4011bbaaa5a263b616db1d530e9870702b9d7879528dc898f6c45d7"
+      },
+      {
+        "profile": "candidate_15",
+        "defense": "wide_left",
+        "frames": 700,
+        "sha256": "5f6c349f95fbf62cd76f9bd373e0ac94ae0a99a36a25d9e75e36ca10b7acc4ce"
+      },
+      {
+        "profile": "candidate_15",
+        "defense": "wide_right",
+        "frames": 700,
+        "sha256": "e662f50880c190e64ca687cbdaf3db7e74eb843bab6f93bce3bb2a11beefe9fe"
+      },
+      {
+        "profile": "candidate_15",
+        "defense": "left",
+        "frames": 1012,
+        "sha256": "b598c669ea02ac79d3b75ee4c3c92c694c4bb60e32c7af9b8e3605b16d681476"
+      },
+      {
+        "profile": "candidate_15",
+        "defense": "right",
+        "frames": 732,
+        "sha256": "a1ad6cdf734596579e62d92318cb0c75e539cdf60c5bf99a59f1768850a4cfcb"
+      }
+    ]
+  },
+  "method": {
+    "parameters": {
+      "guard_time_scale": [
+        0.85,
+        1.15
+      ],
+      "jump_time_scale": [
+        0.85,
+        1.15
+      ],
+      "arm_spread_rad": [
+        -0.08,
+        0.12
+      ],
+      "guard_knee_offset_rad": [
+        0.0,
+        0.1
+      ]
+    },
+    "selection": "train top two safe nonnominal + nominal, then validation macro saves, worst style, least normalized deviation",
+    "predictor": "unchanged vision_keeper_v2 ball-only predictor and balanced four-defense selection",
+    "actual_motion": "original B-Human keyframe durations and shoulder roll targets; guard knee pitch; original interpolation, mirroring, balance, stiffness, branches and get-up remain active",
+    "nominal_control": "zero target/duration changes in all six native summaries",
+    "test_protocol_fixed_before_training": true,
+    "test_may_adjust_parameters": false
+  },
+  "limitations": [
+    "Pilot search of four shared movement parameters, not full-joint PPO or six independent learned primitives.",
+    "Only one settled pose and one seed per candidate/defense in recovery gate; no shot or maximum coverage test in this gate.",
+    "All outcomes and no-commit remain in equal-style save-rate denominators; simulation errors abort selection.",
+    "Final unseen test must determine improvement; training or recovery success alone is not a save-rate gain.",
+    "Simulation only: ideal own sensors, paused inference clock, privileged noisy striker observations, v1/v2 are our strikers; no physical NAO equivalence."
+  ]
+}

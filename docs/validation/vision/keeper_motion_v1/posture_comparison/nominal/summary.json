@@ -1,0 +1,483 @@
+{
+  "validation": "keeper_motion_physical_validation_v1",
+  "motion_skill": "keeper_motion_skill_v1",
+  "parameters": {
+    "guard_time_scale": 1.0,
+    "jump_time_scale": 1.0,
+    "arm_spread_rad": 0.0,
+    "guard_knee_offset_rad": 0.0
+  },
+  "bounds": {
+    "guard_time_scale": [
+      0.85,
+      1.15
+    ],
+    "jump_time_scale": [
+      0.85,
+      1.15
+    ],
+    "arm_spread_rad": [
+      -0.08,
+      0.12
+    ],
+    "guard_knee_offset_rad": [
+      0.0,
+      0.1
+    ]
+  },
+  "seed": 80002004,
+  "physics": "free roots, original B-Human keyframe engine, servos and physical contacts",
+  "sensor_limitations": "ideal simulated encoders/IMU and contact FSR; no hardware equivalence",
+  "recovery_gate": "stand/upright/stable/torso above 0.28 m for 0.5 s, then both feet loaded for 1 s; 28 s deadline",
+  "limitations": "execution and recovery only; no shot, maximum coverage or save-rate evidence",
+  "passed": true,
+  "cases": [
+    {
+      "validation": "keeper_motion_physical_validation_v1",
+      "defense": "center",
+      "seed": 80002004,
+      "parameters": {
+        "guard_time_scale": 1.0,
+        "jump_time_scale": 1.0,
+        "arm_spread_rad": 0.0,
+        "guard_knee_offset_rad": 0.0
+      },
+      "expected_keyframe": "genuflectStand",
+      "expected_mirror": false,
+      "hold_s": 3.0,
+      "executed_on_hardware": false,
+      "active_root_trajectories_written": false,
+      "ball_velocity_written": false,
+      "runtime_hello": {
+        "capabilities": [
+          "keeper_defenses_v2",
+          "keeper_motion_skill_v1"
+        ],
+        "cycle_s": 0.012,
+        "joint_names": [
+          "headYaw",
+          "headPitch",
+          "lShoulderPitch",
+          "lShoulderRoll",
+          "lElbowYaw",
+          "lElbowRoll",
+          "lWristYaw",
+          "lHand",
+          "rShoulderPitch",
+          "rShoulderRoll",
+          "rElbowYaw",
+          "rElbowRoll",
+          "rWristYaw",
+          "rHand",
+          "lHipYawPitch",
+          "lHipRoll",
+          "lHipPitch",
+          "lKneePitch",
+          "lAnklePitch",
+          "lAnkleRoll",
+          "rHipYawPitch",
+          "rHipRoll",
+          "rHipPitch",
+          "rKneePitch",
+          "rAnklePitch",
+          "rAnkleRoll"
+        ],
+        "keeper_defenses": [
+          "center",
+          "center_right",
+          "wide_left",
+          "wide_right",
+          "left",
+          "right"
+        ],
+        "keeper_motion_skill": {
+          "bounds": {
+            "arm_spread_rad": [
+              -0.08,
+              0.12
+            ],
+            "guard_knee_offset_rad": [
+              0.0,
+              0.1
+            ],
+            "guard_time_scale": [
+              0.85,
+              1.15
+            ],
+            "jump_time_scale": [
+              0.85,
+              1.15
+            ]
+          },
+          "units": {
+            "arm_spread_rad": "rad",
+            "guard_knee_offset_rad": "rad",
+            "guard_time_scale": "duration multiplier",
+            "jump_time_scale": "duration multiplier"
+          },
+          "version": "keeper_motion_skill_v1"
+        },
+        "keeper_preparations": [
+          "prepare"
+        ],
+        "motions": [
+          "stand",
+          "walk",
+          "kick",
+          "block",
+          "getup"
+        ],
+        "protocol": 1,
+        "provenance": {
+          "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+          "host_source_sha256": "6de64760a0ea212a89f172eff8c64fbb44024e36e0ca2d5d379f4b763b4c2351",
+          "inputs_profile": "mujoco-truth-v2",
+          "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+          "original_file_count": 559,
+          "simulation_calibration": {
+            "ball_radius": "INIT geometry in mm",
+            "inertial_angle": "original removeZRotation and angle-axis",
+            "left_forward_stroke_ms": 100,
+            "right_forward_stroke_ms": 200
+          },
+          "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+        },
+        "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+        "type": "HELLO"
+      },
+      "settle_time_s": 2.5439999999999414,
+      "matching_keyframe_frames": 250,
+      "keyframe_frames": 250,
+      "max_joint_change_rad": 1.6254846410251411,
+      "last_active_mirror": false,
+      "motion_executed": true,
+      "motion_evidence": {
+        "applied": true,
+        "blocks": [
+          {
+            "id": "genuflectFromStand",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": 0.05235988274216652,
+                    "target_rad": 0.05235988274216652
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.057595863938331604,
+                    "target_rad": -0.057595863938331604
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "lKneePitch",
+                    "nominal_rad": 1.03323495388031,
+                    "target_rad": 1.03323495388031
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rKneePitch",
+                    "nominal_rad": 1.0471975803375244,
+                    "target_rad": 1.0471975803375244
+                  }
+                ],
+                "duration_ms_applied": 48.0,
+                "duration_ms_original": 48.0,
+                "index": 0
+              },
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": 0.05235988274216652,
+                    "target_rad": 0.05235988274216652
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.057595863938331604,
+                    "target_rad": -0.057595863938331604
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "lKneePitch",
+                    "nominal_rad": 0.8482300043106079,
+                    "target_rad": 0.8482300043106079
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rKneePitch",
+                    "nominal_rad": 1.1205013990402222,
+                    "target_rad": 1.1205013990402222
+                  }
+                ],
+                "duration_ms_applied": 35.0,
+                "duration_ms_original": 35.0,
+                "index": 1
+              }
+            ]
+          },
+          {
+            "id": "genuflectFromSitting",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": -0.10471976548433304,
+                    "target_rad": -0.10471976548433304
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": 0.0872664675116539,
+                    "target_rad": 0.0872664675116539
+                  }
+                ],
+                "duration_ms_applied": 100.0,
+                "duration_ms_original": 100.0,
+                "index": 0
+              }
+            ]
+          },
+          {
+            "id": "genuflect",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": -0.10471976548433304,
+                    "target_rad": -0.10471976548433304
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": 0.0872664675116539,
+                    "target_rad": 0.0872664675116539
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "lKneePitch",
+                    "nominal_rad": 1.483529806137085,
+                    "target_rad": 1.483529806137085
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rKneePitch",
+                    "nominal_rad": 1.5533430576324463,
+                    "target_rad": 1.5533430576324463
+                  }
+                ],
+                "duration_ms_applied": 152.0,
+                "duration_ms_original": 152.0,
+                "index": 1
+              },
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": -0.0872664675116539,
+                    "target_rad": -0.0872664675116539
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.01745329424738884,
+                    "target_rad": -0.01745329424738884
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "lKneePitch",
+                    "nominal_rad": 1.326450228691101,
+                    "target_rad": 1.326450228691101
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rKneePitch",
+                    "nominal_rad": 1.4311699867248535,
+                    "target_rad": 1.4311699867248535
+                  }
+                ],
+                "duration_ms_applied": 200.0,
+                "duration_ms_original": 200.0,
+                "index": 2
+              }
+            ]
+          },
+          {
+            "id": "genuflectWide",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": -0.0872664675116539,
+                    "target_rad": -0.0872664675116539
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.01745329424738884,
+                    "target_rad": -0.01745329424738884
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "lKneePitch",
+                    "nominal_rad": 1.6755162477493286,
+                    "target_rad": 1.6755162477493286
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rKneePitch",
+                    "nominal_rad": 0.9773844480514526,
+                    "target_rad": 0.9773844480514526
+                  }
+                ],
+                "duration_ms_applied": 200.0,
+                "duration_ms_original": 200.0,
+                "index": 0
+              },
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": -0.0872664675116539,
+                    "target_rad": -0.0872664675116539
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.01745329424738884,
+                    "target_rad": -0.01745329424738884
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "lKneePitch",
+                    "nominal_rad": -0.06981317698955536,
+                    "target_rad": -0.06981317698955536
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rKneePitch",
+                    "nominal_rad": 1.3439035415649414,
+                    "target_rad": 1.3439035415649414
+                  }
+                ],
+                "duration_ms_applied": 300.0,
+                "duration_ms_original": 300.0,
+                "index": 1
+              }
+            ]
+          },
+          {
+            "id": "sitKeeperJump",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": 1.0471975803375244,
+                    "target_rad": 1.0471975803375244
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.2967059910297394,
+                    "target_rad": -0.2967059910297394
+                  }
+                ],
+                "duration_ms_applied": 130.0,
+                "duration_ms_original": 130.0,
+                "index": 0
+              }
+            ]
+          },
+          {
+            "id": "jumpLeftFromStand",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": 1.0471975803375244,
+                    "target_rad": 1.0471975803375244
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.2967059910297394,
+                    "target_rad": -0.2967059910297394
+                  }
+                ],
+                "duration_ms_applied": 130.0,
+                "duration_ms_original": 130.0,
+                "index": 0
+              }
+            ]
+          },
+          {
+            "id": "jumpLeftFromSitting",
+            "keyframes": [
+              {
+                "angles": [
+                  {
+                    "clamped": false,
+                    "joint": "lShoulderRoll",
+                    "nominal_rad": 1.0471975803375244,
+                    "target_rad": 1.0471975803375244
+                  },
+                  {
+                    "clamped": false,
+                    "joint": "rShoulderRoll",
+                    "nominal_rad": -0.36651915311813354,
+                    "target_rad": -0.36651915311813354
+                  }
+                ],
+                "duration_ms_applied": 400.0,
+                "duration_ms_original": 400.0,
+                "index": 1
+              }
+            ]
+          }
+        ],
+        "changed_angles": 0,
+        "changed_keyframes": 0,
+        "clamped_angles": 0,
+        "parameters": {
+          "arm_spread_rad": 0.0,
+          "guard_knee_offset_rad": 0.0,
+          "guard_time_scale": 1.0,
+          "jump_time_scale": 1.0
+        },
+        "version": "keeper_motion_skill_v1"
+      },
+      "profile_verified": true,
+      "manual_recovery_request_time_s": 3.0,
+      "recovered_to_stable_stand": true,
+      "stable_stand_time_s": 6.804,
+      "upright_confirmation_s": 1.008,
+      "interrupted_recovery_attempts": [],
+      "end_time_s": 7.812,
+      "max_keeper_joint_velocity_rad_s": 10.803515588972889,
+      "profile_request_count": 250,
+      "final_phase": "stand",
+      "final_fall_state": "upright",
+      "passed": true,
+      "children_collected": true,
+      "trace": "center.frames.jsonl",
+      "trace_sha256": "71605f572351de2cdef3c2c89dc7f31fb4399f6e386bb766f756eea3def9e013"
+    }
+  ]
+}

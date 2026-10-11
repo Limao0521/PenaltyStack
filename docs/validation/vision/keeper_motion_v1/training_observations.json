@@ -1,0 +1,3920 @@
+{
+  "audit": "keeper_motion_training_observations_v1",
+  "created_utc": "2026-10-11T13:21:11.651231+00:00",
+  "in_progress_snapshot": true,
+  "paired_cases_available": 22,
+  "duels_available": 352,
+  "complete_styles": {
+    "center": 4,
+    "corners": 4,
+    "feint": 2,
+    "late": 4,
+    "mixed": 4,
+    "soft": 4
+  },
+  "all_pre_motion_paired": true,
+  "checkpoint_hashes": {
+    "checkpoints/train/center/81001000000.json": "e881a4ad0d9f9da5542845110ee801f1af7479fae02256d3d6f9282dd5719564",
+    "checkpoints/train/center/81001000001.json": "7c7f7e85baecc05070b023b99143a6a24bc606636f671e211fd9553682fa6827",
+    "checkpoints/train/center/81001000002.json": "1f4fa450180bcd921c2d7406082f0726995efa9281da225b961138c667111c73",
+    "checkpoints/train/center/81001000003.json": "764cd81825630bafedb54597328f661383b286292d2130329e21c96c11f0892d",
+    "checkpoints/train/corners/81001020000.json": "cc4425f76b1f85d9d2fdf3fd9fbb7b2fbe16be23dbd3cbdc0b9629e42c131d0a",
+    "checkpoints/train/corners/81001020001.json": "1fc3daf063523fc50e4bf7b6f57312a3c2f928cd9fbb65d6e89a8aa2228c41bc",
+    "checkpoints/train/corners/81001020002.json": "e892a62f3ec51996fae6a50ce15f4ac12e770cfd12a28e13be7f2dbc4f3c5fc7",
+    "checkpoints/train/corners/81001020003.json": "688d6d9baf0a78f3f341409893ca4438985d93908fc2702a8d6de0bcf3344ba9",
+    "checkpoints/train/feint/81001050000.json": "8b04fbf73ff54689b5db190d82ff2282eba62d5b72676a0e9c61afdeec7a4723",
+    "checkpoints/train/feint/81001050001.json": "c43b13f015c95bcc44b9f4d7ff0509643dd616fae860337cd7e27963dd212c19",
+    "checkpoints/train/late/81001040000.json": "90008f89bacc32a1e3f0597b64b6f12c3a42ec13e154e95a2a6860fa858e63da",
+    "checkpoints/train/late/81001040001.json": "a7fb615b8703c82bf1cb82cc4c5a5a70a85c825cd527cf0e63677bb3ed0f6368",
+    "checkpoints/train/late/81001040002.json": "5926b119718f0830b5cdc4bd199121594cbf2b984a7658d917b4dd54d415849d",
+    "checkpoints/train/late/81001040003.json": "5b73376aea0b1f5a5857e0b53fec76bc33456d7ec87cea43bc1cefd6d2f83f48",
+    "checkpoints/train/mixed/81001010000.json": "e1494a44fa2e1e7e2d6d9fca6137485d17dd7c135a1281105706754fe3aead35",
+    "checkpoints/train/mixed/81001010001.json": "48cbcb130430af44f9a9fa9c14a2b1dde990b927f05078bf02da6bc6e91c4c97",
+    "checkpoints/train/mixed/81001010002.json": "b9a727f8e1b8a2f53594a9da88ae47d30cc38d80ccf36c65478cba9abb0a65d3",
+    "checkpoints/train/mixed/81001010003.json": "b29413de35622cdc4c010301fe5cc78a0a347ccfb0ae95dfa7c64b69709f0078",
+    "checkpoints/train/soft/81001030000.json": "40b0b5eca34035d123266525701ec829f8dbf5a165184bea825868714c1220a3",
+    "checkpoints/train/soft/81001030001.json": "29f174d422a3dc2f8270e1d13642d3d3d6ab8a4c3c9a59dc94458c14bbb03761",
+    "checkpoints/train/soft/81001030002.json": "e7d3e9f93daea2fd6f03994640db773ea785513d163b243388d9e57630a214bd",
+    "checkpoints/train/soft/81001030003.json": "c85f3265f3ba888107e910d77b1311922d8621e19277390f86b0d68065e2be00"
+  },
+  "training_metrics": {
+    "nominal": {
+      "parameters": {
+        "guard_time_scale": 1.0,
+        "jump_time_scale": 1.0,
+        "arm_spread_rad": 0.0,
+        "guard_knee_offset_rad": 0.0
+      },
+      "saves": 19,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 0,
+      "outcomes": {
+        "save": 19,
+        "timeout": 1,
+        "goal": 2
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 7,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": []
+    },
+    "candidate_01": {
+      "parameters": {
+        "guard_time_scale": 0.85,
+        "jump_time_scale": 1.0,
+        "arm_spread_rad": 0.0,
+        "guard_knee_offset_rad": 0.0
+      },
+      "saves": 18,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 1,
+      "outcomes": {
+        "save": 18,
+        "timeout": 1,
+        "goal": 3
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 6,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.44117694052477163,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_02": {
+      "parameters": {
+        "guard_time_scale": 1.0,
+        "jump_time_scale": 0.85,
+        "arm_spread_rad": 0.0,
+        "guard_knee_offset_rad": 0.0
+      },
+      "saves": 18,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 1,
+      "outcomes": {
+        "save": 18,
+        "goal": 3,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 7,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 4,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "corners",
+          "seed": 81001020003,
+          "defense": "left",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 9.900000000000883,
+          "ball_crossing_world_y": 0.5593379178372411,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_03": {
+      "parameters": {
+        "guard_time_scale": 1.0,
+        "jump_time_scale": 1.0,
+        "arm_spread_rad": 0.1,
+        "guard_knee_offset_rad": 0.0
+      },
+      "saves": 17,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 2,
+      "outcomes": {
+        "save": 17,
+        "goal": 4,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 5,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.10985652322278322,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_04": {
+      "parameters": {
+        "guard_time_scale": 1.0,
+        "jump_time_scale": 1.0,
+        "arm_spread_rad": 0.0,
+        "guard_knee_offset_rad": 0.08
+      },
+      "saves": 10,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 9,
+      "outcomes": {
+        "goal": 11,
+        "save": 10,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 0,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 4
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 0,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 7
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.11698326572891325,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.862036491459653,
+          "predicted_crossing_y_m": 0.13909492852124772,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.627625328896518,
+          "predicted_crossing_y_m": 0.16832424200195473,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": false
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.1098565232227832,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.5543058253087003,
+          "predicted_crossing_y_m": 0.10821508779194355,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.12671249787694366,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.782681877189683,
+          "predicted_crossing_y_m": 0.1651846455810012,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "late",
+          "seed": 81001040001,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 12.10800000000162,
+          "ball_crossing_world_y": -0.2437873869850036,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.606340306425907,
+          "predicted_crossing_y_m": -0.2236518482715784,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "late",
+          "seed": 81001040003,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 11.904000000001552,
+          "ball_crossing_world_y": -0.21461432941934308,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.6126211022008787,
+          "predicted_crossing_y_m": -0.2054889195557282,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.11660301556179106,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 1.886906003221089,
+          "predicted_crossing_y_m": 0.19947745180159981,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "soft",
+          "seed": 81001030000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.407999999999717,
+          "ball_crossing_world_y": 0.23762907902671865,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.079952872628446,
+          "predicted_crossing_y_m": 0.2520700453391618,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        },
+        {
+          "style": "soft",
+          "seed": 81001030001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 5.399999999999405,
+          "ball_crossing_world_y": 0.22056653565783144,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          },
+          "predicted_time_to_line_s": 2.540480402682183,
+          "predicted_crossing_y_m": 0.2691235461188113,
+          "keeper_fallen_nominal": false,
+          "keeper_fallen_knee": true
+        }
+      ]
+    },
+    "candidate_05": {
+      "parameters": {
+        "guard_time_scale": 1.12233466,
+        "jump_time_scale": 0.85654407,
+        "arm_spread_rad": -0.0533218,
+        "guard_knee_offset_rad": 0.07714716
+      },
+      "saves": 10,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 9,
+      "outcomes": {
+        "goal": 11,
+        "save": 10,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 0,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 4
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 0,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 7
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.11698326572891325,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.10985652322278319,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.12671249787694366,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040001,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 12.10800000000162,
+          "ball_crossing_world_y": -0.2437873869850036,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040003,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 11.904000000001552,
+          "ball_crossing_world_y": -0.21461432941934308,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.11660301556179108,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.407999999999717,
+          "ball_crossing_world_y": 0.23762907902671868,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 5.399999999999405,
+          "ball_crossing_world_y": 0.2205665356578315,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_06": {
+      "parameters": {
+        "guard_time_scale": 0.88126943,
+        "jump_time_scale": 1.00092854,
+        "arm_spread_rad": 0.05093526,
+        "guard_knee_offset_rad": 0.01881837
+      },
+      "saves": 18,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 1,
+      "outcomes": {
+        "save": 18,
+        "timeout": 1,
+        "goal": 3
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 6,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.4579797696670538,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_07": {
+      "parameters": {
+        "guard_time_scale": 1.03632724,
+        "jump_time_scale": 0.91136058,
+        "arm_spread_rad": -0.06244939,
+        "guard_knee_offset_rad": 0.02849743
+      },
+      "saves": 16,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 3,
+      "outcomes": {
+        "save": 16,
+        "goal": 5,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 1,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 5,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "right": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "feint",
+          "seed": 81001050000,
+          "defense": "right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 9.504000000000751,
+          "ball_crossing_world_y": -0.3365205909909018,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.3740512676811624,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_08": {
+      "parameters": {
+        "guard_time_scale": 1.08637873,
+        "jump_time_scale": 1.07835326,
+        "arm_spread_rad": 0.08793664,
+        "guard_knee_offset_rad": 0.00854392
+      },
+      "saves": 18,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 1,
+      "outcomes": {
+        "save": 18,
+        "goal": 3,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 6,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_09": {
+      "parameters": {
+        "guard_time_scale": 1.06574821,
+        "jump_time_scale": 0.88509771,
+        "arm_spread_rad": -0.02979057,
+        "guard_knee_offset_rad": 0.01730596
+      },
+      "saves": 17,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 2,
+      "outcomes": {
+        "save": 17,
+        "goal": 4,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 5,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.1371727796907428,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.12962990727182663,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_10": {
+      "parameters": {
+        "guard_time_scale": 0.95886857,
+        "jump_time_scale": 0.9480914,
+        "arm_spread_rad": 0.0699521,
+        "guard_knee_offset_rad": 0.08240633
+      },
+      "saves": 12,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 7,
+      "outcomes": {
+        "save": 12,
+        "goal": 9,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 3
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 2,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 5
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.10985652322278322,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.12671249787694366,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040001,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 12.10800000000162,
+          "ball_crossing_world_y": -0.2437873869850036,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040003,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 11.904000000001552,
+          "ball_crossing_world_y": -0.21461432941934308,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.11688503667460823,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 5.399999999999405,
+          "ball_crossing_world_y": 0.22056653565783144,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_11": {
+      "parameters": {
+        "guard_time_scale": 0.93114461,
+        "jump_time_scale": 1.13831087,
+        "arm_spread_rad": 0.00564544,
+        "guard_knee_offset_rad": 0.06558489
+      },
+      "saves": 16,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 3,
+      "outcomes": {
+        "save": 16,
+        "goal": 5,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 3
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 4,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 3
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.1098565232227832,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.1399318439033045,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_12": {
+      "parameters": {
+        "guard_time_scale": 1.13109733,
+        "jump_time_scale": 1.11027004,
+        "arm_spread_rad": 0.01557037,
+        "guard_knee_offset_rad": 0.04194634
+      },
+      "saves": 9,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 10,
+      "outcomes": {
+        "goal": 12,
+        "save": 9,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 0,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 4
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 1,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "late": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 0,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 7
+        },
+        "right": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.11698326572891325,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.10985652322278322,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.12671249787694366,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "feint",
+          "seed": 81001050000,
+          "defense": "right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 9.504000000000751,
+          "ball_crossing_world_y": -0.2721758771457102,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040001,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 12.10800000000162,
+          "ball_crossing_world_y": -0.2437873869850036,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040003,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 11.904000000001552,
+          "ball_crossing_world_y": -0.21461432941934308,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.11660301556179108,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.407999999999717,
+          "ball_crossing_world_y": 0.23762907902671865,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 5.399999999999405,
+          "ball_crossing_world_y": 0.22056653565783144,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_13": {
+      "parameters": {
+        "guard_time_scale": 0.96520086,
+        "jump_time_scale": 1.04290281,
+        "arm_spread_rad": 0.1167688,
+        "guard_knee_offset_rad": 0.09757767
+      },
+      "saves": 10,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 9,
+      "outcomes": {
+        "goal": 11,
+        "save": 10,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 0,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 4
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 0,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 7
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.11698326572891325,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.10985652322278322,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 4.3079999999995255,
+          "ball_crossing_world_y": 0.12671249787694366,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040001,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 12.10800000000162,
+          "ball_crossing_world_y": -0.2437873869850036,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "late",
+          "seed": 81001040003,
+          "defense": "center_right",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 11.904000000001552,
+          "ball_crossing_world_y": -0.21461432941934308,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.11660301556179109,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030000,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.407999999999717,
+          "ball_crossing_world_y": 0.23762907902671865,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "soft",
+          "seed": 81001030001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 5.399999999999405,
+          "ball_crossing_world_y": 0.2205665356578314,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_14": {
+      "parameters": {
+        "guard_time_scale": 0.87647448,
+        "jump_time_scale": 0.9750181,
+        "arm_spread_rad": 0.03433938,
+        "guard_knee_offset_rad": 0.0561758
+      },
+      "saves": 17,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 2,
+      "outcomes": {
+        "save": 17,
+        "goal": 4,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 1
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 5,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "mixed",
+          "seed": 81001010003,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.707999999999592,
+          "ball_crossing_world_y": 0.38417265667041883,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    },
+    "candidate_15": {
+      "parameters": {
+        "guard_time_scale": 0.98771205,
+        "jump_time_scale": 1.01401396,
+        "arm_spread_rad": -0.01287619,
+        "guard_knee_offset_rad": 0.04859053
+      },
+      "saves": 17,
+      "cases": 22,
+      "wins_vs_nominal": 0,
+      "losses_vs_nominal": 2,
+      "outcomes": {
+        "save": 17,
+        "goal": 4,
+        "timeout": 1
+      },
+      "per_style": {
+        "center": {
+          "cases": 4,
+          "saves": 2,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "corners": {
+          "cases": 4,
+          "saves": 4,
+          "nominal_saves": 4,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "feint": {
+          "cases": 2,
+          "saves": 2,
+          "nominal_saves": 2,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "late": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "mixed": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "soft": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "per_defense": {
+        "center": {
+          "cases": 7,
+          "saves": 5,
+          "nominal_saves": 7,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 2
+        },
+        "right": {
+          "cases": 4,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "none": {
+          "cases": 3,
+          "saves": 1,
+          "nominal_saves": 1,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "left": {
+          "cases": 5,
+          "saves": 5,
+          "nominal_saves": 5,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        },
+        "center_right": {
+          "cases": 3,
+          "saves": 3,
+          "nominal_saves": 3,
+          "wins_vs_nominal": 0,
+          "losses_vs_nominal": 0
+        }
+      },
+      "changed_duels": [
+        {
+          "style": "center",
+          "seed": 81001000001,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 6.503999999999749,
+          "ball_crossing_world_y": 0.13671044092320764,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        },
+        {
+          "style": "center",
+          "seed": 81001000002,
+          "defense": "center",
+          "result": "goal",
+          "nominal_result": "save",
+          "commit_time": 3.107999999999658,
+          "ball_crossing_world_y": 0.1098565232227832,
+          "nominal_ball_crossing_world_y": null,
+          "pre_motion_pairing": {
+            "paired": true,
+            "reason": "identical_pre_motion_prefix",
+            "no_commit": false
+          }
+        }
+      ]
+    }
+  },
+  "single_parameter_safety_trajectory_comparison": {
+    "candidate_01": {
+      "center": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 34,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.33231067657470703,
+        "max_measured_joint_delta_rad": 0.28878364363015674,
+        "max_torso_position_delta_m": 0.03747331588223992,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.021884173154830933,
+          "rShoulderRoll": 0.02932152897119522,
+          "lKneePitch": 0.08850932121276855,
+          "rKneePitch": 0.0603029727935791
+        },
+        "native_changed_keyframes": 7,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 6.78
+      },
+      "center_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 35,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.4035200774669647,
+        "max_measured_joint_delta_rad": 0.38883105812052154,
+        "max_torso_position_delta_m": 0.04234775433262866,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.03560471534729004,
+          "rShoulderRoll": 0.034285206347703934,
+          "lKneePitch": 0.09447479248046875,
+          "rKneePitch": 0.1386646032333374
+        },
+        "native_changed_keyframes": 7,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 6.792
+      },
+      "wide_left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 76,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.8172248005867004,
+        "max_measured_joint_delta_rad": 0.7934433414434362,
+        "max_torso_position_delta_m": 0.03801993559136441,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.021884173154830933,
+          "rShoulderRoll": 0.02932152897119522,
+          "lKneePitch": 0.8172248005867004,
+          "rKneePitch": 0.20874130725860596
+        },
+        "native_changed_keyframes": 7,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 7.38
+      },
+      "wide_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 77,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.887037992477417,
+        "max_measured_joint_delta_rad": 0.8668410015287967,
+        "max_torso_position_delta_m": 0.04332792654539343,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.03560471534729004,
+          "rShoulderRoll": 0.034285206347703934,
+          "lKneePitch": 0.2359684705734253,
+          "rKneePitch": 0.887037992477417
+        },
+        "native_changed_keyframes": 7,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 7.38
+      },
+      "left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 7,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 12.996
+      },
+      "right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 7,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 8.316
+      }
+    },
+    "candidate_02": {
+      "center": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 3,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 6.804
+      },
+      "center_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 3,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 6.78
+      },
+      "wide_left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 3,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 7.38
+      },
+      "wide_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 3,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 7.38
+      },
+      "left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 1.38609067350626,
+        "max_measured_joint_delta_rad": 1.4502822058742726,
+        "max_torso_position_delta_m": 0.07226825828547272,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 1.06465083360672,
+          "rShoulderRoll": 1.1418058574199677,
+          "lKneePitch": 0.6999469101428986,
+          "rKneePitch": 0.7284067869186401
+        },
+        "native_changed_keyframes": 3,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 8.316
+      },
+      "right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 1.5491206347942352,
+        "max_measured_joint_delta_rad": 1.5938544127447036,
+        "max_torso_position_delta_m": 0.199648461416036,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.26446235179901123,
+          "rShoulderRoll": 0.2864307761192322,
+          "lKneePitch": 0.15569138526916504,
+          "rKneePitch": 0.331557035446167
+        },
+        "native_changed_keyframes": 3,
+        "native_changed_angles": 0,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 8.316
+      }
+    },
+    "candidate_03": {
+      "center": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.7253221273422241,
+        "max_measured_joint_delta_rad": 0.7247625630946656,
+        "max_torso_position_delta_m": 0.09083907205762987,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.10837759263813496,
+          "rShoulderRoll": 0.15026548132300377,
+          "lKneePitch": 0.4012420177459717,
+          "rKneePitch": 0.27337372303009033
+        },
+        "native_changed_keyframes": 10,
+        "native_changed_angles": 20,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 6.804
+      },
+      "center_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.10000001639127731,
+        "max_measured_joint_delta_rad": 0.10579766176517152,
+        "max_torso_position_delta_m": 0.025051314906842252,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.10000001639127731,
+          "rShoulderRoll": 0.10000001080334187,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 10,
+        "native_changed_angles": 20,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 6.78
+      },
+      "wide_left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.7253221273422241,
+        "max_measured_joint_delta_rad": 0.7247625630946656,
+        "max_torso_position_delta_m": 0.09083907205762987,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.10837759263813496,
+          "rShoulderRoll": 0.15026548132300377,
+          "lKneePitch": 0.5585055351257324,
+          "rKneePitch": 0.27337372303009033
+        },
+        "native_changed_keyframes": 10,
+        "native_changed_angles": 20,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 7.38
+      },
+      "wide_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.10000001639127731,
+        "max_measured_joint_delta_rad": 0.10570513834482163,
+        "max_torso_position_delta_m": 0.02568462389983314,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.10000001639127731,
+          "rShoulderRoll": 0.10000001080334187,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 10,
+        "native_changed_angles": 20,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 7.38
+      },
+      "left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 164,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 1.4746537581086159,
+        "max_measured_joint_delta_rad": 1.5109240551583218,
+        "max_torso_position_delta_m": 0.21809797768799563,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 1.06465083360672,
+          "rShoulderRoll": 1.0991675406694412,
+          "lKneePitch": 1.0199226140975952,
+          "rKneePitch": 1.0449477136135101
+        },
+        "native_changed_keyframes": 10,
+        "native_changed_angles": 20,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 8.424
+      },
+      "right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 116,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 0.10000002384185791,
+        "max_measured_joint_delta_rad": 0.45734664127618,
+        "max_torso_position_delta_m": 0.21003784656778518,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.10000002384185791,
+          "rShoulderRoll": 0.10000002384185791,
+          "lKneePitch": 0.011650711297988892,
+          "rKneePitch": 0.004130959510803223
+        },
+        "native_changed_keyframes": 10,
+        "native_changed_angles": 20,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 8.316
+      }
+    },
+    "candidate_04": {
+      "center": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 2.1068819761276245,
+        "max_measured_joint_delta_rad": 2.108987254843321,
+        "max_torso_position_delta_m": 0.20852979299940527,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.35611387342214584,
+          "rShoulderRoll": 0.24434609711170197,
+          "lKneePitch": 0.742273211479187,
+          "rKneePitch": 0.6529812812805176
+        },
+        "native_changed_keyframes": 6,
+        "native_changed_angles": 12,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 9.252
+      },
+      "center_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 2.0912262201309204,
+        "max_measured_joint_delta_rad": 2.093358609563763,
+        "max_torso_position_delta_m": 0.26059091375847865,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.2506619840860367,
+          "rShoulderRoll": 0.349065862596035,
+          "lKneePitch": 0.624060869216919,
+          "rKneePitch": 0.6579114198684692
+        },
+        "native_changed_keyframes": 6,
+        "native_changed_angles": 12,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 9.252
+      },
+      "wide_left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 2.111351191997528,
+        "max_measured_joint_delta_rad": 2.113441990650289,
+        "max_torso_position_delta_m": 0.19247953758909497,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.349065862596035,
+          "rShoulderRoll": 0.24434610083699226,
+          "lKneePitch": 2.0563087463378906,
+          "rKneePitch": 0.7679449319839478
+        },
+        "native_changed_keyframes": 6,
+        "native_changed_angles": 12,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 9.252
+      },
+      "wide_right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 249,
+        "first_output_change_s": 0.024,
+        "max_output_joint_delta_rad": 2.1084113717079163,
+        "max_measured_joint_delta_rad": 2.110261147402177,
+        "max_torso_position_delta_m": 0.2544943148276631,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.2642413564026356,
+          "rShoulderRoll": 0.349065862596035,
+          "lKneePitch": 0.7679449319839478,
+          "rKneePitch": 2.0465344190597534
+        },
+        "native_changed_keyframes": 6,
+        "native_changed_angles": 12,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 9.252
+      },
+      "left": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 6,
+        "native_changed_angles": 12,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 12.996
+      },
+      "right": {
+        "frames_compared": 251,
+        "initial_sensor_angles_identical": true,
+        "initial_torso_identical": true,
+        "output_frames_changed": 0,
+        "first_output_change_s": null,
+        "max_output_joint_delta_rad": 0.0,
+        "max_measured_joint_delta_rad": 0.0,
+        "max_torso_position_delta_m": 0.0,
+        "target_joints_delta_peaks_rad": {
+          "lShoulderRoll": 0.0,
+          "rShoulderRoll": 0.0,
+          "lKneePitch": 0.0,
+          "rKneePitch": 0.0
+        },
+        "native_changed_keyframes": 6,
+        "native_changed_angles": 12,
+        "native_clamped_angles": 0,
+        "recovered_to_stable_stand": true,
+        "stable_stand_time_s": 8.316
+      }
+    }
+  },
+  "limitations": [
+    "Training snapshot is incomplete and used for parameter selection, not an independent efficacy estimate.",
+    "Safety comparisons use fixed robot/ball starts and equal initial observed states but different runtime seeds per profile; no shot is present.",
+    "Native target evidence establishes actual keyframe changes; posture divergence alone cannot establish that a particular joint caused a particular missed save.",
+    "Only guard knee offset is varied by candidate_04; jump output differences should be zero because jump keyframes do not use that parameter.",
+    "A measured joint divergence of over 2 rad is a physical trajectory/feedback consequence; the learned knee keyframe increment itself remains exactly +0.08 rad in candidate_04."
+  ],
+  "safety_posture_observations": {
+    "nominal": {
+      "center": {
+        "minimum_torso_z_m": 0.13815666353118133,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.324,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "staggering",
+            "torso_z_m": 0.28236458912117546
+          },
+          {
+            "time_s": 0.396,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "falling",
+            "torso_z_m": 0.2651828006646674
+          }
+        ]
+      },
+      "center_right": {
+        "minimum_torso_z_m": 0.14077673054074374,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.264,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2648554235444893
+          },
+          {
+            "time_s": 0.408,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "falling",
+            "torso_z_m": 0.2070076250869894
+          }
+        ]
+      },
+      "wide_left": {
+        "minimum_torso_z_m": 0.13815666353118133,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.324,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "staggering",
+            "torso_z_m": 0.28236458912117546
+          },
+          {
+            "time_s": 0.396,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "falling",
+            "torso_z_m": 0.2651828006646674
+          }
+        ]
+      },
+      "wide_right": {
+        "minimum_torso_z_m": 0.14072543042641825,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.264,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2648554235444893
+          },
+          {
+            "time_s": 0.408,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "falling",
+            "torso_z_m": 0.2070076250869894
+          }
+        ]
+      },
+      "left": {
+        "minimum_torso_z_m": 0.05423526686244156,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 140,
+          "getUp": 110
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.444,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2521920249710246
+          },
+          {
+            "time_s": 0.504,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "falling",
+            "torso_z_m": 0.2452704934724602
+          },
+          {
+            "time_s": 1.356,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "fallen",
+            "torso_z_m": 0.12583007953395137
+          },
+          {
+            "time_s": 1.692,
+            "phase": "getUp",
+            "keyframe": "decideAutomatic",
+            "fall_state": "fallen",
+            "torso_z_m": 0.06981843254025193
+          }
+        ]
+      },
+      "right": {
+        "minimum_torso_z_m": 0.05604688008638179,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 140,
+          "getUp": 110
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.42,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2545181148080505
+          },
+          {
+            "time_s": 0.492,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "falling",
+            "torso_z_m": 0.24562306144667978
+          },
+          {
+            "time_s": 0.792,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "fallen",
+            "torso_z_m": 0.16587352063457927
+          },
+          {
+            "time_s": 1.692,
+            "phase": "getUp",
+            "keyframe": "decideAutomatic",
+            "fall_state": "fallen",
+            "torso_z_m": 0.1013082481049298
+          }
+        ]
+      }
+    },
+    "candidate_03": {
+      "center": {
+        "minimum_torso_z_m": 0.13845972093588504,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.264,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2653895441100753
+          },
+          {
+            "time_s": 0.432,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "falling",
+            "torso_z_m": 0.18138231714364245
+          }
+        ]
+      },
+      "center_right": {
+        "minimum_torso_z_m": 0.14042810651888732,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.252,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "staggering",
+            "torso_z_m": 0.270445936825021
+          },
+          {
+            "time_s": 0.408,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "falling",
+            "torso_z_m": 0.2084341141301542
+          }
+        ]
+      },
+      "wide_left": {
+        "minimum_torso_z_m": 0.13845972093588504,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.264,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2653895441100753
+          },
+          {
+            "time_s": 0.432,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "falling",
+            "torso_z_m": 0.18138231714364245
+          }
+        ]
+      },
+      "wide_right": {
+        "minimum_torso_z_m": 0.14037342730806712,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.252,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "staggering",
+            "torso_z_m": 0.270445936825021
+          },
+          {
+            "time_s": 0.408,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "falling",
+            "torso_z_m": 0.2084341141301542
+          }
+        ]
+      },
+      "left": {
+        "minimum_torso_z_m": 0.08924284519287648,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 140,
+          "getUp": 110
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.444,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "staggering",
+            "torso_z_m": 0.25242299094803344
+          },
+          {
+            "time_s": 0.516,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "falling",
+            "torso_z_m": 0.24435529693819727
+          },
+          {
+            "time_s": 0.792,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "fallen",
+            "torso_z_m": 0.16636932892763898
+          },
+          {
+            "time_s": 1.692,
+            "phase": "getUp",
+            "keyframe": "decideAutomatic",
+            "fall_state": "fallen",
+            "torso_z_m": 0.1344020276323806
+          }
+        ]
+      },
+      "right": {
+        "minimum_torso_z_m": 0.07812999511766319,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 140,
+          "getUp": 110
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.432,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "staggering",
+            "torso_z_m": 0.25332948631895225
+          },
+          {
+            "time_s": 0.492,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "falling",
+            "torso_z_m": 0.24575877493003306
+          },
+          {
+            "time_s": 0.792,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "fallen",
+            "torso_z_m": 0.1650749820473153
+          },
+          {
+            "time_s": 1.692,
+            "phase": "getUp",
+            "keyframe": "decideAutomatic",
+            "fall_state": "fallen",
+            "torso_z_m": 0.13424104727365777
+          }
+        ]
+      }
+    },
+    "candidate_04": {
+      "center": {
+        "minimum_torso_z_m": 0.05288561332172734,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.228,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2858713800742208
+          },
+          {
+            "time_s": 0.3,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "falling",
+            "torso_z_m": 0.2557348391963491
+          },
+          {
+            "time_s": 1.152,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "fallen",
+            "torso_z_m": 0.061087429578405836
+          }
+        ]
+      },
+      "center_right": {
+        "minimum_torso_z_m": 0.0512014581876141,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.216,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "staggering",
+            "torso_z_m": 0.28375884341380436
+          },
+          {
+            "time_s": 0.276,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "falling",
+            "torso_z_m": 0.2536998328317266
+          },
+          {
+            "time_s": 0.816,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStand",
+            "fall_state": "fallen",
+            "torso_z_m": 0.08690543858487208
+          }
+        ]
+      },
+      "wide_left": {
+        "minimum_torso_z_m": 0.05254388052207598,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.228,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2858713800742208
+          },
+          {
+            "time_s": 0.3,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "falling",
+            "torso_z_m": 0.2557348391963491
+          },
+          {
+            "time_s": 0.876,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "fallen",
+            "torso_z_m": 0.08837079756343746
+          }
+        ]
+      },
+      "wide_right": {
+        "minimum_torso_z_m": 0.05181787697622904,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 250
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.216,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "staggering",
+            "torso_z_m": 0.28375884341380436
+          },
+          {
+            "time_s": 0.276,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "falling",
+            "torso_z_m": 0.2536998328317266
+          },
+          {
+            "time_s": 1.02,
+            "phase": "keyframeMotion",
+            "keyframe": "genuflectStandDefender",
+            "fall_state": "fallen",
+            "torso_z_m": 0.053683401974512136
+          }
+        ]
+      },
+      "left": {
+        "minimum_torso_z_m": 0.05423526686244156,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 140,
+          "getUp": 110
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.444,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2521920249710246
+          },
+          {
+            "time_s": 0.504,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "falling",
+            "torso_z_m": 0.2452704934724602
+          },
+          {
+            "time_s": 1.356,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "fallen",
+            "torso_z_m": 0.12583007953395137
+          },
+          {
+            "time_s": 1.692,
+            "phase": "getUp",
+            "keyframe": "decideAutomatic",
+            "fall_state": "fallen",
+            "torso_z_m": 0.06981843254025193
+          }
+        ]
+      },
+      "right": {
+        "minimum_torso_z_m": 0.05604688008638179,
+        "phase_counts": {
+          "stand": 1,
+          "keyframeMotion": 140,
+          "getUp": 110
+        },
+        "transitions": [
+          {
+            "time_s": 0.0,
+            "phase": "stand",
+            "keyframe": "decideAutomatic",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352315584728035
+          },
+          {
+            "time_s": 0.012,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "upright",
+            "torso_z_m": 0.31352357385339025
+          },
+          {
+            "time_s": 0.42,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "staggering",
+            "torso_z_m": 0.2545181148080505
+          },
+          {
+            "time_s": 0.492,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "falling",
+            "torso_z_m": 0.24562306144667978
+          },
+          {
+            "time_s": 0.792,
+            "phase": "keyframeMotion",
+            "keyframe": "keeperJumpLeft",
+            "fall_state": "fallen",
+            "torso_z_m": 0.16587352063457927
+          },
+          {
+            "time_s": 1.692,
+            "phase": "getUp",
+            "keyframe": "decideAutomatic",
+            "fall_state": "fallen",
+            "torso_z_m": 0.1013082481049298
+          }
+        ]
+      }
+    }
+  }
+}

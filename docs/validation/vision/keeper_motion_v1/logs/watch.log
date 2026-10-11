@@ -1,0 +1,11 @@
+{
+  "result": "save",
+  "defense": "right",
+  "profile": {
+    "guard_time_scale": 1.0,
+    "jump_time_scale": 0.85,
+    "arm_spread_rad": 0.0,
+    "guard_knee_offset_rad": 0.0
+  },
+  "output": "C:\\Users\\juanu\\Documents\\PenaltyStack\\runs\\keeper_motion\\watch_corners"
+}

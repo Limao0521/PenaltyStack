@@ -16,6 +16,10 @@ y ensayo pareado: [DEFENSAS_PORTERO.md](DEFENSAS_PORTERO.md).
 Entrenamiento de la elección entre seis defensas sobre el núcleo visual v2:
 [ENTRENAMIENTO_SELECTOR_PORTERO.md](ENTRENAMIENTO_SELECTOR_PORTERO.md).
 
+Búsqueda de ajustes reales de duración y articulaciones de las defensas,
+ejecutados por B-Human sobre v2 `balanced`:
+[ENTRENAMIENTO_MOVIMIENTO_PORTERO.md](ENTRENAMIENTO_MOVIMIENTO_PORTERO.md).
+
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
 ```
@@ -46,6 +50,7 @@ Entrenamiento de la elección entre seis defensas sobre el núcleo visual v2:
 | `penalty/keeper_fusion.py`, `rl/fusion_benchmark.py`, `tools/evaluate_keeper_fusion.py`, `tools/fit_kick_heading.py`, `tools/analyze_keeper_fusion.py` | Porteros v4 (v2 + orientación congelada al tiro) y v5 (recta de mínimos cuadrados, centro tardío y límites por lado; `ball_v5` sin orientación). Revisión de v3, desarrollo y experimento final pareado en [PORTERO_FUSION.md](PORTERO_FUSION.md). |
 | `models/rl/`, `docs/validation/rl/`, `docs/media/rl/` | Políticas entrenadas (con `manifest.json`), reportes y curvas, y videos. |
 | `penalty/skills/` | `KickParameters`, `BlockParameters`, `ParameterizedSkill` (`reset/apply/bounds`). |
+| `penalty/skills/keeper_motion.py`, `rl/motion_world.py`, `rl/motion_training.py` | Skill de movimiento `keeper_motion_skill_v1`: cuatro parámetros reales acotados, integración física explícita y búsqueda/validación/prueba reservada sobre el núcleo visual v2 con `balanced`. |
 | `penalty/optimization/` | Búsqueda aleatoria acotada, CMA-ES, objetivos `kick_objective_v1`/`block_objective_v1`, `kick_search`. |
 
 ## Contratos

@@ -1,0 +1,6 @@
+{
+  "guard_time_scale": 1.0,
+  "jump_time_scale": 1.0,
+  "arm_spread_rad": 0.0,
+  "guard_knee_offset_rad": 0.08
+}

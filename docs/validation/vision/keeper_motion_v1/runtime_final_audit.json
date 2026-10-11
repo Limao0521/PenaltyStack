@@ -1,0 +1,281 @@
+{
+  "audit": "keeper_motion_independent_runtime_final_audit_v1",
+  "created_utc": "2026-10-11T13:48:17.550218+00:00",
+  "run_fingerprint": "5902a2313917d8fec7ddc64760cdf795ffcbead3d3656445d052ca85c7541d2a",
+  "mode": "read existing source/logs/traces only; no physics or training executed",
+  "inputs_sha256": {
+    "runs/keeper_motion/v1/run_manifest.json": "9db2c4b4dc21a79cfcd600e7675da827e28aded5d5bb72ff5363401aab8083e0",
+    "runs/keeper_motion/v1/safety_report.json": "d4a2b03336a3fde3a7ddaaf80d026b23287f25db63e6a0dc1da90a7949d375ff",
+    "runs/keeper_motion/v1/method_audit.json": "6f25809bb64eb99aa1665727bbcc0cde604595df154871992483eba82d0d0377",
+    "runs/keeper_motion/v1/train_report.json": "1f686a9e33be627a75e7599987f901a223a3cfd00a1b35375b9d3d64fe63131e",
+    "runs/keeper_motion/v1/validation_report.json": "1d0a479ec858c775f26ce369f43bca8c1adce8596d93a71b85d2ffe00e6b4076",
+    "runs/keeper_motion/v1/fit_report.json": "e5c99c1203d863f77d10cabdca86d1b35a5e30c515661e33af278f3822ab6e1a",
+    "models/vision/keeper_motion_v1.json": "e797f90d7b9889406a6e0aa08a2ff83925a9c84c55905d285cc90b353974cb7e",
+    "runs/keeper_motion/legacy_parity.json": "afbc75beef15e1da1e8f92a810dfd30dfdf53451e5674795c0f3d832d6b736d8",
+    "runs/keeper_motion/watch_corners/episode.json": "3f421bbb58705668ad3580de7de0d95917b1fb8d9f176119dac233e77420f148",
+    "runs/keeper_motion/watch_corners/trace.jsonl": "f6c6af02184592d83ac28ff67f9bbeaee68f2cb392553982b36d241d5326c7a6",
+    "runs/keeper_motion_full_tests.log": "0869d5bbdb37a86c94ac90602e70360737140bfc43a5d604dbb657ae1e9323d3",
+    "runs/keeper_motion_native_tests.log": "b76581b0b530d3eadae83f324ed64ef7927863cc0a3125fc3a4f74c806ec7914"
+  },
+  "passed": true,
+  "failures": [],
+  "preserved_originals": {
+    "bhuman_files_verified": 559,
+    "different_files": [],
+    "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+    "rsi3_sha256": "73f8c9a78b35fbdd18e6e407193924b2d1996812ff78cd405377cc57b0981369",
+    "git_changed_protected_paths": [],
+    "original_pid_stiffness_conditions_interpolation_mirroring_getup_preserved": true,
+    "prepare_block": "sitKeeper",
+    "recovery_block": "genuflectEnd",
+    "mutated_library_blocks": [
+      "genuflectFromStand",
+      "genuflectFromSitting",
+      "genuflect",
+      "genuflectWide",
+      "sitKeeperJump",
+      "jumpLeftFromStand",
+      "jumpLeftFromSitting"
+    ]
+  },
+  "frozen_sources": {
+    "count": 114,
+    "different_files": []
+  },
+  "model": {
+    "candidate": "candidate_02",
+    "parameters": {
+      "guard_time_scale": 1.0,
+      "jump_time_scale": 0.85,
+      "arm_spread_rad": 0.0,
+      "guard_knee_offset_rad": 0.0
+    },
+    "internal_digest_verified": true,
+    "fit_train_validation_bindings_verified": true,
+    "test_used_for_fit": false,
+    "frozen_utc": "2026-10-11T13:33:40.681182+00:00"
+  },
+  "legacy_nominal_parity": {
+    "total_frames": 1430,
+    "fields_per_frame": 16,
+    "fields": [
+      "fall_state",
+      "fsr_kg",
+      "gyro_rad_s",
+      "keyframe",
+      "measured_angles_rad",
+      "measured_velocity_rad_s",
+      "mirror",
+      "output_angles_rad",
+      "output_stiffness",
+      "phase",
+      "request_defense",
+      "request_motion",
+      "sequence",
+      "stable",
+      "time_s",
+      "torso_position_m"
+    ],
+    "cases": [
+      {
+        "defense": "center",
+        "frames": 652,
+        "differences": [],
+        "missing_fields": [],
+        "trace_sha256": {
+          "runs\\keeper_motion\\smoke_nominal\\center.frames.jsonl": "71605f572351de2cdef3c2c89dc7f31fb4399f6e386bb766f756eea3def9e013",
+          "runs\\keeper_motion\\smoke_legacy\\center.frames.jsonl": "28e88abae50434eb42dddae5ed0488ebffa5862e7683615fb5e6eab20f4e4cc6"
+        }
+      },
+      {
+        "defense": "right",
+        "frames": 778,
+        "differences": [],
+        "missing_fields": [],
+        "trace_sha256": {
+          "runs\\keeper_motion\\smoke_nominal\\right.frames.jsonl": "ad250464bfc45931252740b24369d28e6112e2dce0412a86fa5e58b5b0062119",
+          "runs\\keeper_motion\\smoke_legacy\\right.frames.jsonl": "c29d243de9d1c8a6a543183763f6ddc1217e8c05eba57d1e7ce9e1bb924aabce"
+        }
+      }
+    ],
+    "excluded": "profile_requested and native skill metadata; every declared physical field required in both traces",
+    "all_six_defenses_protocol_parity_in_native_test_log": true
+  },
+  "native_skill": {
+    "version": "keeper_motion_skill_v1",
+    "bounds": {
+      "guard_time_scale": [
+        0.85,
+        1.15
+      ],
+      "jump_time_scale": [
+        0.85,
+        1.15
+      ],
+      "arm_spread_rad": [
+        -0.08,
+        0.12
+      ],
+      "guard_knee_offset_rad": [
+        0.0,
+        0.1
+      ]
+    },
+    "angle_units": "radians",
+    "duration_units": "multiplier of upstream milliseconds",
+    "changed_joint_targets_clamped_to_original_joint_limits": true,
+    "zero_offsets_skip_clamping_for_exact_nominal_parity": true,
+    "only_guard_knees_and_active_shoulder_roll_targets_trainable": true,
+    "one_profile_latched_at_first_keeper_defense_per_runtime": true,
+    "new_native_runtime_per_episode": true,
+    "selected_profile_changed_keyframes": 3,
+    "selected_profile_changed_angles": 0,
+    "selected_profile_clamped_angles": 0,
+    "selected_profile_actual_duration_changes": [
+      {
+        "block": "sitKeeperJump",
+        "index": 0,
+        "original_ms": 130.0,
+        "applied_ms": 110.5,
+        "currently_referenced": true
+      },
+      {
+        "block": "jumpLeftFromStand",
+        "index": 0,
+        "original_ms": 130.0,
+        "applied_ms": 110.5,
+        "currently_referenced": false
+      },
+      {
+        "block": "jumpLeftFromSitting",
+        "index": 1,
+        "original_ms": 400.0,
+        "applied_ms": 340.0,
+        "currently_referenced": true
+      }
+    ],
+    "three_library_changes_are_not_three_sequential_executed_phases": true,
+    "relaxation_markers_prepare_and_getup_not_tuned": true
+  },
+  "safety": {
+    "profile_count": 16,
+    "physical_case_count": 96,
+    "passed_cases": 96,
+    "single_pose_only": true,
+    "candidate_02_cases": [
+      {
+        "defense": "center",
+        "trace_sha256": "e0592ae8bc7d1ebc9cea4653c8001098b9a45ed9777bcdbca0935392c1aef9e6",
+        "trace_frames": 652,
+        "recovered": true,
+        "stable_stand_time_s": 6.804,
+        "upright_confirmation_s": 1.008,
+        "max_joint_velocity_rad_s": 10.803515588972889
+      },
+      {
+        "defense": "center_right",
+        "trace_sha256": "1d8ba408ba88e412cdb42e511f8ead786372c6345299f6fdee9b69b98815b9e3",
+        "trace_frames": 650,
+        "recovered": true,
+        "stable_stand_time_s": 6.78,
+        "upright_confirmation_s": 1.008,
+        "max_joint_velocity_rad_s": 9.318049344098492
+      },
+      {
+        "defense": "wide_left",
+        "trace_sha256": "37a39a89bf72c9e5347fd709f96952e1bc3e704a6e72b52ccab68f7075697613",
+        "trace_frames": 700,
+        "recovered": true,
+        "stable_stand_time_s": 7.38,
+        "upright_confirmation_s": 1.008,
+        "max_joint_velocity_rad_s": 10.803515588972889
+      },
+      {
+        "defense": "wide_right",
+        "trace_sha256": "b5086c9648cfe35329e7ba64932dd00b8b81f223426320c65325fe64bd7454b6",
+        "trace_frames": 700,
+        "recovered": true,
+        "stable_stand_time_s": 7.38,
+        "upright_confirmation_s": 1.008,
+        "max_joint_velocity_rad_s": 9.318049344098492
+      },
+      {
+        "defense": "left",
+        "trace_sha256": "c39d6ffffae5da06c72ca0e18f4bdb4c9395dc4c9ca7d6008bd6a74b5b1d3766",
+        "trace_frames": 778,
+        "recovered": true,
+        "stable_stand_time_s": 8.316,
+        "upright_confirmation_s": 1.008,
+        "max_joint_velocity_rad_s": 19.55224734295264
+      },
+      {
+        "defense": "right",
+        "trace_sha256": "bc5c6a372ab47ddbd931e9c9ba9151fc6aba1f20425638b9a0d6cad17d56aa1c",
+        "trace_frames": 778,
+        "recovered": true,
+        "stable_stand_time_s": 8.316,
+        "upright_confirmation_s": 1.008,
+        "max_joint_velocity_rad_s": 19.499220115328527
+      }
+    ],
+    "nominal_max_joint_velocity_rad_s": 17.047568776623194,
+    "candidate_02_max_joint_velocity_rad_s": 19.55224734295264,
+    "prior_full_trace_audit_sha256": "6f25809bb64eb99aa1665727bbcc0cde604595df154871992483eba82d0d0377",
+    "prior_full_trace_frames_checked": 74291
+  },
+  "watch_example": {
+    "result": "save",
+    "defense": "right",
+    "seed": 84001000000,
+    "decision_frames": 45,
+    "ball_source": "simulated_camera",
+    "core_policy": "vision_keeper_v2",
+    "selector": "balanced",
+    "first_trigger": {
+      "time_s": 4.403999999999515,
+      "capture_s": 4.403999999999515,
+      "core_side": -1,
+      "crossing_y": -0.3739442272887039,
+      "time_to_line": 1.5920031517508266
+    },
+    "native_profile_confirmed": true,
+    "comparative_performance_claim": false
+  },
+  "verification_logs": [
+    {
+      "path": "runs/keeper_motion_full_tests.log",
+      "tests": 305,
+      "elapsed_s": 146.702,
+      "passed": true,
+      "sha256": "0869d5bbdb37a86c94ac90602e70360737140bfc43a5d604dbb657ae1e9323d3"
+    },
+    {
+      "path": "runs/keeper_motion_native_tests.log",
+      "tests": 7,
+      "elapsed_s": 3.065,
+      "passed": true,
+      "sha256": "b76581b0b530d3eadae83f324ed64ef7927863cc0a3125fc3a4f74c806ec7914"
+    }
+  ],
+  "split_seeds": {
+    "bases": {
+      "train": 81001,
+      "validation": 82001,
+      "test": 83001
+    },
+    "independent_cases": {
+      "train": 32,
+      "validation": 64,
+      "test": 160
+    },
+    "disjoint": true
+  },
+  "material_limits": [
+    "Selected profile only speeds active lateral jump durations by 15%; central timings and all joint targets remain nominal.",
+    "The 3 changed library frames include jumpLeftFromStand, which has no reference from original motions/branches; the active jump route uses sitKeeperJump and jumpLeftFromSitting.",
+    "The six-case single-pose execution/recovery gate does not measure worst-case impacts, torque/current/temperature or physical NAO calibration. Faster jump increased observed maximum joint velocity from 17.05 to 19.55 rad/s in this gate.",
+    "MuJoCo sensors are ideal and physics time pauses during RGB inference. No hardware equivalence is established.",
+    "One watch save demonstrates execution, not statistical superiority; final independent test is evaluated separately.",
+    "Four shared skill parameters are searched; six defenses are safety-tested, while unchanged balanced selection normally chooses four."
+  ]
+}

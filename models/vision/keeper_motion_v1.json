@@ -1,0 +1,20 @@
+{
+  "version": "keeper_motion_profile_model_v1",
+  "skill": "keeper_motion_skill_v1",
+  "parameters": {
+    "guard_time_scale": 1.0,
+    "jump_time_scale": 0.85,
+    "arm_spread_rad": 0.0,
+    "guard_knee_offset_rad": 0.0
+  },
+  "selected_candidate": "candidate_02",
+  "base_policy": "vision_keeper_v2",
+  "selection_mode": "balanced",
+  "created_utc": "2026-10-11T13:33:40.681182+00:00",
+  "training_fingerprint": "5902a2313917d8fec7ddc64760cdf795ffcbead3d3656445d052ca85c7541d2a",
+  "test_used_for_fit": false,
+  "simulation_only": true,
+  "train_report_sha256": "1f686a9e33be627a75e7599987f901a223a3cfd00a1b35375b9d3d64fe63131e",
+  "limitations": "MuJoCo simulation only; no physical NAO calibration. Own simulated sensors are ideal and the physical clock pauses during RGB inference. The keeper uses camera-derived ball measurements; the striker has privileged scene observations with PerceptionNoise v1. v1/v2 opponents are our trained strikers, not an autonomous B-Human team. Motion parameters are shared across mirrored defenses. Balanced normally selects four of six guards; all six are checked for execution/recovery, not independently trained or statistically ranked. Parameter search is a pilot, not full-joint PPO.",
+  "integrity_sha256": "a5a7084adc2a4f7cc191b7c7ab9cacb24d0e6b424fe539cfadfa3b15c6d93360"
+}

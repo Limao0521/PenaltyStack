@@ -1,0 +1,534 @@
+{
+  "result": "save",
+  "kick_time": 2.0039999999997797,
+  "contact_time": 4.199999999999537,
+  "commit_time": 4.403999999999515,
+  "commit_side": -1,
+  "early_dive": false,
+  "crossing_world_y": null,
+  "goal_line_y": null,
+  "target_y": 0.4886028975248337,
+  "kick_side": 1,
+  "kick_power": 0.9453138113021851,
+  "striker_fallen": false,
+  "keeper_fallen": true,
+  "keeper_action": "keeper_action_v2",
+  "commit_defense": "right",
+  "motion_skill": {
+    "version": "keeper_motion_skill_v1",
+    "parameters": {
+      "guard_time_scale": 1.0,
+      "jump_time_scale": 0.85,
+      "arm_spread_rad": 0.0,
+      "guard_knee_offset_rad": 0.0
+    }
+  },
+  "motion_evidence": {
+    "applied": true,
+    "blocks": [
+      {
+        "id": "genuflectFromStand",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": 0.05235988274216652,
+                "target_rad": 0.05235988274216652
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.057595863938331604,
+                "target_rad": -0.057595863938331604
+              },
+              {
+                "clamped": false,
+                "joint": "lKneePitch",
+                "nominal_rad": 1.03323495388031,
+                "target_rad": 1.03323495388031
+              },
+              {
+                "clamped": false,
+                "joint": "rKneePitch",
+                "nominal_rad": 1.0471975803375244,
+                "target_rad": 1.0471975803375244
+              }
+            ],
+            "duration_ms_applied": 48.0,
+            "duration_ms_original": 48.0,
+            "index": 0
+          },
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": 0.05235988274216652,
+                "target_rad": 0.05235988274216652
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.057595863938331604,
+                "target_rad": -0.057595863938331604
+              },
+              {
+                "clamped": false,
+                "joint": "lKneePitch",
+                "nominal_rad": 0.8482300043106079,
+                "target_rad": 0.8482300043106079
+              },
+              {
+                "clamped": false,
+                "joint": "rKneePitch",
+                "nominal_rad": 1.1205013990402222,
+                "target_rad": 1.1205013990402222
+              }
+            ],
+            "duration_ms_applied": 35.0,
+            "duration_ms_original": 35.0,
+            "index": 1
+          }
+        ]
+      },
+      {
+        "id": "genuflectFromSitting",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": -0.10471976548433304,
+                "target_rad": -0.10471976548433304
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": 0.0872664675116539,
+                "target_rad": 0.0872664675116539
+              }
+            ],
+            "duration_ms_applied": 100.0,
+            "duration_ms_original": 100.0,
+            "index": 0
+          }
+        ]
+      },
+      {
+        "id": "genuflect",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": -0.10471976548433304,
+                "target_rad": -0.10471976548433304
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": 0.0872664675116539,
+                "target_rad": 0.0872664675116539
+              },
+              {
+                "clamped": false,
+                "joint": "lKneePitch",
+                "nominal_rad": 1.483529806137085,
+                "target_rad": 1.483529806137085
+              },
+              {
+                "clamped": false,
+                "joint": "rKneePitch",
+                "nominal_rad": 1.5533430576324463,
+                "target_rad": 1.5533430576324463
+              }
+            ],
+            "duration_ms_applied": 152.0,
+            "duration_ms_original": 152.0,
+            "index": 1
+          },
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": -0.0872664675116539,
+                "target_rad": -0.0872664675116539
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.01745329424738884,
+                "target_rad": -0.01745329424738884
+              },
+              {
+                "clamped": false,
+                "joint": "lKneePitch",
+                "nominal_rad": 1.326450228691101,
+                "target_rad": 1.326450228691101
+              },
+              {
+                "clamped": false,
+                "joint": "rKneePitch",
+                "nominal_rad": 1.4311699867248535,
+                "target_rad": 1.4311699867248535
+              }
+            ],
+            "duration_ms_applied": 200.0,
+            "duration_ms_original": 200.0,
+            "index": 2
+          }
+        ]
+      },
+      {
+        "id": "genuflectWide",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": -0.0872664675116539,
+                "target_rad": -0.0872664675116539
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.01745329424738884,
+                "target_rad": -0.01745329424738884
+              },
+              {
+                "clamped": false,
+                "joint": "lKneePitch",
+                "nominal_rad": 1.6755162477493286,
+                "target_rad": 1.6755162477493286
+              },
+              {
+                "clamped": false,
+                "joint": "rKneePitch",
+                "nominal_rad": 0.9773844480514526,
+                "target_rad": 0.9773844480514526
+              }
+            ],
+            "duration_ms_applied": 200.0,
+            "duration_ms_original": 200.0,
+            "index": 0
+          },
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": -0.0872664675116539,
+                "target_rad": -0.0872664675116539
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.01745329424738884,
+                "target_rad": -0.01745329424738884
+              },
+              {
+                "clamped": false,
+                "joint": "lKneePitch",
+                "nominal_rad": -0.06981317698955536,
+                "target_rad": -0.06981317698955536
+              },
+              {
+                "clamped": false,
+                "joint": "rKneePitch",
+                "nominal_rad": 1.3439035415649414,
+                "target_rad": 1.3439035415649414
+              }
+            ],
+            "duration_ms_applied": 300.0,
+            "duration_ms_original": 300.0,
+            "index": 1
+          }
+        ]
+      },
+      {
+        "id": "sitKeeperJump",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": 1.0471975803375244,
+                "target_rad": 1.0471975803375244
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.2967059910297394,
+                "target_rad": -0.2967059910297394
+              }
+            ],
+            "duration_ms_applied": 110.5,
+            "duration_ms_original": 130.0,
+            "index": 0
+          }
+        ]
+      },
+      {
+        "id": "jumpLeftFromStand",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": 1.0471975803375244,
+                "target_rad": 1.0471975803375244
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.2967059910297394,
+                "target_rad": -0.2967059910297394
+              }
+            ],
+            "duration_ms_applied": 110.5,
+            "duration_ms_original": 130.0,
+            "index": 0
+          }
+        ]
+      },
+      {
+        "id": "jumpLeftFromSitting",
+        "keyframes": [
+          {
+            "angles": [
+              {
+                "clamped": false,
+                "joint": "lShoulderRoll",
+                "nominal_rad": 1.0471975803375244,
+                "target_rad": 1.0471975803375244
+              },
+              {
+                "clamped": false,
+                "joint": "rShoulderRoll",
+                "nominal_rad": -0.36651915311813354,
+                "target_rad": -0.36651915311813354
+              }
+            ],
+            "duration_ms_applied": 340.0,
+            "duration_ms_original": 400.0,
+            "index": 1
+          }
+        ]
+      }
+    ],
+    "changed_angles": 0,
+    "changed_keyframes": 3,
+    "clamped_angles": 0,
+    "parameters": {
+      "arm_spread_rad": 0.0,
+      "guard_knee_offset_rad": 0.0,
+      "guard_time_scale": 1.0,
+      "jump_time_scale": 0.8500000238418579
+    },
+    "version": "keeper_motion_skill_v1"
+  },
+  "profile_request_count": 1,
+  "max_keeper_joint_velocity_rad_s": 19.515257317197136,
+  "seed": 84001000000,
+  "steps": 45,
+  "visible_frames": 44,
+  "velocity_frames": 43,
+  "keeper_decision": {
+    "reason": "committed",
+    "crossing_y": -0.3739442272887039,
+    "time_to_line": 1.5920031517508266,
+    "side": -1,
+    "pose_prior_used": false,
+    "policy": "vision_keeper_v6",
+    "core_policy": "vision_keeper_v2",
+    "mode": "balanced",
+    "selected_defense": "right",
+    "core_side": -1
+  },
+  "selector_context": {
+    "version": "keeper_defense_context_v1",
+    "values": [
+      -0.3739442272887039,
+      1.5920031517508266,
+      1.0470724597329273,
+      -0.10847448745079592,
+      -0.6678331415734591,
+      -0.14670674112765703,
+      0.0,
+      0.03715110967706224,
+      0.006751405953467916
+    ]
+  },
+  "first_trigger": {
+    "time_s": 4.403999999999515,
+    "capture_s": 4.403999999999515,
+    "core_side": -1,
+    "crossing_y": -0.3739442272887039,
+    "time_to_line": 1.5920031517508266
+  },
+  "requested_defense": "right",
+  "no_commit": false,
+  "context_digest": "ca02bd96f5335574d75ddd410d1c3966c2d7cf2b69f20ed98d9572919b949a1d",
+  "reset_info": {
+    "backend": "bhuman",
+    "privileged_inputs": [
+      "scene ball position",
+      "scene robot/opponent poses",
+      "torso orientation"
+    ],
+    "synthetic_inputs": [
+      "hand positions",
+      "motor currents/temperatures",
+      "joint wear"
+    ],
+    "opponent": "scripted",
+    "engine_seed": 708614479,
+    "trial": "cfd8791b77e14d5ea4f0a85679410675",
+    "ball_xy": [
+      0.12586674551524457,
+      -0.043259643257311235
+    ],
+    "start_offsets": {
+      "striker": [
+        0.004352737590816988,
+        0.009136985757259707,
+        0.08365208570051919
+      ],
+      "keeper": [
+        0.018973489451341044,
+        0.01162376875110549,
+        0.010856301406448748
+      ]
+    }
+  },
+  "runtime_provenance": {
+    "motion": {
+      "capabilities": [
+        "keeper_defenses_v2",
+        "keeper_motion_skill_v1"
+      ],
+      "cycle_s": 0.012,
+      "joint_names": [
+        "headYaw",
+        "headPitch",
+        "lShoulderPitch",
+        "lShoulderRoll",
+        "lElbowYaw",
+        "lElbowRoll",
+        "lWristYaw",
+        "lHand",
+        "rShoulderPitch",
+        "rShoulderRoll",
+        "rElbowYaw",
+        "rElbowRoll",
+        "rWristYaw",
+        "rHand",
+        "lHipYawPitch",
+        "lHipRoll",
+        "lHipPitch",
+        "lKneePitch",
+        "lAnklePitch",
+        "lAnkleRoll",
+        "rHipYawPitch",
+        "rHipRoll",
+        "rHipPitch",
+        "rKneePitch",
+        "rAnklePitch",
+        "rAnkleRoll"
+      ],
+      "keeper_defenses": [
+        "center",
+        "center_right",
+        "wide_left",
+        "wide_right",
+        "left",
+        "right"
+      ],
+      "keeper_motion_skill": {
+        "bounds": {
+          "arm_spread_rad": [
+            -0.08,
+            0.12
+          ],
+          "guard_knee_offset_rad": [
+            0.0,
+            0.1
+          ],
+          "guard_time_scale": [
+            0.85,
+            1.15
+          ],
+          "jump_time_scale": [
+            0.85,
+            1.15
+          ]
+        },
+        "units": {
+          "arm_spread_rad": "rad",
+          "guard_knee_offset_rad": "rad",
+          "guard_time_scale": "duration multiplier",
+          "jump_time_scale": "duration multiplier"
+        },
+        "version": "keeper_motion_skill_v1"
+      },
+      "keeper_preparations": [
+        "prepare"
+      ],
+      "motions": [
+        "stand",
+        "walk",
+        "kick",
+        "block",
+        "getup"
+      ],
+      "protocol": 1,
+      "provenance": {
+        "configuration_sha256": "b5aef4f1befb4cc8e6a08c0c9145333e8365470bee6b2f909f163aadb21ac1cb",
+        "host_source_sha256": "6de64760a0ea212a89f172eff8c64fbb44024e36e0ca2d5d379f4b763b4c2351",
+        "inputs_profile": "mujoco-truth-v2",
+        "manifest_sha256": "cead14ad9fe67cf8857ba1eaeae148f34fa6185ad7885c06d614759bf722a053",
+        "original_file_count": 559,
+        "simulation_calibration": {
+          "ball_radius": "INIT geometry in mm",
+          "inertial_angle": "original removeZRotation and angle-axis",
+          "left_forward_stroke_ms": 100,
+          "right_forward_stroke_ms": 200
+        },
+        "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc"
+      },
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "type": "HELLO"
+    },
+    "robot_detector": {
+      "actuators": false,
+      "algorithm_bodies": "original C++ bodies, unmodified",
+      "component": "RobotDetector upper network/preprocessing/decoding/NMS plus original lower contrast/clustering",
+      "generated_algorithms_sha256": "5281abd97b914a7a80583daa75f5a3d074da3fb7bc2e364922b76523b7981ab3",
+      "host_source_sha256": "418ff352973ff92767df8965bac43056a47b9b2d37785e255e86e9482854d43d",
+      "lower_saturation_adapter": "scalar lighting-independent saturation; not bit-identical to original JIT approximations",
+      "lower_trim_obstacles": false,
+      "model_sha256": "df593b6ff1cda30c96570806894a33542e625ecfb55f004d1b6e50fb3dfabc75",
+      "not_executed": [
+        "trimObstacle",
+        "JerseyClassifier",
+        "ObstacleModelProvider",
+        "body/field boundary providers"
+      ],
+      "onnxruntime": "1.10.0",
+      "original_manifest_sha256": "29bfe8a4ac43ed2dfd659a57cf273579cb5046e6ba34149be93914f4f7a16448",
+      "protocol": "bhuman_robot_pixels_v1",
+      "source_commit": "2360ab1100ad28f70e190c893f6b095651ff0bbc",
+      "type": "HELLO"
+    },
+    "sensor": "MuJoCo jointpos/gyro/accelerometer sensors; contact-derived own FSR; encoder FK, gyro/gravity attitude and support-foot odometry; nominal geometry, ideal sensor readings, drift/slip possible; no world pose sensors",
+    "inference_clock": "wall processing measured; simulated physics time not delayed"
+  }
+}

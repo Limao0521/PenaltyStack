@@ -1,0 +1,17 @@
+{
+  "version": "keeper_motion_training_v1",
+  "fingerprint": "5902a2313917d8fec7ddc64760cdf795ffcbead3d3656445d052ca85c7541d2a",
+  "model_sha256": "e797f90d7b9889406a6e0aa08a2ff83925a9c84c55905d285cc90b353974cb7e",
+  "selected_profile": {
+    "id": "candidate_02",
+    "parameters": {
+      "guard_time_scale": 1.0,
+      "jump_time_scale": 0.85,
+      "arm_spread_rad": 0.0,
+      "guard_knee_offset_rad": 0.0
+    }
+  },
+  "model_frozen_utc": "2026-10-11T13:33:40.681182+00:00",
+  "test_used_for_fit": false,
+  "validation_report_sha256": "1d0a479ec858c775f26ce369f43bca8c1adce8596d93a71b85d2ffe00e6b4076"
+}

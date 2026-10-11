@@ -1,0 +1,15 @@
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26200.
+-- Configuring done (0.0s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/juanu/Documents/PenaltyStack/native/bhuman_motion/build
+MSBuild version 18.9.1+a81b43525 for .NET Framework
+
+  Checking File Globs
+  main.cpp
+  kick_factory.cpp
+  keyframe_factory.cpp
+  MotionEngine.cpp
+  WalkToPoseEngine.cpp
+  File.cpp
+  bhuman_motion.vcxproj -> C:\Users\juanu\Documents\PenaltyStack\native\bhuman_motion\build\Release\bhuman_motion.exe
+C:\Users\juanu\Documents\PenaltyStack\native\bhuman_motion\build\Release\bhuman_motion.exe

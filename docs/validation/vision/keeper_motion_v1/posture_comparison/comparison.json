@@ -1,0 +1,13 @@
+{
+  "same_seed": 80002004,
+  "initial_measured_angles_exact": true,
+  "initial_torso_exact": true,
+  "figure": "posture_comparison.png",
+  "simulation_only": true,
+  "no_shot": true,
+  "parameter_increment_rad": 0.08,
+  "display_times_s": [
+    0.72,
+    1.2
+  ]
+}

@@ -1,0 +1,12 @@
+test_first_profile_reports_real_duration_and_joint_target_changes_then_compacts (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_first_profile_reports_real_duration_and_joint_target_changes_then_compacts) ... ok
+test_native_cannot_attach_profile_after_legacy_first_block (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_native_cannot_attach_profile_after_legacy_first_block) ... ok
+test_native_latches_profile_and_rejects_change_or_withdrawal (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_native_latches_profile_and_rejects_change_or_withdrawal) ... ok
+test_native_rejects_bool_null_wrong_type_missing_and_unknown_fields (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_native_rejects_bool_null_wrong_type_missing_and_unknown_fields) ... ok
+test_native_rejects_out_of_bounds_parameters (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_native_rejects_out_of_bounds_parameters) ... ok
+test_native_rejects_striker_preparation_and_non_block_profile_requests (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_native_rejects_striker_preparation_and_non_block_profile_requests) ... ok
+test_nominal_exactly_preserves_native_motor_outputs_for_all_six_defenses (tests.test_native_keeper_motion.NativeKeeperMotionTests.test_nominal_exactly_preserves_native_motor_outputs_for_all_six_defenses) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 3.065s
+
+OK
