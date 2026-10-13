@@ -1,5 +1,10 @@
 # Estado operativo — 2026-10-13
 
+Rama actual: `codex/portero-visual-y-reentrenamiento-rl`, renombrada desde
+`codex/mejora-portero`. Las anotaciones y manifiestos históricos conservan
+el nombre que tenía la rama al ejecutar cada experimento.
+Resumen público de resultados: `docs/RESUMEN_PRUEBAS.md`.
+
 ## Corrida completada: tirador preservando v2 (cierre 2026-10-13)
 
 - Petición humana: repetir entrenamiento tras la regresión de striker_visual_v3.

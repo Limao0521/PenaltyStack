@@ -12,6 +12,10 @@ This product includes software developed by B-Human (http://www.b-human.de). Ver
 
 ## Estado
 
+Rama de desarrollo: `codex/portero-visual-y-reentrenamiento-rl`.
+Resultados en tablas: [resumen de pruebas](docs/RESUMEN_PRUEBAS.md).
+Instalación, modelos entrenados y ejecución: [guía RL](docs/RL.md).
+
 - **Simulación:** dos NAO V6 articulados con raíces libres, 50 mallas visuales distintas y 23 servos físicos por robot. El motor recibe IMU, articulaciones y cargas de pie actuales; las patadas mueven el balón por contacto físico. Hay panel de iniciar, pausa, paso, reinicio, repetición, ABORT y acciones manuales.
 - **Motor original:** 559 archivos preservados con hashes, incluidos los 54 de `MotionControl`. Se compilan y ejecutan MotionEngine, WalkingEngine, KickEngine, KeyframeMotionEngine y sus proveedores. La integración usa orientación y percepción ideales; se documentan las adaptaciones en [runtime nativo](native/bhuman_motion/README.md).
 - **NAO:** cámara RGB, botón START, botón ABORT, control de cabeza y marcha acotada tienen adaptador onboard. Por defecto el proceso es de observación. El ejecutor físico de patada aún no está conectado; el adaptador rechaza `kick_enabled`.
@@ -22,7 +26,7 @@ This product includes software developed by B-Human (http://www.b-human.de). Ver
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-sim.txt
-.\.venv\Scripts\python.exe tools/build_motion_runtime.py  # requiere VS 2022 Build Tools + C++
+.\.venv\Scripts\python.exe tools/build_motion_runtime.py  # requiere MSVC Build Tools + C++ y CMake
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
 .\.venv\Scripts\python.exe -m penalty.simulator --headless
 .\.venv\Scripts\python.exe tools/build_bhuman_model.py  # regenerar MJCF y mallas desde RSI3

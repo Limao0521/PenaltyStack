@@ -4,6 +4,9 @@ Periodo: 2026-10-08 a 2026-10-10, rama `feat/rl-contracts`. Las corridas ppo_v1 
 
 Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna afirma equivalencia con el NAO real.
 
+Consulta el [resumen de pruebas en tablas](RESUMEN_PRUEBAS.md) para comparar
+los resultados del tirador, la elección de defensas y los ajustes de movimiento.
+
 ## Segundo reentrenamiento: actor v2 preservado — cierre 2026-10-13
 
 La corrida `striker_preserving_v4` terminó sin fallos registrados de

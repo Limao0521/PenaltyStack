@@ -1,6 +1,6 @@
 # Catálogo ampliado de defensas y predicción del portero
 
-Rama `codex/mejora-portero`. Se habilitan movimientos originales B-Human en MuJoCo, conservando el predictor publicado `vision_keeper_v2`. Esta ampliación no implica que los nuevos movimientos atajen más: se comparan por separado antes de elegirlos.
+Rama actual `codex/portero-visual-y-reentrenamiento-rl`. Se habilitan movimientos originales B-Human en MuJoCo, conservando el predictor publicado `vision_keeper_v2`. Esta ampliación no implica que los nuevos movimientos atajen más: se comparan por separado antes de elegirlos.
 
 ## Seis defensas y una preparación
 

@@ -2,6 +2,8 @@
 
 Implementación de la base P0 del paquete de diseño en [`docs/rl/`](rl/00_README.md). B-Human sigue siendo el controlador de bajo nivel: la política táctica decide **qué** hacer y nunca escribe los 23 servos, raíces ni velocidad del balón.
 
+Resultados y verificaciones en el [resumen de pruebas](RESUMEN_PRUEBAS.md).
+
 ```text
 L3 táctica (RL o baseline)  -> StrikerAction / KeeperAction
 L2 skills parametrizadas    -> ParameterizedKick / ParameterizedBlock (límites duros)
