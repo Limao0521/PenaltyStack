@@ -1,0 +1,53 @@
+{
+  "version": "striker_policy_init_v3",
+  "fingerprint": "3343ae9fee9a7ad2080bb26e9039fbc22958de62ebcadbaf60d322e9510256d7",
+  "policy_sha256": {
+    "model.zip": "24144140f121f874b3a19c5bf853c6b3291f1317cb99264cccb69ea57ddbd7c5",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "71ef8dac08094b4769659cc24a8df991c76afcbb886790db7c5b360501c75da4"
+  },
+  "proof": {
+    "version": "striker_policy_init_v3",
+    "policy_version": "striker_preserving_gaussian_v1",
+    "base_model_sha256": "8b82ddf261dc967e70798ad22ad72a12d6b69eec7b5565b4ed9a6790ef044452",
+    "base_actor_sha256": "795fb6a9f9ef8d98da52ac98288bc49775c2c82592ff51f31bfe5f617eabe7fd",
+    "initialized_actor_sha256": "795fb6a9f9ef8d98da52ac98288bc49775c2c82592ff51f31bfe5f617eabe7fd",
+    "actor_parameters_byte_identical": true,
+    "action_head_rescaled": false,
+    "tail_slope": 0.01,
+    "deterministic_clipping_identity": "clip(compress(m), -1, 1) == clip(m, -1, 1) for finite m",
+    "tail_derivative": 0.01,
+    "inside_derivative": 1.0,
+    "straight_through_gradient": false,
+    "initial_std": 0.25,
+    "std_bounds": [
+      0.12,
+      0.4
+    ],
+    "gamma": 1.0,
+    "value_head_zeroed": true,
+    "optimizer_reset": "complete",
+    "optimizer_initial_state_entries": 0,
+    "parameters_changed": [
+      "log_std",
+      "value_net.weight",
+      "value_net.bias"
+    ],
+    "base_timesteps": 6052886,
+    "normalization_changed_by_initializer": false,
+    "numpy_export_compatible": "deterministic clipped actions only; raw Gaussian sampling differs"
+  },
+  "base_policy_sha256": {
+    "model.zip": "8b82ddf261dc967e70798ad22ad72a12d6b69eec7b5565b4ed9a6790ef044452",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "a3cf3c277e0a8e555973b400a4d17a4487df635c4e94538a9bab1c5710f9ab99"
+  },
+  "normalization_sha256": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+  "action_std": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "selected_as_trained_candidate": false
+}

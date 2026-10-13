@@ -1,0 +1,11 @@
+{
+  "role": "striker",
+  "history": 1,
+  "stage": "striker_visual_retraining_v2",
+  "update": 64,
+  "timesteps": 6102038,
+  "training_fingerprint": "3343ae9fee9a7ad2080bb26e9039fbc22958de62ebcadbaf60d322e9510256d7",
+  "reward": "striker_visual_reward_v3",
+  "opponent": "vision_keeper_v2:balanced:original_motion",
+  "hardware_validated": false
+}

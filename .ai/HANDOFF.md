@@ -1,4 +1,44 @@
-# Estado operativo — 2026-10-11
+# Estado operativo — 2026-10-13
+
+## Corrida completada: tirador preservando v2 (cierre 2026-10-13)
+
+- Petición humana: repetir entrenamiento tras la regresión de striker_visual_v3.
+  No atribuir la regresión sólo al fallo: la inicialización calibrada ya empeoraba
+  y la recompensa descontada favorecía algunos fracasos tardíos.
+- Nueva versión: striker_retraining_v2.py, striker_visual_env_v2.py (reward_v3,
+  gamma 1, pasos cero y terminal ±1), striker_preserving_policy.py (actor v2
+  byte idéntico; compresión de colas gaussianas preserva clip determinista).
+  Adam fresco, salida del crítico cero, sigma .25 limitado a [.12,.40].
+- Output completo runs/striker_retrain_v2/preserving_v4, fingerprint
+  3343ae9fee9a7ad2080bb26e9039fbc22958de62ebcadbaf60d322e9510256d7.
+  Log runs/striker_retrain_v2/preserving_v4.log. La sesión de entrenamiento terminó.
+  Fuentes congeladas: 121 inputs; originales B-Human 559 intactos.
+- Protocolo fijo: 96 ×128 ×6 =73 728 nuevas transiciones optimizadas, tope7200s;
+  cinco workers balanced original y uno FSM propia. Seeds101001/102001/103001,
+  validación64 por rival balanced+FSM, CP32/64/96, test100×2×3=600duelos.
+  Retención FSM máximo10pp observado; promoción strictval primary>v2 y
+  blindCI primarylow>0 más FSM pointdrop≤.10. Test no elige pesos.
+- Preflight: 367 tests pasan92.434s; smoke64 transiciones/0episodios completos,
+  cuatro duelos de paridad sobre104001 con trayectorias obs/acción/resultados exactos.
+  Primer helper de preflight falló antes de física por extra history duplicado
+  al guardar; log preservado, segundo intento corregido pasó. No error de train.
+- Entrenamiento final: 96 updates, 73 728 transiciones optimizadas, 902 registros
+  completos (232 goles, 663 atajadas, 4 miss, 3 timeout), 54.9 minutos. Cero fallos
+  registrados; cero errores de simulación en los 640 duelos de validación y 600 de prueba.
+- Validación eligió CP64: 14/64 goles ante balanced vs 13/64 de v2; ambos 60/64 FSM.
+  El actor inicializado fue idéntico a v2 en los 256 duelos de ambos controles.
+  Seleccionado: 49 152 transiciones nuevas; model SHA
+  70427ae8a0ae2e84f598f8af7e91b1287dd16d278764abdbd5ab4488677ceb36.
+- Prueba ciega, goles v2/nuevo: balanced 12/15, salto ajustado 19/23, FSM 93/93,
+  todos sobre 100. IC pareados: +3 pp [−1,+8], +4 pp [−2,+10], 0 [0,0].
+  Mejora pequeña observada, no concluyente; no cumple promoción. V2 recomendado,
+  preserving_v4 experimental. No comparar directamente con tasas históricas de otros seeds.
+- Auditoría final completa en final_audit.json: 121 inputs, 559 originales, 96 CP,
+  caches, métricas y procesos verificados. Exportados models/rl/striker_preserving_v4
+  y docs/validation/rl/striker_preserving_v4. ZIP 75 272 832 bytes, SHA
+  ea5a820fc8c8f1247509c12cde3980534cda423258fa63bf3cbfc6096eb882ce.
+  Numpy export compatible sólo para inferencia determinista; entrenamiento síncrono
+  con retrain_striker_v2.py, no sampler asíncrono genérico. Métodos y resultados en docs.
 
 ## Actualización: tirador reentrenado contra v2 balanced (2026-10-11)
 

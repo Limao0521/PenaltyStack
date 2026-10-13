@@ -4,6 +4,59 @@ Periodo: 2026-10-08 a 2026-10-10, rama `feat/rl-contracts`. Las corridas ppo_v1 
 
 Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna afirma equivalencia con el NAO real.
 
+## Segundo reentrenamiento: actor v2 preservado — cierre 2026-10-13
+
+La corrida `striker_preserving_v4` terminó sin fallos registrados de
+entrenamiento ni errores de simulación en validación o prueba. Recupera el
+rendimiento de v2 y consigue una ventaja pequeña en esta muestra, pero no
+cumple el criterio de ventaja concluyente fijado antes de entrenar. Se
+conserva v2 como recomendado y el candidato como experimental.
+
+Se completaron 96 actualizaciones y 73 728 transiciones optimizadas en
+54.9 minutos, con cinco entornos contra el portero visual v2 `balanced` y
+uno contra nuestra FSM base. La inicialización conservó el actor de v2 y
+su normalización; cambió la exploración sin alterar sus acciones
+deterministas. La recompensa nueva v3 usa gamma 1, cero por paso y ±1
+terminal para optimizar goles sin favorecer fracasos tardíos.
+
+La validación incluyó 640 duelos, con 64 casos por portero y cinco políticas. La
+inicialización y v2 produjeron resultados idénticos. Se eligió el checkpoint
+64: 14/64 goles ante balanced, frente a 13/64 de v2; ambos anotaron 60/64
+ante la FSM. El seleccionado incorpora 49 152 transiciones nuevas.
+
+Prueba independiente de **600 penales nuevos**, 100 por tirador y rival:
+
+| Rival | Goles v2 | Goles nuevo | Diferencia, IC95 pareado |
+| --- | ---: | ---: | --- |
+| Visual v2 `balanced`, movimiento original | 12/100 | 15/100 | +3 puntos [−1, +8] |
+| Visual v2 `balanced`, salto ajustado | 19/100 | 23/100 | +4 puntos [−2, +10] |
+| FSM base propia, motor B-Human | 93/100 | 93/100 | 0 puntos [0, 0] |
+
+Cada tirador tuvo dos fallos de tiro por rival, separados de las atajadas.
+Las semillas nuevas explican que las cifras de v2 difieran del ensayo
+anterior: la comparación válida es entre ambos tiradores dentro de esta
+prueba. Los intervalos ante los porteros visuales incluyen cero; no se
+afirma superioridad general. El criterio de conservar rendimiento frente
+a FSM es un margen observado de diez puntos, no una prueba formal de no
+inferioridad. Los intervalos secundarios no corrigen comparaciones múltiples.
+
+Las 367 pruebas pasan; cuatro duelos de paridad comprobaron observaciones,
+acciones y resultados idénticos antes de aprender. La auditoría verificó
+los 96 checkpoints, 121 inputs congelados, 559 originales, semillas,
+normalización, métricas y cierre de procesos. El fallo previo de un helper
+al guardar una configuración ocurrió antes de la física y quedó separado
+del entrenamiento final, que no tuvo interrupciones.
+
+El tirador mantiene observación privilegiada de escena con ruido; el
+portero usa RGB y sensores propios ideales simulados. La FSM es del
+proyecto, no el comportamiento oficial completo de B-Human. El controlador
+motor sigue siendo B-Human; no se aprendieron trayectorias articulares ni
+se validó hardware.
+
+Método: [ENTRENAMIENTO_TIRADOR_PRESERVADO.md](ENTRENAMIENTO_TIRADOR_PRESERVADO.md).
+Resultados, modelo y ZIP de toda la corrida:
+[reporte versionado](validation/rl/striker_preserving_v4/README.md).
+
 ## Reentrenamiento contra el portero visual — 2026-10-11
 
 La corrida corta `striker_visual_v3` **no superó al tirador v2**. Se mantiene

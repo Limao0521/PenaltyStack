@@ -1,0 +1,457 @@
+{
+  "version": "striker_visual_checkpoint_v2",
+  "fingerprint": "3343ae9fee9a7ad2080bb26e9039fbc22958de62ebcadbaf60d322e9510256d7",
+  "payload_sha256": "daf49eef47aa3669453e5e130812e2953a67218d759832231c7d7928b0b4f39e",
+  "payload": {
+    "version": "striker_visual_retraining_v2",
+    "created_utc": "2026-10-12T00:24:28.781064+00:00",
+    "fingerprint": "3343ae9fee9a7ad2080bb26e9039fbc22958de62ebcadbaf60d322e9510256d7",
+    "policy": "checkpoints/update_0064",
+    "policy_sha256": {
+      "model.zip": "70427ae8a0ae2e84f598f8af7e91b1287dd16d278764abdbd5ab4488677ceb36",
+      "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+      "config.json": "6b3ccfce8ca7211e7fd109e92401c1b5a62d24ab9ceaf2e19ba05efdc9d91481"
+    },
+    "update": 64,
+    "validation_summary": {
+      "episodes": 64,
+      "counts": {
+        "goal": 14,
+        "miss": 1,
+        "save": 49
+      },
+      "goal_rate": 0.21875,
+      "save_rate": 0.765625,
+      "goal_ci95": [
+        0.13502197461349755,
+        0.3343301633077779
+      ],
+      "sim_errors": 0,
+      "striker_fall_rate": 0.0,
+      "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+    },
+    "candidates": [
+      {
+        "update": 0,
+        "policy": "frozen/striker_v2",
+        "policy_sha256": {
+          "model.zip": "8b82ddf261dc967e70798ad22ad72a12d6b69eec7b5565b4ed9a6790ef044452",
+          "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+          "config.json": "a3cf3c277e0a8e555973b400a4d17a4487df635c4e94538a9bab1c5710f9ab99"
+        },
+        "summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 13,
+            "miss": 1,
+            "save": 50
+          },
+          "goal_rate": 0.203125,
+          "save_rate": 0.78125,
+          "goal_ci95": [
+            0.12273302562695812,
+            0.3171386755121659
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "retention_summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 60,
+            "miss": 1,
+            "save": 3
+          },
+          "goal_rate": 0.9375,
+          "save_rate": 0.046875,
+          "goal_ci95": [
+            0.8500230335750312,
+            0.9754291963252071
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        }
+      },
+      {
+        "update": 32,
+        "policy": "checkpoints/update_0032",
+        "policy_sha256": {
+          "model.zip": "592bfe68656fb5d58fa1092b43f4d296011cfd85dfa154eb0def6aea7ab01397",
+          "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+          "config.json": "6e0abdd156ecc3efd14f22012d0c345055969c453268caffa3956b1f03491084"
+        },
+        "summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 13,
+            "miss": 1,
+            "save": 50
+          },
+          "goal_rate": 0.203125,
+          "save_rate": 0.78125,
+          "goal_ci95": [
+            0.12273302562695812,
+            0.3171386755121659
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "retention_summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 60,
+            "miss": 1,
+            "save": 3
+          },
+          "goal_rate": 0.9375,
+          "save_rate": 0.046875,
+          "goal_ci95": [
+            0.8500230335750312,
+            0.9754291963252071
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "vs_v2": {
+          "episodes": 64,
+          "goal_gain": 0.0,
+          "goal_gain_ci95": [
+            0.0,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        },
+        "retention_vs_v2": {
+          "episodes": 64,
+          "goal_gain": 0.0,
+          "goal_gain_ci95": [
+            0.0,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        },
+        "vs_initialized": {
+          "episodes": 64,
+          "goal_gain": 0.0,
+          "goal_gain_ci95": [
+            0.0,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        }
+      },
+      {
+        "update": 64,
+        "policy": "checkpoints/update_0064",
+        "policy_sha256": {
+          "model.zip": "70427ae8a0ae2e84f598f8af7e91b1287dd16d278764abdbd5ab4488677ceb36",
+          "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+          "config.json": "6b3ccfce8ca7211e7fd109e92401c1b5a62d24ab9ceaf2e19ba05efdc9d91481"
+        },
+        "summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 14,
+            "miss": 1,
+            "save": 49
+          },
+          "goal_rate": 0.21875,
+          "save_rate": 0.765625,
+          "goal_ci95": [
+            0.13502197461349755,
+            0.3343301633077779
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "retention_summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 60,
+            "miss": 1,
+            "save": 3
+          },
+          "goal_rate": 0.9375,
+          "save_rate": 0.046875,
+          "goal_ci95": [
+            0.8500230335750312,
+            0.9754291963252071
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "vs_v2": {
+          "episodes": 64,
+          "goal_gain": 0.015625,
+          "goal_gain_ci95": [
+            0.0,
+            0.046875
+          ],
+          "candidate_only_goals": 1,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        },
+        "retention_vs_v2": {
+          "episodes": 64,
+          "goal_gain": 0.0,
+          "goal_gain_ci95": [
+            0.0,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        },
+        "vs_initialized": {
+          "episodes": 64,
+          "goal_gain": 0.015625,
+          "goal_gain_ci95": [
+            0.0,
+            0.046875
+          ],
+          "candidate_only_goals": 1,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        }
+      },
+      {
+        "update": 96,
+        "policy": "checkpoints/update_0096",
+        "policy_sha256": {
+          "model.zip": "9c06248f87809dbf4e6030cb6a8f39f225844aaed75843f943dedd3b38ecbeae",
+          "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+          "config.json": "4b9f6282a7a331c1b7782435177a4f7f6753d88ff30a36dde4066ef82873f796"
+        },
+        "summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 12,
+            "miss": 1,
+            "save": 51
+          },
+          "goal_rate": 0.1875,
+          "save_rate": 0.796875,
+          "goal_ci95": [
+            0.11064534880922097,
+            0.29974591554775176
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "retention_summary": {
+          "episodes": 64,
+          "counts": {
+            "goal": 60,
+            "miss": 1,
+            "save": 3
+          },
+          "goal_rate": 0.9375,
+          "save_rate": 0.046875,
+          "goal_ci95": [
+            0.8500230335750312,
+            0.9754291963252071
+          ],
+          "sim_errors": 0,
+          "striker_fall_rate": 0.0,
+          "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+        },
+        "vs_v2": {
+          "episodes": 64,
+          "goal_gain": -0.015625,
+          "goal_gain_ci95": [
+            -0.046875,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 1,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        },
+        "retention_vs_v2": {
+          "episodes": 64,
+          "goal_gain": 0.0,
+          "goal_gain_ci95": [
+            0.0,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 0,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        },
+        "vs_initialized": {
+          "episodes": 64,
+          "goal_gain": -0.015625,
+          "goal_gain_ci95": [
+            -0.046875,
+            0.0
+          ],
+          "candidate_only_goals": 0,
+          "baseline_only_goals": 1,
+          "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+        }
+      }
+    ],
+    "retention_summary": {
+      "episodes": 64,
+      "counts": {
+        "goal": 60,
+        "miss": 1,
+        "save": 3
+      },
+      "goal_rate": 0.9375,
+      "save_rate": 0.046875,
+      "goal_ci95": [
+        0.8500230335750312,
+        0.9754291963252071
+      ],
+      "sim_errors": 0,
+      "striker_fall_rate": 0.0,
+      "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+    },
+    "retention_gate_satisfied": true,
+    "diagnostic_only": false,
+    "retention_max_drop": 0.1,
+    "promotion_candidate": {
+      "update": 64,
+      "policy": "checkpoints/update_0064",
+      "policy_sha256": {
+        "model.zip": "70427ae8a0ae2e84f598f8af7e91b1287dd16d278764abdbd5ab4488677ceb36",
+        "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+        "config.json": "6b3ccfce8ca7211e7fd109e92401c1b5a62d24ab9ceaf2e19ba05efdc9d91481"
+      },
+      "summary": {
+        "episodes": 64,
+        "counts": {
+          "goal": 14,
+          "miss": 1,
+          "save": 49
+        },
+        "goal_rate": 0.21875,
+        "save_rate": 0.765625,
+        "goal_ci95": [
+          0.13502197461349755,
+          0.3343301633077779
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "retention_summary": {
+        "episodes": 64,
+        "counts": {
+          "goal": 60,
+          "miss": 1,
+          "save": 3
+        },
+        "goal_rate": 0.9375,
+        "save_rate": 0.046875,
+        "goal_ci95": [
+          0.8500230335750312,
+          0.9754291963252071
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "vs_v2": {
+        "episodes": 64,
+        "goal_gain": 0.015625,
+        "goal_gain_ci95": [
+          0.0,
+          0.046875
+        ],
+        "candidate_only_goals": 1,
+        "baseline_only_goals": 0,
+        "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+      },
+      "retention_vs_v2": {
+        "episodes": 64,
+        "goal_gain": 0.0,
+        "goal_gain_ci95": [
+          0.0,
+          0.0
+        ],
+        "candidate_only_goals": 0,
+        "baseline_only_goals": 0,
+        "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+      },
+      "vs_initialized": {
+        "episodes": 64,
+        "goal_gain": 0.015625,
+        "goal_gain_ci95": [
+          0.0,
+          0.046875
+        ],
+        "candidate_only_goals": 1,
+        "baseline_only_goals": 0,
+        "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+      }
+    },
+    "validation_prefers_trained_over_v2": true,
+    "initialization_diagnostic": {
+      "summary": {
+        "episodes": 64,
+        "counts": {
+          "goal": 13,
+          "miss": 1,
+          "save": 50
+        },
+        "goal_rate": 0.203125,
+        "save_rate": 0.78125,
+        "goal_ci95": [
+          0.12273302562695812,
+          0.3171386755121659
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "retention_summary": {
+        "episodes": 64,
+        "counts": {
+          "goal": 60,
+          "miss": 1,
+          "save": 3
+        },
+        "goal_rate": 0.9375,
+        "save_rate": 0.046875,
+        "goal_ci95": [
+          0.8500230335750312,
+          0.9754291963252071
+        ],
+        "sim_errors": 0,
+        "striker_fall_rate": 0.0,
+        "denominator": "all scheduled episodes, including misses/falls/timeout/simulation errors"
+      },
+      "vs_v2": {
+        "episodes": 64,
+        "goal_gain": 0.0,
+        "goal_gain_ci95": [
+          0.0,
+          0.0
+        ],
+        "candidate_only_goals": 0,
+        "baseline_only_goals": 0,
+        "ci_method": "paired bootstrap of goal indicator, all scheduled episodes"
+      },
+      "eligible_for_selection": false
+    },
+    "validation_report_sha256": "3dc1bd3b6b16a025fbb45e52f450a646df663d810b04e310008a424d3b9bf679",
+    "selection_rule": "best trained primary validation goals satisfying FSM retention; diagnostic fallback if none; promotion compared separately with v2",
+    "retention_gate_is_formal_noninferiority_test": false,
+    "test_used_for_selection": false,
+    "hardware_validated": false
+  }
+}

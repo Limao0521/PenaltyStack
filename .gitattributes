@@ -101,3 +101,11 @@ tools/retrain_striker.py text eol=lf
 tests/test_striker_*.py text eol=lf
 docs/validation/rl/striker_visual_v3/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 models/rl/striker_visual_v3/** -text -diff
+
+# Preserve the new behavior-preserving striker protocol and evidence.
+penalty/rl/striker_preserving_policy.py text eol=lf
+penalty/rl/striker_retraining_v2.py text eol=lf
+penalty/rl/striker_visual_env_v2.py text eol=lf
+tools/retrain_striker_v2.py text eol=lf
+docs/validation/rl/striker_preserving_v4/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+models/rl/striker_preserving_v4/** -text -diff

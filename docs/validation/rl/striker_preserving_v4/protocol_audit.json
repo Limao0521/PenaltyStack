@@ -1,0 +1,64 @@
+{
+  "version": "striker_preserving_protocol_audit_v1",
+  "created_utc": "2026-10-11T23:15:14.578874+00:00",
+  "run_fingerprint": "3343ae9fee9a7ad2080bb26e9039fbc22958de62ebcadbaf60d322e9510256d7",
+  "status": "passed",
+  "source_inputs_verified": 121,
+  "baseline_original_files_verified": 559,
+  "frozen_base_policy_sha256": {
+    "model.zip": "8b82ddf261dc967e70798ad22ad72a12d6b69eec7b5565b4ed9a6790ef044452",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "a3cf3c277e0a8e555973b400a4d17a4487df635c4e94538a9bab1c5710f9ab99"
+  },
+  "initialized_policy_sha256": {
+    "model.zip": "24144140f121f874b3a19c5bf853c6b3291f1317cb99264cccb69ea57ddbd7c5",
+    "obs_norm.npz": "c90f56c39699d528e3b5fd76e5569840087024f438425ec048493656dd02ad60",
+    "config.json": "71ef8dac08094b4769659cc24a8df991c76afcbb886790db7c5b360501c75da4"
+  },
+  "actor_parameters_sha256": "795fb6a9f9ef8d98da52ac98288bc49775c2c82592ff51f31bfe5f617eabe7fd",
+  "actor_parameters_byte_identical": true,
+  "changed_parameter_names": [
+    "log_std",
+    "value_net.weight",
+    "value_net.bias"
+  ],
+  "value_head_zero": true,
+  "optimizer_initial_state_entries": 0,
+  "action_std": [
+    0.25,
+    0.25,
+    0.25,
+    0.25
+  ],
+  "ppo_seed_metadata_and_exploration_seed": 101001,
+  "initial_num_timesteps": 6052886,
+  "normalization_byte_identical": true,
+  "deterministic_action_identity_checks": {
+    "normalized_observations": 1024,
+    "bitwise_equal": true,
+    "maximum_absolute_difference": 0.0
+  },
+  "objective": "gamma=1, zero nonterminal reward, terminal +1 goal / -1 other valid result; expected return 2P(goal)-1",
+  "training_worker_opponents": [
+    "balanced",
+    "balanced",
+    "balanced",
+    "balanced",
+    "balanced",
+    "scripted"
+  ],
+  "training_budget_optimized_transitions": 73728,
+  "validation_seeds_per_policy_per_opponent": 64,
+  "blind_test_seeds_per_policy_per_opponent": 100,
+  "selection_uses_test": false,
+  "retention_is_formal_noninferiority_test": false,
+  "promotion_rule": {
+    "validation_primary_goal_rate_strictly_above_v2": true,
+    "validation_fsm_point_drop_at_most": 0.1,
+    "blind_primary_paired_ci95_lower_strictly_above_zero": true,
+    "blind_fsm_point_drop_at_most": 0.1,
+    "retention_is_formal_noninferiority_test": false
+  },
+  "physical_episodes_run_by_this_audit": 0,
+  "scope": "frozen protocol and actual initialized checkpoint, not a performance result"
+}

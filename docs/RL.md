@@ -24,6 +24,10 @@ Reentrenamiento táctico de v2 contra el portero visual `balanced`, con
 calibración de salidas saturadas y prueba pareada independiente:
 [ENTRENAMIENTO_TIRADOR_VISUAL.md](ENTRENAMIENTO_TIRADOR_VISUAL.md).
 
+Segundo protocolo, con actor inicial preservado, exploración compatible con
+sus acciones y recompensa de goles sin descuento:
+[ENTRENAMIENTO_TIRADOR_PRESERVADO.md](ENTRENAMIENTO_TIRADOR_PRESERVADO.md).
+
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
 ```
