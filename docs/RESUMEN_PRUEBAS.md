@@ -3,24 +3,62 @@
 Rama actual: `codex/portero-visual-y-reentrenamiento-rl`.
 Todo lo siguiente corresponde a simulación MuJoCo con motores B-Human.
 
-## Tirador: última prueba independiente
+## Quién tira contra quién: goles y atajadas
 
-**600 penales nuevos**, 100 por tirador y portero, emparejados por semilla
-y condiciones iniciales dentro de cada rival. Más goles es mejor para el tirador.
+**Nuestro tirador recomendado es v2; nuestro portero de referencia es el
+visual v2 `balanced`, con movimientos originales.** En esta tabla, «base»
+significa nuestra FSM con motores B-Human. No se ha evaluado el comportamiento
+oficial completo del equipo B-Human.
 
-| Portero rival | Tirador v2 | Nuevo tirador v4 | Cambio de goles | IC95 pareado |
-| :--- | ---: | ---: | ---: | :--- |
-| Visual v2 `balanced`, movimiento original | 12/100 · 12 % | **15/100 · 15 %** | +3 puntos | −1 a +8 puntos |
-| Visual v2 `balanced`, salto ajustado | 19/100 · 19 % | **23/100 · 23 %** | +4 puntos | −2 a +10 puntos |
-| FSM base propia, motor B-Human | **93/100 · 93 %** | **93/100 · 93 %** | 0 puntos | 0 a 0 puntos |
+Cada fila muestra un cruce concreto. Los goles son del tirador y las atajadas
+son del portero; un tiro fuera/corto o un timeout no cuenta como atajada.
 
-Cada tirador registró dos tiros fuera/cortos por rival, separados de las
-atajadas. El nuevo tirador conserva el rendimiento frente a la FSM y mejora
-ligeramente en esta muestra frente a los porteros visuales. Los intervalos
-incluyen empate: **v2 sigue recomendado y v4 queda experimental**.
+| Quién tira | Contra qué portero | Penales | Goles del tirador | Atajadas del portero | Fuera/cortos | Timeouts | Ensayo |
+| :--- | :--- | ---: | ---: | ---: | ---: | ---: | :--- |
+| **Nuestro tirador v2** | Base/FSM, motor B-Human | 100 | **93 (93 %)** | 5 | 2 | 0 | A |
+| **Nuestro tirador v2** | **Nuestro visual v2 `balanced`** | 100 | **12 (12 %)** | **86** | 2 | 0 | A |
+| Tirador base/FSM, motor B-Human | **Nuestro visual v2 `balanced`** | 20 | **2 (10 %)** | **17** | 0 | 1 | B |
+| Tirador base/FSM, motor B-Human | Base/FSM, motor B-Human | 200 | **14 (7 %)** | 181 | 4 | 1 | C |
+| Nuevo tirador v4, experimental | Base/FSM, motor B-Human | 100 | **93 (93 %)** | 5 | 2 | 0 | A |
+| Nuevo tirador v4, experimental | Nuestro visual v2 `balanced` | 100 | **15 (15 %)** | 83 | 2 | 0 | A |
 
-Fuente: [reporte completo de preserving_v4](validation/rl/striker_preserving_v4/README.md)
-y [registros de prueba](validation/rl/striker_preserving_v4/test_report.json).
+**Lectura directa:** en el ensayo A, nuestro tirador v2 mete 93 de 100 al
+portero base y 12 de 100 a nuestro portero. Nuestro portero ataja 86 de esos
+100 tiros de v2. Frente al tirador base atajó 17 de 20 en el ensayo B.
+
+Las filas proceden de tres ensayos diferentes; B y C no son una comparación
+pareada entre porteros. No se extrapolan sus conteos a 100 ni se mezclan sus
+semillas. Los cruces del ensayo A sí usan las mismas semillas y condiciones
+iniciales para ambos tiradores dentro de cada rival.
+
+- **A:** prueba independiente del último reentrenamiento: 600 duelos, 100 por
+  tirador y rival. [Registros y conteos](validation/rl/striker_preserving_v4/test_report.json).
+- **B:** prueba ciega del selector: subconjunto `center`, política `balanced`,
+  20 penales. [Reporte](validation/vision/keeper_selector_v1/heldout_report.json).
+  El estilo `center` solicita exactamente la misma acción que el tirador
+  `scripted`: centro, pie izquierdo, potencia nominal y disparo inmediato.
+  Se verificó la igualdad de sus acciones normalizadas; la equivalencia es
+  con nuestra política base, no con el equipo oficial B-Human.
+- **C:** duelo histórico del 2026-10-10, condición `realista`, cruce
+  `scripted|scripted`, 200 penales.
+  [Reporte](validation/rl/duelo_tiradores_vs_portero_fsm_20261010.json).
+
+## Ensayo adicional: portero con salto ajustado
+
+Estas dos filas también pertenecen al ensayo A. El movimiento ajustado es
+experimental y no sustituye al portero de referencia de la tabla anterior.
+
+| Quién tira | Contra qué portero | Penales | Goles del tirador | Atajadas del portero | Fuera/cortos |
+| :--- | :--- | ---: | ---: | ---: | ---: |
+| Nuestro tirador v2 | Nuestro visual v2 `balanced`, salto ajustado | 100 | **19 (19 %)** | 79 | 2 |
+| Nuevo tirador v4, experimental | Nuestro visual v2 `balanced`, salto ajustado | 100 | **23 (23 %)** | 75 | 2 |
+
+El nuevo tirador anota tres goles más frente al portero de referencia y
+cuatro más frente al salto ajustado. Los IC95 pareados de esas diferencias
+son −1 a +8 y −2 a +10 puntos porcentuales: incluyen empate.
+**v2 sigue recomendado y v4 queda experimental**.
+
+Fuente: [reporte completo de preserving_v4](validation/rl/striker_preserving_v4/README.md).
 
 ## Comprobaciones del último reentrenamiento
 

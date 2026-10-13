@@ -4,8 +4,11 @@ Periodo: 2026-10-08 a 2026-10-10, rama `feat/rl-contracts`. Las corridas ppo_v1 
 
 Todas las cifras son de simulación (MuJoCo + motor B-Human original). Ninguna afirma equivalencia con el NAO real.
 
-Consulta el [resumen de pruebas en tablas](RESUMEN_PRUEBAS.md) para comparar
-los resultados del tirador, la elección de defensas y los ajustes de movimiento.
+Consulta la [tabla de cruces: quién tira contra quién, goles y atajadas](RESUMEN_PRUEBAS.md#quién-tira-contra-quién-goles-y-atajadas).
+Incluye nuestro tirador contra el portero base y el visual `balanced`, y
+el tirador base contra ambos porteros, indicando el ensayo y su número real
+de penales. «Base» es nuestra FSM con motores B-Human, no el comportamiento
+oficial completo del equipo B-Human.
 
 ## Segundo reentrenamiento: actor v2 preservado — cierre 2026-10-13
 
@@ -29,11 +32,20 @@ ante la FSM. El seleccionado incorpora 49 152 transiciones nuevas.
 
 Prueba independiente de **600 penales nuevos**, 100 por tirador y rival:
 
-| Rival | Goles v2 | Goles nuevo | Diferencia, IC95 pareado |
-| --- | ---: | ---: | --- |
-| Visual v2 `balanced`, movimiento original | 12/100 | 15/100 | +3 puntos [−1, +8] |
-| Visual v2 `balanced`, salto ajustado | 19/100 | 23/100 | +4 puntos [−2, +10] |
-| FSM base propia, motor B-Human | 93/100 | 93/100 | 0 puntos [0, 0] |
+| Quién tira | Contra qué portero | Penales | Goles del tirador | Atajadas del portero | Fuera/cortos |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Nuestro tirador v2 | Base/FSM, motor B-Human | 100 | 93 | 5 | 2 |
+| Nuestro tirador v2 | Nuestro visual v2 `balanced`, movimiento original | 100 | 12 | 86 | 2 |
+| Nuevo tirador v4, experimental | Base/FSM, motor B-Human | 100 | 93 | 5 | 2 |
+| Nuevo tirador v4, experimental | Nuestro visual v2 `balanced`, movimiento original | 100 | 15 | 83 | 2 |
+| Nuestro tirador v2 | Nuestro visual v2 `balanced`, salto ajustado | 100 | 19 | 79 | 2 |
+| Nuevo tirador v4, experimental | Nuestro visual v2 `balanced`, salto ajustado | 100 | 23 | 75 | 2 |
+
+La diferencia de goles de v4 respecto a v2 es +3 puntos ante `balanced`
+original (IC95 pareado [−1, +8]), +4 ante el salto ajustado ([−2, +10]) y
+0 ante la FSM ([0, 0]). El cruce inverso, tirador base contra nuestro portero,
+está documentado en el resumen con su ensayo separado; no forma parte de
+estos 600 duelos.
 
 Cada tirador tuvo dos fallos de tiro por rival, separados de las atajadas.
 Las semillas nuevas explican que las cifras de v2 difieran del ensayo
