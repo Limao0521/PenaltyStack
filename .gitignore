@@ -6,3 +6,6 @@ dist/
 runs/
 native/bhuman_motion/build/
 native/bhuman_motion/vendor/
+
+# Chat attachment cache; project reference images are kept under docs/media/.
+.codex-remote-attachments/
