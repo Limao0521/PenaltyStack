@@ -7,21 +7,26 @@ Comandos, validación y límites en [ORIENTACION_PORTERO.md](ORIENTACION_PORTERO
 
 ## Abrir en este equipo
 
+Desde la raíz de una copia preparada del repositorio:
+
 ```powershell
-cd C:\Users\limao\Workspace\02_Research\PenaltyStack
 .\.venv\Scripts\python.exe -m penalty.simulator
 ```
 
 Abre el visor MuJoCo y el panel de control. La escena aparece inmóvil en
-`PREPARED`; pulsa **Iniciar**. El runtime nativo ya está compilado en este
-checkout. Cierra cualquiera de las dos ventanas para terminar; el trabajador
+`PREPARED`; pulsa **Iniciar**. Este equipo tiene el runtime nativo compilado;
+una copia nueva requiere compilarlo primero. Cierra cualquiera de las dos ventanas para terminar; el trabajador
 recoge los dos procesos B-Human. La escena permanece abierta al terminar un ensayo.
 
 Para instalar desde una copia nueva: crear `.venv`, instalar
 `requirements-sim.txt` y ejecutar `tools/build_motion_runtime.py` con Visual
-Studio 2022 Build Tools, componente Desktop development with C++, y CMake.
+Studio Build Tools compatible (2022 o 2026), componente Desktop development with C++, y CMake.
 La primera compilación descarga dependencias con SHA256 fijado. El build
 posterior y la simulación utilizan los archivos locales.
+
+La ruta RL con portero visual también requiere `requirements-rl.txt` y el
+runtime de percepción generado por `tools/build_robot_perception.py`.
+Preparación completa y modelos entrenados en [RL.md](RL.md#instalación).
 
 ## Controles
 

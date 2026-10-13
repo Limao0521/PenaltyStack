@@ -28,9 +28,25 @@ Segundo protocolo, con actor inicial preservado, exploración compatible con
 sus acciones y recompensa de goles sin descuento:
 [ENTRENAMIENTO_TIRADOR_PRESERVADO.md](ENTRENAMIENTO_TIRADOR_PRESERVADO.md).
 
+En una copia nueva de Windows, prepara Python 3.11 y Visual Studio Build
+Tools con el componente de C++ y CMake. El entorno virtual, las dependencias
+descargadas y los directorios de compilación se generan localmente. Ejecuta
+estos comandos desde la raíz del repositorio:
+
 ```powershell
+py -3.11 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-rl.txt
+.\.venv\Scripts\python.exe tools/build_motion_runtime.py
+.\.venv\Scripts\python.exe tools/build_robot_perception.py
 ```
+
+Los modelos ya entrenados se encuentran en `models/rl/`; no necesitan
+reentrenarse para usarlos. El estado recomendado o experimental está en
+`models/rl/manifest.json`. Los perfiles del portero están en `models/vision/`.
+Comandos para visualizar los modelos y entrenar una corrida nueva:
+[ENTRENAMIENTO_TIRADOR_PRESERVADO.md](ENTRENAMIENTO_TIRADOR_PRESERVADO.md#ejecutar-con-los-modelos-publicados).
+Las versiones usadas para reproducir los resultados constan en los
+manifiestos de cada corrida.
 
 ## Módulos
 
@@ -50,6 +66,7 @@ sus acciones y recompensa de goles sin descuento:
 | `penalty/rl/run_metadata.py` | Commit, estado sucio, versiones, hashes y plataforma de cada ejecución. |
 | `penalty/rl/training.py`, `tools/train_rl.py` | Currículo PPO, convergencia, protecciones, checkpoints y supervisor con reinicio. |
 | `penalty/rl/async_ppo.py`, `actors.py` | Recolección asíncrona para B-Human: workers con política numpy y `AsyncPPO`. |
+| `penalty/rl/striker_preserving_policy.py`, `striker_visual_env_v2.py`, `striker_retraining_v2.py`, `tools/retrain_striker_v2.py` | Afinamiento que conserva las acciones iniciales de v2, recompensa de goles sin descuento, recolección PPO síncrona, validación de conservación y prueba pareada. `striker_preserving_v4` usa este runner dedicado. |
 | `penalty/rl/duel.py`, `tools/duel_rl.py`, `tools/watch_rl.py` | Duelo entre políticas; ver penales en el visor de MuJoCo o grabarlos en MP4. |
 | `penalty/rl/anticipation.py`, `tools/fit_kick_predictor.py` | Portero que lee la postura del tirador: predictor del lado (`models/rl/kick_side_predictor.json`) y baseline `anticipation`. Detalle en [MEJORA_DE_PORTERO.md](MEJORA_DE_PORTERO.md). |
 | `penalty/rl/robust_keeper.py`, `keeper_benchmark.py`, `keeper_noise.py`, `tools/evaluate_keeper_robustness.py` | Baseline temporal `robust`, benchmark de ocho estilos y perturbaciones versionadas. 84.6 % de atajadas de media; peor estilo 77 %. Con perturbaciones: 70.2 % y 57 %. Ver [PORTERO_ROBUSTO.md](PORTERO_ROBUSTO.md). |

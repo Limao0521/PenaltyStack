@@ -97,6 +97,33 @@ completos conservan pesos, Adam y RNG; la reanudación empieza episodios
 físicos nuevos y no pretende restaurar un estado exacto de MuJoCo.
 
 La corrida guarda versiones y hashes de entradas, runtime, modelos,
-normalización, evaluaciones y checkpoints. Los resultados estarán en
-`docs/validation/rl/striker_preserving_v4/`; el modelo anterior y sus reportes
-se conservan sin editar.
+normalización, evaluaciones y checkpoints. Los resultados están en el
+[reporte preserving_v4](validation/rl/striker_preserving_v4/README.md);
+el modelo anterior y sus reportes se conservan sin editar.
+
+## Ejecutar con los modelos publicados
+
+Los pesos ya entrenados están en `models/rl/`. Cada modelo incluye
+`model.zip`, `obs_norm.npz` y `config.json`; la recomendación y el estado
+experimental se consultan en `models/rl/manifest.json`.
+
+Desde una copia preparada del repositorio, estos comandos muestran el
+tirador nuevo frente a la FSM base, o el portero visual frente al tirador v2:
+
+```powershell
+.\.venv\Scripts\python.exe tools/watch_rl.py --striker models/rl/striker_preserving_v4 --keeper scripted --shots 4 --live
+.\.venv\Scripts\python.exe tools/watch_keeper_defenses.py --style v2 --mode balanced --live
+```
+
+Para entrenar otra corrida, usa una carpeta nueva. El runner parte de
+`striker_v2`, entrena, selecciona por validación y ejecuta la prueba reservada:
+
+```powershell
+.\.venv\Scripts\python.exe tools/retrain_striker_v2.py --output runs/striker_retrain_v2/nueva_corrida
+```
+
+La preparación de dependencias y runtimes de una copia nueva se explica en
+[RL.md](RL.md#instalación). El ZIP del reporte conserva los checkpoints y
+los inputs de la corrida anterior; sus binarios Windows están ligados al
+entorno de compilación original. En otra ubicación o equipo, compila los
+runtimes para esa copia antes de ejecutar nuevos penales.
