@@ -110,3 +110,7 @@ penalty/rl/striker_visual_env_v2.py text eol=lf
 tools/retrain_striker_v2.py text eol=lf
 docs/validation/rl/striker_preserving_v4/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 models/rl/striker_preserving_v4/** -text -diff
+
+# Robot framework (B-Human 2023 / SabanaHerons2026): keep exact LF bytes for the NAO build and deploy scripts.
+robot/** -text
+tests/robot/copa_golden.json -diff

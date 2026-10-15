@@ -1,0 +1,47 @@
+#!/bin/bash
+
+echo "Script started."
+cd "$(dirname "$(which "$0")")"
+echo "Changed directory to $(pwd)"
+
+CONFIGURATION="$1"
+if [ -z "$CONFIGURATION" ]; then
+    echo "Error: No configuration specified."
+    echo "Usage: $0 <Configuration>"
+    exit 1
+fi
+echo "Configuration set to: $CONFIGURATION"
+
+echo "Attempting to kill any running instances of DeployDialog..."
+taskkill //F //IM DeployDialog.exe 2>/dev/null || echo "DeployDialog not running."
+echo "Kill command executed."
+
+echo "Executing Windows DeployDialog..."
+DEPLOY_DIALOG_OUTPUT=$(../../Build/Windows/DeployDialog/$CONFIGURATION/DeployDialog.exe 2>&1)
+EXECUTION_STATUS=$?
+if [ $EXECUTION_STATUS -ne 0 ]; then
+    echo "Failed to execute DeployDialog.exe. Please check the path and permissions."
+else
+    echo "DeployDialog executed successfully."
+fi
+
+echo "Processing commands..."
+echo "$DEPLOY_DIALOG_OUTPUT" | while read -r ARGS; do
+  ARGS="$(echo "$ARGS" | tr -d '\r')"
+  echo "Read ARGS: $ARGS"
+  if [ ! -z "$ARGS" ]; then
+    if [[ "$ARGS" == logs* ]]; then
+      ARGS="${ARGS#logs }"
+      echo "Detected 'logs' command, ARGS after modification: $ARGS"
+      ./downloadLogs $ARGS
+    else
+      echo "Executing deploy with ARGS: $ARGS"
+      ./deploy $CONFIGURATION "$ARGS"
+    fi
+  else
+    echo "ARGS is empty, breaking loop."
+    break
+  fi
+done
+
+echo "Script execution completed."

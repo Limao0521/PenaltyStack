@@ -1,0 +1,67 @@
+/**
+ * @file SetupPoses.cpp
+ *
+ * Implementation of a representation that contains information about
+ * the pose from which the robots enter the pitch when the game state
+ * switches from INITIAL to READY.
+ *
+ * @author Tim Laue
+ * @author Arne Hasselbring
+ */
+
+// Sabana Herons: fallback setup pose for unmapped player numbers.
+
+#include "SetupPoses.h"
+#include "Representations/Infrastructure/GameState.h"
+#include "Debugging/Debugging.h"
+#include "Debugging/Debugging.h"
+#include "Framework/Blackboard.h"
+#include "Framework/Settings.h"
+#include "Math/Angle.h"
+#include "Streaming/Global.h"
+#include "Streaming/Output.h"
+
+void SetupPoses::draw() const
+{
+  DEBUG_RESPONSE_ONCE("representation:SetupPoses:place")
+  {
+    const int playerNumber = []
+    {
+      if(Blackboard::getInstance().exists("GameState"))
+      {
+        auto& gameState = static_cast<const GameState&>(Blackboard::getInstance()["GameState"]);
+        return gameState.playerNumber;
+      }
+      else if(Global::settingsExist())
+        return Global::getSettings().playerNumber;
+      else
+        return 1;
+    }();
+    const auto& pose = getPoseOfRobot(playerNumber);
+    OUTPUT(idConsole, text, "mv " << pose.position.x() << " " << pose.position.y() << " 300 0 0 " << toDegrees((pose.turnedTowards - pose.position).angle()));
+  }
+}
+
+const SetupPoses::SetupPose& SetupPoses::getPoseOfRobot(int number) const
+{
+  ASSERT(poses.size() > 0);
+  if(poses.size() == 1)
+    return poses[0];
+  for(const auto& pose : poses)
+    if(pose.playerNumber == number)
+      return pose;
+  int usablePoses = 0;
+  for(const auto& pose : poses)
+    if(pose.playerNumber != 99)
+      ++usablePoses;
+  const int fallbackIndex = usablePoses > 0 && number > 0 ? (number - 1) % usablePoses : 0;
+  int currentIndex = 0;
+  for(const auto& pose : poses)
+    if(pose.playerNumber != 99)
+    {
+      if(currentIndex == fallbackIndex)
+        return pose;
+      ++currentIndex;
+    }
+  return poses.back(); // Fallback for malformed configs containing only spare poses.
+}

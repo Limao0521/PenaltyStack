@@ -1,0 +1,202 @@
+#!/bin/bash
+# PenaltyStack: deploys the Copa NAO CCM MX 2026 penalty routine to one NAO over Ethernet.
+# Based on Make/Common/deploy (B-Human 2023 / Sabana Herons). Differences:
+#  - the scenario CopaNAOPenalty and location CopaNAO_CCM2026 are always selected;
+#  - role, tactical policies, start signal and dives are written per robot into a
+#    staging copy of Config (the shared tree is never modified);
+#  - the wireless profile defaults to NONE: Wi-Fi off, rules 2.7 (cable only);
+#  - a deploy manifest is left on the robot and the binary hash is verified.
+
+set -euo pipefail
+
+usage()
+{
+  cat <<'EOF'
+usage: deployCopaPenalty <Release|Develop|Debug> <ip> [options]
+  -n <name>                  robot name (only for the manifest and messages)
+  -p <player number>         1..20
+  -t <team number>
+  --role striker|keeper      role after boot (can be toggled on the robot while waiting)
+  --striker-policy <name>    scripted | name of Config/NeuralNets/CopaPenalty/<name>.cfg
+  --keeper-policy <name>     vision_v2_balanced | vision_v2_original | center_guard
+  --start-mode <mode>        buttonOnly | whistleOnly | buttonOrWhistle
+  --jumps on|off             lateral jump dives of the keeper (off: wide squat guards)
+  -w <wireless profile>      default NONE (Wi-Fi off)
+  -v <volume percent>        default 70
+  -b                         (re)start bhuman after the deploy
+  -nr                        do not check whether the robot answers to ping
+  --dry-run                  print the remote commands without executing them
+EOF
+  exit 1
+}
+
+cd "$(dirname "$(which "$0")")"
+
+[ $# -lt 2 ] && usage
+CONFIG="$1"
+REMOTE="$2"
+shift 2
+case "$CONFIG" in Release|Develop|Debug) ;; *) usage ;; esac
+[[ "$REMOTE" =~ ^[A-Za-z0-9][A-Za-z0-9.:-]*$ ]] || { echo "invalid address: $REMOTE" >&2; exit 1; }
+
+NAME="$REMOTE"
+PLAYER=1
+TEAM=
+ROLE=striker
+STRIKER_POLICY=striker_v2
+KEEPER_POLICY=vision_v2_balanced
+START_MODE=buttonOnly
+JUMPS=on
+PROFILE=NONE
+VOLUME=70
+RESTART=
+CHECK=1
+DRYRUN=
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -n) shift; NAME="$1" ;;
+    -p) shift; PLAYER="$1" ;;
+    -t) shift; TEAM="$1" ;;
+    --role) shift; ROLE="$1" ;;
+    --striker-policy) shift; STRIKER_POLICY="$1" ;;
+    --keeper-policy) shift; KEEPER_POLICY="$1" ;;
+    --start-mode) shift; START_MODE="$1" ;;
+    --jumps) shift; JUMPS="$1" ;;
+    -w) shift; PROFILE="$1" ;;
+    -v) shift; VOLUME="$1" ;;
+    -b) RESTART=1 ;;
+    -nr) CHECK= ;;
+    --dry-run) DRYRUN=1 ;;
+    -h|--help) usage ;;
+    *) echo "unknown option: $1" >&2; usage ;;
+  esac
+  shift
+done
+
+fail() { echo "error: $*" >&2; exit 1; }
+[[ "$PLAYER" =~ ^[0-9]+$ ]] && (( PLAYER >= 1 && PLAYER <= 20 )) || fail "player number must be 1..20"
+[ -z "$TEAM" ] || [[ "$TEAM" =~ ^[0-9]+$ ]] || fail "team number must be numeric"
+[[ "$VOLUME" =~ ^[0-9]+$ ]] && (( VOLUME <= 100 )) || fail "volume must be 0..100"
+case "$ROLE" in striker|keeper) ;; *) fail "role must be striker or keeper" ;; esac
+case "$START_MODE" in buttonOnly|whistleOnly|buttonOrWhistle) ;; *) fail "invalid start mode $START_MODE" ;; esac
+case "$KEEPER_POLICY" in vision_v2_balanced|vision_v2_original|center_guard) ;; *) fail "unknown keeper policy $KEEPER_POLICY" ;; esac
+case "$JUMPS" in on) ALLOW_JUMPS=true ;; off) ALLOW_JUMPS=false ;; *) fail "--jumps must be on or off" ;; esac
+if [ "$STRIKER_POLICY" != "scripted" ] && [ ! -f "../../Config/NeuralNets/CopaPenalty/$STRIKER_POLICY.cfg" ]; then
+  fail "striker policy $STRIKER_POLICY not found in Config/NeuralNets/CopaPenalty"
+fi
+[ -r "../../Install/Profiles/$PROFILE" ] || fail "wireless profile $PROFILE does not exist"
+
+BINARY="../../Build/Linux/Nao/$CONFIG/bhuman"
+ONNX="../../Util/onnxruntime/lib/Linux/libonnxruntime.so.1.10.0"
+[ -x "$BINARY" ] || fail "$BINARY missing: run python tools/robot_build.py --config $CONFIG"
+
+source ../Common/setupSSH
+
+run()
+{
+  echo "+ $*"
+  if [ -z "$DRYRUN" ]; then
+    "$@"
+  fi
+}
+
+remote()
+{
+  run ssh $SSHOPTIONS "nao@$REMOTE" "$@"
+}
+
+if [ -n "$CHECK" ] && [ -z "$DRYRUN" ]; then
+  ping -w 1 -c 1 "$REMOTE" >/dev/null 2>&1 || fail "$REMOTE not reachable (Ethernet cable and PC address in the robots' subnet?)"
+fi
+
+# Per-robot staging copy of Config (hard links; edited files are replaced, never modified in place).
+STAGE="$(mktemp -d /tmp/penaltystack-deploy.XXXXXX)"
+trap 'rm -rf "$STAGE"' EXIT
+cp -al ../../Config "$STAGE/Config"
+rm -rf "$STAGE/Config/Scenes"
+
+replace()
+{
+  local file="$1"
+  shift
+  sed "$@" "$file" >"$file.new"
+  rm -f "$file"
+  mv "$file.new" "$file"
+}
+
+SETTINGS="$STAGE/Config/settings.cfg"
+SED=(-e "s/^scenario =.*/scenario = CopaNAOPenalty;/" -e "s/^location =.*/location = CopaNAO_CCM2026;/"
+     -e "s/^playerNumber =.*/playerNumber = $PLAYER;/")
+[ -n "$TEAM" ] && SED+=(-e "s/^teamNumber =.*/teamNumber = $TEAM;/")
+replace "$SETTINGS" "${SED[@]}"
+SCENARIO="$STAGE/Config/Scenarios/CopaNAOPenalty"
+replace "$SCENARIO/copaPenaltyController.cfg" -e "s/^role = .*/role = $ROLE;/" -e "s/^startMode = .*/startMode = $START_MODE;/"
+replace "$SCENARIO/copaPenaltyTactics.cfg" -e "s/^strikerPolicy = .*/strikerPolicy = \"$STRIKER_POLICY\";/" \
+  -e "s/^keeperPolicy = .*/keeperPolicy = \"$KEEPER_POLICY\";/" -e "s/^allowJumpDives = .*/allowJumpDives = $ALLOW_JUMPS;/"
+
+if [ -n "$DRYRUN" ]; then
+  echo "==> staged configuration:"
+  grep -h -E "^(scenario|location|playerNumber|teamNumber) =" "$SETTINGS" | sed 's/^/    settings.cfg: /'
+  grep -h -E "^(role|startMode) =" "$SCENARIO/copaPenaltyController.cfg" | sed 's/^/    copaPenaltyController.cfg: /'
+  grep -h -E "^(strikerPolicy|keeperPolicy|allowJumpDives) =" "$SCENARIO/copaPenaltyTactics.cfg" | sed 's/^/    copaPenaltyTactics.cfg: /'
+fi
+
+BINARY_SHA="$(sha256sum "$BINARY" | cut -d' ' -f1)"
+POLICY_SHA=""
+[ "$STRIKER_POLICY" != "scripted" ] && POLICY_SHA="$(sha256sum "../../Config/NeuralNets/CopaPenalty/$STRIKER_POLICY.cfg" | cut -d' ' -f1)"
+cat >"$STAGE/Config/penaltystack_deploy.json" <<EOF
+{
+  "robot": "$NAME",
+  "address": "$REMOTE",
+  "configuration": "$CONFIG",
+  "scenario": "CopaNAOPenalty",
+  "location": "CopaNAO_CCM2026",
+  "player": $PLAYER,
+  "team": "${TEAM:-unchanged}",
+  "role": "$ROLE",
+  "striker_policy": "$STRIKER_POLICY",
+  "striker_policy_sha256": "$POLICY_SHA",
+  "keeper_policy": "$KEEPER_POLICY",
+  "start_mode": "$START_MODE",
+  "jump_dives": $ALLOW_JUMPS,
+  "wireless_profile": "$PROFILE",
+  "bhuman_sha256": "$BINARY_SHA",
+  "deployed_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+}
+EOF
+
+echo "==> stopping bhuman"
+remote "systemctl --user stop bhuman.service > /dev/null 2>&1 || true"
+
+echo "==> wireless profile $PROFILE"
+run rsync --del --exclude=.* --exclude=default --chmod=u+rw,go+r,Dugo+x -zrce "ssh $SSHOPTIONS" \
+  ../../Install/Profiles/. "nao@$REMOTE:/home/nao/Profiles"
+if [ -z "$DRYRUN" ]; then
+  RESULT="$(ssh $SSHOPTIONS "nao@$REMOTE" "/home/nao/bin/setprofile $PROFILE" 2>&1 || true)"
+  if [ -n "$RESULT" ] && [ "$PROFILE" != "NONE" ] && ! grep -qi 'no process found' <<<"$RESULT"; then
+    echo "$RESULT" | grep -v usage >&2
+    fail "could not activate wireless profile $PROFILE"
+  fi
+else
+  echo "+ ssh nao@$REMOTE /home/nao/bin/setprofile $PROFILE"
+fi
+
+echo "==> copying bhuman and Config ($CONFIG)"
+run rsync --del --exclude=.* --exclude=/Images --exclude=/Logs --exclude=/Scenes \
+  --chmod=u+rw,go+r,Dugo+x -rzce "ssh $SSHOPTIONS" "$BINARY" "$ONNX" "$STAGE/Config/." "nao@$REMOTE:/home/nao/Config"
+
+echo "==> volume $VOLUME%"
+remote "/home/nao/bin/setvolume $VOLUME 75"
+
+if [ -z "$DRYRUN" ]; then
+  REMOTE_SHA="$(ssh $SSHOPTIONS "nao@$REMOTE" "sha256sum /home/nao/Config/bhuman" | cut -d' ' -f1)"
+  [ "$REMOTE_SHA" = "$BINARY_SHA" ] || fail "binary hash on the robot differs ($REMOTE_SHA)"
+fi
+
+if [ -n "$RESTART" ]; then
+  echo "==> starting bhuman"
+  remote "systemctl --user start bhuman.service > /dev/null"
+fi
+
+echo "DEPLOY_OK $NAME $REMOTE role=$ROLE striker=$STRIKER_POLICY keeper=$KEEPER_POLICY start=$START_MODE jumps=$JUMPS wifi=$PROFILE sha256=$BINARY_SHA"

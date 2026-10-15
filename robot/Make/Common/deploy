@@ -1,0 +1,556 @@
+#!/bin/bash
+# copies a bhuman distribution to a robot
+# Sabana Herons: also selects the embedded RL models and goalkeeper diving.
+
+usage()
+{
+  echo "usage: deploy [Release|Develop|Debug] [<ipaddress>|(-r <playernumber> <ipaddress>)*] {options}"
+  echo "  options:"
+  echo "    -b                       restart bhuman"
+  echo "    -c <field player color>  set field player color to blue, red, yellow, black, white, orange, purple, brown, or gray"
+  echo "    -d                       delete logs or add timestamp to image"
+  echo "    -g <goalkeeper color>    set goalkeeper color to blue, red, yellow, black, white, orange, purple, brown, or gray"
+  echo "    -h | --help | /h | /?    print this text"
+  echo "    -i                       create image instead of deploying"
+  echo "    -k                       keep ip address for remote connection"
+  echo "    -l <location>            set location"
+  echo "    -m <magic number>        set magic number for teamcomm (0-255). Set -1 for random."
+  echo "    -nc                      never compile"
+  echo "    -nr                      do not check whether target is reachable"
+  echo "    -p <player number>       set player number"
+  echo "    -r <n> <ip>              copy to <ip> and set playernumber to <n> (one -r per robot)"
+  echo "    -s <scenario>            set scenario"
+  echo "    -t <team number>         set team number"
+  echo "    --rl-disable             disable embedded PPO for this deploy"
+  echo "    --rl-striker-base <players> comma-separated player list that uses striker_base PPO"
+  echo "    --rl-striker <players>   alias for --rl-striker-base"
+  echo "    --rl-defender <players>  comma-separated player list that uses defender PPO"
+  echo "    --rl-mixed-attack <players> comma-separated player list that uses mixed_attack/team striker PPO v4.2"
+  echo "    --rl-team-v42 <players>  alias for --rl-mixed-attack"
+  echo "    --rl-complete <players>  comma-separated player list that uses complete/merged brain v5"
+  echo "    --rl-merged <players>    alias for --rl-complete"
+  echo "    --rl-gk <on|off>         enable or disable the embedded goalkeeper RL policy (keeper robot only)"
+  echo "    --goalkeeper-dive <on|off> enable or disable goalkeeper diving in behaviorParameters.cfg"
+  echo "    -u                       check for USB drive before starting (only when creating an image)"
+  echo "    -v <volume percent>      set NAO's volume"
+  echo "    -w <wireless profile>    set wireless profile"
+  echo "  examples:"
+  echo "    ./deploy Develop 192.168.5.14 -p 1"
+  echo "    ./deploy Release -r 1 10.0.5.14 -r 3 10.0.0.2"
+  echo "    ./deploy Release -i -nc -v 50 -w HSL_A"
+  exit 1
+}
+
+settingsReplacements()
+{
+  local SEDFLAGS=""
+  [ ! -z $SCENARIO ] && SEDFLAGS="$SEDFLAGS -e 's/scenario =.*/scenario = $SCENARIO;/'"
+  [ ! -z $LOCATION ] && SEDFLAGS="$SEDFLAGS -e 's/location =.*/location = $LOCATION;/'"
+  [ ! -z $FIELDPLAYERCOLOR ] && SEDFLAGS="$SEDFLAGS -e 's/fieldPlayerColor =.*/fieldPlayerColor = $FIELDPLAYERCOLOR;/'"
+  [ ! -z $GOALKEEPERCOLOR ] && SEDFLAGS="$SEDFLAGS -e 's/goalkeeperColor =.*/goalkeeperColor = $GOALKEEPERCOLOR;/'"
+  [ ! -z $PLAYER ] && SEDFLAGS="$SEDFLAGS -e 's/playerNumber =.*/playerNumber = $PLAYER;/'"
+  [ ! -z $TEAM ] && SEDFLAGS="$SEDFLAGS -e 's/teamNumber =.*/teamNumber = $TEAM;/'"
+  [ ! -z $MAGICNUMBER ] && SEDFLAGS="$SEDFLAGS -e 's/magicNumber =.*/magicNumber = $MAGICNUMBER;/'"
+  echo "$SEDFLAGS"
+}
+
+cfgArrayFromPlayerList()
+{
+  local PLAYERS="$1"
+  if [ -z "$PLAYERS" ]; then
+    echo "[]"
+  else
+    echo "[$(sed 's/,/, /g' <<<"$PLAYERS")]"
+  fi
+}
+
+strategyBehaviorControlReplacements()
+{
+  if [ -z "$RL_DISABLE$RL_STRIKER_PLAYERS$RL_DEFENDER_PLAYERS$RL_TEAM_V42_PLAYERS$RL_MERGED_PLAYERS$RL_GK" ]; then
+    echo ""
+    return
+  fi
+
+  # Goalkeeper RL toggle (independent of the field-player embedded PPO).
+  local GK_ENABLE="false"
+  if [ "$RL_GK" = "on" ] || [ "$RL_GK" = "true" ]; then
+    GK_ENABLE="true"
+  fi
+
+  local ENABLE="true"
+  local STRIKERS="$(cfgArrayFromPlayerList "$RL_STRIKER_PLAYERS")"
+  local DEFENDERS="$(cfgArrayFromPlayerList "$RL_DEFENDER_PLAYERS")"
+  local TEAM_V42="$(cfgArrayFromPlayerList "$RL_TEAM_V42_PLAYERS")"
+  local MERGED="$(cfgArrayFromPlayerList "$RL_MERGED_PLAYERS")"
+  local TEAM_STRIKER_MODEL="\"\""
+  local MERGED_MODEL="\"\""
+  if [ "$TEAM_V42" != "[]" ] && [ "$STRIKERS" != "[]" ]; then
+    echo "mixing --rl-striker-base with --rl-mixed-attack is not supported in one deploy preset" >&2
+    exit 1
+  fi
+  if [ "$MERGED" != "[]" ] && { [ "$STRIKERS" != "[]" ] || [ "$DEFENDERS" != "[]" ] || [ "$TEAM_V42" != "[]" ]; }; then
+    echo "mixing --rl-complete with other RL modes is not supported (the complete brain controls all field players)" >&2
+    exit 1
+  fi
+  if [ "$TEAM_V42" != "[]" ]; then
+    STRIKERS="$TEAM_V42"
+    TEAM_STRIKER_MODEL="\"Config/NeuralNets/RLPolicy/ppo_team_hsl2026_v4_2.onnx\""
+  fi
+  if [ "$MERGED" != "[]" ]; then
+    # The merged model applies to all eligible field players, not only the listed ones.
+    MERGED_MODEL="\"Config/NeuralNets/RLPolicy/ppo_team_hsl2026_v5_merged.onnx\""
+  fi
+  if [ ! -z "$RL_DISABLE" ] || [ "$STRIKERS" = "[]" -a "$DEFENDERS" = "[]" -a "$MERGED" = "[]" ]; then
+    ENABLE="false"
+    STRIKERS="[]"
+    DEFENDERS="[]"
+    TEAM_STRIKER_MODEL="\"\""
+    MERGED_MODEL="\"\""
+  fi
+
+  echo "-e 's/^enableEmbeddedPPO =.*/enableEmbeddedPPO = $ENABLE;/' \
+-e 's/^embeddedPPORole =.*/embeddedPPORole = \"striker\";/' \
+-e 's/^embeddedPPODynamicPlayBall =.*/embeddedPPODynamicPlayBall = false;/' \
+-e 's/^embeddedPPOPlayers =.*/embeddedPPOPlayers = $STRIKERS;/' \
+-e 's/^embeddedPPODefenderPlayers =.*/embeddedPPODefenderPlayers = $DEFENDERS;/' \
+-e 's|^embeddedPPOTeamStrikerModelPath =.*|embeddedPPOTeamStrikerModelPath = $TEAM_STRIKER_MODEL;|' \
+-e 's|^embeddedPPOMergedTeamModelPath =.*|embeddedPPOMergedTeamModelPath = $MERGED_MODEL;|' \
+-e 's/^enableEmbeddedGK =.*/enableEmbeddedGK = $GK_ENABLE;/'"
+}
+
+behaviorParametersReplacements()
+{
+  if [ -z "$GOALKEEPER_DIVE" ]; then
+    echo ""
+    return
+  fi
+
+  local ENABLE="false"
+  if [ "$GOALKEEPER_DIVE" = "on" ] || [ "$GOALKEEPER_DIVE" = "true" ]; then
+    ENABLE="true"
+  fi
+
+  echo "-e 's/^keeperJumpingOn =.*/keeperJumpingOn = $ENABLE;/'"
+}
+
+copy()
+{
+  REMOTE=`$RESOLVE <<<"$1"`
+  PLAYER=$2
+
+  if [ ! -z $PLAYER ] && ( (( $PLAYER < 1 )) || (( $PLAYER > 20 )) ); then
+    echo "error: player number is $PLAYER!" >&2
+    exit 1
+  fi
+
+  if [ ! -z $CHECK ]; then
+    if [ `ping ${PINGOPTIONS} $REMOTE >/dev/null && echo 1 || echo 0` = "0" ]; then
+      echo "$REMOTE not reachable" >&2
+      exit 1
+    fi
+  fi
+
+  echo "stopping bhuman"
+  ssh $SSHOPTIONS nao@$REMOTE "systemctl --user stop bhuman.service > /dev/null"
+
+  if [ ! -z $DELETELOGS ]; then
+    echo "removing log files"
+    ssh $SSHOPTIONS nao@$REMOTE "rm -f /home/nao/logs/* > /dev/null"
+  fi
+
+  echo "updating wireless profiles"
+  rsync --del --exclude=.* --exclude=default --chmod=u+rw,go+r,Dugo+x -zrce "ssh $SSHOPTIONS" ../../Install/Profiles/. nao@$REMOTE:/home/nao/Profiles
+  #check if PROFILE is existent
+  if [ -n "$PROFILE" ]; then
+    if [ ! -r "../../Install/Profiles/$PROFILE" ]; then
+      echo "wireless profile \"$PROFILE\" is not existent, that profile is not activated" >&2
+    else
+      RESULT=`ssh $SSHOPTIONS nao@$REMOTE "/home/nao/bin/setprofile $PROFILE"`
+      if [ -n "$RESULT" ]; then
+        if [ "$PROFILE" == "NONE" ] || [ `echo $RESULT | grep -i -c 'no process found'` -eq "1" ]; then
+          RESULT=""
+        fi
+      fi
+      if [ ! -z "$RESULT" ]; then
+        echo "$RESULT" | grep -v usage >&2
+        exit 1
+      fi
+    fi
+  fi
+
+  echo "updating bhuman"
+  rsync --del --exclude=.* --exclude=/Images --exclude=/Logs --exclude=/Scenes --chmod=u+rw,go+r,Dugo+x -rzce "ssh $SSHOPTIONS" ../../Build/Linux/Nao/$CONFIG/bhuman ../../Util/onnxruntime/lib/Linux/libonnxruntime.so.1.10.0 ../../Config/. nao@$REMOTE:/home/nao/Config
+
+  # set playback volume and reset capture value to 75%
+  echo "setting volume to $VOLUME%"
+  CAPTURE_VOLUME=75
+  echo "setting capture volume to $CAPTURE_VOLUME%"
+  ssh $SSHOPTIONS nao@$REMOTE "/home/nao/bin/setvolume $VOLUME $CAPTURE_VOLUME"
+
+  # set settings on robot
+  SEDFLAGS="$(settingsReplacements)"
+  if [ ! -z "$SEDFLAGS" ]; then
+    echo "updating settings"
+    ssh $SSHOPTIONS nao@$REMOTE "sed $SEDFLAGS -i /home/nao/Config/settings.cfg"
+  else
+    ssh $SSHOPTIONS nao@$REMOTE "touch /home/nao/Config/settings.cfg"
+  fi
+
+  if [ ! -z $RESTART ]; then
+    echo "starting bhuman"
+    ssh $SSHOPTIONS nao@$REMOTE "systemctl --user start bhuman.service > /dev/null"
+  fi
+
+  true
+}
+
+set -e
+
+if [ $(uname) == "Darwin" ]; then
+  PINGOPTIONS="-t 1 -c 1"
+else
+  PINGOPTIONS="-w 1 -c 1"
+fi
+
+cd "$(dirname "$(which "$0")")"
+
+source ../Common/setupSSH
+
+# init variables
+CONFIG="Develop"
+PLAYER=
+FIELDPLAYERCOLOR=
+GOALKEEPERCOLOR=
+TEAM=
+SCENARIO=
+LOCATION=
+REMOTE=
+COMPILE=1
+CHECK=1
+KEEPIP=
+NUMMULTIPLE=0
+RESTART=
+MULTIPLEDATA=
+DELETELOGS=
+VOLUME=100
+PROFILE=
+MAGICNUMBER=
+REQUIREUSB=
+IMAGE=
+RL_DISABLE=
+RL_STRIKER_PLAYERS=
+RL_DEFENDER_PLAYERS=
+RL_TEAM_V42_PLAYERS=
+RL_MERGED_PLAYERS=
+RL_GK=
+if [ -z "$(ls 2>/dev/null ../../Config/Robots/*/network.cfg)" ]; then
+  RESOLVE=cat
+else
+  RESOLVE=`echo "sed"; ls ../../Config/Robots/*/network.cfg | xargs grep -H "^lan" | sed "s%.*/\(.*\)/.*\"\(.*\)\";.*%-e s/\1/\2/%"; ls ../../Config/Robots/*/network.cfg | xargs grep -H "^wlan" | sed "s%.*/\(.*\)/.*\"\(.*\)\";.*%-e s/\1/\2/%" | tr '[:upper:]' '[:lower:]'`
+  RESOLVE=`tr '\n' ' ' <<<"$RESOLVE"`
+fi
+
+# parse options
+[[ $# -eq 0 ]] && usage
+while true; do
+  case $1 in
+    "")
+      break
+      ;;
+    "-p" | "/p")
+      shift
+      PLAYER=$1
+      ;;
+    "-s" | "/s")
+      shift
+      SCENARIO=$1
+      ;;
+    "-k" | "/k")
+      KEEPIP=1
+      ;;
+    "-l" | "/l")
+      shift
+      LOCATION=$1
+      ;;
+    "-c" | "/c")
+      shift
+      FIELDPLAYERCOLOR=$1
+      ;;
+    "-g" | "/g")
+      shift
+      GOALKEEPERCOLOR=$1
+      ;;
+    "-t" | "/t")
+      shift
+      TEAM=$1
+      ;;
+    "-nc" | "/nc")
+      COMPILE=
+      ;;
+    "-b" | "/b")
+      RESTART=1
+      ;;
+    "-nr" | "/nr")
+      CHECK=
+      ;;
+    "-d" | "/d")
+      DELETELOGS=1
+      ;;
+    "-h" | "/h" | "/?" | "--help")
+      usage
+      ;;
+    "-r" | "/r")
+      shift
+      MULTIPLEDATA[$NUMMULTIPLE]=$1
+      shift
+      MULTIPLEDATA[$NUMMULTIPLE + 1]=$1
+      let "NUMMULTIPLE+=2"
+      ;;
+    "-u" | "/u")
+      REQUIREUSB=1
+      ;;
+    "-v" | "/v")
+      shift
+      VOLUME=$1
+      ;;
+    "-w" | "/w")
+      shift
+      PROFILE=$1
+      ;;
+    "-m" | "/m")
+      shift
+      MAGICNUMBER=$1
+      ;;
+    "-i" | "/i")
+      IMAGE=1
+      ;;
+    "--rl-disable")
+      RL_DISABLE=1
+      ;;
+    "--rl-striker"|"--rl-striker-base")
+      shift
+      RL_STRIKER_PLAYERS=$1
+      ;;
+    "--rl-defender")
+      shift
+      RL_DEFENDER_PLAYERS=$1
+      ;;
+    "--rl-team-v42"|"--rl-mixed-attack")
+      shift
+      RL_TEAM_V42_PLAYERS=$1
+      ;;
+    "--rl-merged"|"--rl-complete")
+      shift
+      RL_MERGED_PLAYERS=$1
+      ;;
+    "--rl-gk")
+      shift
+      RL_GK=$1
+      ;;
+    "--goalkeeper-dive")
+      shift
+      GOALKEEPER_DIVE=$1
+      ;;
+    "Release")
+      CONFIG="Release"
+      ;;
+    "Develop")
+      CONFIG="Develop"
+      ;;
+    "Debug")
+      CONFIG="Debug"
+      ;;
+    -*)
+      echo "unknown parameter: $1" >&2
+      usage
+      ;;
+    *)
+      REMOTE=$1
+      ;;
+  esac
+  shift
+done
+
+if [ ! -z "$IMAGE" -a \( ! -z "$REMOTE$MULTIPLEDATA" -o -z "$CHECK" \) ]; then
+  echo >&2 "Option -i cannot be combined with a remote ip or -r or -nr."
+  exit 1
+elif [ -z "$IMAGE" -a ! -z "$REQUIREUSB" ]; then
+  echo >&2 "Option -u can only be combined with -i."
+  exit 1
+fi
+
+if [ ! -z $SCENARIO ]; then
+  if [ "$(ls ../../Config/Scenarios/ | grep ${SCENARIO})" == "" ]; then
+    if [ "$(ls ../../Config/Scenarios/ | grep -i ${SCENARIO})" != "" ]; then
+      echo "Scenario $SCENARIO is not present" >&2
+      SCENARIO="$(ls ../../Config/Scenarios/ | grep -i ${SCENARIO})"
+      echo "Did you mean $SCENARIO?"
+      echo "Now using $SCENARIO"
+    else
+      echo "Scenario \"$SCENARIO\" is not present" >&2
+      exit 1
+    fi
+  fi
+fi
+
+if [ "$SCENARIO" = "4v4_NoRLBlock" ]; then
+  RL_DISABLE=1
+  RL_STRIKER_PLAYERS=
+  RL_DEFENDER_PLAYERS=
+  RL_TEAM_V42_PLAYERS=
+  RL_MERGED_PLAYERS=
+  RL_GK=off
+fi
+
+if [ ! -z $LOCATION ]; then
+  if [ "$(ls ../../Config/Locations/ | grep ${LOCATION})" == "" ]; then
+    if [ "$(ls ../../Config/Locations/ | grep -i ${LOCATION})" != "" ]; then
+      echo "Location $LOCATION is not present" >&2
+      LOCATION="$(ls ../../Config/Locations/ | grep -i ${LOCATION})"
+      echo "Did you mean $LOCATION?"
+      echo "Now using $LOCATION"
+    else
+      echo "Location \"$LOCATION\" is not present" >&2
+      exit 1
+    fi
+  fi
+fi
+
+# check if magic number is too big
+if [ ! -z $MAGICNUMBER ]; then
+  if [ $MAGICNUMBER -gt 255 ]; then
+    MAGICNUMBER=255
+  fi
+  # calculate magic number from ip if -1
+  if [ $MAGICNUMBER -le -1 ]; then
+    if [ ! -z "$REMOTE" ]; then
+      IP="$REMOTE"
+    elif [ "$NUMMULTIPLE" -ne 0 ]; then
+      IP="${MULTIPLEDATA[1]}"
+    else
+      IP=
+    fi
+    if [ -z "$IP" ]; then
+      MAGICNUMBER=$(awk 'BEGIN{srand();print int(rand()*255) }')
+    else
+      MAGICNUMBER=$(ifconfig 2>/dev/null \
+                    | grep -e "${IP%.*}" \
+                    | head -n 1 \
+                    | sed "s%.*\.\([0-9]*\)  *netmask.*%\1%")
+    fi
+    if [ -z "$MAGICNUMBER" ]; then
+      echo "error: cannot generate magic number (set one other than -1)."
+      exit 1
+    fi
+  fi
+  echo "setting magic number to $MAGICNUMBER"
+fi
+
+#key may only be accessed by the owner. Otherwise ssh will complain
+chmod 600 $keyFile
+
+cleanup()
+{
+  if [ -f /tmp/deploy_settings.cfg ]; then
+    mv /tmp/deploy_settings.cfg ../../Config/settings.cfg
+  fi
+  if [ -f /tmp/deploy_strategyBehaviorControl.cfg ] && [ ! -z "$SCENARIO" ]; then
+    mv /tmp/deploy_strategyBehaviorControl.cfg ../../Config/Scenarios/$SCENARIO/strategyBehaviorControl.cfg
+  fi
+  if [ -f /tmp/deploy_behaviorParameters.cfg ] && [ ! -z "$SCENARIO" ]; then
+    mv /tmp/deploy_behaviorParameters.cfg ../../Config/Scenarios/$SCENARIO/behaviorParameters.cfg
+  fi
+  trap - EXIT
+}
+
+trap cleanup EXIT
+
+SEDFLAGS="$(settingsReplacements)"
+STRATEGYFLAGS=
+BEHAVIORFLAGS=
+if [ ! -z "$SCENARIO" ]; then
+  STRATEGYFLAGS="$(strategyBehaviorControlReplacements)"
+  if [ ! -z "$STRATEGYFLAGS" ]; then
+    STRATEGY_FILE="../../Config/Scenarios/$SCENARIO/strategyBehaviorControl.cfg"
+    if [ ! -f "$STRATEGY_FILE" ]; then
+      echo "Scenario \"$SCENARIO\" does not provide strategyBehaviorControl.cfg" >&2
+      exit 1
+    fi
+    cp "$STRATEGY_FILE" /tmp/deploy_strategyBehaviorControl.cfg
+    bash -c "sed $STRATEGYFLAGS </tmp/deploy_strategyBehaviorControl.cfg >\"$STRATEGY_FILE\""
+  fi
+
+  BEHAVIORFLAGS="$(behaviorParametersReplacements)"
+  if [ ! -z "$BEHAVIORFLAGS" ]; then
+    BEHAVIOR_FILE="../../Config/Scenarios/$SCENARIO/behaviorParameters.cfg"
+    if [ ! -f "$BEHAVIOR_FILE" ]; then
+      echo "Scenario \"$SCENARIO\" does not provide behaviorParameters.cfg" >&2
+      exit 1
+    fi
+    cp "$BEHAVIOR_FILE" /tmp/deploy_behaviorParameters.cfg
+    bash -c "sed $BEHAVIORFLAGS </tmp/deploy_behaviorParameters.cfg >\"$BEHAVIOR_FILE\""
+  fi
+fi
+
+if [ ! -z $COMPILE ]; then
+  if [ "`uname`" = "Darwin" ]; then
+    # macOS
+    ../macOS/compile Nao $CONFIG
+    [ $? -ne 0 ] && exit 1
+  else
+    # Linux (either native or WSL)
+    echo "------ Compiling Nao ($CONFIG) ------"
+    ( cd ../Linux; cmake --build ../../Build/Linux/CMake/$CONFIG --target Nao --config $CONFIG )
+    [ $? -ne 0 ] && exit 1
+    echo "------ Successfully compiled ------"
+  fi
+fi
+
+if [ ! -z $IMAGE ]; then # write an opn image
+  IMAGEPATH="$(pwd)/../../Build/Image/$CONFIG"
+  mkdir -p "$IMAGEPATH"
+  PROFILEOPT=
+  if [ ! -z $PROFILE ]; then
+    PROFILEOPT="-w $PROFILE";
+  fi
+  RESTARTOPT=
+  if [ ! -z $RESTART ]; then
+    RESTARTOPT="-b";
+  fi
+  USBOPT=
+  if [ ! -z $REQUIREUSB ]; then
+    USBOPT="-u";
+  fi
+  DATE=
+  if [ ! -z $DELETELOGS ]; then
+    DATE="$(date +"_%Y-%m-%d_%H-%M")"
+  fi
+
+  if [ ! -z "$SEDFLAGS" ]; then
+    cp ../../Config/settings.cfg /tmp/deploy_settings.cfg
+    bash -c "sed $SEDFLAGS </tmp/deploy_settings.cfg >../../Config/settings.cfg"
+  fi
+
+  echo "y" | ../../Install/createHomeArchive $USBOPT -c $CONFIG -v $VOLUME $PROFILEOPT -H "$IMAGEPATH/home.tar.gz" \
+  && ../../Install/createOPN -H "$IMAGEPATH/home.tar.gz" -o "$IMAGEPATH/bhuman$DATE.opn" $RESTARTOPT
+
+elif [ ! -z $REMOTE ]; then # deploy to a single robot
+  if [ -z "$KEEPIP" ]; then
+    rm -f ../../Config/Scenes/Includes/connect.con
+  else
+    echo "sc Remote $($RESOLVE <<<"$REMOTE")" >../../Config/Scenes/Includes/connect.con
+  fi
+  copy $REMOTE $PLAYER
+else # try to deploy to multiple targets
+  trap "trap - SIGTERM && kill -- -$$ 2>/dev/null" SIGINT SIGTERM
+  if [ "$NUMMULTIPLE" -ne 0 ]; then
+    for ((i=0; i < NUMMULTIPLE; i+=2))
+    do
+      copy ${MULTIPLEDATA[i+1]} ${MULTIPLEDATA[i]} 2> >(sed "s%^%[${MULTIPLEDATA[i+1]}] %" >&2) \
+      | sed "s%^%[${MULTIPLEDATA[i+1]}] %" &
+    done
+    wait
+  else
+    exit 1
+  fi
+fi

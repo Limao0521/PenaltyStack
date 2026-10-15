@@ -9,7 +9,8 @@
 - `native/bhuman_motion/`: host C++ original por NAO; `tools/build_motion_runtime.py` compila con MSVC 2022.
 - `penalty/bhuman_bridge.py`, `physical_sim.py`, `sim_session.py`, `sim_panel.py`: IPC acotado, física/sensores, ciclo/controles y panel Tk.
 - `penalty/nao.py`: adaptador NAOqi local; ninguna dependencia de Wi-Fi durante el penal.
-- `deploy/`: empaquetado y despliegue Ethernet con ruta aislada.
+- `deploy/`: despliegue Ethernet. `robot_deploy.py` y `deploy_dialog.py` (ventana, `DeployCopaNAO.bat`) para robots reales con B-Human; `package.py`/`deploy.py` son el adaptador NAOqi anterior.
+- `robot/`: framework B-Human 2023 / SabanaHerons2026 importado (`tools/import_robot_framework.py`, hashes en `PROVENANCE.json`) con el escenario `CopaNAOPenalty`. Código nuevo: `Src/Modules/BehaviorControl/CopaPenalty*`, `Src/Tools/CopaPenalty/CopaPolicies.h` (paridad con Python), `CopaOrangeBallPerceptor` y `Options/HandleCopaNAOPenalty.h`. Documentación en `docs/robot/`.
 - `heritage/`: recursos estrictamente seleccionados de SabanaHerons2026 y procedencia.
 - `baseline/`: originales sin modificar usados por el runtime y como referencia para RL.
 - `penalty/rl/`, `penalty/skills/`, `penalty/optimization/`: RL táctico (contratos, entornos Gymnasium sintético/B-Human, recompensas versionadas, skills acotadas, búsqueda; entrenamiento asíncrono en `async_ppo.py`/`actors.py`, duelo entre políticas en `duel.py`). Diseño en `docs/rl/`, estado en `docs/RL.md`, corridas y resultados en `docs/RESULTADOS_RL.md`.
@@ -30,6 +31,11 @@
 - `python tools/evaluate_keeper_robustness.py --episodes 100 --seed 62001 --workers 16 --output runs/keeper_robust/test.json` (ocho estilos en B-Human; portero `robust`, comparación pareada y `--condition stress` para percepción degradada)
 - Modelos entrenados en `models/rl/` (ver `manifest.json`); reportes en `docs/validation/rl/`.
 - `python deploy/package.py --profile profiles/striker.example.json --output dist/striker.tar.gz`
+- `python tools/robot_build.py` (compila `bhuman` NAO V6 en WSL; `--install-toolchain`, `--check`, `--check-originals`)
+- `python tools/export_robot_policies.py` (pesos de tiradores para el NAO y datos dorados de paridad)
+- `python tools/check_module_graph.py` (grafo de módulos y .cfg del escenario CopaNAOPenalty)
+- `python -m unittest tests.test_robot_policy_parity tests.test_robot_deploy -v`
+- `DeployCopaNAO.bat` o `python deploy/robot_deploy.py --deploy falcanao:striker loki:keeper --team 49`
 
 ## Restricciones
 
@@ -42,5 +48,6 @@
 - No incorporar SimRobot, GameController ni red de juego.
 - RL solo en la capa táctica/skills: B-Human sigue como controlador de bajo nivel. El backend `synthetic` es analítico y siempre etiquetado; nada aprendido allí vale sin reevaluar en `bhuman`.
 - Nunca editar una recompensa, objetivo u observación publicada: crear una versión nueva (`*_v2`).
+- `robot/`: no modificar originales importados salvo lo listado por `--check-originals`; código nuevo en archivos nuevos. Tras cambiar `CopaPolicies.h` o las políticas, reexportar y correr la paridad. Despliegue de competición solo por cable con Wi-Fi apagado (perfil `NONE`).
 
 Ver `docs/ARQUITECTURA.md`, `docs/SIMULACION.md` y `docs/DESPLIEGUE.md`.

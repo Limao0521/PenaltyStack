@@ -18,8 +18,8 @@ Instalación, modelos entrenados y ejecución: [guía RL](docs/RL.md).
 
 - **Simulación:** dos NAO V6 articulados con raíces libres, 50 mallas visuales distintas y 23 servos físicos por robot. El motor recibe IMU, articulaciones y cargas de pie actuales; las patadas mueven el balón por contacto físico. Hay panel de iniciar, pausa, paso, reinicio, repetición, ABORT y acciones manuales.
 - **Motor original:** 559 archivos preservados con hashes, incluidos los 54 de `MotionControl`. Se compilan y ejecutan MotionEngine, WalkingEngine, KickEngine, KeyframeMotionEngine y sus proveedores. La integración usa orientación y percepción ideales; se documentan las adaptaciones en [runtime nativo](native/bhuman_motion/README.md).
-- **NAO:** cámara RGB, botón START, botón ABORT, control de cabeza y marcha acotada tienen adaptador onboard. Por defecto el proceso es de observación. El ejecutor físico de patada aún no está conectado; el adaptador rechaza `kick_enabled`.
-- **Despliegue:** paquete Python para NAOqi 2.8 por Ethernet en `/home/nao/PenaltyStack`, aislado del servicio y los archivos de B-Human. No hay borrado remoto.
+- **Robots reales (Copa NAO CCM MX 2026):** `robot/` trae el framework B-Human 2023 / SabanaHerons2026 con el escenario `CopaNAOPenalty`. Corre las políticas RL en el NAO (C++ verificado paso a paso contra Python), arranca con el botón de la cabeza o el silbato y respeta las reglas de la categoría Tiro Penal. Se despliega por Ethernet con **`DeployCopaNAO.bat`**, eligiendo robot, rol y versión RL. Sin prueba en hardware todavía. Ver [docs/robot/](docs/robot/03_DESPLIEGUE_Y_OPERACION.md).
+- **NAOqi (anterior):** adaptador Python 2 solo de observación (`penalty/nao.py`, `deploy/package.py`); rechaza `kick_enabled`.
 
 ## Inicio rápido en PC
 

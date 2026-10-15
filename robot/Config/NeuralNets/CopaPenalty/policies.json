@@ -1,0 +1,63 @@
+{
+  "version": "copa_penalty_policies_v1",
+  "striker": {
+    "scripted": {
+      "status": "base",
+      "description": "FSM del proyecto: centro, pie izquierdo, 2.5 m.",
+      "file": null
+    },
+    "striker_v2": {
+      "status": "recomendado",
+      "description": "PPO v2: 93/100 goles a la FSM y 12/100 al portero visual (simulacion).",
+      "file": "striker_v2.cfg",
+      "sha256": "72f6c6a0240e8b1565402852a9fb5b6f133929e835ea11edd50e4387beabb797",
+      "source": "models/rl/striker_v2",
+      "manifest_status": "recomendado"
+    },
+    "striker_preserving_v4": {
+      "status": "experimental",
+      "description": "Reentrenado contra el portero visual: 15/100 al visual, 93/100 a la FSM.",
+      "file": "striker_preserving_v4.cfg",
+      "sha256": "3af81bdf37c2026faf9948f1b232f867317a30ed5362d33d8ed283ec29c1954a",
+      "source": "models/rl/striker_preserving_v4",
+      "manifest_status": "experimental; conservar striker_v2"
+    },
+    "striker_visual_v3": {
+      "status": "experimental",
+      "description": "Reentrenamiento visual v3, sin promocion.",
+      "file": "striker_visual_v3.cfg",
+      "sha256": "c8f06e6c2f7603c3b5f4d8b03175d2dd3846266c88a63d8921b2eb811ba9bc34",
+      "source": "models/rl/striker_visual_v3",
+      "manifest_status": "experimental; evaluación reservada, sin promoción de striker_v2 ni validación hardware"
+    },
+    "striker_v1": {
+      "status": "anterior",
+      "description": "PPO v1: siempre a su derecha.",
+      "file": "striker_v1.cfg",
+      "sha256": "d0e57ac8fbeca6a795a62b98bcd92f43a3b0424571beb433fdecabc6f1a08cb1",
+      "source": "models/rl/striker_v1",
+      "manifest_status": "anterior: un solo tiro (siempre a su derecha), sin ruido"
+    }
+  },
+  "keeper": {
+    "vision_v2_balanced": {
+      "status": "recomendado",
+      "description": "Portero visual v2 con defensa central espejada: 86/100 atajadas al tirador v2 (simulacion).",
+      "file": null
+    },
+    "vision_v2_original": {
+      "status": "alternativo",
+      "description": "Portero visual v2 con guardia central original: 128/160 en la prueba ciega.",
+      "file": null
+    },
+    "center_guard": {
+      "status": "base",
+      "description": "Guardia central fija al detectar el tiro; sin estiradas laterales.",
+      "file": null
+    }
+  },
+  "defaults": {
+    "striker": "striker_v2",
+    "keeper": "vision_v2_balanced"
+  }
+}

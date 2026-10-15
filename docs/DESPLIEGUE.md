@@ -1,5 +1,9 @@
 # Empaquetado, despliegue y operación
 
+> **Robots reales en la Copa NAO CCM MX 2026:** usar el framework B-Human de `robot/` y la
+> ventana `DeployCopaNAO.bat`, documentados en [docs/robot/](robot/03_DESPLIEGUE_Y_OPERACION.md).
+> Lo que sigue describe el adaptador NAOqi anterior, solo de observación.
+
 ## Antes de empaquetar
 
 Crear perfiles separados por NAO a partir de `profiles/*.example.json`. Completar `robot_id`, `role`, cámara y rumbo inicial medido. El paquete rechaza los marcadores `TO_FILL` y una patada física habilitada. Python 2.7 con `qi` debe estar disponible en NAOqi 2.8; comprobarlo en cada unidad. El proceso usa solo `127.0.0.1:9559` para NAOqi y no necesita Wi-Fi ni PC al ejecutar.

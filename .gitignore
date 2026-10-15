@@ -9,3 +9,8 @@ native/bhuman_motion/vendor/
 
 # Chat attachment cache; project reference images are kept under docs/media/.
 .codex-remote-attachments/
+
+# Robot deploy tooling (PenaltyStack Copa NAO): local build/test outputs and dialog state.
+native/copa_policy_tests/build/
+robot/Build/
+deploy/.deploy_dialog_state.json
