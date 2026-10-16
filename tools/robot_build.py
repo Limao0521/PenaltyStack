@@ -25,8 +25,8 @@ CONFIGS = ('Release', 'Develop', 'Debug')
 DEFAULT_DISTRO = os.environ.get('PENALTYSTACK_WSL_DISTRO', 'Ubuntu-24.04')
 WORK = '$HOME/.cache/penaltystack/robot'
 TOOLCHAIN = '$HOME/.local/penaltystack-toolchain'
-# Ubuntu 24.04 packages for a user-level toolchain (no sudo): clang 18, mold, cmake, ccache.
-TOOLCHAIN_PACKAGES = ('ccache libhiredis1.1.0 clang-18 cmake cmake-data libarchive13t64 libclang-common-18-dev libclang-cpp18 '
+# Ubuntu 24.04 packages for a user-level toolchain (no sudo): clang 18, mold, cmake, ccache, ninja.
+TOOLCHAIN_PACKAGES = ('ccache libhiredis1.1.0 ninja-build clang-18 cmake cmake-data libarchive13t64 libclang-common-18-dev libclang-cpp18 '
                       'libclang1-18 libgc1 libjsoncpp25 libllvm18 libobjc-13-dev libobjc4 librhash0 '
                       'llvm-18-linker-tools mold')
 # Scripts added by PenaltyStack (the originals' executable bits come from PROVENANCE.json).
@@ -139,7 +139,8 @@ ln -sf ../root/usr/bin/cmake "$T/bin/cmake"
 ln -sf ../root/usr/bin/mold "$T/bin/mold"
 ln -sf ../root/usr/bin/mold "$T/bin/ld.mold"
 ln -sf ../root/usr/bin/ccache "$T/bin/ccache"
-echo "Toolchain installed in $T (ninja, rsync and ssh come from the distribution)."
+ln -sf ../root/usr/bin/ninja "$T/bin/ninja"
+echo "Toolchain installed in $T (rsync and ssh come from the distribution)."
 ''' % {'toolchain': TOOLCHAIN, 'packages': TOOLCHAIN_PACKAGES}
 
 

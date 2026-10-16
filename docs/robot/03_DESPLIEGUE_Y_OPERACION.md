@@ -1,5 +1,7 @@
 # Área 3 — Despliegue y operación en la Copa NAO CCM MX 2026
 
+> Para alguien que despliega por primera vez: [guía paso a paso](../GUIA_DESPLIEGUE_ROBOT_FISICO.md).
+
 ## 1. Preparar el PC (una vez)
 
 1. **WSL Ubuntu 24.04** (ya instalado en este PC). El toolchain del NAO se instala en el
@@ -10,7 +12,7 @@
    ```
 
    Alternativa con permisos de administrador, dentro de WSL:
-   `sudo apt install clang mold cmake ccache ninja-build rsync`.
+   `sudo apt install clang mold cmake ccache ninja-build rsync openssh-client`.
    `python tools/robot_build.py --check` confirma que no falta nada.
 2. **Red cableada**: los robots tienen IP fija `192.168.49.<n>` en
    `robot/Config/Robots/<nombre>/network.cfg`. Configura el adaptador Ethernet del PC con
