@@ -12,14 +12,15 @@ This product includes software developed by B-Human (http://www.b-human.de). Ver
 
 ## Estado
 
-Rama de desarrollo: `codex/portero-visual-y-reentrenamiento-rl`.
+Rama de despliegue: `despliegue/copa-nao-ccm-2026` (desde `codex/portero-visual-y-reentrenamiento-rl`).
+Auditoría pre-despliegue y plan hasta la competencia: [docs/AUDITORIA_2026-10-19.md](docs/AUDITORIA_2026-10-19.md).
 Resultados en tablas: [resumen de pruebas](docs/RESUMEN_PRUEBAS.md).
 Instalación, modelos entrenados y ejecución: [guía RL](docs/RL.md).
 
 - **Simulación:** dos NAO V6 articulados con raíces libres, 50 mallas visuales distintas y 23 servos físicos por robot. El motor recibe IMU, articulaciones y cargas de pie actuales; las patadas mueven el balón por contacto físico. Hay panel de iniciar, pausa, paso, reinicio, repetición, ABORT y acciones manuales.
 - **Motor original:** 559 archivos preservados con hashes, incluidos los 54 de `MotionControl`. Se compilan y ejecutan MotionEngine, WalkingEngine, KickEngine, KeyframeMotionEngine y sus proveedores. La integración usa orientación y percepción ideales; se documentan las adaptaciones en [runtime nativo](native/bhuman_motion/README.md).
-- **Robots reales (Copa NAO CCM MX 2026):** `robot/` trae el framework B-Human 2023 / SabanaHerons2026 con el escenario `CopaNAOPenalty`. Corre las políticas RL en el NAO (C++ verificado paso a paso contra Python), arranca con el botón de la cabeza o el silbato y respeta las reglas de la categoría Tiro Penal. Se despliega por Ethernet con **`DeployCopaNAO.bat`**, eligiendo robot, rol y versión RL. Sin prueba en hardware todavía. **Paso a paso para desplegar en un NAO físico: [guía de despliegue](docs/GUIA_DESPLIEGUE_ROBOT_FISICO.md)**; detalles en [docs/robot/](docs/robot/03_DESPLIEGUE_Y_OPERACION.md).
-- **NAOqi (anterior):** adaptador Python 2 solo de observación (`penalty/nao.py`, `deploy/package.py`); rechaza `kick_enabled`.
+- **Robots reales (Copa NAO CCM MX 2026):** `robot/` trae el framework B-Human 2023 / SabanaHerons2026 con el escenario `CopaNAOPenalty`. Corre las políticas RL en el NAO (C++ verificado paso a paso contra Python), arranca con el botón de la cabeza o el silbato y respeta las reglas de la categoría Tiro Penal. Se despliega por Ethernet con **`DeployCopaNAO.bat`**, eligiendo robot, rol y versión RL. Sin prueba en hardware todavía. **Paso a paso para desplegar en un NAO físico: [guía de despliegue](docs/GUIA_DESPLIEGUE_ROBOT_FISICO.md)**; detalles en [docs/robot/](docs/robot/03_DESPLIEGUE_Y_OPERACION.md). Calibración del balón naranja en la sede (capturas → ajuste → verificación): [docs/CALIBRACION_BALON.md](docs/CALIBRACION_BALON.md).
+- **NAOqi (anterior):** adaptador Python 2 solo de observación (`penalty/nao.py`, `deploy/package.py`); rechaza `kick_enabled`. No es la ruta de la competencia; ver el banner de [docs/PREPARACION_NAO.md](docs/PREPARACION_NAO.md).
 
 ## Inicio rápido en PC
 

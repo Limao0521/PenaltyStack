@@ -5,6 +5,40 @@ Rama actual: `codex/portero-visual-y-reentrenamiento-rl`, renombrada desde
 el nombre que tenía la rama al ejecutar cada experimento.
 Resumen público de resultados: `docs/RESUMEN_PRUEBAS.md`.
 
+## Actualización: auditoría, ruta de despliegue y calibración del balón (2026-10-20)
+
+- Rama actual: `despliegue/copa-nao-ccm-2026` (base `17b5c03`). Auditoría completa del stack
+  (visión, decisión/actuación, despliegue/tests) documentada en `docs/AUDITORIA_2026-10-19.md`
+  con plan de trabajo al 2026-11-03. Brecha bloqueante: 0 ejecuciones en hardware.
+- Divergencia de rutas resuelta en docs: la ruta correcta de competencia es `robot/` (B-Human)
+  + `DeployCopaNAO.bat` según `docs/GUIA_DESPLIEGUE_ROBOT_FISICO.md`; `docs/PREPARACION_NAO.md`
+  y `docs/DESPLIEGUE.md` (adaptador NAOqi Python 2) quedan señalados como legacy solo-observación.
+- Arreglos aplicados: `psutil>=5.9,<8` declarado en `requirements-rl.txt` e instalado en `.venv`
+  (los 8 errores de la suite eran solo eso; módulos de reentrenamiento 28/28); conteo 25→26
+  archivos nuevos corregido en `docs/robot/02_PLAN_E_IMPLEMENTACION.md`; README apunta a la rama
+  y docs vigentes. Las menciones de «367 pruebas» se conservan: evidencia histórica del log
+  archivado de `striker_preserving_v4`.
+- Paquete nuevo de calibración del balón (ningún archivo del framework tocado):
+  `tools/nao_capture_ball.py` (onboard py2.7/NAOqi, YUV422 nativo con sondeo de colorspaces y
+  validación de buffer), `tools/capture_ball_calibration.py` (driver PC vía WSL: stop/start de
+  `bhuman.service`, lotes etiquetados, rsync a `runs/ball_calibration/<robot>/<lote>/`),
+  `tools/tune_ball_thresholds.py` (espejo Python de la segmentación de `CopaOrangeBallPerceptor`:
+  evalúa umbrales actuales, sugiere los factibles de mayor margen bilateral cambiando lo mínimo,
+  `--apply` reescribe solo las 5 claves de color con `.bak`, `--report` JSON). Flujo, protocolo
+  de capturas y criterios de aceptación en `docs/CALIBRACION_BALON.md`; enlaces desde la guía
+  física §8/§10.
+- Tests: `tests/test_tune_ball_thresholds.py` (17) y `tests/test_capture_ball_calibration.py`
+  (14, incluida higiene de imports: el driver importa `deploy.robot_deploy` vía paquete de
+  espacio de nombres porque insertar `deploy/` en `sys.path` lo sombrea con `deploy/deploy.py`
+  y rompe `test_package`); suite completa 412 en verde. Validación del ajustador sin hardware: distractor «casi
+  naranja» (YUV 150,100,185) es FP con los umbrales actuales; la sugerencia mínima es
+  `minChroma` 80→120 con márgenes fondo 35 / balón 41. El espejo no tiene paridad C++↔Python
+  automatizada: la autoridad final son los logs `[CopaPenalty]` del perceptor vivo; si cambia la
+  segmentación C++, actualizar el ajustador.
+- Pendiente con hardware (P0 de la auditoría): primer arranque vigilado, ejecución real de la
+  calibración en duela, intrínsecos/extrínsecos por robot y patada incremental. Capturas bajo
+  `runs/` (gitignored).
+
 ## Corrida completada: tirador preservando v2 (cierre 2026-10-13)
 
 - Petición humana: repetir entrenamiento tras la regresión de striker_visual_v3.
