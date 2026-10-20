@@ -2,4 +2,5 @@
 gymnasium>=1.0,<2
 stable-baselines3>=2.4,<3
 imageio[ffmpeg]>=2.30,<3  # tools/watch_rl.py --video
+psutil>=5.9,<8  # penalty/rl/striker_retraining*.py: close() termina workers colgados
 # torch CPU: pip install torch --index-url https://download.pytorch.org/whl/cpu
