@@ -293,6 +293,9 @@ antes de desplegar desmarcado**.
   - Si no ve el balón, baja `minV` o `minChroma`, o sube `maxU`, de a 10.
   - Si confunde la madera o la piel con el balón, sube `minChroma`.
   - Prueba con el balón a 0,2 m, 1,3 m y 2 m.
+  - Con capturas reales de la sede: el flujo automático (capturar → ajustar → desplegar) está
+    en [docs/CALIBRACION_BALON.md](CALIBRACION_BALON.md). Las reglas manuales de arriba son
+    el respaldo para la zona de calibración (máximo 5 minutos por prueba).
 - **Tiempos y gestos**: `robot/Config/Scenarios/CopaNAOPenalty/copaPenaltyController.cfg`.
   Incluye la duración de la rutina (`activeDurationMs`, máximo 28 000) y los tiempos de los
   botones.
@@ -328,4 +331,8 @@ en la ventana.
   el robot y verificaciones.
 - [docs/robot/03_DESPLIEGUE_Y_OPERACION.md](robot/03_DESPLIEGUE_Y_OPERACION.md): referencia
   rápida de operación.
+- [docs/CALIBRACION_BALON.md](CALIBRACION_BALON.md): capturas y ajuste de los umbrales del
+  balón naranja en la sede.
+- [docs/AUDITORIA_2026-10-19.md](AUDITORIA_2026-10-19.md): auditoría del stack antes del
+  despliegue físico y plan de trabajo hasta la competencia.
 - Código: `robot/Src/Modules/BehaviorControl/CopaPenalty*`, `deploy/` y `tools/robot_build.py`.
