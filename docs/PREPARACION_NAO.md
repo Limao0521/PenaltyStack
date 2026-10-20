@@ -1,6 +1,13 @@
 # Preparación para prueba física
 
-**Estado actual: no listo para un penal funcional en NAO real.** Sí hay controlador y simulación ejecutables, y un paquete de observación onboard. Falta un ejecutor de patada compatible con la pelota y verificación física.
+> **Robots reales en la Copa NAO CCM MX 2026:** la ruta de despliegue correcta es el framework
+> B-Human de `robot/` con `DeployCopaNAO.bat`; seguir la
+> [guía del robot físico](GUIA_DESPLIEGUE_ROBOT_FISICO.md) y
+> [docs/robot/03 · Despliegue y operación](robot/03_DESPLIEGUE_Y_OPERACION.md).
+> Lo que sigue describe la ruta anterior (adaptador NAOqi Python 2, solo de observación,
+> como el de [DESPLIEGUE.md](DESPLIEGUE.md)) y se conserva como contexto histórico.
+
+**Estado actual de esta ruta legacy: no lista para un penal funcional en NAO real.** Sí hay controlador y simulación ejecutables, y un paquete de observación onboard. Falta un ejecutor de patada compatible con la pelota y verificación física.
 
 Puertas concretas para declarar listo:
 

@@ -28,7 +28,7 @@ python tools/robot_build.py --check-originals
 
 Hay **15 originales modificados**: `SkillBehaviorControl.h` (dos `REQUIRES` y la nueva
 opción) y una línea de `defaultRepresentations` en cada uno de los 14 `threads.cfg`. Todo lo
-demás son **25 archivos nuevos**.
+demás son **26 archivos nuevos** (`python tools/robot_build.py --check-originals` los lista).
 
 ## Arquitectura en el robot
 
