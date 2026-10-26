@@ -272,6 +272,13 @@ public:
       if(side != "center" && side != "left" && side != "right") throw std::runtime_error("Unknown block side");
       motion.diveRequest = side == "left" ? MotionRequest::Dive::jumpLeft : side == "right" ? MotionRequest::Dive::jumpRight : MotionRequest::Dive::squatArmsBackLeft;
     }
+    else if(action == "sit")
+    {
+      // Dive::prepare maps to the original sitDownKeeper keyframe: the keeper
+      // sits down and holds the guard without jumping/diving to the ground.
+      motion.motion = MotionRequest::dive;
+      motion.diveRequest = MotionRequest::Dive::prepare;
+    }
     else throw std::runtime_error("Unknown motion request");
     auto& head = rep<HeadMotionRequest>("HeadMotionRequest");
     head.pan = scalar(request,"head_yaw",0,2.1f); head.tilt = scalar(request,"head_pitch",0,.8f);
@@ -313,7 +320,7 @@ int main()
   std::filesystem::current_path(BHUMAN_BASELINE_DIR);
   json names=json::array(); FOREACH_ENUM(Joints::Joint,joint) names.push_back(TypeRegistry::getEnumName(joint));
   std::cout << json({{"type","HELLO"},{"protocol",1},{"source_commit",revision},{"cycle_s",.012},
-                    {"joint_names",names},{"motions",{"stand","walk","kick","block","getup"}},
+                    {"joint_names",names},{"motions",{"stand","walk","kick","block","getup","sit"}},
                     {"provenance",json::parse(provenance_json)}}).dump() << std::endl;
   std::unique_ptr<Runtime> runtime;
   std::string line;

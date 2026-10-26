@@ -98,6 +98,39 @@ class PhysicalAcceptanceTests(unittest.TestCase):
                 sim.close()
         self.metrics['blocks'] = cases
 
+    def test_keeper_sit_holds_guard_without_diving(self):
+        session = self.session(ball_xy=(1.,.8))
+        session.command('role','keeper')
+        session.command('manual',{'motion':'sit'})
+        self.settle(session)
+        sim = session.sim
+        standing_z = float(sim.pose('keeper')[0][2])
+        goal_x = float(sim.pose('keeper')[0][0])
+        phases, keyframes = set(), set()
+        for _ in range(260):
+            session.tick()
+            output = sim.outputs['keeper']
+            phases.add(output['phase'])
+            if output['phase'] == 'keyframeMotion':
+                keyframes.add(output['motion_info']['keyframe'])
+        self.assertIn('keyframeMotion',phases)
+        # Sentarse y mantener la guardia: el único keyframe es sitDownKeeper,
+        # sin keeperJump* ni genuflectStand y sin caer al suelo.
+        self.assertEqual(keyframes,{'sitDownKeeper'})
+        final = sim.outputs['keeper']['motion_info']
+        self.assertEqual(final['keyframe'],'sitDownKeeper')
+        self.assertFalse(final['mirror'])
+        self.assertFalse(sim.fallen['keeper'])
+        seated_z = float(sim.pose('keeper')[0][2])
+        self.assertLess(seated_z,standing_z-.08,'el torso no bajó: no está sentado')
+        self.assertLess(abs(float(sim.pose('keeper')[0][0])-goal_x),.15,
+                        'el portero se desplazó como en un lanzamiento')
+        self.assertTrue(np.isfinite(sim.data.qvel).all())
+        self.metrics['keeper_sit'] = {'standing_z_m':standing_z,'seated_z_m':seated_z,
+            'keyframes':sorted(keyframes),'fallen':sim.fallen['keeper'],
+            'position':sim.pose('keeper')[0].tolist()}
+        sim.close()
+
     def test_three_repeats_deterministic_and_children_collected(self):
         session = self.session()
         session.mode = 'penalty'
@@ -106,8 +139,12 @@ class PhysicalAcceptanceTests(unittest.TestCase):
         for repeat in range(3):
             session.command('repeat')
             trials.append(session.trial)
+            keyframes = set()
             for _ in range(2800):
                 session.tick()
+                output = session.sim.outputs['keeper']
+                if output.get('phase') == 'keyframeMotion':
+                    keyframes.add(output['motion_info']['keyframe'])
                 if session.state == 'FINISHED':
                     break
             self.assertEqual(session.state,'FINISHED')
@@ -117,6 +154,9 @@ class PhysicalAcceptanceTests(unittest.TestCase):
             self.assertGreater(session.sim.kick_contact_count,0)
             self.assertGreater(session.sim.block_contacts,0)
             self.assertFalse(any(session.sim.fallen.values()))
+            # El portero del ensayo sólo se sienta: nunca se lanza.
+            self.assertEqual(keyframes,{'sitDownKeeper'})
+            self.assertEqual(session.sim.outputs['keeper']['motion'],'sit')
             samples.append(session.sim.data.qpos.copy())
         self.assertEqual(len(set(trials)),3)
         for sample in samples[1:]:

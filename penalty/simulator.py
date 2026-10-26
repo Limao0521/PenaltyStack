@@ -64,7 +64,7 @@ def main():
     parser.add_argument('--headless',action='store_true')
     parser.add_argument('--mode',choices=('penalty','manual'),default='penalty')
     parser.add_argument('--seconds',type=float,default=28.,help='duración activa sin ventana (máximo 28 s)')
-    parser.add_argument('--action',choices=('stand','walk','kick','block','getup'),default='stand')
+    parser.add_argument('--action',choices=('stand','walk','kick','block','getup','sit'),default='stand')
     parser.add_argument('--role',choices=('striker','keeper'),default='striker')
     parser.add_argument('--forward',type=float,default=.06,help='m/s, modo manual')
     parser.add_argument('--lateral',type=float,default=0.,help='m/s, modo manual')

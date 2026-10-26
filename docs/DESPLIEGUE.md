@@ -16,6 +16,10 @@ La segunda orden muestra las operaciones; `--apply` las ejecuta. Los archivos qu
 
 ## Arranque en el robot
 
-Por SSH antes de la prueba: `cd /home/nao/PenaltyStack/current && sh deploy/run.sh`. Dejar el proceso ejecutándose onboard; después desconectar Ethernet. El robot espera inmóvil hasta pulsar la parte frontal de la cabeza tras el silbato. Mantener pecho 0,3 s activa ABORT. El proceso termina al agotar 28 s o completar el rol. El lanzador se niega a iniciar si detecta el proceso `bhuman`: ALMotion/NAOqi y LoLA no deben competir por actuadores. Confirmar manualmente el perfil y la identidad de cada robot antes de ejecutar.
+Por SSH antes de la prueba: `cd /home/nao/PenaltyStack/current && sh deploy/run.sh`.
+Para calibrar la visión con el balón Trionda real, añada
+`--vision-log /home/nao/vision.jsonl`: cada 1 s se anexa una línea con rango,
+rumbo y píxeles de la detección de `penalty/vision.py`. Copie el archivo al
+terminar; el paquete no lo transmite ni lo borra. Dejar el proceso ejecutándose onboard; después desconectar Ethernet. El robot espera inmóvil hasta pulsar la parte frontal de la cabeza tras el silbato. Mantener pecho 0,3 s activa ABORT. El proceso termina al agotar 28 s o completar el rol. El lanzador se niega a iniciar si detecta el proceso `bhuman`: ALMotion/NAOqi y LoLA no deben competir por actuadores. Confirmar manualmente el perfil y la identidad de cada robot antes de ejecutar.
 
 Actualmente `motion_enabled=false` deja todo movimiento físico apagado. Para ensayos controlados de marcha, ponerlo en true y establecer `PENALTY_ENABLE_WALK=I_UNDERSTAND` en la sesión onboard. La patada real no se ejecuta ni siquiera en ese modo. Si aparece `KICK_REQUEST_NOT_EXECUTED`, la prueba no es un penal funcional; no contarla como éxito.

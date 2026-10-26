@@ -11,10 +11,23 @@ Desde la raíz del proyecto, con Visual Studio 2022 Build Tools y CMake:
 .\.venv\Scripts\python.exe tools/build_motion_runtime.py
 ```
 
-El ejecutable es `native/bhuman_motion/build/Release/bhuman_motion.exe`.
-El script obtiene Eigen 3.4.0, nlohmann JSON 3.11.3 y únicamente el header
-de declaraciones del protocolo HSL v20, verificando SHA256 contra
+En Linux, con GCC y CMake (sin Visual Studio):
+
+```bash
+.venv/bin/python tools/build_motion_runtime.py          # --parallel N opcional
+```
+
+El ejecutable es `native/bhuman_motion/build/Release/bhuman_motion.exe` en
+Windows y `native/bhuman_motion/build/bhuman_motion` en Linux. El script
+obtiene Eigen 3.4.0, nlohmann JSON 3.11.3 y únicamente el header de
+declaraciones del protocolo HSL v20, verificando SHA256 contra
 `dependencies.lock.json`. No compila ni inicia un GameController.
+
+En Linux el CMake define `LINUX` (el baseline trae ramas `#ifdef WINDOWS /
+#elif defined LINUX` para Time, Memory, BHAssert, File y TypeRegistry), usa
+`Release` por defecto y relaja conversiones/parámetros no usados de GCC sin
+tocar los bytes originales. `RobotPose.cpp` vive fuera de los globs de
+representaciones y se añade explícitamente a las fuentes.
 
 ## Qué se ejecuta
 
@@ -48,6 +61,10 @@ Se preservan los originales. El script genera copias en `build/generated`:
 - `File.cpp`: `getBHDir()` retorna la raíz del baseline fijada en la compilación.
   Es necesario porque el ejecutable aislado no está dentro del árbol original
   que el mecanismo de búsqueda espera.
+- `Math/Range.h` (sólo GCC): `Rangea::getSize()` es `constexpr` y llamaba a
+  `Angle::operator float&()`, que GCC no acepta en contexto constante. La copia
+  generada hace la misma aritmética en `float` locales; el include generado
+  precede al original, y el PCH referencia la copia para no duplicar el tipo.
 
 `host.cpp` implementa únicamente SystemCall de simulación, diagnóstico de
 audio a stderr, el constructor explícito de Settings y la búsqueda de Config.
@@ -69,12 +86,15 @@ con yaw de mundo incluido, `fsr[8]` en kg equivalente. FSR se ordena izquierda
 fl/fr/bl/br y derecha fl/fr/bl/br. Articulaciones siguen `HELLO.joint_names`
 y el orden original Joints, incluyendo ambas manos y HipYawPitch derecho.
 
-`request.motion` admite stand/walk/kick/block/getup. Marcha usa forward/lateral
+`request.motion` admite stand/walk/kick/block/getup/sit. Marcha usa forward/lateral
 en mm/s y turn en rad/s. Patada admite forwardFastLeft/forwardFastRight y
 ball[2] en milímetros del plano robot. Block usa center/left/right; las fases
-son genuflectStand, keeperJumpLeft y su espejo. Cabeza usa head_yaw/head_pitch
-en radianes. Getup solicita stand: el motor original decide la recuperación
-según FallDownState, sin forzar estados inventados.
+son genuflectStand, keeperJumpLeft y su espejo. `sit` mapea a
+`Dive::prepare`, que el motor original resuelve como el keyframe
+`sitDownKeeper`: el portero se sienta y mantiene la guardia sin lanzarse.
+Cabeza usa head_yaw/head_pitch en radianes. Getup solicita stand: el motor
+original decide la recuperación según FallDownState, sin forzar estados
+inventados.
 
 OUTPUT devuelve ángulos, rigidez resuelta 0..100, odometría en mm/radianes,
 nombre de fase original, petición, busy y pulso kick_completed. Off/ignore

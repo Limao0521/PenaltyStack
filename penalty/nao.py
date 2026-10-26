@@ -27,7 +27,10 @@ def held(memory, key, seconds, now, since):
     return now - since >= seconds, since
 
 
-def run(profile_path):
+def run(profile_path, vision_log=None):
+    """Con --vision-log PATH anexa cada 1 s una línea JSONL con la detección
+    del balón Trionda (rango, rumbo, píxeles) para calibrar penalty/vision.py
+    con imágenes reales del NAO."""
     with open(profile_path, 'r') as stream:
         profile = json.load(stream)
     role = profile['role']
@@ -56,6 +59,7 @@ def run(profile_path):
     last_head = 0.0
     last_frame_id = None
     last_frame_received = None
+    last_vision_log = 0.0
     try:
         if motion_enabled:
             motion.wakeUp()
@@ -86,6 +90,13 @@ def run(profile_path):
             if command.state != previous_state:
                 print('%.2f %s ball=%s' % (obs.now, command.state, ball))
                 previous_state = command.state
+            if vision_log and now - last_vision_log >= 1.0:
+                last_vision_log = now
+                with open(vision_log, 'a') as stream:
+                    stream.write(json.dumps({'t': obs.now, 'role': role,
+                        'state': command.state,
+                        'ball': [ball[0], ball[1]] if ball else None,
+                        'ball_pixels': ball[2] if ball else 0}) + '\n')
             if motion_enabled:
                 # NAOqi uses normalized velocities. These provisional reference
                 # speeds must be measured on the actual robot before competition.
@@ -109,8 +120,10 @@ def run(profile_path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--profile', required=True)
+    parser.add_argument('--vision-log', default=None,
+                        help='anexa cada 1 s la detección Trionda en este JSONL')
     args = parser.parse_args()
-    run(args.profile)
+    run(args.profile, args.vision_log)
 
 
 if __name__ == '__main__':

@@ -148,7 +148,7 @@ class SimulationSession:
     @staticmethod
     def _validate_manual(value):
         request = dict(value)
-        if request.get('motion') not in ('stand','walk','kick','block','getup'):
+        if request.get('motion') not in ('stand','walk','kick','block','getup','sit'):
             raise ValueError('movimiento manual desconocido')
         for name, bound in (('forward',.15),('lateral',.15),('turn',.35),
                              ('head_yaw',1.0),('head_pitch',.5)):
@@ -246,17 +246,18 @@ class SimulationSession:
             motion = 'walk' if command.forward or command.lateral or command.turn else 'stand'
             if role == 'striker' and self._kick_requested and not self._kick_done:
                 motion = 'kick'
-            elif role == 'keeper' and command.state == 'BLOCK':
-                # Prepare the guard when the ball actually approaches. The
-                # ground-truth observation is explicit in the simulation log.
-                obs = self.sim.observation()[role]
-                if self._keeper_block is None and obs.get('ball_speed',0.) > .15 and obs['ball_range'] < 1.1:
+            elif role == 'keeper':
+                # El portero no se lanza: en cuanto ve el balón se sienta con
+                # el keyframe original sitDownKeeper (petición `sit`) y conserva
+                # la guardia hasta terminar el ensayo o ABORT. Perder el balón
+                # de vista o un cambio de rumbo no liberan la postura sentada.
+                # La observación de suelo verdadero queda explícita en el
+                # registro de la simulación. El lanzamiento original (block)
+                # sigue disponible en modo manual para comparación.
+                if command.state == 'BLOCK' and self._keeper_block is None:
                     self._keeper_block = command.block
-                # Keep the first guard requested for this shot. A stopped
-                # ball or a changing bearing must not release or replace an
-                # original keyframe that is still holding its guard posture.
                 if self._keeper_block is not None:
-                    motion = 'block'
+                    motion = 'sit'
             requests[role] = {'motion':motion,'forward':command.forward*1000,
                 'lateral':command.lateral*1000,'turn':command.turn,
                 'head_yaw':command.head_yaw,'head_pitch':0.,

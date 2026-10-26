@@ -6,6 +6,7 @@ removes the Sabana POSIX RL diagnostic side channel, unused by this runtime.
 import argparse
 import hashlib
 import json
+import os
 import pathlib
 import shutil
 import subprocess
@@ -95,26 +96,52 @@ def prepare():
         end += 1
     pose_source = pose_source[:start] + pose_source[end:]
     (generated / 'WalkToPoseEngine.cpp').write_text(pose_source, encoding='utf-8')
+    # GCC rejects the mutable Angle::operator float&() inside the constexpr
+    # Rangea::getSize specialization that MSVC tolerated. The generated copy
+    # keeps identical float arithmetic through the constexpr const conversion.
+    range_source = (ROOT / 'baseline/bhuman/Src/Libs/Math/Range.h').read_text(encoding='utf-8')
+    range_body = '  return max - (min - (min > max ? Angle(Constants::pi2) : 0_deg));'
+    if range_body not in range_source:
+        raise ValueError('Range.h angle specialization changed; review the platform adaptation')
+    range_source = range_source.replace(range_body,
+        '  const float lo = min, hi = max;\n'
+        '  return Angle(hi - (lo - (lo > hi ? Constants::pi2 : 0.f)));')
+    (generated / 'Math').mkdir(parents=True, exist_ok=True)
+    (generated / 'Math' / 'Range.h').write_text(range_source, encoding='utf-8')
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--configure-only', action='store_true')
+    parser.add_argument('--parallel', type=int, default=0,
+                        help='procesos de compilación (0 = CPUs disponibles - 1)')
     args = parser.parse_args()
     prepare()
-    vswhere = pathlib.Path('C:/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe')
-    vs = subprocess.check_output([str(vswhere), '-latest', '-products', '*', '-requires',
-                                 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64',
-                                 '-property', 'installationPath'], text=True).strip()
-    if not vs:
-        raise RuntimeError('Install Visual Studio 2022 Build Tools: Desktop development with C++')
-    cmake = shutil.which('cmake') or str(pathlib.Path(vs) / 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe')
-    subprocess.run([cmake, '-S', str(NATIVE), '-B', str(NATIVE / 'build'), '-G',
-                    'Visual Studio 17 2022', '-A', 'x64', '-DCMAKE_POLICY_VERSION_MINIMUM=3.5'], check=True)
+    parallel = args.parallel or max(1, (os.cpu_count() or 2) - 1)
+    if os.name == 'nt':
+        vswhere = pathlib.Path('C:/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe')
+        vs = subprocess.check_output([str(vswhere), '-latest', '-products', '*', '-requires',
+                                     'Microsoft.VisualStudio.Component.VC.Tools.x86.x64',
+                                     '-property', 'installationPath'], text=True).strip()
+        if not vs:
+            raise RuntimeError('Install Visual Studio 2022 Build Tools: Desktop development with C++')
+        cmake = shutil.which('cmake') or str(pathlib.Path(vs) / 'Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe')
+        subprocess.run([cmake, '-S', str(NATIVE), '-B', str(NATIVE / 'build'), '-G',
+                        'Visual Studio 17 2022', '-A', 'x64', '-DCMAKE_POLICY_VERSION_MINIMUM=3.5'], check=True)
+        if not args.configure_only:
+            subprocess.run([cmake, '--build', str(NATIVE / 'build'), '--config', 'Release',
+                            '--parallel', str(parallel)], check=True)
+            print(NATIVE / 'build/Release/bhuman_motion.exe')
+        return
+    cmake = shutil.which('cmake')
+    if not cmake:
+        raise RuntimeError('Instala cmake y un compilador C++20 (sudo apt install cmake g++)')
+    subprocess.run([cmake, '-S', str(NATIVE), '-B', str(NATIVE / 'build'),
+                    '-DCMAKE_BUILD_TYPE=Release'], check=True)
     if not args.configure_only:
-        subprocess.run([cmake, '--build', str(NATIVE / 'build'), '--config', 'Release',
-                        '--parallel', '4'], check=True)
-        print(NATIVE / 'build/Release/bhuman_motion.exe')
+        subprocess.run([cmake, '--build', str(NATIVE / 'build'),
+                        '--parallel', str(parallel)], check=True)
+        print(NATIVE / 'build/bhuman_motion')
 
 
 if __name__ == '__main__':

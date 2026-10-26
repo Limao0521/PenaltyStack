@@ -4,8 +4,10 @@ import pathlib
 import subprocess
 import unittest
 
+from penalty.motion_contract import executable_path
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-EXE = ROOT / 'native/bhuman_motion/build/Release/bhuman_motion.exe'
+EXE = executable_path()
 
 
 def frame(sequence, request):
@@ -37,6 +39,7 @@ class NativeMotionRuntimeTests(unittest.TestCase):
         self.assertEqual(hello['source_commit'], '2360ab1100ad28f70e190c893f6b095651ff0bbc')
         self.assertEqual(len(hello['joint_names']), 26)
         self.assertEqual(hello['cycle_s'], .012)
+        self.assertIn('sit', hello['motions'])
 
     def test_original_stand_and_walk_generate_joint_commands(self):
         # Constant ideal sensors test the native motion providers, not physical
@@ -80,6 +83,17 @@ class NativeMotionRuntimeTests(unittest.TestCase):
                 self.assertTrue(active)
                 self.assertEqual(active[-1]['motion_info']['keyframe'], expected)
                 self.assertEqual(active[-1]['motion_info']['mirror'], mirror)
+
+    def test_original_keeper_sit_executes_sitdownkeeper_without_diving(self):
+        result, messages = run_native([{'motion': 'stand'}] * 170 + [{'motion': 'sit'}] * 220)
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout[-800:])
+        outputs = [m for m in messages if m['type'] == 'OUTPUT']
+        active = [m for m in outputs if m['phase'] == 'keyframeMotion']
+        self.assertTrue(active)
+        self.assertEqual(active[-1]['motion_info']['keyframe'], 'sitDownKeeper')
+        self.assertFalse(active[-1]['motion_info']['mirror'])
+        # Ninguna petición sit deriva en lanzamiento: el único keyframe es sentarse.
+        self.assertEqual({m['motion_info']['keyframe'] for m in active}, {'sitDownKeeper'})
 
     def test_oversized_or_truncated_messages_fail(self):
         for payload, code in (('[' * 65537 + '\n', 'MESSAGE_SIZE'),

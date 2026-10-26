@@ -3,6 +3,20 @@
   <compiler angle="radian"/>
   <option timestep="0.002" gravity="0 0 -9.81"/>
   <visual><global offwidth="960" offheight="640"/><map znear="0.01"/></visual>
+  <asset>
+    <!-- Apariencia del balón oficial Trionda: naranja de 65 mm con manchas
+         oscuras irregulares. La física (tamaño/masa/fricción) no cambia; la
+         textura sirve a las pruebas de visión de penalty/vision.py. Las
+         manchas son naranja oscuro (no negras) para que el disco no se
+         fragmente en el umbral del detector a distancias de portero. -->
+    <texture name="trionda" type="2d" builtin="flat" rgb1="1 0.42 0.04" rgb2="1 0.42 0.04"
+             width="128" height="128" mark="random" markrgb="0.55 0.22 0.05" random="0.045"/>
+    <!-- emission uniforme: con luz cenital y ambient 0.3 la mitad sombreada
+         del balón caía bajo el umbral del detector; la emisión mantiene el
+         disco íntegro sin alterar la iluminación de la cancha. -->
+    <material name="trionda" texture="trionda" texrepeat="5 5" texuniform="true"
+              specular="0.05" shininess="0.2" emission="0.4"/>
+  </asset>
   <default>
     <geom condim="3" friction="0.6 0.005 0.0001"/>
   </default>
@@ -26,7 +40,7 @@
 
     <body name="ball" pos="0.1 0 0.0325">
       <freejoint name="ball_free"/>
-      <geom name="orange_ball" type="sphere" size="0.0325" mass="0.055" friction="0.18 0.004 0.0001" rgba="1 0.33 0.01 1"/>
+      <geom name="orange_ball" type="sphere" size="0.0325" mass="0.055" friction="0.18 0.004 0.0001" rgba="1 0.33 0.01 1" material="trionda"/>
     </body>
   </worldbody>
 </mujoco>

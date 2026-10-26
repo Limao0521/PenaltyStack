@@ -42,8 +42,10 @@ class BHumanBridge:
         if command is None:
             exe = executable or executable_path()
             if not exe.is_file():
+                hint = ('.\\.venv\\Scripts\\python.exe' if os.name == 'nt'
+                        else '.venv/bin/python')
                 raise RuntimeError('Motor B-Human sin compilar. Ejecuta: '
-                                   '.\\.venv\\Scripts\\python.exe tools/build_motion_runtime.py')
+                                   + hint + ' tools/build_motion_runtime.py')
             command = [str(exe.resolve())]
         flags = subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0
         self.process = subprocess.Popen(command,cwd=str(ROOT),stdin=subprocess.PIPE,
@@ -138,7 +140,7 @@ class BHumanBridge:
         for name,size in (('angles',26),('velocity',26),('gyro',3),('acc',3),
                            ('orientation',4),('fsr',8)):
             finite_array(sensors.get(name),size,'sensores '+name)
-        if request.get('motion') not in ('stand','walk','kick','block','getup'):
+        if request.get('motion') not in ('stand','walk','kick','block','getup','sit'):
             raise RuntimeError('petición de movimiento inválida')
         self._send({'type':'STEP','trial':self.trial,'sequence':sequence,
                     'time_ms':time_ms,'sensors':sensors,'request':request})

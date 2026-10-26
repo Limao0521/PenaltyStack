@@ -5,6 +5,7 @@ import math
 from pathlib import Path
 
 import mujoco
+import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -12,6 +13,34 @@ ROBOT = ROOT / 'models' / 'bhuman' / 'nao.xml'
 SCENE = ROOT / 'sim' / 'scene.xml'
 INITIAL_POSE = json.loads((ROOT / 'models' / 'bhuman' / 'initial_pose.json').read_text())
 KINEMATIC_ROOT_Z = 0.334
+
+
+CAMERA_FOVY_DEG = 42.5  # cameraIntrinsics.cfg openingAngleHeight (54.7° ancho en 4:3)
+# RobotDimensions.cfg: offset desde la articulación del cuello y caída original.
+CAMERAS = (
+    ('CameraBottom', (0.05071, 0.0, 0.01774), 39.7),
+    ('CameraTop', (0.05871, 0.0, 0.06364), 1.2),
+)
+
+
+def camera_quat(tilt_deg):
+    """Orientación MuJoCo (mira por -Z, X a la derecha) para una caída frontal.
+
+    Ejes de cámara en el marco del robot (X adelante, Y izquierda, Z arriba):
+    derecha = -Y; la mira cae tilt_deg bajo la horizontal hacia +X. Las
+    columnas de la matriz de rotación son los ejes de la cámara.
+    """
+    t = math.radians(tilt_deg)
+    right = (0.0, -1.0, 0.0)
+    up = (math.sin(t), 0.0, math.cos(t))
+    back = (-math.cos(t), 0.0, math.sin(t))
+    rotation = np.array((
+        (right[0], up[0], back[0]),
+        (right[1], up[1], back[1]),
+        (right[2], up[2], back[2])), dtype=np.float64)
+    quat = np.zeros(4)
+    mujoco.mju_mat2Quat(quat, rotation.reshape(9))
+    return quat.tolist()
 
 
 def robot_spec(mocap=True):
@@ -28,6 +57,15 @@ def robot_spec(mocap=True):
                                 ('acc', mujoco.mjtSensor.mjSENS_ACCELEROMETER)):
         spec.add_sensor(name='imu_' + suffix, type=sensor_type,
                         objtype=mujoco.mjtObj.mjOBJ_SITE, objname='imu')
+    # Cámaras de cabeza para las pruebas de visión del balón Trionda; van en
+    # el cuerpo Head y cabecean con HeadPitch, como en el NAO real. Sólo
+    # percepción de prueba: la FSM del ensayo sigue usando suelo verdadero.
+    head = spec.body('Head')
+    for name, pos, tilt_deg in CAMERAS:
+        camera = head.add_camera(name=name)
+        camera.pos = list(pos)
+        camera.quat = camera_quat(tilt_deg)
+        camera.fovy = CAMERA_FOVY_DEG
     return spec
 
 

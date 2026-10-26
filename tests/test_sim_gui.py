@@ -1,16 +1,19 @@
 """Actual Windows viewer plus Tk controls, using the genuine subprocesses."""
+import importlib.util
 import os
 import threading
 import time
-import tkinter as tk
 import unittest
 from unittest.mock import patch
 
-from penalty.sim_panel import ControlPanel
+tk = importlib.import_module('tkinter') if importlib.util.find_spec('tkinter') else None
+if tk is not None:
+    from penalty.sim_panel import ControlPanel
 from penalty.simulator import run
 
 
 @unittest.skipUnless(os.name=='nt','MSVC/Windows graphical integration')
+@unittest.skipIf(tk is None,'tkinter no está instalado (sudo apt install python3-tk)')
 class GraphicalIntegrationTests(unittest.TestCase):
     def test_viewer_panel_pause_step_reset_repeat_and_shutdown(self):
         failures = []

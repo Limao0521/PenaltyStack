@@ -110,12 +110,13 @@ class SessionTests(unittest.TestCase):
         world.observation = lambda:{r:dict(ball) for r in ('striker','keeper')}
         session._next_control = 0.
         first = session._requests()['keeper']
-        self.assertEqual((first['motion'],first['block_side']),('block','center'))
+        # El portero se sienta al ver el balón; nunca se lanza.
+        self.assertEqual((first['motion'],first['block_side']),('sit','center'))
         ball.update(ball_speed=0.,ball_bearing=-.5)
         world.data.time += .12
         later = session._requests()['keeper']
         self.assertEqual(session.commands['keeper'].block,'right')
-        self.assertEqual((later['motion'],later['block_side']),('block','center'))
+        self.assertEqual((later['motion'],later['block_side']),('sit','center'))
         session.command('repeat')
         self.assertIsNone(session._keeper_block)
 

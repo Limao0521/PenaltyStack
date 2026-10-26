@@ -58,7 +58,7 @@ class ControlPanel:
         actions = ttk.Frame(manual)
         actions.grid(row=7,column=0,columnspan=2,pady=8)
         for motion,label in [('stand','Pararse'),('walk','Caminar'),('kick','Patear'),
-                             ('block','Bloquear'),('getup','Levantarse')]:
+                             ('block','Bloquear'),('sit','Sentarse'),('getup','Levantarse')]:
             ttk.Button(actions,text=label,command=lambda m=motion:self.request_motion(m)).pack(side='left',padx=2)
         ttk.Label(frame,text='Espacio: iniciar/pausa · R: reiniciar · Enter: repetir · .: paso · A: abortar\n'
                   'Cambiar modo reinicia el ensayo. Reiniciar deja la escena pausada.\n'

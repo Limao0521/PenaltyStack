@@ -1,5 +1,6 @@
 """Names and units shared with the unmodified B-Human Joints enum."""
 
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,4 +20,7 @@ SENSOR_IGNORE = 20000.0
 
 def executable_path():
     """An explicit build artifact; no PATH executable or silent fallback."""
-    return ROOT / 'native' / 'bhuman_motion' / 'build' / 'Release' / 'bhuman_motion.exe'
+    build = ROOT / 'native' / 'bhuman_motion' / 'build'
+    if os.name == 'nt':
+        return build / 'Release' / 'bhuman_motion.exe'
+    return build / 'bhuman_motion'
