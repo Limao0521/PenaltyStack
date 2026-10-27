@@ -17,6 +17,7 @@ This product includes software developed by B-Human (http://www.b-human.de). Ver
 - **NAO:** cámara RGB, botón START, botón ABORT, control de cabeza y marcha acotada tienen adaptador onboard. Por defecto el proceso es de observación. El ejecutor físico de patada aún no está conectado; el adaptador rechaza `kick_enabled`.
 - **Visión Trionda:** balón naranja de 65 mm con patrón oscuro y cámaras `CameraBottom`/`CameraTop` en la cabeza de ambos NAO (offsets y apertura originales). `tools/vision_check.py` renderiza QVGA y compara `penalty/vision.py` contra el suelo verdadero; la FSM del ensayo sigue usando percepción ideal declarada.
 - **Despliegue:** paquete Python para NAOqi 2.8 por Ethernet en `/home/nao/PenaltyStack`, aislado del servicio y los archivos de B-Human. No hay borrado remoto.
+- **Robot real bajo B-Human:** los NAO del laboratorio corren una imagen sin NAOqi donde `bhuman` es dueño del hardware; ahí la prueba de penal vive dentro del fork del equipo (`SabanaHerons2026`, escenario `PenaltyStack`, portero que sólo se sienta con el keyframe original). Ver [robot bajo B-Human](docs/ROBOT_BHUMAN.md).
 
 ## Inicio rápido en Windows
 
@@ -60,5 +61,5 @@ La escena abre **pausada**. Pulsa **Iniciar**; ambos motores estabilizan la post
 
 El ensayo inicial usa patada izquierda. La derecha se ejecuta y termina, pero todavía falla el contacto en esa colocación. En el ensayo automático el portero **no se lanza**: se sienta con el keyframe original `sitDownKeeper` y mantiene la guardia; los lanzamientos al suelo (`block`) quedan sólo en modo manual para comparación. Los bloqueos laterales manuales terminan en el suelo; la recuperación debe verificarse. **Esta integración no habilita todavía un penal completo en NAO real.**
 
-Leer [arquitectura](docs/ARQUITECTURA.md), [operación y despliegue](docs/DESPLIEGUE.md) y [criterios para NAO real](docs/PREPARACION_NAO.md).
+Leer [arquitectura](docs/ARQUITECTURA.md), [operación y despliegue](docs/DESPLIEGUE.md), [robot real bajo B-Human](docs/ROBOT_BHUMAN.md) y [criterios para NAO real](docs/PREPARACION_NAO.md).
 Ver también [modelo V6 y licencia](models/bhuman/README.md) y [baseline motriz](baseline/README.md).

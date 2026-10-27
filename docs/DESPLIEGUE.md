@@ -1,5 +1,15 @@
 # Empaquetado, despliegue y operación
 
+## Robots con imagen B-Human (laboratorio: ronaoldinho, ospinao, …)
+
+Estas unidades no tienen NAOqi: el proceso `bhuman` es dueño exclusivo del
+hardware y el paquete NAOqi de este repo no puede ejecutarse en ellas. La
+prueba de penal real **vive bajo bhuman** y se despliega con el pipeline del
+fork del equipo `SabanaHerons2026` (escenario `PenaltyStack`, portero que sólo
+se sienta mediante el keyframe original `sitDownKeeper`): ver
+[ROBOT_BHUMAN.md](ROBOT_BHUMAN.md). El resto de esta página aplica únicamente
+a robots con imagen NAOqi 2.8 y módulo `qi`.
+
 ## Antes de empaquetar
 
 Crear perfiles separados por NAO a partir de `profiles/*.example.json`. Completar `robot_id`, `role`, cámara y rumbo inicial medido. El paquete rechaza los marcadores `TO_FILL` y una patada física habilitada. Python 2.7 con `qi` debe estar disponible en NAOqi 2.8; comprobarlo en cada unidad. El proceso usa solo `127.0.0.1:9559` para NAOqi y no necesita Wi-Fi ni PC al ejecutar.
