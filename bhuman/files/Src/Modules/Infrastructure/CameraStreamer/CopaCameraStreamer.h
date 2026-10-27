@@ -6,12 +6,19 @@
  * switch keeps working) followed by a Copa section with what the robot sees:
  *
  *   [4 bytes] magic "COPA"
- *   uint8 version (2)
+ *   uint8 version (3)
  *   uint8 ballOnField | float32 x | float32 y           (BallPercept::positionOnField, mm)
  *   uint8 nPosts  | per post:  Box
  *   uint8 goalSeen | int8 leftPost | int8 rightPost | float32 span (rad) | float32 distance (mm)
  *     | float32 centerBearing (rad)
  *   uint8 nRobots | per robot: Box | uint8 fallen
+ *   uint8 twinPresent (upper camera only) | [Twin]
+ *   Twin = uint32 time | uint32 run | uint8 role | uint8 state | uint8 phase | Pose robot
+ *          | Point ball | Point mark | Point leftPost | Point rightPost | uint8 goalInferred
+ *          | Point keeper | Point target | int8 side | Pose preKick | Pose walkTarget
+ *          | float32 footClearance | float32 minFootClearance | float32 ballFromMark
+ *   Point = uint8 valid | float32 x | float32 y;  Pose = Point + float32 rotation
+ *   (twin positions in the run's start frame, see CopaTwinShared.h)
  *   Box = int16 left | int16 right | int16 top | int16 bottom
  *         | uint8 flags (1 = bottomVisible, 2 = onField) | float32 x | float32 y | float32 bearing (rad)
  *

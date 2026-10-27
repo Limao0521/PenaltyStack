@@ -649,6 +649,9 @@
     "Src/Modules/Infrastructure/CameraStreamer/CopaCameraStreamer.h": {
       "kind": "added"
     },
+    "Src/Modules/Infrastructure/CameraStreamer/CopaTwinShared.h": {
+      "kind": "added"
+    },
     "Src/Modules/Modeling/BallStateEstimator/BallPerceptFilter.cpp": {
       "kind": "modified"
     },

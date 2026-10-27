@@ -29,4 +29,5 @@ STREAMABLE(CopaShotConfig,
   (float)(30.f) alignTolerance,      /**< Position error (mm) at which the kick may start. */
   (Angle)(5_deg) alignAngleTolerance,
   (int)(8000) alignTimeoutMs,        /**< Kick anyway after aligning this long. */
+  (float)(40.f) minFootClearance,    /**< Never move forward while the ball is closer than this to a sole (mm). */
 });

@@ -8,6 +8,7 @@
 
 #include "SkillBehaviorControl.h"
 #include "Python/Controller/RLSharedState.h"
+#include "Modules/Infrastructure/CameraStreamer/CopaTwinShared.h"
 #include "Modules/Perception/CopaPerceptors/CopaVisionShared.h"
 #include "Streaming/InStreams.h"
 #include "Streaming/TypeRegistry.h"
@@ -448,6 +449,9 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
                                       theEnhancedKeyStates.pressed[KeyStates::headRear] &&
                                         !theEnhancedKeyStates.pressed[KeyStates::headFront] &&
                                         !theEnhancedKeyStates.pressed[KeyStates::headMiddle], shutdownLatched || unstiff);
+  publishCopaTwin(keeper, static_cast<int>(state));
+  copaWalkValid = false; // set again by this frame's walk request
+
   if(state != previousCopaState)
   {
     OUTPUT_TEXT("CopaPenalty state=" << static_cast<int>(state) << " role=" << (keeper ? "keeper" : "striker"));
@@ -463,6 +467,10 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
       copaBallTrack.reset();
       copaPhase = CopaStrikerPhase::findBall;
       copaPhaseStart = theFrameInfo.time;
+      copaStartOdometry = theOdometryData;
+      ++copaRun;
+      copaMarkKnown = copaShotKnown = copaPreKickValid = false;
+      copaMinFootClearance = std::numeric_limits<float>::max();
     }
     previousCopaState = state;
   }
@@ -502,6 +510,53 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
   }
   else
     executeCopaStriker(ballFresh);
+}
+
+void SkillBehaviorControl::publishCopaTwin(bool keeper, int state)
+{
+  const Pose2f fromOdometry = copaStartOdometry.inverse();
+  const Pose2f robot = fromOdometry * theOdometryData;
+  auto point = [&](bool valid, const Vector2f& odometry)
+  {
+    CopaTwinSnapshot::Point p;
+    p.valid = valid;
+    const Vector2f v = fromOdometry * odometry;
+    p.x = v.x();
+    p.y = v.y();
+    return p;
+  };
+  auto pose = [&](bool valid, const Pose2f& relative)
+  {
+    CopaTwinSnapshot::Pose p;
+    p.valid = valid;
+    const Pose2f v = robot * relative;
+    p.x = v.translation.x();
+    p.y = v.translation.y();
+    p.rotation = v.rotation;
+    return p;
+  };
+
+  CopaTwinSnapshot twin;
+  twin.time = theFrameInfo.time;
+  twin.run = copaRun;
+  twin.role = keeper ? 1 : 0;
+  twin.state = static_cast<uint8_t>(state);
+  twin.phase = static_cast<uint8_t>(keeper ? static_cast<int>(copaKeeperLastAction) : static_cast<int>(copaPhase));
+  twin.robot = pose(true, Pose2f());
+  twin.ball = point(theFieldBall.ballWasSeen(1000), theOdometryData * theBallModel.estimate.position);
+  twin.mark = point(copaMarkKnown, copaBallOdometry);
+  twin.leftPost = point(copaShotKnown && copaShot.goalSeen, copaLeftPostOdometry);
+  twin.rightPost = point(copaShotKnown && copaShot.goalSeen, copaRightPostOdometry);
+  twin.goalInferred = copaShot.goalInferred;
+  twin.keeper = point(copaShotKnown && copaShot.keeperSeen, copaKeeperOdometry);
+  twin.target = point(copaShotKnown, copaTargetOdometry);
+  twin.side = static_cast<int8_t>(copaShot.side);
+  twin.preKick = pose(copaPreKickValid, copaPreKickRelative);
+  twin.walkTarget = pose(copaWalkValid, copaWalkTargetRelative);
+  twin.footClearance = copaFootClearance;
+  twin.minFootClearance = copaMinFootClearance == std::numeric_limits<float>::max() ? 0.f : copaMinFootClearance;
+  twin.ballFromMark = copaMarkKnown ? (theOdometryData * theBallModel.estimate.position - copaBallOdometry).norm() : 0.f;
+  CopaTwinShared::instance().publish(twin);
 }
 
 void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
@@ -641,8 +696,9 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       if(ball.norm() > c.approachDistance)
       {
         // Keep facing the goal: walk straight up behind the ball, no turning.
-        theWalkToPointSkill({.target = Pose2f(0_deg, ball.x() - c.standOffDistance, ball.y()),
-                             .speed = {0.5f, 0.5f, 0.5f}});
+        copaWalkTargetRelative = Pose2f(0_deg, ball.x() - c.standOffDistance, ball.y());
+        copaWalkValid = true;
+        theWalkToPointSkill({.target = copaWalkTargetRelative, .speed = {0.5f, 0.5f, 0.5f}});
         return;
       }
       // One head and one motion skill per frame: the sweep starts next frame.
@@ -650,6 +706,7 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       copaSeen = CopaShot::Observations();
       copaLastSnapshot = 0;
       copaBallOdometry = theOdometryData * ball; // the ball rests on the mark until the kick
+      copaMarkKnown = true;
       SystemCall::say("looking at goal");
       enter(CopaStrikerPhase::lookGoal);
       return;
@@ -683,6 +740,11 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       params.defaultSide = c.defaultSide;
       const CopaShot::Shot shot = CopaShot::planShot(copaSeen, ball.x(), ball.y(), params, c.expectedGoalDistance);
       copaTargetOdometry = theOdometryData * Vector2f(shot.targetX, shot.targetY);
+      copaShot = shot;
+      copaShotKnown = true;
+      copaLeftPostOdometry = theOdometryData * Vector2f(shot.targetX, shot.goalLeftY);
+      copaRightPostOdometry = theOdometryData * Vector2f(shot.targetX, shot.goalRightY);
+      copaKeeperOdometry = theOdometryData * Vector2f(shot.targetX, shot.keeperY);
       OUTPUT_WARNING("[CopaShot] postSamples=" << static_cast<unsigned>(copaSeen.posts.size())
                   << " robotSamples=" << static_cast<unsigned>(copaSeen.robots.size())
                   << " goal=" << (shot.goalSeen ? "yes" : "no") << " keeper=" << (shot.keeperSeen ? "yes" : "no")
@@ -705,6 +767,16 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       const CopaShot::Pose pre = CopaShot::preKickPose(mark.x(), mark.y(), direction, kick.ballOffset.x(), kick.ballOffset.y(),
                                                        kick.rotationOffset, c.preKickClearance);
       const float behind = -kick.ballOffset.x() + c.preKickClearance;
+      CopaShot::Feet feet;
+      feet.hip = theRobotDimensions.yHipOffset;
+      feet.front = theRobotDimensions.soleToFrontEdgeLength;
+      feet.back = theRobotDimensions.soleToBackEdgeLength;
+      feet.inner = theRobotDimensions.soleToInnerEdgeLength;
+      feet.outer = theRobotDimensions.soleToOuterEdgeLength;
+      copaFootClearance = CopaShot::footClearance(mark.x(), mark.y(), theBallSpecification.radius, feet);
+      copaMinFootClearance = std::min(copaMinFootClearance, copaFootClearance);
+      copaPreKickRelative = Pose2f(pre.rotation, pre.x, pre.y);
+      copaPreKickValid = true;
       theLookAtBallSkill();
       const bool aligned = std::abs(pre.x) < c.alignTolerance && std::abs(pre.y) < c.alignTolerance
                            && std::abs(pre.rotation) < c.alignAngleTolerance;
@@ -712,17 +784,25 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       {
         OUTPUT_WARNING("[CopaShot] aligned=" << (aligned ? "yes" : "timeout") << " pre=(" << static_cast<int>(pre.x) << ","
                        << static_cast<int>(pre.y) << "," << Angle(pre.rotation).toDegrees() << "deg) ballFromMark="
-                       << static_cast<int>((ball - mark).norm()) << "mm");
+                       << static_cast<int>((ball - mark).norm()) << "mm footClearance=" << static_cast<int>(copaFootClearance)
+                       << "mm minFootClearance=" << static_cast<int>(copaMinFootClearance) << "mm");
         theStandSkill();
         enter(CopaStrikerPhase::kick);
         return;
       }
-      if(mark.x() < behind - 2.f * c.alignTolerance && std::abs(mark.y()) < 200.f)
-        theWalkToPointSkill({.target = Pose2f(0_deg, mark.x() - behind, 0.f), .speed = {0.4f, 0.4f, 0.4f},
-                             .disableObstacleAvoidance = true});
+      // Feet first: too close to a sole, or in front of the feet closer than the pre-kick distance,
+      // step straight back; near the ball, sidestep and turn without moving forward.
+      if(copaFootClearance < c.minFootClearance || (mark.x() < behind - 2.f * c.alignTolerance && std::abs(mark.y()) < 200.f))
+        copaWalkTargetRelative = Pose2f(0_deg, std::min(0.f, mark.x() - behind), 0.f);
       else
-        theWalkToPointSkill({.target = Pose2f(pre.rotation, pre.x, pre.y), .speed = {0.4f, 0.4f, 0.4f},
-                             .disableObstacleAvoidance = true});
+      {
+        copaWalkTargetRelative = copaPreKickRelative;
+        if(copaFootClearance < 2.f * c.minFootClearance)
+          copaWalkTargetRelative.translation.x() = std::min(0.f, copaWalkTargetRelative.translation.x());
+      }
+      copaWalkValid = true;
+      theWalkToPointSkill({.target = copaWalkTargetRelative, .speed = {0.4f, 0.4f, 0.4f},
+                           .disableObstacleAvoidance = true});
       return;
     }
 

@@ -42,11 +42,22 @@ def camf_frame(jpeg: bytes, copa: bytes | None) -> bytes:
 def copa_section() -> bytes:
     import struct
     box = struct.Struct('<hhhhBfff')
-    out = viewer.COPA_MAGIC + bytes([2]) + struct.pack('<Bff', 1, 450.0, 20.0)
+    out = viewer.COPA_MAGIC + bytes([3]) + struct.pack('<Bff', 1, 450.0, 20.0)
     out += bytes([2]) + box.pack(30, 40, 10, 200, 3, 2000.0, 760.0, 0.46) + box.pack(280, 290, 12, 205, 3, 2050.0, -740.0, -0.46)
     out += struct.pack('<Bbbfff', 1, 0, 1, 0.92, 1500.0, 0.0)
     out += bytes([1]) + box.pack(140, 180, 60, 190, 3, 1800.0, 0.0, 0.05) + bytes([0])
-    return out
+    return out + bytes([1]) + twin_bytes()
+
+
+def twin_bytes(run=1, phase=2, robot_x=-40.0, clearance=55.0) -> bytes:
+    return viewer.copa_twin.TWIN_FORMAT.pack(
+        12000, run, 0, 1, phase,
+        1, robot_x, -20.0, 0.05,                          # robot pose
+        1, 210.0, 0.0, 1, 200.0, 0.0,                     # ball, mark
+        1, 1500.0, 760.0, 1, 1520.0, -740.0, 0,           # posts, not inferred
+        0, 0.0, 0.0, 1, 1500.0, 380.0, 1,                 # keeper, target, side left
+        1, -90.0, -60.0, 0.02, 1, -90.0, -60.0, 0.02,     # pre-kick, walk target
+        clearance, 48.0, 4.0)
 
 
 class CopaStreamTests(unittest.TestCase):
@@ -70,6 +81,8 @@ class CopaStreamTests(unittest.TestCase):
             self.assertAlmostEqual(copa['posts'][0]['bearing'], 0.46, places=5)
             self.assertEqual(len(copa['robots']), 1)
             self.assertTrue(copa['posts'][1]['on_field'])
+            self.assertEqual(copa['twin']['phase'], 2)
+            self.assertAlmostEqual(copa['twin']['target']['y'], 380.0)
 
     def test_plain_camf_frames_stay_in_sync(self):
         self.robot.sendall(camf_frame(self.jpeg, None) * 3)

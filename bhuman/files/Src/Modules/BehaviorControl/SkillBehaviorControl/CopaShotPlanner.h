@@ -56,8 +56,36 @@ namespace CopaShot
     bool keeperSeen = false;
     float keeper = 0.f;
     bool goalSeen = false;
+    float goalLeftY = 0.f, goalRightY = 0.f; /**< Posts on the goal line x = targetX (mm). */
+    bool goalInferred = false;
+    float keeperY = 0.f;                     /**< Keeper on the goal line (mm), if keeperSeen. */
     const char* reason = "no goal";
   };
+
+  /** Sole outline relative to its middle point (RobotDimensions), and the soles' y offset. */
+  struct Feet
+  {
+    float hip = 50.f, front = 110.f, back = 50.f, inner = 38.77f, outer = 50.02f;
+  };
+
+  /** Distance from a box [x0,x1] x [y0,y1] to a point. */
+  inline float boxDistance(float x0, float x1, float y0, float y1, float px, float py)
+  {
+    const float dx = std::max({x0 - px, 0.f, px - x1});
+    const float dy = std::max({y0 - py, 0.f, py - y1});
+    return std::hypot(dx, dy);
+  }
+
+  /**
+   * Gap (mm) between the ball's surface and the nearest sole edge, with the robot
+   * standing (soles under the hips). Negative: the ball overlaps a foot.
+   */
+  inline float footClearance(float ballX, float ballY, float ballRadius, const Feet& f)
+  {
+    const float left = boxDistance(-f.back, f.front, f.hip - f.inner, f.hip + f.outer, ballX, ballY);
+    const float right = boxDistance(-f.back, f.front, -f.hip - f.outer, -f.hip + f.inner, ballX, ballY);
+    return std::min(left, right) - ballRadius;
+  }
 
   inline float median(std::vector<float> v)
   {
@@ -193,6 +221,11 @@ namespace CopaShot
       shot.side = p.defaultSide;
       shot.reason = "no keeper, default side";
     }
+    shot.goalLeftY = leftY;
+    shot.goalRightY = rightY;
+    shot.goalInferred = goal.inferred;
+    if(shot.keeperSeen)
+      shot.keeperY = distance * std::tan(shot.keeper);
     shot.targetX = distance;
     shot.targetY = shot.side > 0 ? leftY - margin : shot.side < 0 ? rightY + margin : 0.5f * (leftY + rightY);
     shot.direction = std::clamp(std::atan2(shot.targetY - ballY, shot.targetX - ballX), -p.maxAim, p.maxAim);

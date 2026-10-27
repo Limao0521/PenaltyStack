@@ -3,6 +3,7 @@
  */
 
 #include "CopaCameraStreamer.h"
+#include "CopaTwinShared.h"
 #include "Streaming/Output.h"
 #include <algorithm>
 #include <cerrno>
@@ -24,6 +25,21 @@ namespace
     CamfStreamServer::append(out, box.positionOnField.x());
     CamfStreamServer::append(out, box.positionOnField.y());
     CamfStreamServer::append(out, box.bearing);
+  }
+
+  void appendPoint(std::vector<unsigned char>& out, const CopaTwinSnapshot::Point& p)
+  {
+    CamfStreamServer::append(out, static_cast<uint8_t>(p.valid ? 1 : 0));
+    CamfStreamServer::append(out, p.x);
+    CamfStreamServer::append(out, p.y);
+  }
+
+  void appendPose(std::vector<unsigned char>& out, const CopaTwinSnapshot::Pose& p)
+  {
+    CamfStreamServer::append(out, static_cast<uint8_t>(p.valid ? 1 : 0));
+    CamfStreamServer::append(out, p.x);
+    CamfStreamServer::append(out, p.y);
+    CamfStreamServer::append(out, p.rotation);
   }
 }
 
@@ -65,7 +81,7 @@ void CopaCameraStreamer::appendCopaPayload()
 {
   static const unsigned char magic[4] = {'C', 'O', 'P', 'A'};
   payload.insert(payload.end(), magic, magic + 4);
-  CamfStreamServer::append(payload, static_cast<uint8_t>(2));
+  CamfStreamServer::append(payload, static_cast<uint8_t>(3));
 
   CamfStreamServer::append(payload, static_cast<uint8_t>(theBallPercept.status == BallPercept::seen ? 1 : 0));
   CamfStreamServer::append(payload, theBallPercept.positionOnField.x());
@@ -90,4 +106,30 @@ void CopaCameraStreamer::appendCopaPayload()
     appendBox(payload, theCopaVisionPercept.robots[i].box);
     CamfStreamServer::append(payload, static_cast<uint8_t>(theCopaVisionPercept.robots[i].fallen ? 1 : 0));
   }
+
+  // Digital twin of the behavior, on the upper camera stream only.
+  const CopaTwinSnapshot twin = CopaTwinShared::instance().read();
+  const bool sendTwin = theCameraInfo.camera == CameraInfo::upper && twin.time != 0;
+  CamfStreamServer::append(payload, static_cast<uint8_t>(sendTwin ? 1 : 0));
+  if(!sendTwin)
+    return;
+  CamfStreamServer::append(payload, static_cast<uint32_t>(twin.time));
+  CamfStreamServer::append(payload, twin.run);
+  CamfStreamServer::append(payload, twin.role);
+  CamfStreamServer::append(payload, twin.state);
+  CamfStreamServer::append(payload, twin.phase);
+  appendPose(payload, twin.robot);
+  appendPoint(payload, twin.ball);
+  appendPoint(payload, twin.mark);
+  appendPoint(payload, twin.leftPost);
+  appendPoint(payload, twin.rightPost);
+  CamfStreamServer::append(payload, static_cast<uint8_t>(twin.goalInferred ? 1 : 0));
+  appendPoint(payload, twin.keeper);
+  appendPoint(payload, twin.target);
+  CamfStreamServer::append(payload, twin.side);
+  appendPose(payload, twin.preKick);
+  appendPose(payload, twin.walkTarget);
+  CamfStreamServer::append(payload, twin.footClearance);
+  CamfStreamServer::append(payload, twin.minFootClearance);
+  CamfStreamServer::append(payload, twin.ballFromMark);
 }

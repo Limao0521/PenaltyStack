@@ -78,4 +78,17 @@ int main()
     assert(near(std::hypot(turned.x - 200.f, turned.y), std::hypot(290.f, 50.f), 1e-2f));
     assert(turned.y < -50.f); // to the right of the ball, behind it along the kick line
   }
+  {
+    const Feet feet;
+    // Ball on the mark 200 mm ahead, centered: nearest is the inner toe corner (110, 11.23).
+    assert(near(footClearance(200.f, 0.f, 32.5f, feet), std::hypot(90.f, 50.f - 38.77f) - 32.5f, 1e-3f));
+    // Ball between the feet: the 22 mm gap is narrower than the ball, so it overlaps.
+    assert(near(footClearance(50.f, 0.f, 32.5f, feet), (50.f - 38.77f) - 32.5f, 1e-3f));
+    assert(footClearance(50.f, 0.f, 32.5f, feet) < 0.f);
+    // Touching the left toe.
+    assert(footClearance(110.f + 32.5f, 60.f, 32.5f, feet) <= 1e-3f);
+    // Goal geometry is reported with the shot.
+    const Shot shot = planShot(Observations{{left, right}, {bearing(1500.f, 200.f)}}, 200.f, 0.f, p);
+    assert(near(shot.goalLeftY, 750.f, 40.f) && near(shot.goalRightY, -750.f, 40.f) && near(shot.keeperY, 200.f, 20.f));
+  }
 }

@@ -29,6 +29,7 @@
 #include "Representations/Configuration/DamageConfiguration.h"
 #include "Representations/Configuration/FieldDimensions.h"
 #include "Representations/Configuration/KickInfo.h"
+#include "Representations/Configuration/RobotDimensions.h"
 #include "Representations/Infrastructure/CameraInfo.h"
 #include "Representations/Infrastructure/CameraStatus.h"
 #include "Representations/Infrastructure/FrameInfo.h"
@@ -98,6 +99,7 @@ MODULE(SkillBehaviorControl,
   REQUIRES(OdometryData),
   REQUIRES(RefereePercept),
   REQUIRES(RestartBallSearchContext),
+  REQUIRES(RobotDimensions),
   REQUIRES(RobotHealth),
   REQUIRES(RobotPose),
   REQUIRES(SkillRequest),
@@ -197,6 +199,20 @@ private:
   CopaShot::Observations copaSeen;
   Vector2f copaTargetOdometry = Vector2f::Zero(); /**< Aim point in odometry coordinates. */
   Vector2f copaBallOdometry = Vector2f::Zero();   /**< Ball resting on the mark, in odometry coordinates. */
+
+  /** Digital twin: what the behavior believes and decides, in the run's start frame. */
+  void publishCopaTwin(bool keeper, int state);
+  Pose2f copaStartOdometry;
+  unsigned copaRun = 0;
+  bool copaMarkKnown = false, copaShotKnown = false;
+  CopaShot::Shot copaShot;
+  Vector2f copaLeftPostOdometry = Vector2f::Zero(), copaRightPostOdometry = Vector2f::Zero(),
+           copaKeeperOdometry = Vector2f::Zero();
+  Pose2f copaPreKickRelative;           /**< Last pre-kick pose, robot-relative. */
+  bool copaPreKickValid = false;
+  Pose2f copaWalkTargetRelative;        /**< Last walk target requested, robot-relative. */
+  bool copaWalkValid = false;
+  float copaFootClearance = 0.f, copaMinFootClearance = 0.f;
   CopaShotConfig copaShotConfig;
   bool copaShotConfigLoaded = false;
   CopaPenaltyState copaState;

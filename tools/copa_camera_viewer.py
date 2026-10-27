@@ -40,6 +40,7 @@ Los datos se guardan en data/sessions/ compatibles con 7_retrain.py.
 """
 
 import argparse
+import importlib.util
 import socket
 import struct
 import subprocess
@@ -250,7 +251,12 @@ def recv_exact(sock: socket.socket, n: int) -> bytes:
 _magic_consumed: set = set()
 
 _BOX = struct.Struct('<hhhhBfff')
-COPA_VERSION = 2
+COPA_VERSION = 3
+
+# Digital twin of the behavior (tools/copa_twin.py), sent on the upper stream.
+_twin_spec = importlib.util.spec_from_file_location('copa_twin', Path(__file__).with_name('copa_twin.py'))
+copa_twin = importlib.util.module_from_spec(_twin_spec)
+_twin_spec.loader.exec_module(copa_twin)
 
 
 def _read_box(sock: socket.socket) -> dict:
@@ -273,10 +279,13 @@ def read_copa(sock: socket.socket) -> dict:
         box = _read_box(sock)
         box['fallen'] = bool(recv_exact(sock, 1)[0])
         robots.append(box)
+    twin = None
+    if recv_exact(sock, 1)[0]:
+        twin = copa_twin.parse(recv_exact(sock, copa_twin.TWIN_FORMAT.size))
     return {'ball_on_field': bool(ball_on_field), 'ball': (bx, by), 'posts': posts,
             'goal': {'seen': bool(goal_seen), 'left': left, 'right': right,
                      'span': span, 'distance': distance, 'center': center},
-            'robots': robots}
+            'robots': robots, 'twin': twin}
 
 
 def read_frame(sock: socket.socket):
@@ -697,6 +706,8 @@ def run_dual(ip: str, scale: int,
     ball_radius = [40]         # mutable int  (trionda ~72mm → ~35-45px a dist típica)
     flash       = {'color': None, 'until': 0.0}
     shot_idx    = [0]
+    twin_map      = copa_twin.TwinMap()       # mapa del gemelo digital (aparece al iniciar el tirador)
+    twin_recorder = copa_twin.TwinRecorder()  # un JSONL por corrida en runs/twin/
 
     try:
         while True:
@@ -749,6 +760,14 @@ def run_dual(ip: str, scale: int,
 
             sep = np.full((panels[0].shape[0], 4, 3), 60, dtype=np.uint8)
             combined = np.hstack([panels[0], sep, panels[1]])
+            with threads['UPPER'].lock:
+                twin = (threads['UPPER'].copa or {}).get('twin')
+            if twin:
+                twin_recorder.add(twin)
+                twin_img = twin_map.draw(twin)
+                height = combined.shape[0]
+                width = int(twin_img.shape[1] * height / twin_img.shape[0])
+                combined = np.hstack([combined, sep, cv2.resize(twin_img, (width, height))])
             cv2.imshow(win, combined)
 
             key = cv2.waitKey(16) & 0xFF
@@ -756,6 +775,7 @@ def run_dual(ip: str, scale: int,
                 break
 
     finally:
+        twin_recorder.close()
         for t in threads.values():
             t.stop.set()
         for c in collectors.values():

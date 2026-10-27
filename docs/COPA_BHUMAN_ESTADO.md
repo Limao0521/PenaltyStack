@@ -144,3 +144,15 @@ Cambios: postura lista (rodillas flexionadas, como el portero B-Human) mientras 
 5. `[CopaShot] aligned=… pre=(x,y,ángulo) ballFromMark=…mm` en el log: si `ballFromMark` es grande, el balón se movió antes de patear.
 
 `copaShot.cfg`: `preKickClearance`, `alignTolerance`, `alignAngleTolerance`, `alignTimeoutMs`; `approachDistance` 400, `standOffDistance` 300.
+
+## Distancia balón–pie y gemelo digital (28 de octubre)
+
+**Distancia balón–pie.** Se modelan las dos plantas con `RobotDimensions` (cadera ±50 mm; planta 110 mm adelante, 50 atrás, 38,8 adentro, 50 afuera) y se calcula el hueco entre la superficie del balón (radio 32,5 mm) y el borde de planta más cercano. Durante la alineación: si el hueco es < `minFootClearance` (40 mm) el robot sólo retrocede; si es < 80 mm puede girar o desplazarse de lado pero no avanzar. Sólo la patada (`WalkToBallAndKick`) avanza hacia el balón. `[CopaShot] aligned` registra el hueco actual y el mínimo de la corrida.
+
+**Gemelo digital** (`tools/copa_twin.py`). En cada ciclo el comportamiento publica lo que cree y decide (`CopaTwinShared`): estado y fase, pose del robot, balón, posición memorizada en la marca, postes, portero, punto de tiro, pose previa, a dónde camina, hueco balón–pie actual y mínimo, y cuánto se movió el balón. Todo en el marco del robot al pulsar inicio. Viaja en el stream de la cámara superior (COPA v3) y el visor lo dibuja al lado de las cámaras cuando arranca el tirador o el portero; cada corrida se guarda en `runs/twin/twin_<fecha>_<rol>_run<N>.jsonl`.
+
+- En vivo: se abre con el visor (ventana de deploy) o `copa_twin.py --ip 192.168.49.7`.
+- Después: `copa_twin.py --replay runs/twin/<archivo>.jsonl` (ventana) o `--video salida.mp4`; imprime resumen (lado, portería/portero vistos, hueco mínimo, balón movido antes de patear).
+- Mapa: cancha Copa alineada a los postes vistos, marca esperada a 130 cm, plantas del robot (rojo si el hueco < 40 mm), rastro, pose previa (cian), flecha amarilla a donde camina, línea de tiro roja, portero "K".
+
+Requiere el visor actualizado (protocolo COPA v3).
