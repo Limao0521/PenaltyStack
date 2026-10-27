@@ -42,7 +42,7 @@ def camf_frame(jpeg: bytes, copa: bytes | None) -> bytes:
 def copa_section() -> bytes:
     import struct
     box = struct.Struct('<hhhhBfff')
-    out = viewer.COPA_MAGIC + bytes([4]) + struct.pack('<Bff', 1, 450.0, 20.0)
+    out = viewer.COPA_MAGIC + bytes([5]) + struct.pack('<Bff', 1, 450.0, 20.0)
     out += bytes([2]) + box.pack(30, 40, 10, 200, 3, 2000.0, 760.0, 0.46) + box.pack(280, 290, 12, 205, 3, 2050.0, -740.0, -0.46)
     out += struct.pack('<Bbbfff', 1, 0, 1, 0.92, 1500.0, 0.0)
     out += bytes([1]) + box.pack(140, 180, 60, 190, 3, 1800.0, 0.0, 0.05) + bytes([0])
@@ -57,7 +57,7 @@ def twin_bytes(run=1, phase=2, robot_x=-40.0, clearance=55.0, state=1) -> bytes:
         1, 1500.0, 760.0, 1, 1520.0, -740.0, 0,           # posts, not inferred
         0, 0.0, 0.0, 1, 1500.0, 380.0, 1,                 # keeper, target, side left
         1, -90.0, -60.0, 0.02, 1, -90.0, -60.0, 0.02,     # pre-kick, walk target
-        clearance, 48.0, 4.0, 0.08, 3)
+        clearance, 48.0, 4.0, 0.08, 3, 1)
 
 
 class CopaStreamTests(unittest.TestCase):

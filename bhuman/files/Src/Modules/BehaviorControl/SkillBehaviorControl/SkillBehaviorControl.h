@@ -192,7 +192,7 @@ private:
   void executeCopaStriker(bool ballFresh);
 
   /** Copa striker sequence: find the ball, sweep the head over the goal, kick. */
-  enum class CopaStrikerPhase { findBall, lookGoal, align, kick };
+  enum class CopaStrikerPhase { findBall, lookGoal, align, kick, scanBall, scanGoal, ready };
   CopaStrikerPhase copaPhase = CopaStrikerPhase::findBall;
   unsigned copaPhaseStart = 0;
   unsigned copaLastSnapshot = 0;
@@ -202,8 +202,18 @@ private:
 
   /** Digital twin: what the behavior believes and decides, in the run's start frame. */
   void publishCopaTwin(bool keeper, int state);
-  /** Start (and stop) of a run: the robot is at the known Copa placement. */
+  /** Armed (and stop): the robot believes it faces the goal with the ball on the mark. */
   void resetCopaRun();
+  /** Armed: confirm the ball on the mark (lower camera) and the blue posts, without moving. */
+  void executeCopaArmedScan(bool ballFresh);
+  /** Head sweep over the goal collecting post/robot bearings into copaSeen; true when done. */
+  bool sweepCopaGoal();
+  /** The ball seen in front of the feet is the penalty mark: anchor of the digital twin. */
+  bool captureCopaMark();
+  /** Goal line penaltyDistance beyond the mark along the placement heading (+ correction). */
+  void rebuildCopaGoalFromMark(float correction);
+  bool copaMarkSeen = false;
+  float copaArmedCorrection = 0.f;
   bool copaInitialized = false;
   float copaHeadingCorrection = 0.f;
   int copaPostsMatched = 0;

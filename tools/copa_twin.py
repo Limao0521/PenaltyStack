@@ -33,9 +33,10 @@ except ImportError:  # parsing and recording work without OpenCV
     cv2 = None
 
 ROOT = Path(__file__).resolve().parents[1]
-TWIN_FORMAT = struct.Struct('<IIBBB' + 'Bfff' + 'Bff' * 4 + 'B' + 'Bff' * 2 + 'b' + 'Bfff' * 2 + 'fff' + 'fB')
+TWIN_FORMAT = struct.Struct('<IIBBB' + 'Bfff' + 'Bff' * 4 + 'B' + 'Bff' * 2 + 'b' + 'Bfff' * 2 + 'fff' + 'fB' + 'B')
 STATES = {0: 'ARMED', 1: 'RUNNING', 2: 'STOPPED'}
-STRIKER_PHASES = {0: 'find ball', 1: 'look at goal', 2: 'align (no touch)', 3: 'kick'}
+STRIKER_PHASES = {0: 'tomar balon = marca', 1: 'mirar porteria y decidir', 2: 'alinear (sin tocar)', 3: 'patear',
+                  4: 'armado: buscar balon', 5: 'armado: confirmar postes', 6: 'armado: listo'}
 KEEPER_PHASES = {0: 'watch', 1: 'walk', 2: 'block left', 3: 'block right'}
 
 # Copa NAO CCM MX 2026 geometry (mm) and B-Human RobotDimensions (soles).
@@ -67,7 +68,9 @@ def parse(raw: bytes) -> dict:
     out['side'] = v.pop(0)
     out['pre_kick'] = pose()
     out['walk_target'] = pose()
-    out['foot_clearance'], out['min_foot_clearance'], out['ball_from_mark'], out['heading_correction'], out['posts_matched'] = v
+    (out['foot_clearance'], out['min_foot_clearance'], out['ball_from_mark'], out['heading_correction'],
+     out['posts_matched'], mark_seen) = v
+    out['mark_seen'] = bool(mark_seen)
     return out
 
 
@@ -166,10 +169,10 @@ class TwinMap:
                 cv2.circle(field, self.px(*post), 6, (255, 120, 30), -1, cv2.LINE_AA)
             expected = center + normal * PENALTY_DISTANCE
             cv2.circle(field, self.px(*expected), max(2, int(50 * self.scale)), (200, 200, 200), 1, cv2.LINE_AA)
-            cv2.putText(field, 'marca esperada', (self.px(*expected)[0] + 8, self.px(*expected)[1] + 4),
+            cv2.putText(field, 'marca', (self.px(*expected)[0] + 8, self.px(*expected)[1] + 4),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.35, (170, 170, 170), 1, cv2.LINE_AA)
-            label = ('porteria por colocacion (sin confirmar)' if twin['goal_inferred'] or not twin['target']['valid']
-                     else f'porteria corregida {math.degrees(twin["heading_correction"]):+.1f} deg')
+            label = ('porteria desde la marca (sin confirmar)' if twin['goal_inferred']
+                     else f'porteria confirmada, giro {math.degrees(twin["heading_correction"]):+.1f} deg')
             cv2.putText(field, label, (self.px(*L)[0], self.px(*L)[1] - 12),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.38, (255, 160, 80), 1, cv2.LINE_AA)
 
@@ -201,16 +204,13 @@ class TwinMap:
         role = 'PORTERO' if twin['role'] else 'TIRADOR'
         phases = KEEPER_PHASES if twin['role'] else STRIKER_PHASES
         side = {1: 'izquierda', -1: 'derecha', 0: 'centro/recto'}.get(twin['side'], '?')
-        ready = twin['state'] != 1
-        if twin['target']['valid']:
-            goal_text = (f'porteria: {twin["posts_matched"]} postes vistos, giro {math.degrees(twin["heading_correction"]):+.1f} deg'
-                         if twin['posts_matched'] else 'porteria: sin postes vistos, colocacion')
-        else:
-            goal_text = 'porteria: por colocacion'
+        stopped = twin['state'] == 2
+        goal_text = (f'porteria: {twin["posts_matched"]} postes confirman, giro {math.degrees(twin["heading_correction"]):+.1f} deg'
+                     if twin['posts_matched'] else 'porteria: desde la marca (sin postes)')
         lines = [(f'{role}  run {twin["run"]}', (255, 255, 255)),
                  (f'estado: {STATES.get(twin["state"], twin["state"])}', (200, 200, 200)),
-                 ('fase: listo en posicion inicial' if ready else f'fase: {phases.get(twin["phase"], twin["phase"])}', (0, 220, 255)),
-                 ('', None),
+                 ('fase: detenido (armar de nuevo)' if stopped else f'fase: {phases.get(twin["phase"], twin["phase"])}', (0, 220, 255)),
+                 (f'marca: {"balon visto" if twin["mark_seen"] else "supuesta 20 cm"}', (210, 210, 210)),
                  (goal_text, (255, 160, 80)),
                  (f'portero: {"visto" if twin["keeper"]["valid"] else "no"}', (200, 80, 200)),
                  (f'tiro: {side}' if target['valid'] else 'tiro: sin decidir', (90, 90, 240)),

@@ -169,3 +169,13 @@ Requiere el visor actualizado (protocolo COPA v3).
 - `[CopaShot] postsMatched=… headingCorrection=…` en el log; el gemelo (COPA v4) muestra cuántos postes confirmaron la portería y el giro corregido.
 
 `copaShot.cfg`: `startBallDistance`, `penaltyDistance`, `markMatchDistance`, `postMatchTolerance`, `maxHeadingCorrection`.
+
+## Corrección: el gemelo se construye al ARMAR, anclado en el balón visto (28 de octubre)
+
+La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto, ahora implementado:
+
+- **Armado (cabeza trasera):** nueva corrida y nuevo gemelo. El robot cree que mira a la portería y que **el balón que ve delante de los pies (cámara inferior) es la marca penal**: ése es el punto de partida del gemelo. Escaneo rápido sin moverse: (1) mira al suelo y toma la marca del balón visto (si no lo ve en 2 s, la supone 20 cm delante de las puntas y dice "ball not seen"; si lo ve dice "ball on the mark"); (2) barrido de cabeza: la portería se construye 130 cm más allá de la marca y los postes azules vistos la confirman y corrigen la orientación ("goal confirmed" / "goal not seen"); (3) queda mirando el balón.
+- **Modo tirador (inicio):** conserva el gemelo del armado; vuelve a tomar la marca del balón visto delante de los pies, repite el barrido para decidir el lado (postes y portero; si no ve postes usa la corrección del armado), se alinea sin tocar el balón y patea.
+- **Parada:** borra todo hasta el siguiente armado.
+
+`copaShot.cfg`: `startBallFromToes` (marca supuesta si no ve el balón), `penaltyDistance`, `maxMarkDistance`, `ballScanMs`, `ballScanTilt`, `postMatchTolerance`, `maxHeadingCorrection`. Gemelo COPA v5 (marca vista/supuesta y fases del armado).

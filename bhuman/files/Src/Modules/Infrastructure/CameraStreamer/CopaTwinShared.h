@@ -23,7 +23,8 @@ struct CopaTwinSnapshot
   uint32_t run = 0;         /**< Increments each time the operator starts the routine. */
   uint8_t role = 0;         /**< 0 striker, 1 keeper. */
   uint8_t state = 0;        /**< CopaPenaltyState: 0 waiting (armed), 1 running, 2 stopped. */
-  uint8_t phase = 0;        /**< Striker: 0 findBall, 1 lookGoal, 2 align, 3 kick. Keeper: action. */
+  uint8_t phase = 0;        /**< Striker: 0 findBall, 1 lookGoal, 2 align, 3 kick, 4 scanBall, 5 scanGoal, 6 ready.
+                                 Keeper: action. */
   Pose robot;               /**< Robot pose (always valid while publishing). */
   Point ball;               /**< Ball model estimate. */
   Point mark;               /**< Ball spot memorised on the mark. */
@@ -39,6 +40,7 @@ struct CopaTwinSnapshot
   float ballFromMark = 0.f;     /**< How far the ball moved from the mark (mm). */
   float headingCorrection = 0.f;/**< Placement heading error found from the posts (rad). */
   uint8_t postsMatched = 0;     /**< Post sightings that matched the known goal. */
+  bool markSeen = false;        /**< The mark is the ball seen in front of the feet (else assumed). */
 };
 
 class CopaTwinShared

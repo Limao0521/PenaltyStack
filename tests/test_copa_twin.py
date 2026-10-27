@@ -17,13 +17,14 @@ view_spec.loader.exec_module(view_test)
 
 class TwinTests(unittest.TestCase):
     def test_layout_matches_the_robot(self):
-        # CopaCameraStreamer.cpp writes 11 header + 13 pose + 4*9 + 1 + 2*9 + 1 + 2*13 + 12 + 5 bytes.
-        self.assertEqual(twin.TWIN_FORMAT.size, 123)
+        # CopaCameraStreamer.cpp writes 11 header + 13 pose + 4*9 + 1 + 2*9 + 1 + 2*13 + 12 + 5 + 1 bytes.
+        self.assertEqual(twin.TWIN_FORMAT.size, 124)
 
     def test_parse_and_draw(self):
         data = twin.parse(view_test.twin_bytes(clearance=25.0))
         self.assertEqual((data['run'], data['state'], data['phase'], data['side']), (1, 1, 2, 1))
         self.assertTrue(data['left_post']['valid'] and data['mark']['valid'] and not data['keeper']['valid'])
+        self.assertTrue(data['mark_seen'])
         image = twin.TwinMap().draw(data)
         self.assertEqual(image.shape[0], 520)
         self.assertGreater(int(image.sum()), 0)
