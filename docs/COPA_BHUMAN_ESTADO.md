@@ -1,5 +1,7 @@
 # Estado de la integración Copa con B-Human
 
+> **Actualización:** el código B-Human del penal ya no vive en el fork sino en `bhuman/` de este repo (ver [bhuman/README.md](../bhuman/README.md) y la sección final). Las menciones al checkout del fork de abajo describen el estado anterior.
+
 El checkout `~/workspace/semillero/SabanaHerons2026` contiene trabajo local sin commit para los escenarios `CopaPenaltyStriker` y `CopaPenaltyKeeper`, visibles en DeployDialog, y la ubicación `CopaPenalty`. La ubicación cambia el radio de la pelota a 32,5 mm; el resto de su campo todavía procede de HSL y no representa la cancha Copa. No declarar preparado para competición ni para movimiento físico hasta completar las verificaciones de abajo.
 
 El comportamiento local propuesto inicia desarmado. Cabeza trasera rearma; un silbato nuevo o toque frontal inicia; pecho para y enclava; se rearma de nuevo con cabeza trasera. El tirador solicita una patada izquierda y se detiene al detectar su finalización. El portero solicita únicamente `Dive::prepare`, que se mapea a `sitDownKeeper`, y enclava la decisión al detectar movimiento entrante. El límite interno es 28 s desde el silbato detectado o el botón: si se usa el botón más tarde, **no garantiza** el límite oficial de 30 s desde el silbato. El comando de parada solicita postura de pie; no se ha comprobado cómo responde durante una patada o mientras está sentado.
@@ -27,3 +29,35 @@ Pendiente: validar la carga real del escenario y la ubicación, la configuració
 - El visor `tools/copa_camera_viewer.py` muestra rectángulos y cuenta de **candidatos azules verticales**; no es una detección fiable de portería, no alimenta el comportamiento onboard y puede marcar objetos azules ajenos a la meta. Las pruebas son sintéticas; requiere imágenes de postes reales y evaluación en condiciones de campo. Los recuadros amarillos de BallSpots se quitaron y los marcadores de spots se apagan por defecto.
 - El detector de robots existente tampoco se ha validado ni conectado a la toma de decisiones de Copa. El tirador sigue usando dirección de patada fija; no afirmar que apunta a postes o evita al portero basándose en visión.
 - El visor necesita el entorno Python de `~/workspace/semillero/BallDetectorTL/.venv` (OpenCV y NumPy). Su copia versionada se basa en el visor local de ese proyecto, que no tiene remoto Git configurado. Para que DeployDialog lo abra, usar el script actualizado `Make/Common/openCameraViewer` del fork B-Human.
+
+## Visión Copa y código en PenaltyStack (27 de octubre, segunda sesión)
+
+**Organización.** El código B-Human del penal se trasladó a `bhuman/files/` (225 archivos sobre el commit base `0d1ea7ab` del fork). `tools/bhuman_overlay.py build` lo aplica a `~/workspace/semillero/SabanaHerons2026-penalty` y compila; el checkout principal del fork no se modifica. El commit que se había hecho en la rama `penaltystack-keeper-sit` se deshizo localmente (los archivos quedaron sin commit, como estaban); la rama remota hay que borrarla a mano.
+
+**Balón.** Causa de "no detecta en la cámara inferior" (y del balón lejano perdido en la superior): los modelos dan confianza baja con la Trionda sobre duela y la luz del laboratorio (inferior 0,31; superior 0,29), por debajo de los umbrales (seguimiento 0,28 con dos frames; superior 0,35). El preprocesado del robot (YUYV→RGB) reproduce el resultado del PC (0,314 vs 0,338), así que no es un error de conversión. En frames sin balón ambos modelos dan ≤ 0,021. Cambios, sólo en escenarios Copa: umbrales `lowerConf 0,15`, `upperConf 0,20`, `kalmanInitConf 0,18`, `kalmanActiveConf 0,12`, `kalmanInstantInitConf 0,40`, se mantiene la confirmación de 2 frames; modelos fijados por cámara (`trionda_copa_upper.onnx` = el modelo 320 que estaba en ospinao, mejor que el del commit base: 0,289 vs 0,113; `trionda_copa_lower.onnx`); ubicación `CopaPenalty` (radio 32,5 mm) en `teams.cfg`. La muestra es pequeña (8 imágenes): validar falsos positivos en duela con gente y objetos alrededor. La solución de fondo es reentrenar con imágenes de la duela y la pelota naranja oficial (el visor guarda muestras con `t`/`n`).
+
+**Postes azules y portería.** Módulo nuevo `CopaVisionPerceptor` en ambas cámaras: busca corridas verticales azules (YCbCr, Cb−128 ≥ 30 y Cb−Cr ≥ 45; poste del laboratorio Y=45 Cb=194 Cr=96), las agrupa en cajas altas y delgadas (≥ 18 % de la altura de imagen, alto ≥ 2× ancho) y descarta el travesaño y paredes porque siguen azules a los lados. Proyecta la base de cada poste al campo; si dos postes están a 1,5 m ± 25 % marca la portería (poste izquierdo/derecho, ancho, centro). En las 8 capturas reales encontró el poste en las 4 de la cámara superior y nada en las inferiores, incluida la del balón (que tiene parches azules). No hay captura con la portería completa: falta validar el par de postes y la distancia proyectada.
+
+**Otros NAO.** Se reutilizan los detectores de robots del fork (`RobotDetector` arriba, `PlayersDeeptectorFeatBOPLower` abajo); `CopaVisionPerceptor` proyecta su base al campo y marca si están caídos. No se ha probado con un NAO delante.
+
+**Retroalimentación.** `CopaCameraStreamer` (sólo escenarios Copa, mismos puertos y `cameraStreamer.cfg`) añade tras cada frame una sección `COPA` con balón en campo, postes, portería y robots. El visor dibuja lo que detecta el robot: postes en azul (amarillo si forman portería, con línea entre bases), NAO en naranja con distancia, y tres líneas de estado `BALON`, `PORTERIA`, `NAO`. Con un binario sin Copa vuelve a los candidatos azules calculados en el PC (rotulados "CANDIDATO PC"). En el robot, cada 5 s el log `/home/nao/logs/bhumand_*.log` tiene `[CopaVision]` (postes, portería, robots por cámara) y `[CopaBall]` (modelo, confianza, geometría).
+
+**Verificado en el PC:** compilación Nao y DeployDialog desde el worktree; pruebas `tests/test_bhuman_overlay.py` (claves de parámetros completas, proveedores en hilos Upper/Lower, modelos presentes, ubicación Copa, sin lanzamiento, herramienta de overlay), `tests/test_bhuman_host_cpp.py` (estado de botones/apagado, selección de modelo, detector de postes con imágenes sintéticas), `tests/test_copa_goal_view.py` (protocolo COPA y frames CAMF sin sección); suite completa de PenaltyStack. **No verificado en el robot:** nada de esta sección se ha desplegado aún; ospinao dejó de responder antes de probar el visor contra el stream real.
+
+**Otras observaciones en ospinao:** la cámara superior se corta 1–2 s cada pocos minutos ("no image… Terminating" y se recupera); un log de B-Human en `/home/nao/logs` ocupa 2,3 GB.
+
+### Lista de pruebas (en orden)
+
+1. `tools/bhuman_overlay.py build`; abrir la ventana de deploy del worktree; desplegar `CopaPenaltyStriker`, ubicación `CopaPenalty`, stream activado. Sostener el robot al reiniciar.
+2. Arranque: ojos sin rojo; en el log aparecen `[CopaBall] camera=upper model=…trionda_copa_upper.onnx loaded=1` y lo mismo para `lower`, y `[CopaVision]` cada 5 s. El visor abre ambas cámaras con "deteccion: robot".
+3. Balón, cámara inferior: Trionda quieta a 15–40 cm frente a los pies → `BALON` en verde con distancia coherente; mover el balón y comprobar que lo sigue; retirarlo → `BALON no` en ≤ 1 s.
+4. Balón, cámara superior: a 1, 2 y 3 m; anotar a qué distancia deja de verse.
+5. Falsos positivos: sin balón, con personas, pies, cables y el poste en vista durante 1 min → ningún `BALON`.
+6. Postes: robot en la marca penal (1,3 m de la línea de gol + 20 cm) mirando la portería → dos `POSTE`, `PORTERIA ok ancho ≈1.50m`; anotar ancho y distancia medidos frente a los reales. Probar girando la cabeza o el robot ±30°.
+7. Postes, falsos positivos: camisetas azules, el travesaño solo, objetos azules del laboratorio → sin `POSTE`.
+8. NAO delante: portero sentado y de pie en la línea de gol → `NAO 1` con distancia ≈ 1,5 m desde el tirador. Repetir en `CopaPenaltyKeeper` con el tirador delante (≈ 1,5 m).
+9. Botones y voz (ya implementados, sin probar en robot): cabeza trasera "striker mode arm", silbato o cabeza delantera "start", pecho "stop", tres sensores de cabeza se sienta, se queda sentado y guarda el log.
+10. Portero: `CopaPenaltyKeeper`, tiro al arco → se sienta, **no se lanza**, y permanece sentado.
+11. Tiro completo tirador vs portero con el visor abierto, y luego sin PC ni stream (la prueba oficial es sin red).
+
+Pendiente después de validar: usar postes y portero para elegir el lado del tiro (el tirador sigue con dirección fija) y cambiar a la pelota naranja oficial.

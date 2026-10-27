@@ -12,12 +12,14 @@ de penal **vive bajo bhuman**: se implementa dentro del fork del equipo
 `SabanaHerons2026` (B-Human 2023 + HSL), que es el código que ya se despliega
 en ellos con `Make/Common/deploy`.
 
-## Qué se implementó en el fork (rama `penaltystack-keeper-sit`)
+## Dónde vive el código
 
-Al 27 de octubre de 2026, estos cambios están sin commit en el checkout local
-del fork; la rama local por sí sola no permite reproducirlos desde remoto.
-La compilación y el despliegue siguientes requieren ese checkout con sus
-cambios y el escenario `PenaltyStack` presentes.
+El código B-Human del penal está en `bhuman/files/` de este repo, fijado al
+commit `0d1ea7ab` del fork (ver [bhuman/README.md](../bhuman/README.md)). No
+se hacen commits ni ramas en `SabanaHerons2026`: `tools/bhuman_overlay.py`
+copia esos archivos a un worktree limpio
+(`~/workspace/semillero/SabanaHerons2026-penalty`) y compila ahí. Las rutas de
+archivos citadas abajo son relativas al fork.
 
 El contrato de PenaltyStack —visión del balón Trionda en ambos roles, patada
 del tirador y portero que **únicamente se sienta, nunca se lanza**— se cubre
@@ -57,29 +59,25 @@ Cambios (mínimos y conmutables, el baseline del equipo no cambia por defecto):
 El penal durante juego normal (`HandlePenaltyKick`, estado PENALTYKICK) usa la
 misma opción `PenaltyKeeper`, así que el sentado aplica también ahí.
 
-## Compilar y desplegar (desde el checkout del fork)
+## Compilar y desplegar
 
 ```bash
-cd ~/workspace/semillero/SabanaHerons2026
-
-# Compilar el binario del robot (toolchain V6 ya configurada en Build/Linux/CMake)
-( cd Make/Linux && cmake --build ../../Build/Linux/CMake/Develop --target Nao --config Develop )
-
-# Desplegar a ronaoldinho (Ethernet 192.168.49.2) y reiniciar bhuman
-cd Make/Common
-./deploy Develop 192.168.49.2 -s PenaltyStack -nc -b
+cd ~/workspace/PenaltyStack
+.venv/bin/python tools/bhuman_overlay.py worktree   # sólo la primera vez
+.venv/bin/python tools/bhuman_overlay.py build      # aplica bhuman/ y compila Nao + DeployDialog
+~/workspace/semillero/SabanaHerons2026-penalty/Make/Common/deployDialog Develop
 ```
 
-`deploy` detiene `bhuman.service`, hace rsync del binario + `libonnxruntime` +
-todo `Config/` a `/home/nao/Config` (por eso el binario vive ahí), fija
-`scenario = PenaltyStack;` en `settings.cfg` y rearranca el servicio con `-b`.
-Usa la llave del equipo `Install/Keys/id_rsa_nao` (vía `Make/Common/setupSSH`).
-Para volver al baseline del equipo: `./deploy Develop <ip> -s 4v4_Full -nc -b`
-desde la rama que corresponda.
+En la ventana de deploy: escenario `CopaPenaltyStriker` o `CopaPenaltyKeeper`,
+ubicación `CopaPenalty`, marcar `Camera stream (upper + lower)` y
+`Restart bhuman`; el visor `tools/copa_camera_viewer.py` se abre solo.
+Equivalente por consola:
+`cd ~/workspace/semillero/SabanaHerons2026-penalty/Make/Common && ./deploy Develop <ip> -s CopaPenaltyStriker -l CopaPenalty -nc -b --camera-stream on --open-camera-viewer`.
 
-Despliegue realizado el 27 de octubre de 2026 en ronaoldinho: binario Develop
-`30cc8cc8…` (prefijo SHA-256), escenario `PenaltyStack`, servicio
-activo.
+`deploy` detiene `bhuman.service`, hace rsync del binario + `libonnxruntime` +
+todo `Config/` a `/home/nao/Config`, fija escenario y ubicación en
+`settings.cfg` y rearranca el servicio con `-b`. Para volver al código del
+equipo, desplegar desde el checkout normal del fork.
 
 ## Procedimiento de prueba en campo
 

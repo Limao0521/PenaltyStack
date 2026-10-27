@@ -1,0 +1,14 @@
+#!/bin/bash
+set -eu
+if [ "$#" -ne 1 ] || [ -z "${DISPLAY:-}" ]; then
+  echo "A robot address and graphical display are required" >&2
+  exit 1
+fi
+SEMILLERO=$(cd "$(dirname "$0")/../../.." && pwd)
+PYTHON=${NAO_CAMERA_PYTHON:-$SEMILLERO/BallDetectorTL/.venv/bin/python}
+VIEWER=${NAO_CAMERA_VIEWER:-$SEMILLERO/../PenaltyStack/tools/copa_camera_viewer.py}
+if [ ! -x "$PYTHON" ] || [ ! -f "$VIEWER" ]; then
+  echo "Camera viewer or its Python environment is missing" >&2
+  exit 1
+fi
+setsid "$PYTHON" "$VIEWER" --ip "$1" --camera dual --no-monitor >"${TMPDIR:-/tmp}/nao-camera-view-${1//[^A-Za-z0-9.-]/_}.log" 2>&1 < /dev/null &

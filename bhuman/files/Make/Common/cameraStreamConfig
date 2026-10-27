@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+"""Set the CameraStreamer enable flag in a temporary deployment config."""
+import pathlib
+import re
+import sys
+
+if len(sys.argv) != 3 or sys.argv[2] not in ("on", "off"):
+    raise SystemExit("usage: cameraStreamConfig FILE on|off")
+path = pathlib.Path(sys.argv[1])
+content = path.read_text()
+replacement = "enabled = " + ("true" if sys.argv[2] == "on" else "false") + ";"
+content, count = re.subn(r"(?m)^\s*enabled\s*=\s*(?:true|false)\s*;[^\n]*", replacement, content)
+if count != 1:
+    raise SystemExit("expected exactly one camera-stream enabled setting")
+path.write_text(content)

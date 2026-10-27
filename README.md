@@ -17,7 +17,7 @@ This product includes software developed by B-Human (http://www.b-human.de). Ver
 - **NAO:** cámara RGB, botón START, botón ABORT, control de cabeza y marcha acotada tienen adaptador onboard. Por defecto el proceso es de observación. El ejecutor físico de patada aún no está conectado; el adaptador rechaza `kick_enabled`.
 - **Visión Trionda:** balón naranja de 65 mm con patrón oscuro y cámaras `CameraBottom`/`CameraTop` en la cabeza de ambos NAO (offsets y apertura originales). `tools/vision_check.py` renderiza QVGA y compara `penalty/vision.py` contra el suelo verdadero; la FSM del ensayo sigue usando percepción ideal declarada.
 - **Despliegue:** paquete Python para NAOqi 2.8 por Ethernet en `/home/nao/PenaltyStack`, aislado del servicio y los archivos de B-Human. No hay borrado remoto.
-- **Robot real bajo B-Human:** los NAO del laboratorio corren una imagen sin NAOqi donde `bhuman` es dueño del hardware; ahí la prueba de penal vive dentro del fork del equipo (`SabanaHerons2026`, escenario `PenaltyStack`, portero que sólo se sienta con el keyframe original). Ver [robot bajo B-Human](docs/ROBOT_BHUMAN.md).
+- **Robot real bajo B-Human:** los NAO del laboratorio corren una imagen sin NAOqi donde `bhuman` es dueño del hardware; ahí la prueba corre dentro de B-Human, pero su código vive en este repo: [`bhuman/`](bhuman/README.md) guarda los archivos B-Human del penal (escenarios `CopaPenaltyStriker`/`CopaPenaltyKeeper`, visión de balón, postes azules y otros NAO, portero que sólo se sienta) y `tools/bhuman_overlay.py` los aplica a un checkout limpio del fork para compilar y desplegar. Ver [robot bajo B-Human](docs/ROBOT_BHUMAN.md).
 
 ## Inicio rápido en Windows
 

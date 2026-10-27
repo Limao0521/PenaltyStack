@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Script 15: Live stream de la cámara del NAO con overlay de detección y
-           recolección manual de datos de entrenamiento.
+Visor Copa: stream de ambas cámaras del NAO con lo que detecta el robot
+(balón, postes azules, portería, otros NAO) y recolección manual de datos.
+Basado en BallDetectorTL/15_watch_nao.py.
 
 Protocolo por frame:
     [4 bytes] magic  b'CAMF'
@@ -14,6 +15,10 @@ Protocolo por frame:
         [4 bytes] float32 LE  ballRadius
     [1 byte]  num_spots (máx 50)
     [num_spots * 8 bytes] (int32_LE x, int32_LE y) por spot
+    [1 byte]  patch válido [+ uint16 tamaño + float32 datos]
+    [opcional] sección b'COPA' (escenarios Copa, CopaCameraStreamer.h):
+        balón en campo, postes, portería y robots detectados en el NAO.
+        Sin ella el visor marca candidatos azules calculados en el PC.
 
 Uso:
     python3 15_watch_nao.py                      # dual cámaras
@@ -48,6 +53,7 @@ import numpy as np
 
 # ── Protocolo ─────────────────────────────────────────────────────────────────
 MAGIC           = b'CAMF'
+COPA_MAGIC      = b'COPA'   # sección opcional de CopaCameraStreamer tras el patch
 BALL_META_SIZE  = 13
 DEFAULT_IP      = "10.0.49.10"
 PORT_UPPER      = 7777   # directo B-Human; usar 7787 cuando corre 24_yolo_on_nao.py
@@ -240,16 +246,52 @@ def recv_exact(sock: socket.socket, n: int) -> bytes:
     return buf
 
 
+# Sockets cuyo siguiente "CAMF" ya se leyó al buscar la sección COPA.
+_magic_consumed: set = set()
+
+_BOX = struct.Struct('<hhhhBff')
+
+
+def _read_box(sock: socket.socket) -> dict:
+    left, right, top, bottom, flags, x, y = _BOX.unpack(recv_exact(sock, _BOX.size))
+    return {'left': left, 'right': right, 'top': top, 'bottom': bottom,
+            'bottom_visible': bool(flags & 1), 'on_field': bool(flags & 2),
+            'x': x, 'y': y}
+
+
+def read_copa(sock: socket.socket) -> dict:
+    """Lee la sección COPA (sin el magic); formato en CopaCameraStreamer.h."""
+    version = recv_exact(sock, 1)[0]
+    if version != 1:
+        raise ValueError(f"Versión COPA desconocida: {version}")
+    ball_on_field, bx, by = struct.unpack('<Bff', recv_exact(sock, 9))
+    posts = [_read_box(sock) for _ in range(recv_exact(sock, 1)[0])]
+    goal_seen, left, right, width, cx, cy = struct.unpack('<Bbbfff', recv_exact(sock, 15))
+    robots = []
+    for _ in range(recv_exact(sock, 1)[0]):
+        box = _read_box(sock)
+        box['fallen'] = bool(recv_exact(sock, 1)[0])
+        robots.append(box)
+    return {'ball_on_field': bool(ball_on_field), 'ball': (bx, by), 'posts': posts,
+            'goal': {'seen': bool(goal_seen), 'left': left, 'right': right,
+                     'width': width, 'center': (cx, cy)},
+            'robots': robots}
+
+
 def read_frame(sock: socket.socket):
-    """Retorna (jpeg, status, bx, by, br, spots).
+    """Retorna (jpeg, status, bx, by, br, spots, copa).
+    copa es None si el robot no envía la sección COPA (binario sin Copa).
     Consume patch payload transparently to keep stream in sync."""
     buf = b''
-    while True:
-        buf += sock.recv(1)
-        if buf[-4:] == MAGIC:
-            break
-        if len(buf) > 4096:
-            buf = buf[-4:]
+    if sock in _magic_consumed:
+        _magic_consumed.discard(sock)
+    else:
+        while True:
+            buf += sock.recv(1)
+            if buf[-4:] == MAGIC:
+                break
+            if len(buf) > 4096:
+                buf = buf[-4:]
 
     size = struct.unpack('<I', recv_exact(sock, 4))[0]
     if size == 0 or size > 2_000_000:
@@ -273,7 +315,15 @@ def read_frame(sock: socket.socket):
         ps = struct.unpack('<H', recv_exact(sock, 2))[0]
         recv_exact(sock, ps * ps * 3 * 4)  # discard float32 data
 
-    return jpeg, int(status), float(bx), float(by), float(br), spots
+    copa = None
+    tail = recv_exact(sock, 4)
+    if tail == COPA_MAGIC:
+        copa = read_copa(sock)
+    elif tail == MAGIC:
+        _magic_consumed.add(sock)
+    # Otro contenido: read_frame volverá a buscar el magic.
+
+    return jpeg, int(status), float(bx), float(by), float(br), spots, copa
 
 
 def connect(ip: str, port: int) -> socket.socket:
@@ -312,6 +362,56 @@ def find_blue_posts(frame: np.ndarray) -> list[tuple[int, int, int, int]]:
                 posts.append((x, y, w, h))
     return sorted(posts, key=lambda box: box[0])
 
+CLR_POST  = (255, 120,  20)   # poste detectado en el robot
+CLR_GOAL  = (255, 255,   0)   # portería confirmada (dos postes a 1.5 m)
+CLR_ROBOT = (  0, 140, 255)   # otro NAO
+CLR_OK    = ( 80, 230,  80)
+CLR_NO    = ( 90,  90, 200)
+
+
+def _meters(box_or_xy) -> str:
+    x, y = (box_or_xy['x'], box_or_xy['y']) if isinstance(box_or_xy, dict) else box_or_xy
+    return f"{(x * x + y * y) ** 0.5 / 1000:.2f}m"
+
+
+def draw_copa(vis: np.ndarray, copa: dict, scale: int, status: int) -> list:
+    """Dibuja lo que detecta el robot y devuelve las líneas de estado [(texto, color)]."""
+    def rect(box, color, text):
+        p1 = (int(box['left'] * scale), int(box['top'] * scale))
+        p2 = (int(box['right'] * scale), int(box['bottom'] * scale))
+        cv2.rectangle(vis, p1, p2, color, 2)
+        cv2.putText(vis, text, (p1[0], max(52, p1[1] - 4)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1, cv2.LINE_AA)
+
+    posts, goal, robots = copa['posts'], copa['goal'], copa['robots']
+    for i, post in enumerate(posts):
+        tag = "POSTE"
+        if goal['seen'] and i in (goal['left'], goal['right']):
+            tag = "POSTE IZQ" if i == goal['left'] else "POSTE DER"
+        rect(post, CLR_GOAL if goal['seen'] and i in (goal['left'], goal['right']) else CLR_POST,
+             f"{tag} {_meters(post) if post['on_field'] else '(base fuera)'}")
+    if goal['seen']:
+        a, b = posts[goal['left']], posts[goal['right']]
+        pa = (int((a['left'] + a['right']) / 2 * scale), int(a['bottom'] * scale))
+        pb = (int((b['left'] + b['right']) / 2 * scale), int(b['bottom'] * scale))
+        cv2.line(vis, pa, pb, CLR_GOAL, 2, cv2.LINE_AA)
+    for robot in robots:
+        rect(robot, CLR_ROBOT,
+             f"NAO{' caido' if robot['fallen'] else ''} {_meters(robot) if robot['on_field'] else ''}")
+
+    ball = (f"BALON {_meters(copa['ball'])}" if status == SEEN and copa['ball_on_field']
+            else "BALON no", CLR_OK if status == SEEN else CLR_NO)
+    if goal['seen']:
+        goal_line = (f"PORTERIA ok ancho {goal['width'] / 1000:.2f}m centro {_meters(goal['center'])}", CLR_OK)
+    elif posts:
+        goal_line = (f"PORTERIA {len(posts)} poste(s), falta el par a 1.5m", CLR_POST)
+    else:
+        goal_line = ("PORTERIA no", CLR_NO)
+    nao = (f"NAO {len(robots)}" + (" " + ", ".join(_meters(r) for r in robots if r['on_field']) if robots else ""),
+           CLR_OK if robots else CLR_NO)
+    return [ball, goal_line, nao]
+
+
 def draw_overlay(vis: np.ndarray,
                  status: int, bx: float, by: float, br: float,
                  spots: list,
@@ -319,7 +419,8 @@ def draw_overlay(vis: np.ndarray,
                  collector: DataCollector | None,
                  ball_radius: int,
                  flash_color: tuple | None,
-                 flash_until: float):
+                 flash_until: float,
+                 copa: dict | None = None):
     global _show_spots
     H, W = vis.shape[:2]
 
@@ -335,11 +436,18 @@ def draw_overlay(vis: np.ndarray,
             cv2.circle(vis, (cx, cy), 6, CLR_SPOT, 1, cv2.LINE_AA)
             cv2.drawMarker(vis, (cx, cy), CLR_SPOT,
                            cv2.MARKER_TILTED_CROSS, 8, 1, cv2.LINE_AA)
-    posts = find_blue_posts(vis)
-    for x, y, w, h in posts:
-        cv2.rectangle(vis, (x, y), (x + w, y + h), (255, 80, 20), 2)
-        cv2.putText(vis, "BLUE CANDIDATE", (x, max(46, y - 4)),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255, 180, 60), 1, cv2.LINE_AA)
+    if copa is not None:
+        status_lines = draw_copa(vis, copa, scale, status)
+        detect_str = " | deteccion: robot"
+    else:
+        # Binario sin CopaCameraStreamer: sólo candidatos calculados en el PC.
+        posts = find_blue_posts(vis)
+        for x, y, w, h in posts:
+            cv2.rectangle(vis, (x, y), (x + w, y + h), (255, 80, 20), 2)
+            cv2.putText(vis, "CANDIDATO PC", (x, max(46, y - 4)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255, 180, 60), 1, cv2.LINE_AA)
+        status_lines = [(f"sin datos Copa del robot; candidatos azules PC: {len(posts)}", CLR_DIM)]
+        detect_str = " | deteccion: PC"
 
     # Top bar (2 lines)
     cv2.rectangle(vis, (0, 0), (W, 38), (0, 0, 0), -1)
@@ -350,7 +458,7 @@ def draw_overlay(vis: np.ndarray,
         coll_str = (f" | T:{collector.n_trionda}  N:{collector.n_negative}"
                     f"  r={ball_radius}px")
         coll_col = (50, 200, 50)
-    hud = f"NAO {label} | FPS:{fps:.1f} | blue candidates:{len(posts)}{spot_str}{coll_str}"
+    hud = f"NAO {label} | FPS:{fps:.1f}{detect_str}{spot_str}{coll_str}"
     cv2.putText(vis, hud, (6, 13), cv2.FONT_HERSHEY_SIMPLEX,
                 0.42, coll_col, 1, cv2.LINE_AA)
 
@@ -365,6 +473,11 @@ def draw_overlay(vis: np.ndarray,
     stats_str = f"CPU:{cpu:.0f}%  RAM:{ru}/{rt}MB  T:{temp:.0f}C"
     cv2.putText(vis, stats_str, (6, 28), cv2.FONT_HERSHEY_SIMPLEX,
                 0.40, cpu_col, 1, cv2.LINE_AA)
+
+    # Estado de detección del robot (balón, portería, NAO)
+    for i, (text, color) in enumerate(status_lines):
+        cv2.rectangle(vis, (0, 40 + 16 * i), (min(W, 8 + 8 * len(text)), 56 + 16 * i), (0, 0, 0), -1)
+        cv2.putText(vis, text, (6, 52 + 16 * i), cv2.FONT_HERSHEY_SIMPLEX, 0.42, color, 1, cv2.LINE_AA)
 
     # Detección BallPerceptor
     if status != NOT_SEEN:
@@ -405,6 +518,7 @@ class CameraThread(threading.Thread):
         self.label  = label
         # (jpeg_bytes, frame_bgr, status, bx, by, br, spots, fps, fidx)
         self.latest = None
+        self.copa   = None   # sección COPA del último frame
         self.error  = None
         self.lock   = threading.Lock()
         self.stop   = threading.Event()
@@ -424,7 +538,7 @@ class CameraThread(threading.Thread):
         fidx   = 0
         while not self.stop.is_set():
             try:
-                jpeg, status, bx, by, br, spots = read_frame(sock)
+                jpeg, status, bx, by, br, spots, copa = read_frame(sock)
             except Exception as e:
                 if self.stop.is_set():
                     break
@@ -452,6 +566,7 @@ class CameraThread(threading.Thread):
             with self.lock:
                 self.error = None
                 self.latest = (jpeg, frame, status, bx, by, br, spots, fps, fidx)
+                self.copa = copa
 
         if sock is not None:
             try: sock.close()
@@ -585,6 +700,7 @@ def run_dual(ip: str, scale: int,
             for label in ('UPPER', 'LOWER'):
                 with threads[label].lock:
                     data = threads[label].latest
+                    copa = threads[label].copa
                     error = threads[label].error
                 latests[label] = data
 
@@ -606,7 +722,7 @@ def run_dual(ip: str, scale: int,
                                  scale, label, fps, fidx,
                                  collectors.get(label),
                                  ball_radius[0],
-                                 flash['color'], flash['until'])
+                                 flash['color'], flash['until'], copa)
                 panels.append(panel)
 
             if len(failed_without_frames) == len(threads):
@@ -664,7 +780,7 @@ def run_single(ip: str, port: int, label: str, scale: int,
     try:
         while True:
             try:
-                jpeg, status, bx, by, br, spots = read_frame(sock)
+                jpeg, status, bx, by, br, spots, copa = read_frame(sock)
             except (ConnectionError, ValueError, OSError) as e:
                 print(f"\n  Reconectando: {e}")
                 try: sock.close()
@@ -690,7 +806,7 @@ def run_single(ip: str, port: int, label: str, scale: int,
                          scale, label, fps, fidx,
                          collectors.get(label),
                          ball_radius[0],
-                         flash['color'], flash['until'])
+                         flash['color'], flash['until'], copa)
 
             cv2.imshow(win, vis)
             key = cv2.waitKey(1) & 0xFF

@@ -1,0 +1,693 @@
+{
+  "base_repo": "git@github.com:juanulloa2050/SabanaHerons2026.git",
+  "base_commit": "0d1ea7ab27e9d649bc76df79a7b8333bc837b81c",
+  "source_checkout": "~/workspace/semillero/SabanaHerons2026",
+  "worktree": "~/workspace/semillero/SabanaHerons2026-penalty",
+  "submodules": [
+    "Util/CompiledNN",
+    "Util/SimRobot",
+    "Util/pybind11"
+  ],
+  "toolchain": {
+    "CMAKE_MAKE_PROGRAM": "/home/limao/clion-2026.1.1/bin/ninja/linux/x64/ninja",
+    "CMAKE_C_COMPILER": "/usr/bin/clang",
+    "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+  },
+  "files": {
+    "Config/Locations/CopaPenalty/autoExposureWeightTableProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/ballSpecification.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/ballSpotsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/cameraSettings.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/fieldDimensions.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/globalOpponentsTracker.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/intersectionsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/obstacleModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/pathPlannerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/relativeFieldColorsParameters.cfg": {
+      "kind": "added"
+    },
+    "Config/Locations/CopaPenalty/staticInitialPoseProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/NeuralNets/BallDetector/trionda_copa_lower.onnx": {
+      "kind": "added"
+    },
+    "Config/NeuralNets/BallDetector/trionda_copa_upper.onnx": {
+      "kind": "added"
+    },
+    "Config/Robots/naonel/naonel/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Robots/ospinao/ospinao/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/2D/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/3v3_Full/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/3v3_Full/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/3v3_RL_MergedV5/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/3v3_RL_TeamV42/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/3v3_Scaled/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_BaselineAttack/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_BaselineAttack/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Complete/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Complete/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Full/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Full/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Full_BaselineBridgeStream/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Full_BaselineBridgeStream/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Full_BaselineStream/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Full_BaselineStream/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_MixedAttack/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_MixedAttack/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_NoRLBlock/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_NoRLBlock/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_RL2D/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_RL3D/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_Scaled/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_StrikerBase/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/4v4_StrikerBase/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/AnyPlaceDemo/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/CompetitionWalk/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/armObstacleAvoidanceImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/demoGoToBallAndKickImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/kickAtGoalImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/passToTeammateImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/skills.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/zweikampfImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/ballContactCheckerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/ballPerceptFilter.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/ballPerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/behaviorParameters.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/cameraStreamer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/copaVisionPerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/ecImageProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/fieldBallProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/gameStateProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/initialToReadyHandler.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/interceptBallProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/jointAnglePredictor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/keypointsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/kickInfo.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/legacyMeasurementCovarianceProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/libCheckProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/libDemoProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/libLookActiveProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/libWalkProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/linePerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/logger.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/odometerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/oracledPerceptsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/oracledWorldModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/perceptRegistrationProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/refereeGestureDetection.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/selfLocator.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/setupPosesProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/sideInformationProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/skillBehaviorControl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/strategyBehaviorControl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/teamMessage.def": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/teamMessageHandler.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/teammatesBallModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/threads.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/whistleRecognizer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/yoloBallBridge.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/yoloBallDetector.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/armObstacleAvoidanceImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/demoGoToBallAndKickImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/kickAtGoalImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/passToTeammateImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/skills.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/zweikampfImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/ballContactCheckerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/ballPerceptFilter.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/ballPerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/behaviorParameters.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/cameraStreamer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/copaVisionPerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/ecImageProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/fieldBallProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/gameStateProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/initialToReadyHandler.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/interceptBallProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/jointAnglePredictor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/keypointsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/kickInfo.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/legacyMeasurementCovarianceProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/libCheckProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/libDemoProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/libLookActiveProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/libWalkProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/linePerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/logger.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/odometerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/oracledPerceptsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/oracledWorldModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/perceptRegistrationProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/refereeGestureDetection.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/selfLocator.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/setupPosesProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/sideInformationProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/skillBehaviorControl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/strategyBehaviorControl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/teamMessage.def": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/teamMessageHandler.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/teammatesBallModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/threads.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/whistleRecognizer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/yoloBallBridge.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/yoloBallDetector.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/Default/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/Default/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/DefaultAgresivo/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/DefaultAgresivo/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/DefaultDefensivo/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/DefaultDefensivo/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/DefaultScaled/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/Image2023/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/PenaltyStack/BehaviorControl/armObstacleAvoidanceImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/BehaviorControl/demoGoToBallAndKickImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/BehaviorControl/kickAtGoalImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/BehaviorControl/passToTeammateImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/BehaviorControl/skills.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/BehaviorControl/zweikampfImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/ballContactCheckerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/ballPerceptFilter.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/ballPerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/behaviorParameters.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/cameraStreamer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/ecImageProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/fieldBallProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/gameStateProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/initialToReadyHandler.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/interceptBallProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/jointAnglePredictor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/keypointsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/kickInfo.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/legacyMeasurementCovarianceProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/libCheckProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/libDemoProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/libLookActiveProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/libWalkProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/linePerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/logger.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/odometerProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/oracledPerceptsProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/oracledWorldModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/perceptRegistrationProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/refereeGestureDetection.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/selfLocator.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/setupPosesProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/sideInformationProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/skillBehaviorControl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/strategyBehaviorControl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/teamMessage.def": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/teamMessageHandler.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/teammatesBallModelProvider.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/threads.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/whistleRecognizer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/yoloBallBridge.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/PenaltyStack/yoloBallDetector.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/ScaledDefensivo/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/Tortuga/behaviorParameters.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/Tortuga/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/Scenarios/WhistleTest/yoloBallDetector.cfg": {
+      "kind": "modified"
+    },
+    "Config/teams.cfg": {
+      "kind": "modified"
+    },
+    "Make/Common/cameraStreamConfig": {
+      "kind": "added"
+    },
+    "Make/Common/deploy": {
+      "kind": "modified"
+    },
+    "Make/Common/openCameraViewer": {
+      "kind": "added"
+    },
+    "Src/Apps/DeployDialog/SettingsArea.cpp": {
+      "kind": "modified"
+    },
+    "Src/Apps/DeployDialog/SettingsArea.h": {
+      "kind": "modified"
+    },
+    "Src/Libs/MathBase/UnscentedKalmanFilter.h": {
+      "kind": "modified"
+    },
+    "Src/Modules/BehaviorControl/Libraries/LibLookActiveProvider.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaPenaltyState.h": {
+      "kind": "added"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/Options/PenaltyShootout/PenaltyKeeper.h": {
+      "kind": "modified"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/SkillBehaviorControl.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/SkillBehaviorControl.h": {
+      "kind": "modified"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/Skills/Output/MotionRequest/Dive.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Infrastructure/CameraStreamer/CameraStreamer.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Infrastructure/CameraStreamer/CameraStreamer.h": {
+      "kind": "modified"
+    },
+    "Src/Modules/Infrastructure/CameraStreamer/CamfStreamServer.cpp": {
+      "kind": "added"
+    },
+    "Src/Modules/Infrastructure/CameraStreamer/CamfStreamServer.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Infrastructure/CameraStreamer/CopaCameraStreamer.cpp": {
+      "kind": "added"
+    },
+    "Src/Modules/Infrastructure/CameraStreamer/CopaCameraStreamer.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Modeling/BallStateEstimator/BallPerceptFilter.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/MotionControl/MotionEngine/MotionEngine.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Perception/BallPerceptors/CopaBallModel.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Perception/BallPerceptors/FieldColorNormalizer.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Perception/BallPerceptors/YoloBallBridge.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Perception/BallPerceptors/YoloBallBridge.h": {
+      "kind": "modified"
+    },
+    "Src/Modules/Perception/BallPerceptors/YoloBallDetector.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Perception/BallPerceptors/YoloBallDetector.h": {
+      "kind": "modified"
+    },
+    "Src/Modules/Perception/CopaPerceptors/CopaGoalPostDetector.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Perception/CopaPerceptors/CopaVisionPerceptor.cpp": {
+      "kind": "added"
+    },
+    "Src/Modules/Perception/CopaPerceptors/CopaVisionPerceptor.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Sensing/InertialDataProvider/InertialDataProvider.cpp": {
+      "kind": "modified"
+    },
+    "Src/Representations/Configuration/BehaviorParameters.h": {
+      "kind": "modified"
+    },
+    "Src/Representations/Perception/CopaPercepts/CopaVisionPercept.h": {
+      "kind": "added"
+    },
+    "Src/Tools/Framework/BHLoggingController.cpp": {
+      "kind": "modified"
+    },
+    "Tests/CopaBallModelTest.cpp": {
+      "kind": "added"
+    },
+    "Tests/CopaGoalPostDetectorTest.cpp": {
+      "kind": "added"
+    },
+    "Tests/CopaPenaltyStateTest.cpp": {
+      "kind": "added"
+    },
+    "Tests/test_behavior_config_compatibility.py": {
+      "kind": "added"
+    },
+    "Tests/test_camera_stream_config.py": {
+      "kind": "added"
+    },
+    "Tests/test_open_camera_viewer.py": {
+      "kind": "added"
+    }
+  }
+}
