@@ -571,7 +571,7 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       params.defaultSide = c.defaultSide;
       const CopaShot::Shot shot = CopaShot::planShot(copaSeen, ball.x(), ball.y(), params, c.expectedGoalDistance);
       copaTargetOdometry = theOdometryData * Vector2f(shot.targetX, shot.targetY);
-      OUTPUT_TEXT("[CopaShot] postSamples=" << static_cast<unsigned>(copaSeen.posts.size())
+      OUTPUT_WARNING("[CopaShot] postSamples=" << static_cast<unsigned>(copaSeen.posts.size())
                   << " robotSamples=" << static_cast<unsigned>(copaSeen.robots.size())
                   << " goal=" << (shot.goalSeen ? "yes" : "no") << " keeper=" << (shot.keeperSeen ? "yes" : "no")
                   << " side=" << shot.side << " direction=" << Angle(shot.direction).toDegrees() << "deg"
