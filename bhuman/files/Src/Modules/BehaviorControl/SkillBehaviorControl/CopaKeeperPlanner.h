@@ -30,6 +30,9 @@ namespace CopaKeeper
     float maxLateral = 700.f;       /**< mm the keeper may walk sideways from its start. */
     int confirmMs = 150;            /**< A threat must last this long. */
     int holdMs = 2500;              /**< Keep the genuflect at least this long. */
+    int releaseMs = 400;            /**< A threat stays active this long after its last sighting
+                                         (YOLO gives 3-4 detections per second). */
+    float walkStartMargin = 40.f;   /**< Start walking only beyond standRadius + this (hysteresis). */
   };
 
   struct Ball
@@ -116,8 +119,10 @@ namespace CopaKeeper
     void reset()
     {
       threatSince = -1;
+      lastThreat = -1;
       genuflectSince = -1;
       genuflectLeft = false;
+      walking = false;
     }
 
     /**
@@ -127,9 +132,17 @@ namespace CopaKeeper
     Decision update(int now, const Ball& ball, float lateral, const Params& p)
     {
       Decision decision;
+      const bool threatNow = threat(ball, p);
+      if(threatNow)
+      {
+        last = ball;
+        lastThreat = now;
+        lateralAtLast = lateral;
+      }
+
       if(genuflectSince >= 0)
       {
-        if(now - genuflectSince < p.holdMs || threat(ball, p))
+        if(now - genuflectSince < p.holdMs || threatNow)
         {
           decision.kind = genuflectLeft ? Action::genuflectLeft : Action::genuflectRight;
           return decision;
@@ -137,30 +150,38 @@ namespace CopaKeeper
         genuflectSince = -1;
       }
 
-      if(!threat(ball, p))
+      // Between detections the shot stays active, predicted from its last sighting.
+      if(lastThreat < 0 || now - lastThreat > p.releaseMs)
       {
         threatSince = -1;
+        walking = false;
         return decision;
       }
       if(threatSince < 0)
-        threatSince = now;
+        threatSince = lastThreat;
       if(now - threatSince < p.confirmMs)
         return decision;
 
-      const float distance = std::hypot(ball.x, ball.y);
-      const bool arriving = ball.crossTime <= p.genuflectTime || distance <= p.genuflectDistance;
-      // Sideways room left inside the goal area on the side the ball crosses.
-      const float reachable = std::clamp(ball.crossY, -p.maxLateral - lateral, p.maxLateral - lateral);
+      const float elapsed = 0.001f * static_cast<float>(now - lastThreat);
+      const float crossTime = last.crossTime - elapsed;
+      const float distance = std::max(0.f, std::hypot(last.x, last.y) + last.vx * elapsed);
+      const float crossY = last.crossY - (lateral - lateralAtLast); // the keeper may have stepped since
+      const bool arriving = crossTime <= p.genuflectTime || distance <= p.genuflectDistance;
       if(arriving)
       {
-        if(std::abs(ball.crossY) <= p.standRadius)
+        walking = false;
+        if(std::abs(crossY) <= p.standRadius)
           return decision; // the body is already in the way
         genuflectSince = now;
-        genuflectLeft = ball.crossY > 0.f;
+        genuflectLeft = crossY > 0.f;
         decision.kind = genuflectLeft ? Action::genuflectLeft : Action::genuflectRight;
         return decision;
       }
-      if(std::abs(reachable) > p.standRadius)
+
+      // Sideways room left inside the goal area on the side the ball crosses.
+      const float reachable = std::clamp(crossY, -p.maxLateral - lateral, p.maxLateral - lateral);
+      walking = std::abs(reachable) > p.standRadius + (walking ? 0.f : p.walkStartMargin);
+      if(walking)
       {
         decision.kind = Action::walk;
         decision.walkY = reachable;
@@ -177,8 +198,12 @@ namespace CopaKeeper
              && ball.crossTime > 0.f && ball.crossTime <= p.maxTime;
     }
 
+    Ball last;
+    float lateralAtLast = 0.f;
     int threatSince = -1;
+    int lastThreat = -1;
     int genuflectSince = -1;
     bool genuflectLeft = false;
+    bool walking = false;
   };
 }

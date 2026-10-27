@@ -516,9 +516,11 @@ void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
   params.maxLateral = c.maxLateral;
   params.confirmMs = c.confirmMs;
   params.holdMs = c.holdMs;
+  params.releaseMs = c.releaseMs;
+  params.walkStartMargin = c.walkStartMargin;
 
   CopaKeeper::Ball ball;
-  ball.seen = theFieldBall.ballWasSeen(300);
+  ball.seen = theFieldBall.ballWasSeen(c.seenTimeoutMs);
   ball.x = theBallModel.estimate.position.x();
   ball.y = theBallModel.estimate.position.y();
   ball.vx = theBallModel.estimate.velocity.x();
@@ -580,7 +582,7 @@ void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
       if(c.blockMotion == 0)
       {
         theLookAtBallSkill();
-        theStandSkill({.high = true});
+        theStandSkill(); // ready stance, knees bent: walking starts at once
         return;
       }
       theLookForwardSkill();
@@ -611,7 +613,7 @@ void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
         theLookAtBallSkill();
       else
         theLookForwardSkill();
-      theStandSkill({.high = true});
+      theStandSkill(); // ready stance, knees bent: walking starts at once
       return;
   }
 }

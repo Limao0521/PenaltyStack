@@ -123,3 +123,11 @@ Pendiente después de validar: usar postes y portero para elegir el lado del tir
 - `[CopaKeeperBall]` cada 500 ms con posición, velocidad de B-Human, velocidad propia, cruce y desplazamiento lateral.
 
 **Probar:** rodar el balón despacio a ~30–40 cm a un lado del portero (al cuerpo se queda quieto por diseño). Debe caminar de lado y quedarse de pie. Enviar el log con `[CopaKeeper]` y `[CopaKeeperBall]`.
+
+### Portero: "dobla las rodillas y vuelve a pararse" (28 de octubre)
+
+El log de esa prueba se perdió (B-Human reescribe `bhumand_(1).log` al reiniciar). Causa por código: el portero esperaba en postura alta (rodillas rectas), así que cada orden de caminar empezaba bajando a la postura de marcha; y el disparo se perdía entre detecciones porque exigía balón visto en los últimos 300 ms, cuando YOLO da 3–4 detecciones por segundo (`stale ageMs` 555–618 en el log). Entre detecciones volvía a "watch" y pedía postura alta.
+
+Cambios: postura lista (rodillas flexionadas, como el portero B-Human) mientras corre; balón "visto" 700 ms; el disparo sigue activo 400 ms tras su último avistamiento usando la predicción (tiempo restante y cruce corregido por los pasos del propio portero); histéresis para caminar (empieza > 12 cm, se detiene < 8 cm). Nuevas claves en `copaKeeper.cfg`: `seenTimeoutMs`, `releaseMs`, `walkStartMargin`.
+
+**Después de cada prueba, no reiniciar ni redesplegar antes de revisar el log.**

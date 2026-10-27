@@ -93,6 +93,36 @@ int main()
     assert(d.kind == Action::watch);
   }
   {
+    // Detections only every ~300 ms with unseen frames between: the walk must not flicker.
+    Planner planner;
+    Ball unseen;
+    for(int t = 0; t <= 1200; t += 33)
+    {
+      const bool sighting = t % 297 == 0;
+      const float x = 1300.f - 0.5f * t;
+      const Decision d = planner.update(t, sighting ? shot(x, 400.f, 500.f) : unseen, 0.f, p);
+      if(t >= 200)
+        assert(d.kind == Action::walk);
+    }
+    // No sighting for longer than releaseMs: the shot is over.
+    assert(planner.update(1200 + p.releaseMs + 50, unseen, 0.f, p).kind == Action::watch);
+  }
+  {
+    // While walking, the target follows the keeper's own steps (crossing fixed to the floor).
+    Planner planner;
+    planner.update(0, shot(1300.f, 400.f, 400.f), 0.f, p);
+    const Decision start = planner.update(200, shot(1220.f, 400.f, 400.f), 0.f, p);
+    assert(start.kind == Action::walk && start.walkY == 400.f);
+    const Decision later = planner.update(400, Ball(), 150.f, p);
+    assert(later.kind == Action::walk && later.walkY == 250.f);
+    // Within standRadius + margin it does not start, but once walking it keeps going until standRadius.
+    Planner fresh;
+    fresh.update(0, shot(1300.f, 100.f, 400.f), 0.f, p);
+    assert(fresh.update(200, shot(1220.f, 100.f, 400.f), 0.f, p).kind == Action::watch);
+    assert(planner.update(450, Ball(), 300.f, p).kind == Action::walk);   // 100 mm left: still walking
+    assert(planner.update(500, Ball(), 330.f, p).kind == Action::watch);  // 70 mm: arrived
+  }
+  {
     // Ball moving away (striker dribbling back): never a threat.
     Planner planner;
     Ball away = shot(1300.f, 0.f, 0.f);
