@@ -62,4 +62,5 @@ La escena abre **pausada**. Pulsa **Iniciar**; ambos motores estabilizan la post
 El ensayo inicial usa patada izquierda. La derecha se ejecuta y termina, pero todavía falla el contacto en esa colocación. En el ensayo automático el portero **no se lanza**: se sienta con el keyframe original `sitDownKeeper` y mantiene la guardia; los lanzamientos al suelo (`block`) quedan sólo en modo manual para comparación. Los bloqueos laterales manuales terminan en el suelo; la recuperación debe verificarse. **Esta integración no habilita todavía un penal completo en NAO real.**
 
 Leer [arquitectura](docs/ARQUITECTURA.md), [operación y despliegue](docs/DESPLIEGUE.md), [robot real bajo B-Human](docs/ROBOT_BHUMAN.md) y [criterios para NAO real](docs/PREPARACION_NAO.md).
+La [referencia de reglas de Copa NAO CCM MX 2026](docs/REGLAS_COPA_NAO_CCM_MX_2026.md) resume la categoría de tiro penal y los puntos aún por confirmar.
 Ver también [modelo V6 y licencia](models/bhuman/README.md) y [baseline motriz](baseline/README.md).
