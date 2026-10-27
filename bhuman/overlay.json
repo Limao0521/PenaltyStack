@@ -661,6 +661,9 @@
     "Src/Modules/Perception/BallPerceptors/CopaBallModel.h": {
       "kind": "added"
     },
+    "Src/Modules/Perception/BallPerceptors/CopaBallRange.h": {
+      "kind": "added"
+    },
     "Src/Modules/Perception/BallPerceptors/FieldColorNormalizer.h": {
       "kind": "added"
     },

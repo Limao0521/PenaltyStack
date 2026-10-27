@@ -179,3 +179,17 @@ La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto,
 - **Parada:** borra todo hasta el siguiente armado.
 
 `copaShot.cfg`: `startBallFromToes` (marca supuesta si no ve el balón), `penaltyDistance`, `maxMarkDistance`, `ballScanMs`, `ballScanTilt`, `postMatchTolerance`, `maxHeadingCorrection`. Gemelo COPA v5 (marca vista/supuesta y fases del armado).
+
+## Tirador: no moverse antes del barrido, caja detrás del balón, calibración de rango y gemelo en vivo (28 de octubre)
+
+**Log de la prueba:** al armar, el balón se midió a 537, 397 y 468 mm del centro del robot cuando estaba ~310 mm (20 cm delante de las puntas): la proyección al suelo lee 100–230 mm de más (mismo sesgo que en los postes). Con "balón a más de 400 mm → caminar", el tirador caminaba hacia adelante **antes** del barrido y se desfasaba. Varias corridas terminaron en `aligned=timeout` con el balón movido 91–111 mm, y al perder el balón en la patada volvía a "buscar balón" y caminaba de nuevo.
+
+**Cambios:**
+- **Calibración de rango (altura de cámara + píxeles):** el rango es la altura de la cámara inferior sobre la tangente del ángulo bajo el horizonte; el ángulo está desviado. Al armar, como el balón está 20 cm delante de las puntas, se calcula el desvío de cabeceo (acumulado, máx. ±8°) y `YoloBallDetector` lo aplica a todo balón de la cámara inferior en escenarios Copa: el modelo de balón, el motor de patada de B-Human, la holgura pie–balón y el gemelo usan la distancia corregida. `[CopaShot] range calibration: measured=… corrected=… pitchOffset=…`.
+- **Sin caminar antes del barrido:** en modo tirador sólo mira el balón, retoma la marca, barre y decide.
+- **Caja detrás del balón** (marco del balón: origen en la marca, x hacia la portería): todo objetivo de ajuste se recorta para que las plantas nunca pasen la línea perpendicular por el balón (4 cm antes de su superficie, considerando el giro), con el centro del robot a ≤ 45 cm detrás y ≤ 15 cm a los lados, y giro ≤ 20°. Sólo la patada entra al balón.
+- **Gemelo en vivo:** durante la alineación y la patada cada nuevo avistamiento corrige el 30 % de la diferencia entre el balón visto y la marca prevista (descarta > 15 cm); el mapa mantiene fija la cancha y mueve el robot corregido; muestra la línea del balón (roja), la zona permitida (verde), la calibración y la corrección acumulada (COPA v6).
+- **Pie como B-Human:** izquierda con el pie derecho (`forwardFastRightLong`), derecha con el izquierdo.
+- **Sin reinicios:** si pierde el balón en la patada vuelve a alinear, nunca a buscar caminando.
+
+`copaShot.cfg`: `maxPitchCorrection`, `boxMaxBack`, `boxMaxLateral`, `trackGain`, `trackGate`; se quitaron `approachDistance` y `standOffDistance`.

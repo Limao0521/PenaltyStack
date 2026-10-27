@@ -41,6 +41,12 @@ struct CopaTwinSnapshot
   float headingCorrection = 0.f;/**< Placement heading error found from the posts (rad). */
   uint8_t postsMatched = 0;     /**< Post sightings that matched the known goal. */
   bool markSeen = false;        /**< The mark is the ball seen in front of the feet (else assumed). */
+  float boxMaxBack = 0.f;       /**< Allowed adjustment box behind the ball (ball frame, mm)... */
+  float boxMaxLateral = 0.f;
+  float lineDistance = 0.f;     /**< ...soles stay this far behind the ball center (radius + margin). */
+  float goalHeading = 0.f;      /**< Ball frame x axis in the start frame (rad). */
+  float pitchOffset = 0.f;      /**< Lower-camera range calibration (rad). */
+  float trackShift = 0.f;       /**< Total real-time correction of the twin (mm). */
 };
 
 class CopaTwinShared

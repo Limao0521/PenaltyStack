@@ -18,6 +18,8 @@
 #include <cmath>
 #include <vector>
 
+#include "../../Perception/BallPerceptors/CopaBallRange.h"
+
 namespace CopaShot
 {
   constexpr float pi = 3.14159265358979f;
@@ -32,6 +34,11 @@ namespace CopaShot
     float postMargin = 0.25f;       /**< Aim this fraction of the goal width inside a post. */
     float maxAim = 20.f * deg;      /**< Largest kick direction (turn around the ball). */
     int defaultSide = 1;            /**< Without keeper: 1 left, -1 right, 0 center. */
+  };
+
+  struct Pose
+  {
+    float rotation = 0.f, x = 0.f, y = 0.f;
   };
 
   /** Bearings collected during the sweep. */
@@ -67,6 +74,34 @@ namespace CopaShot
   {
     float hip = 50.f, front = 110.f, back = 50.f, inner = 38.77f, outer = 50.02f;
   };
+
+  /** Where the striker may stand while adjusting, in the ball frame (origin on the mark, x to the goal). */
+  struct KickBox
+  {
+    float maxBack = 450.f;    /**< Robot origin at most this far behind the ball center. */
+    float maxLateral = 150.f; /**< ... and this far to either side. */
+    float lineMargin = 40.f;  /**< Soles stay this far behind the line through the ball's back. */
+    float maxTurn = 20.f * deg;
+  };
+
+  /** Forward-most sole point relative to the robot origin, along the ball frame's x, for a turn. */
+  inline float soleReach(float rotation, float front, float hip, float outer)
+  {
+    return front * std::cos(rotation) + (hip + outer) * std::abs(std::sin(rotation));
+  }
+
+  /**
+   * Clamps a robot pose (ball frame) into the box: never past the line perpendicular to the
+   * goal direction at the ball, not too far back or to the side, small turns only.
+   */
+  inline Pose clampToKickBox(Pose pose, const KickBox& box, float front, float hip, float outer, float ballRadius)
+  {
+    pose.rotation = std::clamp(pose.rotation, -box.maxTurn, box.maxTurn);
+    const float xMax = -(ballRadius + box.lineMargin) - soleReach(pose.rotation, front, hip, outer);
+    pose.x = std::min(std::max(pose.x, -box.maxBack), xMax);
+    pose.y = std::clamp(pose.y, -box.maxLateral, box.maxLateral);
+    return pose;
+  }
 
   /** Distance from a box [x0,x1] x [y0,y1] to a point. */
   inline float boxDistance(float x0, float x1, float y0, float y1, float px, float py)
@@ -151,11 +186,6 @@ namespace CopaShot
     }
     return goal;
   }
-
-  struct Pose
-  {
-    float rotation = 0.f, x = 0.f, y = 0.f;
-  };
 
   /**
    * Pose relative to the robot from which B-Human's WalkToBallAndKickEngine starts the

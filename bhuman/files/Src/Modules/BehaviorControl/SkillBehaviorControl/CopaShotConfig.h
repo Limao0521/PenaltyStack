@@ -12,8 +12,6 @@
 
 STREAMABLE(CopaShotConfig,
 {,
-  (float)(400.f) approachDistance,   /**< Ball closer than this (mm): stop and look at the goal. */
-  (float)(300.f) standOffDistance,   /**< When approaching, stop this far behind the ball (mm). */
   (Angle)(5_deg) headTilt,           /**< Head pitch while looking at the goal (positive = down). */
   (Angle)(25_deg) sweepPan,          /**< Head pans to +sweepPan, 0, -sweepPan. */
   (int)(1200) sweepStepMs,           /**< Time per head position. */
@@ -37,4 +35,9 @@ STREAMABLE(CopaShotConfig,
   (Angle)(25_deg) ballScanTilt,      /**< Armed scan: head pitch to look at the floor in front of the feet. */
   (Angle)(12_deg) postMatchTolerance,/**< A seen post corrects the heading only if this close to a known post. */
   (Angle)(15_deg) maxHeadingCorrection, /**< Largest placement error corrected from the posts. */
+  (Angle)(8_deg) maxPitchCorrection, /**< Largest lower-camera pitch offset calibrated from the placement. */
+  (float)(450.f) boxMaxBack,         /**< While adjusting: robot origin at most this far behind the ball... */
+  (float)(150.f) boxMaxLateral,      /**< ...and this far to either side of it. */
+  (float)(0.3f) trackGain,           /**< Real-time twin: share of each ball sighting applied to the mark. */
+  (float)(150.f) trackGate,          /**< Sightings further than this from the predicted mark are ignored. */
 });

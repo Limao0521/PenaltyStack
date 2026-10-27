@@ -33,7 +33,7 @@ except ImportError:  # parsing and recording work without OpenCV
     cv2 = None
 
 ROOT = Path(__file__).resolve().parents[1]
-TWIN_FORMAT = struct.Struct('<IIBBB' + 'Bfff' + 'Bff' * 4 + 'B' + 'Bff' * 2 + 'b' + 'Bfff' * 2 + 'fff' + 'fB' + 'B')
+TWIN_FORMAT = struct.Struct('<IIBBB' + 'Bfff' + 'Bff' * 4 + 'B' + 'Bff' * 2 + 'b' + 'Bfff' * 2 + 'fff' + 'fB' + 'B' + 'ffffff')
 STATES = {0: 'ARMED', 1: 'RUNNING', 2: 'STOPPED'}
 STRIKER_PHASES = {0: 'tomar balon = marca', 1: 'mirar porteria y decidir', 2: 'alinear (sin tocar)', 3: 'patear',
                   4: 'armado: buscar balon', 5: 'armado: confirmar postes', 6: 'armado: listo'}
@@ -69,7 +69,8 @@ def parse(raw: bytes) -> dict:
     out['pre_kick'] = pose()
     out['walk_target'] = pose()
     (out['foot_clearance'], out['min_foot_clearance'], out['ball_from_mark'], out['heading_correction'],
-     out['posts_matched'], mark_seen) = v
+     out['posts_matched'], mark_seen, out['box_max_back'], out['box_max_lateral'], out['line_distance'],
+     out['goal_heading'], out['pitch_offset'], out['track_shift']) = v
     out['mark_seen'] = bool(mark_seen)
     return out
 
@@ -140,7 +141,7 @@ class TwinMap:
         cv2.arrowedLine(img, self.px(pose['x'], pose['y']), tip, color, thickness, cv2.LINE_AA, tipLength=0.3)
 
     def draw(self, twin: dict) -> np.ndarray:
-        img = np.full((self.size, self.size + 260, 3), 28, np.uint8)
+        img = np.full((self.size, self.size + 340, 3), 28, np.uint8)
         field = img[:, :self.size]
         if twin['run'] != self.run:
             self.trail, self.run = [], twin['run']
@@ -180,6 +181,17 @@ class TwinMap:
             cv2.polylines(field, [np.array([self.px(*p) for p in self.trail], np.int32)], False, (150, 150, 150), 1, cv2.LINE_AA)
 
         mark, ball, target = twin['mark'], twin['ball'], twin['target']
+        if mark['valid'] and twin['line_distance'] > 0 and twin['role'] == 0:
+            # Ball frame: origin on the mark, x towards the goal. Soles never past the red line;
+            # the robot's origin stays inside the green box while it adjusts.
+            hc, hs = math.cos(twin['goal_heading']), math.sin(twin['goal_heading'])
+            to_start = lambda a, b: (mark['x'] + hc * a - hs * b, mark['y'] + hs * a + hc * b)
+            half = twin['box_max_lateral'] + 120
+            cv2.line(field, self.px(*to_start(-twin['line_distance'], half)), self.px(*to_start(-twin['line_distance'], -half)),
+                     (60, 60, 230), 1, cv2.LINE_AA)
+            box = [to_start(-twin['box_max_back'], twin['box_max_lateral']), to_start(-twin['line_distance'] - SOLE['front'], twin['box_max_lateral']),
+                   to_start(-twin['line_distance'] - SOLE['front'], -twin['box_max_lateral']), to_start(-twin['box_max_back'], -twin['box_max_lateral'])]
+            cv2.polylines(field, [np.array([self.px(*p) for p in box], np.int32)], True, (80, 160, 80), 1, cv2.LINE_AA)
         if target['valid'] and mark['valid']:
             cv2.line(field, self.px(mark['x'], mark['y']), self.px(target['x'], target['y']), (60, 60, 230), 2, cv2.LINE_AA)
             t = self.px(target['x'], target['y'])
@@ -219,10 +231,13 @@ class TwinMap:
                  (f'balon-pie minimo: {twin["min_foot_clearance"]:5.0f} mm',
                   (80, 80, 255) if 0 < twin['min_foot_clearance'] < MIN_CLEARANCE else (220, 220, 220)),
                  (f'balon movido: {twin["ball_from_mark"]:5.0f} mm', (80, 80, 255) if twin['ball_from_mark'] > 30 else (220, 220, 220)),
+                 (f'calibracion rango: {math.degrees(twin["pitch_offset"]):+.1f} deg', (220, 220, 220)),
+                 (f'correccion en vivo: {twin["track_shift"]:5.0f} mm', (220, 220, 220)),
                  ('', None),
                  ('blanco: robot   cian: pose previa', (170, 170, 170)),
                  ('amarillo: a donde camina', (0, 220, 255)),
-                 ('rojo: linea de tiro   K: portero', (90, 90, 240))]
+                 ('rojo: linea de tiro / linea del balon', (90, 90, 240)),
+                 ('verde: zona permitida para ajustarse', (80, 160, 80))]
         for i, (text, color) in enumerate(lines):
             if color:
                 cv2.putText(img, text, (self.size + 10, 24 + 22 * i), cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1, cv2.LINE_AA)

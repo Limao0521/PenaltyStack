@@ -108,6 +108,56 @@ int main()
     assert(planShotWithPrior(keeperLeft, 200.f, 0.f, prior, 0.f, p).side == -1);
   }
   {
+    // Range: lower camera 470 mm high at (50, 0); the ball truly 310 mm ahead, seen at 460 mm.
+    const float h = 470.f, r = 32.5f;
+    const float pitch = CopaRange::pitchOffsetFromKnown(50.f, 0.f, h, r, 460.f, 0.f, 310.f);
+    assert(pitch > 0.f);
+    float x = 460.f, y = 0.f;
+    CopaRange::correctRange(50.f, 0.f, h, r, pitch, x, y);
+    assert(near(x, 310.f, 0.5f) && near(y, 0.f, 1e-3f));
+    // The same pitch also shortens other overestimated distances, keeping the bearing.
+    float x2 = 600.f, y2 = 100.f;
+    CopaRange::correctRange(50.f, 0.f, h, r, pitch, x2, y2);
+    assert(x2 < 600.f && x2 > 310.f && near(std::atan2(y2, x2 - 50.f), std::atan2(100.f, 550.f), 1e-4f));
+    // No offset: nothing changes.
+    float x3 = 400.f, y3 = 30.f;
+    CopaRange::correctRange(50.f, 0.f, h, r, 0.f, x3, y3);
+    assert(near(x3, 400.f, 1e-2f) && near(y3, 30.f, 1e-2f));
+  }
+  {
+    // Kick box: robot 310 mm behind the ball at start; soles 110 mm long, hip 50 + outer 50.
+    const KickBox box;
+    const float front = 110.f, hip = 50.f, outer = 50.02f, radius = 32.5f;
+    Pose start;
+    start.x = -310.f;
+    const Pose same = clampToKickBox(start, box, front, hip, outer, radius);
+    assert(same.x == -310.f && same.y == 0.f);
+    // A target past the line through the ball is pulled back behind it.
+    Pose past;
+    past.x = -120.f;
+    const Pose behind = clampToKickBox(past, box, front, hip, outer, radius);
+    assert(near(behind.x, -(radius + box.lineMargin + front), 1e-3f));
+    // Turned 20 deg the outer toe reaches further forward, so the limit moves back.
+    past.rotation = 20.f * deg;
+    assert(clampToKickBox(past, box, front, hip, outer, radius).x < behind.x - 20.f);
+    // Too far to the side or back, or turned too much: clamped.
+    Pose wild;
+    wild.x = -900.f;
+    wild.y = 400.f;
+    wild.rotation = 60.f * deg;
+    const Pose tamed = clampToKickBox(wild, box, front, hip, outer, radius);
+    assert(tamed.x == -box.maxBack && tamed.y == box.maxLateral && near(tamed.rotation, box.maxTurn, 1e-6f));
+    // The pre-kick poses of both feet are inside the box (kick 190 mm + 100 mm behind, +-50 mm).
+    for(float side : {-50.f, 50.f})
+    {
+      Pose pre;
+      pre.x = -290.f;
+      pre.y = side;
+      const Pose kept = clampToKickBox(pre, box, front, hip, outer, radius);
+      assert(kept.x == pre.x && kept.y == pre.y);
+    }
+  }
+  {
     const Feet feet;
     // Ball on the mark 200 mm ahead, centered: nearest is the inner toe corner (110, 11.23).
     assert(near(footClearance(200.f, 0.f, 32.5f, feet), std::hypot(90.f, 50.f - 38.77f) - 32.5f, 1e-3f));

@@ -9,6 +9,7 @@
 #include "Streaming/Global.h"
 #include "Framework/Settings.h"
 #include "CopaBallModel.h"
+#include "CopaBallRange.h"
 
 #include <algorithm>
 #include <array>
@@ -168,6 +169,16 @@ void YoloBallDetector::update(BallPercept& bp)
                                   det.cameraInfo.focalLength);
     fieldPos = Vector2f(dist * std::cos(ang), dist * std::sin(ang));
     geomOk   = dist > 0.f && std::isfinite(fieldPos.x()) && std::isfinite(fieldPos.y());
+  }
+
+  // Copa: lower-camera range corrected with the pitch offset calibrated from the known placement.
+  if(geomOk && copaLowerModel)
+  {
+    float x = fieldPos.x(), y = fieldPos.y();
+    CopaRange::correctRange(det.cameraMatrix.translation.x(), det.cameraMatrix.translation.y(),
+                            det.cameraMatrix.translation.z(), theBallSpecification.radius,
+                            CopaRange::lowerPitchOffset().load(), x, y);
+    fieldPos = Vector2f(x, y);
   }
 
   if(report)

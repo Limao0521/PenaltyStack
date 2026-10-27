@@ -209,11 +209,21 @@ private:
   /** Head sweep over the goal collecting post/robot bearings into copaSeen; true when done. */
   bool sweepCopaGoal();
   /** The ball seen in front of the feet is the penalty mark: anchor of the digital twin. */
-  bool captureCopaMark();
+  bool captureCopaMark(bool calibrate);
   /** Goal line penaltyDistance beyond the mark along the placement heading (+ correction). */
   void rebuildCopaGoalFromMark(float correction);
   bool copaMarkSeen = false;
   float copaArmedCorrection = 0.f;
+  /** Real-time twin: each new ball sighting pulls the mark (and the field) towards it. */
+  void trackCopaMark(bool ballFresh);
+  /** Clamps a robot-relative walk target into the box behind the ball (never past the ball line). */
+  Pose2f clampCopaTarget(const Pose2f& relative) const;
+  CopaShot::Feet copaFeet() const;
+  KickInfo::KickType copaKickType = KickInfo::forwardFastLeftLong;
+  unsigned copaLastBallSeen = 0;
+  Vector2f copaTrackShift = Vector2f::Zero(); /**< Correction applied by tracking (odometry frame). */
+  Vector3f copaLowerCamera = Vector3f(50.f, 0.f, 450.f); /**< Last lower camera position (robot frame). */
+  float copaRangeMeasured = 0.f;
   bool copaInitialized = false;
   float copaHeadingCorrection = 0.f;
   int copaPostsMatched = 0;
