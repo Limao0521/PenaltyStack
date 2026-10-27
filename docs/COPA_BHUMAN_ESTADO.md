@@ -156,3 +156,16 @@ Cambios: postura lista (rodillas flexionadas, como el portero B-Human) mientras 
 - Mapa: cancha Copa alineada a los postes vistos, marca esperada a 130 cm, plantas del robot (rojo si el hueco < 40 mm), rastro, pose previa (cian), flecha amarilla a donde camina, línea de tiro roja, portero "K".
 
 Requiere el visor actualizado (protocolo COPA v3).
+
+## Posición inicial conocida y reinicio del gemelo en cada parada (28 de octubre)
+
+**Problema:** después del primer tiro, en los siguientes intentos el robot perdía la orientación.
+
+**Cambio:** el reglamento fija la colocación, así que se usa como verdad de partida en cada corrida.
+- Al pulsar inicio (`striker mode start`) se reinicia el marco de la corrida y se asume: robot en el origen mirando a la portería, balón en la marca a 20 cm (`startBallDistance`), línea de gol 130 cm más allá (`penaltyDistance`), postes a ±75 cm.
+- Al detenerse (`striker mode stop`, fin de la patada o del tiempo) se vuelve a ese estado: se borran marca, decisión, alineación y holguras; el gemelo muestra "listo en posición inicial" y el grabador cierra el archivo de la corrida.
+- El balón visto sólo reemplaza a la marca conocida si está a ≤ 15 cm de ella; si no, dice "ball not on the mark" y usa la marca conocida.
+- La visión ya no define la portería: los postes vistos durante el barrido que estén a ≤ 12° de los conocidos dan el error de orientación de la colocación (mediana, máximo ±15°), y la portería conocida se gira esa cantidad. El portero visto decide el lado. Siempre hay portería; ya no existe "no goal, straight".
+- `[CopaShot] postsMatched=… headingCorrection=…` en el log; el gemelo (COPA v4) muestra cuántos postes confirmaron la portería y el giro corregido.
+
+`copaShot.cfg`: `startBallDistance`, `penaltyDistance`, `markMatchDistance`, `postMatchTolerance`, `maxHeadingCorrection`.

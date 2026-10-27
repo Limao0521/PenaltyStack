@@ -79,6 +79,35 @@ int main()
     assert(turned.y < -50.f); // to the right of the ball, behind it along the kick line
   }
   {
+    // Known placement: robot 200 mm behind the mark, goal line 1300 mm beyond it.
+    const PriorGoal prior;
+    int matched = -1;
+    // Nothing seen: no correction, the known goal is used; default side left, inside the post.
+    assert(headingCorrection(Observations{}, prior, 12.f * deg, 15.f * deg, matched) == 0.f && matched == 0);
+    const Shot plain = planShotWithPrior(Observations{}, 200.f, 0.f, prior, 0.f, p);
+    assert(plain.goalSeen && plain.side == 1 && near(plain.targetX, 1500.f, 1e-2f) && near(plain.targetY, 375.f, 1e-2f));
+    assert(plain.direction > 0.f && plain.direction <= p.maxAim);
+    // Robot placed 8 deg turned to the right: the posts appear 8 deg further left.
+    const float turn = 8.f * deg;
+    Observations seen{{left + turn, left + turn + 0.005f, right + turn}, {}};
+    const float correction = headingCorrection(seen, prior, 12.f * deg, 15.f * deg, matched);
+    assert(matched == 3 && near(correction, turn, 0.01f));
+    Params center = p;
+    center.defaultSide = 0;
+    assert(near(planShotWithPrior(Observations{}, 200.f, 0.f, prior, 0.f, center).direction, 0.f, 1e-4f));
+    const Shot corrected = planShotWithPrior(seen, 200.f, 0.f, prior, correction, center);
+    assert(corrected.direction > 7.f * deg && corrected.direction < 10.f * deg); // turns left to the goal center
+    // Blue things far from the known posts are ignored.
+    Observations noise{{left + 30.f * deg}, {}};
+    assert(headingCorrection(noise, prior, 12.f * deg, 15.f * deg, matched) == 0.f && matched == 0);
+    // Keeper right of center: shoot left; keeper left: shoot right.
+    Observations keeperRight{{}, {bearing(1500.f, -200.f)}};
+    const Shot left1 = planShotWithPrior(keeperRight, 200.f, 0.f, prior, 0.f, p);
+    assert(left1.keeperSeen && left1.side == 1 && near(left1.keeperY, -200.f, 5.f));
+    Observations keeperLeft{{}, {bearing(1500.f, 250.f)}};
+    assert(planShotWithPrior(keeperLeft, 200.f, 0.f, prior, 0.f, p).side == -1);
+  }
+  {
     const Feet feet;
     // Ball on the mark 200 mm ahead, centered: nearest is the inner toe corner (110, 11.23).
     assert(near(footClearance(200.f, 0.f, 32.5f, feet), std::hypot(90.f, 50.f - 38.77f) - 32.5f, 1e-3f));

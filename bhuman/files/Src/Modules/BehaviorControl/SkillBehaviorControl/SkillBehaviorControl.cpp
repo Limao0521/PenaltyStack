@@ -435,6 +435,11 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
       stream >> copaKeeperConfig;
     copaKeeperConfigLoaded = true;
   }
+  if(!copaInitialized)
+  {
+    resetCopaRun();
+    copaInitialized = true;
+  }
   const bool threeHeads = theEnhancedKeyStates.pressed[KeyStates::headFront] &&
                           theEnhancedKeyStates.pressed[KeyStates::headMiddle] &&
                           theEnhancedKeyStates.pressed[KeyStates::headRear];
@@ -465,13 +470,11 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
       copaKeeperStart = theOdometryData;
       copaKeeperLastAction = CopaKeeper::Action::watch;
       copaBallTrack.reset();
-      copaPhase = CopaStrikerPhase::findBall;
-      copaPhaseStart = theFrameInfo.time;
-      copaStartOdometry = theOdometryData;
       ++copaRun;
-      copaMarkKnown = copaShotKnown = copaPreKickValid = false;
-      copaMinFootClearance = std::numeric_limits<float>::max();
+      resetCopaRun();
     }
+    if(state == CopaPenaltyState::stopped)
+      resetCopaRun(); // the twin goes back to the known start layout for the next shot
     previousCopaState = state;
   }
 
@@ -512,6 +515,26 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
     executeCopaStriker(ballFresh);
 }
 
+void SkillBehaviorControl::resetCopaRun()
+{
+  const CopaShotConfig& c = copaShotConfig;
+  copaPhase = CopaStrikerPhase::findBall;
+  copaPhaseStart = theFrameInfo.time;
+  copaStartOdometry = theOdometryData;
+  // Copa placement: ball on the mark 20 cm ahead, goal line 130 cm beyond, posts 150 cm apart.
+  const float goalLine = c.startBallDistance + c.penaltyDistance;
+  copaBallOdometry = theOdometryData * Vector2f(c.startBallDistance, 0.f);
+  copaLeftPostOdometry = theOdometryData * Vector2f(goalLine, 0.5f * c.goalWidth);
+  copaRightPostOdometry = theOdometryData * Vector2f(goalLine, -0.5f * c.goalWidth);
+  copaMarkKnown = true;
+  copaShotKnown = copaPreKickValid = copaWalkValid = false;
+  copaShot = CopaShot::Shot();
+  copaHeadingCorrection = 0.f;
+  copaPostsMatched = 0;
+  copaFootClearance = 0.f;
+  copaMinFootClearance = std::numeric_limits<float>::max();
+}
+
 void SkillBehaviorControl::publishCopaTwin(bool keeper, int state)
 {
   const Pose2f fromOdometry = copaStartOdometry.inverse();
@@ -545,9 +568,11 @@ void SkillBehaviorControl::publishCopaTwin(bool keeper, int state)
   twin.robot = pose(true, Pose2f());
   twin.ball = point(theFieldBall.ballWasSeen(1000), theOdometryData * theBallModel.estimate.position);
   twin.mark = point(copaMarkKnown, copaBallOdometry);
-  twin.leftPost = point(copaShotKnown && copaShot.goalSeen, copaLeftPostOdometry);
-  twin.rightPost = point(copaShotKnown && copaShot.goalSeen, copaRightPostOdometry);
-  twin.goalInferred = copaShot.goalInferred;
+  twin.leftPost = point(!keeper, copaLeftPostOdometry);
+  twin.rightPost = point(!keeper, copaRightPostOdometry);
+  twin.goalInferred = copaShotKnown && copaPostsMatched == 0; // known placement only, no post confirmed it
+  twin.headingCorrection = copaHeadingCorrection;
+  twin.postsMatched = static_cast<uint8_t>(std::min(copaPostsMatched, 255));
   twin.keeper = point(copaShotKnown && copaShot.keeperSeen, copaKeeperOdometry);
   twin.target = point(copaShotKnown, copaTargetOdometry);
   twin.side = static_cast<int8_t>(copaShot.side);
@@ -705,8 +730,18 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       theStandSkill({.high = true});
       copaSeen = CopaShot::Observations();
       copaLastSnapshot = 0;
-      copaBallOdometry = theOdometryData * ball; // the ball rests on the mark until the kick
-      copaMarkKnown = true;
+      {
+        // The ball rests on the mark until the kick. The mark is known from the placement;
+        // the seen ball refines it only when it agrees.
+        const Vector2f seenBall = theOdometryData * ball;
+        const float offset = (seenBall - copaBallOdometry).norm();
+        if(offset <= c.markMatchDistance)
+          copaBallOdometry = seenBall;
+        OUTPUT_WARNING("[CopaShot] mark=" << (offset <= c.markMatchDistance ? "seen" : "known placement")
+                       << " ballVsKnown=" << static_cast<int>(offset) << "mm");
+        if(offset > c.markMatchDistance)
+          SystemCall::say("ball not on the mark");
+      }
       SystemCall::say("looking at goal");
       enter(CopaStrikerPhase::lookGoal);
       return;
@@ -738,19 +773,31 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       params.postMargin = c.postMargin;
       params.maxAim = c.maxAim;
       params.defaultSide = c.defaultSide;
-      const CopaShot::Shot shot = CopaShot::planShot(copaSeen, ball.x(), ball.y(), params, c.expectedGoalDistance);
+      // The goal is known from the placement; the posts seen only correct the heading.
+      const Pose2f toRobot = theOdometryData.inverse();
+      const Vector2f knownLeft = toRobot * copaLeftPostOdometry, knownRight = toRobot * copaRightPostOdometry;
+      CopaShot::PriorGoal prior;
+      prior.leftX = knownLeft.x();
+      prior.leftY = knownLeft.y();
+      prior.rightX = knownRight.x();
+      prior.rightY = knownRight.y();
+      copaHeadingCorrection = CopaShot::headingCorrection(copaSeen, prior, c.postMatchTolerance, c.maxHeadingCorrection,
+                                                          copaPostsMatched);
+      const Vector2f mark = toRobot * copaBallOdometry;
+      const CopaShot::Shot shot = CopaShot::planShotWithPrior(copaSeen, mark.x(), mark.y(), prior, copaHeadingCorrection, params);
       copaTargetOdometry = theOdometryData * Vector2f(shot.targetX, shot.targetY);
       copaShot = shot;
       copaShotKnown = true;
-      copaLeftPostOdometry = theOdometryData * Vector2f(shot.targetX, shot.goalLeftY);
-      copaRightPostOdometry = theOdometryData * Vector2f(shot.targetX, shot.goalRightY);
-      copaKeeperOdometry = theOdometryData * Vector2f(shot.targetX, shot.keeperY);
+      copaLeftPostOdometry = theOdometryData * Vector2f(shot.goalLeftX, shot.goalLeftY);
+      copaRightPostOdometry = theOdometryData * Vector2f(shot.goalRightX, shot.goalRightY);
+      copaKeeperOdometry = theOdometryData * Vector2f(shot.keeperX, shot.keeperY);
       OUTPUT_WARNING("[CopaShot] postSamples=" << static_cast<unsigned>(copaSeen.posts.size())
+                  << " postsMatched=" << copaPostsMatched << " headingCorrection=" << Angle(copaHeadingCorrection).toDegrees() << "deg"
                   << " robotSamples=" << static_cast<unsigned>(copaSeen.robots.size())
-                  << " goal=" << (shot.goalSeen ? "yes" : "no") << " keeper=" << (shot.keeperSeen ? "yes" : "no")
+                  << " keeper=" << (shot.keeperSeen ? "yes" : "no")
                   << " side=" << shot.side << " direction=" << Angle(shot.direction).toDegrees() << "deg"
                   << " target=(" << shot.targetX << "," << shot.targetY << ") reason=" << shot.reason);
-      SystemCall::say(!shot.goalSeen ? "no goal, straight" : shot.side > 0 ? "aim left" : shot.side < 0 ? "aim right" : "aim center");
+      SystemCall::say(shot.side > 0 ? "aim left" : shot.side < 0 ? "aim right" : "aim center");
       theLookForwardSkill();
       enter(CopaStrikerPhase::align);
       return;

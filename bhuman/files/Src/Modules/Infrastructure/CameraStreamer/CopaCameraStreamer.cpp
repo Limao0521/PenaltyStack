@@ -81,7 +81,7 @@ void CopaCameraStreamer::appendCopaPayload()
 {
   static const unsigned char magic[4] = {'C', 'O', 'P', 'A'};
   payload.insert(payload.end(), magic, magic + 4);
-  CamfStreamServer::append(payload, static_cast<uint8_t>(3));
+  CamfStreamServer::append(payload, static_cast<uint8_t>(4));
 
   CamfStreamServer::append(payload, static_cast<uint8_t>(theBallPercept.status == BallPercept::seen ? 1 : 0));
   CamfStreamServer::append(payload, theBallPercept.positionOnField.x());
@@ -132,4 +132,6 @@ void CopaCameraStreamer::appendCopaPayload()
   CamfStreamServer::append(payload, twin.footClearance);
   CamfStreamServer::append(payload, twin.minFootClearance);
   CamfStreamServer::append(payload, twin.ballFromMark);
+  CamfStreamServer::append(payload, twin.headingCorrection);
+  CamfStreamServer::append(payload, twin.postsMatched);
 }

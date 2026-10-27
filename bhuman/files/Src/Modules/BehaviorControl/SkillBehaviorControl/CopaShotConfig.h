@@ -30,4 +30,9 @@ STREAMABLE(CopaShotConfig,
   (Angle)(5_deg) alignAngleTolerance,
   (int)(8000) alignTimeoutMs,        /**< Kick anyway after aligning this long. */
   (float)(40.f) minFootClearance,    /**< Never move forward while the ball is closer than this to a sole (mm). */
+  (float)(200.f) startBallDistance,  /**< Copa placement: the robot starts 20 cm behind the mark, ball on the mark. */
+  (float)(1300.f) penaltyDistance,   /**< Copa: penalty mark to goal line. */
+  (float)(150.f) markMatchDistance,  /**< A seen ball replaces the known mark only if this close to it. */
+  (Angle)(12_deg) postMatchTolerance,/**< A seen post corrects the heading only if this close to a known post. */
+  (Angle)(15_deg) maxHeadingCorrection, /**< Largest placement error corrected from the posts. */
 });

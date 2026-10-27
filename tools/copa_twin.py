@@ -33,7 +33,7 @@ except ImportError:  # parsing and recording work without OpenCV
     cv2 = None
 
 ROOT = Path(__file__).resolve().parents[1]
-TWIN_FORMAT = struct.Struct('<IIBBB' + 'Bfff' + 'Bff' * 4 + 'B' + 'Bff' * 2 + 'b' + 'Bfff' * 2 + 'fff')
+TWIN_FORMAT = struct.Struct('<IIBBB' + 'Bfff' + 'Bff' * 4 + 'B' + 'Bff' * 2 + 'b' + 'Bfff' * 2 + 'fff' + 'fB')
 STATES = {0: 'ARMED', 1: 'RUNNING', 2: 'STOPPED'}
 STRIKER_PHASES = {0: 'find ball', 1: 'look at goal', 2: 'align (no touch)', 3: 'kick'}
 KEEPER_PHASES = {0: 'watch', 1: 'walk', 2: 'block left', 3: 'block right'}
@@ -67,7 +67,7 @@ def parse(raw: bytes) -> dict:
     out['side'] = v.pop(0)
     out['pre_kick'] = pose()
     out['walk_target'] = pose()
-    out['foot_clearance'], out['min_foot_clearance'], out['ball_from_mark'] = v
+    out['foot_clearance'], out['min_foot_clearance'], out['ball_from_mark'], out['heading_correction'], out['posts_matched'] = v
     return out
 
 
@@ -84,6 +84,11 @@ class TwinRecorder:
     def add(self, twin: dict) -> None:
         if twin['run'] == 0:
             return
+        if twin['state'] == 2 and twin['run'] == self.run:  # "mode stop": the run is over
+            self.close()
+            return
+        if twin['state'] == 2:
+            return
         if twin['run'] != self.run:
             self.close()
             self.directory.mkdir(parents=True, exist_ok=True)
@@ -92,6 +97,7 @@ class TwinRecorder:
             self.path = self.directory / f'twin_{stamp}_{role}_run{twin["run"]}.jsonl'
             self.file = self.path.open('w')
             self.run = twin['run']
+            self.last_time = None
             print(f'  [twin] grabando {self.path}')
         if twin['time'] != self.last_time:
             self.last_time = twin['time']
@@ -102,6 +108,7 @@ class TwinRecorder:
         if self.file:
             self.file.close()
             self.file = None
+            print(f'  [twin] corrida guardada: {self.path}')
 
 
 # ── Drawing ───────────────────────────────────────────────────────────────────
@@ -161,9 +168,10 @@ class TwinMap:
             cv2.circle(field, self.px(*expected), max(2, int(50 * self.scale)), (200, 200, 200), 1, cv2.LINE_AA)
             cv2.putText(field, 'marca esperada', (self.px(*expected)[0] + 8, self.px(*expected)[1] + 4),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.35, (170, 170, 170), 1, cv2.LINE_AA)
-            if twin['goal_inferred']:
-                cv2.putText(field, 'poste inferido', (self.px(*R)[0] - 40, self.px(*R)[1] - 10),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.35, (255, 160, 80), 1, cv2.LINE_AA)
+            label = ('porteria por colocacion (sin confirmar)' if twin['goal_inferred'] or not twin['target']['valid']
+                     else f'porteria corregida {math.degrees(twin["heading_correction"]):+.1f} deg')
+            cv2.putText(field, label, (self.px(*L)[0], self.px(*L)[1] - 12),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.38, (255, 160, 80), 1, cv2.LINE_AA)
 
         if len(self.trail) > 1:
             cv2.polylines(field, [np.array([self.px(*p) for p in self.trail], np.int32)], False, (150, 150, 150), 1, cv2.LINE_AA)
@@ -193,11 +201,17 @@ class TwinMap:
         role = 'PORTERO' if twin['role'] else 'TIRADOR'
         phases = KEEPER_PHASES if twin['role'] else STRIKER_PHASES
         side = {1: 'izquierda', -1: 'derecha', 0: 'centro/recto'}.get(twin['side'], '?')
+        ready = twin['state'] != 1
+        if twin['target']['valid']:
+            goal_text = (f'porteria: {twin["posts_matched"]} postes vistos, giro {math.degrees(twin["heading_correction"]):+.1f} deg'
+                         if twin['posts_matched'] else 'porteria: sin postes vistos, colocacion')
+        else:
+            goal_text = 'porteria: por colocacion'
         lines = [(f'{role}  run {twin["run"]}', (255, 255, 255)),
                  (f'estado: {STATES.get(twin["state"], twin["state"])}', (200, 200, 200)),
-                 (f'fase: {phases.get(twin["phase"], twin["phase"])}', (0, 220, 255)),
+                 ('fase: listo en posicion inicial' if ready else f'fase: {phases.get(twin["phase"], twin["phase"])}', (0, 220, 255)),
                  ('', None),
-                 (f'porteria: {"vista" if left["valid"] else "no"}' + (' (1 poste inferido)' if twin['goal_inferred'] else ''), (255, 160, 80)),
+                 (goal_text, (255, 160, 80)),
                  (f'portero: {"visto" if twin["keeper"]["valid"] else "no"}', (200, 80, 200)),
                  (f'tiro: {side}' if target['valid'] else 'tiro: sin decidir', (90, 90, 240)),
                  ('', None),
@@ -224,9 +238,13 @@ def load(path: Path) -> list[dict]:
 def summary(frames: list[dict]) -> dict:
     last = frames[-1]
     kicks = [f for f in frames if f['role'] == 0 and f['phase'] == 3]
+    decided = [f for f in frames if f['target']['valid']]
+    decision = decided[-1] if decided else last
     return {'frames': len(frames), 'duration_s': round((frames[-1]['time'] - frames[0]['time']) / 1000, 2),
-            'side': last['side'], 'goal_seen': last['left_post']['valid'], 'keeper_seen': last['keeper']['valid'],
-            'min_foot_clearance_mm': round(last['min_foot_clearance'], 1),
+            'side': decision['side'], 'posts_matched': decision['posts_matched'],
+            'heading_correction_deg': round(math.degrees(decision['heading_correction']), 1),
+            'keeper_seen': decision['keeper']['valid'],
+            'min_foot_clearance_mm': round(decision['min_foot_clearance'], 1),
             'ball_moved_before_kick_mm': round(kicks[0]['ball_from_mark'], 1) if kicks else None}
 
 

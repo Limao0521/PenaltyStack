@@ -202,6 +202,11 @@ private:
 
   /** Digital twin: what the behavior believes and decides, in the run's start frame. */
   void publishCopaTwin(bool keeper, int state);
+  /** Start (and stop) of a run: the robot is at the known Copa placement. */
+  void resetCopaRun();
+  bool copaInitialized = false;
+  float copaHeadingCorrection = 0.f;
+  int copaPostsMatched = 0;
   Pose2f copaStartOdometry;
   unsigned copaRun = 0;
   bool copaMarkKnown = false, copaShotKnown = false;

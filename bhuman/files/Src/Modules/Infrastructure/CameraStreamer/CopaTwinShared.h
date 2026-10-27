@@ -28,7 +28,7 @@ struct CopaTwinSnapshot
   Point ball;               /**< Ball model estimate. */
   Point mark;               /**< Ball spot memorised on the mark. */
   Point leftPost, rightPost;
-  bool goalInferred = false;
+  bool goalInferred = false;    /**< Goal only from the placement rule, no post seen yet. */
   Point keeper;             /**< Keeper on the goal line. */
   Point target;             /**< Aim point on the goal line. */
   int8_t side = 0;          /**< 1 left, -1 right, 0 center/straight. */
@@ -37,6 +37,8 @@ struct CopaTwinSnapshot
   float footClearance = 0.f;    /**< Ball surface to nearest sole edge now (mm). */
   float minFootClearance = 0.f; /**< Smallest clearance before the kick in this run (mm). */
   float ballFromMark = 0.f;     /**< How far the ball moved from the mark (mm). */
+  float headingCorrection = 0.f;/**< Placement heading error found from the posts (rad). */
+  uint8_t postsMatched = 0;     /**< Post sightings that matched the known goal. */
 };
 
 class CopaTwinShared

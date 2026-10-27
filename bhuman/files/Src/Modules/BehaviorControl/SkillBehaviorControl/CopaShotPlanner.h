@@ -56,9 +56,9 @@ namespace CopaShot
     bool keeperSeen = false;
     float keeper = 0.f;
     bool goalSeen = false;
-    float goalLeftY = 0.f, goalRightY = 0.f; /**< Posts on the goal line x = targetX (mm). */
+    float goalLeftX = 0.f, goalLeftY = 0.f, goalRightX = 0.f, goalRightY = 0.f; /**< Posts (mm). */
     bool goalInferred = false;
-    float keeperY = 0.f;                     /**< Keeper on the goal line (mm), if keeperSeen. */
+    float keeperX = 0.f, keeperY = 0.f;      /**< Keeper on the goal line (mm), if keeperSeen. */
     const char* reason = "no goal";
   };
 
@@ -175,6 +175,89 @@ namespace CopaShot
     return pose;
   }
 
+  /** The goal known from the Copa placement rule, relative to the robot (mm). */
+  struct PriorGoal
+  {
+    float leftX = 1500.f, leftY = 750.f, rightX = 1500.f, rightY = -750.f;
+  };
+
+  /**
+   * Heading error of the robot from the posts it saw: each seen post bearing is matched to the
+   * nearest known post (within matchTolerance); the median difference is how far the robot is
+   * turned (positive: the posts appear further left, the robot points right). Clamped.
+   */
+  inline float headingCorrection(const Observations& seen, const PriorGoal& prior, float matchTolerance,
+                                 float maxCorrection, int& matched)
+  {
+    const float expected[2] = {std::atan2(prior.leftY, prior.leftX), std::atan2(prior.rightY, prior.rightX)};
+    std::vector<float> errors;
+    for(float b : seen.posts)
+    {
+      const float e0 = b - expected[0], e1 = b - expected[1];
+      const float e = std::abs(e0) < std::abs(e1) ? e0 : e1;
+      if(std::abs(e) <= matchTolerance)
+        errors.push_back(e);
+    }
+    matched = static_cast<int>(errors.size());
+    return errors.empty() ? 0.f : std::clamp(median(errors), -maxCorrection, maxCorrection);
+  }
+
+  /**
+   * Shot with the goal known from the placement rule: the posts are the known ones, turned by the
+   * heading correction from vision; the keeper and the side come from the robots seen.
+   */
+  inline Shot planShotWithPrior(const Observations& seen, float ballX, float ballY, const PriorGoal& prior,
+                                float correction, const Params& p)
+  {
+    Shot shot;
+    const float c = std::cos(correction), s = std::sin(correction);
+    const float lx = c * prior.leftX - s * prior.leftY, ly = s * prior.leftX + c * prior.leftY;
+    const float rx = c * prior.rightX - s * prior.rightY, ry = s * prior.rightX + c * prior.rightY;
+    shot.goalSeen = true;
+    shot.reason = "known placement";
+
+    const float left = std::atan2(ly, lx), right = std::atan2(ry, rx);
+    float best = 1e9f;
+    for(float b : seen.robots)
+      if(b <= left + 5.f * deg && b >= right - 5.f * deg)
+      {
+        const float off = std::abs(b - 0.5f * (left + right));
+        if(off < best)
+        {
+          best = off;
+          shot.keeperSeen = true;
+          shot.keeper = b;
+        }
+      }
+
+    // Points along the goal line L -> R by fraction t.
+    auto along = [&](float t, float& x, float& y) { x = lx + t * (rx - lx); y = ly + t * (ry - ly); };
+    float keeperT = 0.5f;
+    if(shot.keeperSeen)
+    {
+      // Intersection of the keeper's bearing with the goal line.
+      const float dx = std::cos(shot.keeper), dy = std::sin(shot.keeper);
+      const float ex = rx - lx, ey = ry - ly;
+      const float denominator = dx * ey - dy * ex;
+      if(std::abs(denominator) > 1e-6f)
+        keeperT = std::clamp((lx * dy - ly * dx) / denominator, 0.f, 1.f);
+      along(keeperT, shot.keeperX, shot.keeperY);
+      shot.side = keeperT >= 0.5f ? 1 : -1; // more room on the left when the keeper stands right
+      shot.reason = "known placement, away from keeper";
+    }
+    else
+      shot.side = p.defaultSide;
+
+    const float t = shot.side > 0 ? p.postMargin : shot.side < 0 ? 1.f - p.postMargin : 0.5f;
+    along(t, shot.targetX, shot.targetY);
+    shot.goalLeftX = lx;
+    shot.goalLeftY = ly;
+    shot.goalRightX = rx;
+    shot.goalRightY = ry;
+    shot.direction = std::clamp(std::atan2(shot.targetY - ballY, shot.targetX - ballX), -p.maxAim, p.maxAim);
+    return shot;
+  }
+
   /**
    * @param ballX, ballY ball position relative to the robot (mm).
    * @param expectedDistance distance to the goal line used when only one post is seen (mm).
@@ -221,11 +304,15 @@ namespace CopaShot
       shot.side = p.defaultSide;
       shot.reason = "no keeper, default side";
     }
+    shot.goalLeftX = shot.goalRightX = distance;
     shot.goalLeftY = leftY;
     shot.goalRightY = rightY;
     shot.goalInferred = goal.inferred;
     if(shot.keeperSeen)
+    {
+      shot.keeperX = distance;
       shot.keeperY = distance * std::tan(shot.keeper);
+    }
     shot.targetX = distance;
     shot.targetY = shot.side > 0 ? leftY - margin : shot.side < 0 ? rightY + margin : 0.5f * (leftY + rightY);
     shot.direction = std::clamp(std::atan2(shot.targetY - ballY, shot.targetX - ballX), -p.maxAim, p.maxAim);

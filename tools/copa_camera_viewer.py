@@ -251,7 +251,7 @@ def recv_exact(sock: socket.socket, n: int) -> bytes:
 _magic_consumed: set = set()
 
 _BOX = struct.Struct('<hhhhBfff')
-COPA_VERSION = 3
+COPA_VERSION = 4
 
 # Digital twin of the behavior (tools/copa_twin.py), sent on the upper stream.
 _twin_spec = importlib.util.spec_from_file_location('copa_twin', Path(__file__).with_name('copa_twin.py'))

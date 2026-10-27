@@ -17,8 +17,8 @@ view_spec.loader.exec_module(view_test)
 
 class TwinTests(unittest.TestCase):
     def test_layout_matches_the_robot(self):
-        # CopaCameraStreamer.cpp writes 11 header + 13 pose + 4*9 + 1 + 2*9 + 1 + 2*13 + 12 bytes.
-        self.assertEqual(twin.TWIN_FORMAT.size, 118)
+        # CopaCameraStreamer.cpp writes 11 header + 13 pose + 4*9 + 1 + 2*9 + 1 + 2*13 + 12 + 5 bytes.
+        self.assertEqual(twin.TWIN_FORMAT.size, 123)
 
     def test_parse_and_draw(self):
         data = twin.parse(view_test.twin_bytes(clearance=25.0))
@@ -31,8 +31,9 @@ class TwinTests(unittest.TestCase):
     def test_recorder_writes_one_file_per_run_and_replay_summarises(self):
         with tempfile.TemporaryDirectory() as tmp:
             recorder = twin.TwinRecorder(Path(tmp))
-            for run, phase, x in ((1, 0, -10.0), (1, 2, -40.0), (1, 3, -20.0), (2, 0, 0.0)):
-                frame = twin.parse(view_test.twin_bytes(run=run, phase=phase, robot_x=x))
+            for run, phase, x, state in ((1, 0, -10.0, 1), (1, 2, -40.0, 1), (1, 3, -20.0, 1),
+                                         (1, 0, -5.0, 2), (2, 0, 0.0, 1)):
+                frame = twin.parse(view_test.twin_bytes(run=run, phase=phase, robot_x=x, state=state))
                 frame['time'] += int(x * -10)  # distinct timestamps
                 recorder.add(frame)
             recorder.close()
@@ -42,6 +43,8 @@ class TwinTests(unittest.TestCase):
             self.assertEqual(len(frames), 3)
             result = twin.summary(frames)
             self.assertEqual(result['side'], 1)
+            self.assertEqual(result['posts_matched'], 3)
+            self.assertAlmostEqual(result['heading_correction_deg'], 4.6, places=1)
             self.assertEqual(result['ball_moved_before_kick_mm'], 4.0)
             video = Path(tmp) / 'run.mp4'
             twin.replay(files[0], video, 1.0)
