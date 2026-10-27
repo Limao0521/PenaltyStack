@@ -73,6 +73,9 @@ def plan(target: Path, manifest: dict, files: Path = FILES) -> tuple[list[str], 
     if head != commit:
         raise OverlayError(f"{target} is at {head[:10]}, overlay needs {commit[:10]} (use a clean worktree)")
     previous = read_state(target)["files"]
+    # Files the deploy window rewrites (e.g. the scenario in teams.cfg): the overlay
+    # provides the first version and then keeps the operator's edits.
+    deploy_managed = set(manifest.get("deploy_managed", []))
     to_write, conflicts = [], []
     for rel, entry in manifest["files"].items():
         wanted = (files / rel).read_bytes()
@@ -81,7 +84,11 @@ def plan(target: Path, manifest: dict, files: Path = FILES) -> tuple[list[str], 
         if current == wanted:
             continue
         base = base_blob(target, commit, rel) if entry["kind"] == "modified" else None
-        if current is None or current == base or previous.get(rel) == (sha256(current) if current else None):
+        if current is None or current == base:
+            to_write.append(rel)
+        elif rel in deploy_managed:
+            continue
+        elif previous.get(rel) == sha256(current):
             to_write.append(rel)
         else:
             conflicts.append(rel)

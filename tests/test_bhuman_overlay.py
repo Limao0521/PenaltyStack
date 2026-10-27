@@ -83,6 +83,22 @@ class CopaConfigTests(unittest.TestCase):
         found = cfg_keys(FILES / "Config/Scenarios/CopaPenaltyStriker/copaShot.cfg")
         self.assertEqual(found, expected)
 
+    def test_copa_keeper_cfg_matches_its_streamable(self):
+        header = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaKeeperConfig.h").read_text()
+        expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
+        self.assertIn("genuflectTime", expected)
+        self.assertEqual(cfg_keys(FILES / "Config/Scenarios/CopaPenaltyKeeper/copaKeeper.cfg"), expected)
+
+    def test_keeper_never_requests_a_jump(self):
+        dive = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/Skills/Output/MotionRequest/Dive.cpp").read_text()
+        self.assertIn("jumpLeft)\n      return MotionRequest::Dive::squatWideArmsBackLeft", dive)
+        self.assertIn("jumpRight)\n      return MotionRequest::Dive::squatWideArmsBackRight", dive)
+        behavior = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/SkillBehaviorControl.cpp").read_text()
+        keeper = behavior.split("void SkillBehaviorControl::executeCopaKeeper", 1)[1].split("\nvoid ", 1)[0]
+        self.assertNotIn("jump", keeper)
+        for path in FILES.joinpath("Config/Scenarios").glob("Copa*/behaviorParameters.cfg"):
+            self.assertIn("keeperJumpingOn = false;", path.read_text())
+
     def test_behavior_parameters_match_the_representation(self):
         header = (FILES / "Src/Representations/Configuration/BehaviorParameters.h").read_text()
         expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
@@ -175,6 +191,13 @@ class OverlayToolTests(unittest.TestCase):
         (self.files / "a.cfg").write_text("value = later;\n")
         overlay.apply(self.repo, self.manifest, self.files)
         self.assertEqual((self.repo / "a.cfg").read_text(), "value = later;\n")
+
+    def test_deploy_managed_files_keep_operator_edits(self):
+        self.manifest["deploy_managed"] = ["a.cfg"]
+        overlay.apply(self.repo, self.manifest, self.files)
+        (self.repo / "a.cfg").write_text("value = chosen in deploy window;\n")
+        overlay.apply(self.repo, self.manifest, self.files)
+        self.assertEqual((self.repo / "a.cfg").read_text(), "value = chosen in deploy window;\n")
 
     def test_wrong_base_commit_is_refused(self):
         self.manifest["base_commit"] = "0" * 40

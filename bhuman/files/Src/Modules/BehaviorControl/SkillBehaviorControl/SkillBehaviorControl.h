@@ -39,6 +39,8 @@
 #include "Representations/Modeling/BallModel.h"
 #include "Representations/Modeling/Whistle.h"
 #include "CopaPenaltyState.h"
+#include "CopaKeeperConfig.h"
+#include "CopaKeeperPlanner.h"
 #include "CopaShotConfig.h"
 #include "CopaShotPlanner.h"
 #include "Representations/Modeling/ObstacleModel.h"
@@ -199,7 +201,12 @@ private:
   CopaPenaltyState copaState;
   CopaPenaltyState::State previousCopaState = CopaPenaltyState::stopped;
   unsigned copaLastKick = 0;
-  CopaKeeperPolicy copaKeeper;
+  CopaKeeper::Planner copaKeeper;
+  CopaKeeperConfig copaKeeperConfig;
+  bool copaKeeperConfigLoaded = false;
+  Pose2f copaKeeperStart;            /**< Odometry at start, limits the sideways walk. */
+  CopaKeeper::Action copaKeeperLastAction = CopaKeeper::Action::watch;
+  void executeCopaKeeper(bool ballFresh);
   CopaHeadTouchGate copaHeadGate;
   CopaShutdownLatch copaShutdown;
   bool copaShutdownAnnounced = false;

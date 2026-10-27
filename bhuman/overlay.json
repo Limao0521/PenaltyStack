@@ -13,6 +13,9 @@
     "CMAKE_C_COMPILER": "/usr/bin/clang",
     "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
   },
+  "deploy_managed": [
+    "Config/teams.cfg"
+  ],
   "files": {
     "Config/Locations/CopaPenalty/autoExposureWeightTableProvider.cfg": {
       "kind": "added"
@@ -171,6 +174,9 @@
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyKeeper/cameraStreamer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyKeeper/copaKeeper.cfg": {
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyKeeper/copaVisionPerceptor.cfg": {
@@ -596,6 +602,12 @@
     "Src/Modules/BehaviorControl/Libraries/LibLookActiveProvider.cpp": {
       "kind": "modified"
     },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaKeeperConfig.h": {
+      "kind": "added"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaKeeperPlanner.h": {
+      "kind": "added"
+    },
     "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaPenaltyState.h": {
       "kind": "added"
     },
@@ -687,6 +699,9 @@
       "kind": "added"
     },
     "Tests/CopaGoalPostDetectorTest.cpp": {
+      "kind": "added"
+    },
+    "Tests/CopaKeeperPlannerTest.cpp": {
       "kind": "added"
     },
     "Tests/CopaPenaltyStateTest.cpp": {

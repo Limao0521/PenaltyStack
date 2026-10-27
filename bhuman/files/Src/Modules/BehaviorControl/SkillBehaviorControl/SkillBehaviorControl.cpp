@@ -427,6 +427,13 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
       stream >> copaShotConfig;
     copaShotConfigLoaded = true;
   }
+  if(keeper && !copaKeeperConfigLoaded)
+  {
+    InMapFile stream("copaKeeper.cfg");
+    if(stream.exists())
+      stream >> copaKeeperConfig;
+    copaKeeperConfigLoaded = true;
+  }
   const bool threeHeads = theEnhancedKeyStates.pressed[KeyStates::headFront] &&
                           theEnhancedKeyStates.pressed[KeyStates::headMiddle] &&
                           theEnhancedKeyStates.pressed[KeyStates::headRear];
@@ -451,6 +458,8 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
     {
       copaLastKick = theMotionInfo.lastKickTimestamp;
       copaKeeper.reset();
+      copaKeeperStart = theOdometryData;
+      copaKeeperLastAction = CopaKeeper::Action::watch;
       copaPhase = CopaStrikerPhase::findBall;
       copaPhaseStart = theFrameInfo.time;
     }
@@ -477,26 +486,13 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
     if(!theCameraStatus.ok)
       copaState.finish();
     theLookForwardSkill();
-    if(keeper && copaKeeper.isSitting() && state == CopaPenaltyState::stopped)
-      theDiveSkill({.request = MotionRequest::Dive::prepare});
-    else
-      theStandSkill({.high = true});
+    theStandSkill({.high = true});
     return;
   }
 
   const bool ballFresh = theBallModel.timeWhenLastSeen != 0 && theFrameInfo.getTimeSince(theBallModel.timeWhenLastSeen) < 500;
   if(keeper)
-  {
-    const bool sitting = copaKeeper.update(ballFresh, theBallModel.estimate.velocity.x());
-    if(ballFresh)
-      theLookAtBallSkill();
-    else
-      theLookForwardSkill();
-    if(sitting)
-      theDiveSkill({.request = MotionRequest::Dive::prepare});
-    else
-      theStandSkill({.high = true});
-  }
+    executeCopaKeeper(ballFresh);
   else if(theMotionInfo.lastKickTimestamp != copaLastKick)
   {
     copaState.finish();
@@ -505,6 +501,72 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
   }
   else
     executeCopaStriker(ballFresh);
+}
+
+void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
+{
+  const CopaKeeperConfig& c = copaKeeperConfig;
+  CopaKeeper::Params params;
+  params.minApproachSpeed = c.minApproachSpeed;
+  params.maxTime = c.maxTime;
+  params.genuflectTime = c.genuflectTime;
+  params.genuflectDistance = c.genuflectDistance;
+  params.standRadius = c.standRadius;
+  params.maxLateral = c.maxLateral;
+  params.confirmMs = c.confirmMs;
+  params.holdMs = c.holdMs;
+
+  CopaKeeper::Ball ball;
+  ball.seen = theFieldBall.ballWasSeen(300);
+  ball.x = theBallModel.estimate.position.x();
+  ball.y = theBallModel.estimate.position.y();
+  ball.vx = theBallModel.estimate.velocity.x();
+  ball.crossY = theFieldBall.intersectionPositionWithOwnYAxis.y();
+  ball.crossTime = theFieldBall.timeUntilIntersectsOwnYAxis;
+  const float lateral = (copaKeeperStart.inverse() * theOdometryData).translation.y();
+  const CopaKeeper::Decision decision = copaKeeper.update(static_cast<int>(theFrameInfo.time), ball, lateral, params);
+
+  if(decision.kind != copaKeeperLastAction)
+  {
+    static const char* names[] = {"watch", "walk", "genuflect left", "genuflect right"};
+    OUTPUT_WARNING("[CopaKeeper] " << names[static_cast<int>(decision.kind)]
+                   << " ball=(" << ball.x << "," << ball.y << ") vx=" << ball.vx
+                   << " cross=" << ball.crossY << "mm in " << ball.crossTime << "s lateral=" << lateral);
+    if(decision.kind == CopaKeeper::Action::genuflectLeft || decision.kind == CopaKeeper::Action::genuflectRight)
+      SystemCall::say("block");
+    copaKeeperLastAction = decision.kind;
+  }
+
+  switch(decision.kind)
+  {
+    case CopaKeeper::Action::genuflectLeft:
+    case CopaKeeper::Action::genuflectRight:
+      theLookForwardSkill();
+      // Like the RoboCup keeper, genuflect only from a stand: finish the current step first.
+      if(theMotionInfo.executedPhase == MotionPhase::walk)
+      {
+        theStandSkill();
+        return;
+      }
+      theDiveSkill({.request = decision.kind == CopaKeeper::Action::genuflectLeft
+                               ? MotionRequest::Dive::squatWideArmsBackLeft
+                               : MotionRequest::Dive::squatWideArmsBackRight});
+      return;
+    case CopaKeeper::Action::walk:
+      theLookAtBallSkill();
+      theWalkToPointSkill({.target = Pose2f(0_deg, 0.f, decision.walkY),
+                           .speed = {c.walkSpeed, c.walkSpeed, c.walkSpeed},
+                           .reduceWalkingSpeed = false,
+                           .disableAligning = true});
+      return;
+    case CopaKeeper::Action::watch:
+      if(ballFresh)
+        theLookAtBallSkill();
+      else
+        theLookForwardSkill();
+      theStandSkill({.high = true});
+      return;
+  }
 }
 
 void SkillBehaviorControl::executeCopaStriker(bool ballFresh)

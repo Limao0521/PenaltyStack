@@ -85,3 +85,28 @@ Pendiente después de validar: usar postes y portero para elegir el lado del tir
 4. Repetir con un NAO de pie en la línea de gol, desplazado ~20 cm a la izquierda → debe decir "aim right"; desplazado a la derecha → "aim left". En el visor, el NAO aparece como `NAO ±Ndeg` y el balón ya no como NAO.
 5. Robot colocado girado ~10° respecto a la portería → la dirección compensa (dentro de ±20°).
 6. Balón a 1 m: camina recto hasta quedar detrás del balón y luego hace el barrido.
+
+## Portero: seguir, caminar al balón y genuflexión B-Human (28 de octubre)
+
+**Hallazgo.** El portero usaba `Dive::prepare` → keyframe `sitDownKeeper` (sentado con brazos abiertos), y `Dive.cpp` convertía **cualquier** petición de dive en ese sentado. El portero de SabanaHerons en RoboCup (`HandleGoalkeeperCatchBall`) bloquea con `InterceptBall` usando `genuflectStandDefender` (`squatWideArmsBack`, sentadilla con brazos atrás que vuelve a pararse). En el log, el portero veía la Trionda arriba con confianza 0,43–0,56 a ~1,3 m.
+
+**Cambios.**
+- `Dive.cpp`: sin `keeperJumpingOn`, deja pasar el sentado y las genuflexiones; los saltos laterales se convierten en la genuflexión del mismo lado. Nunca se lanza.
+- `CopaKeeperPlanner.h` + `copaKeeper.cfg` (sólo `CopaPenaltyKeeper`), con señales relativas al robot de B-Human (`intersectionPositionWithOwnYAxis`, `timeUntilIntersectsOwnYAxis`), sin localización:
+  - sin amenaza: de pie, sigue el balón con la cabeza;
+  - balón hacia el portero (≥ 150 mm/s, cruza en ≤ 4 s), confirmado 150 ms: **camina de lado** hasta el punto de cruce, dentro de ±70 cm del inicio (área chica);
+  - cuando llega (≤ 0,8 s o ≤ 50 cm) y no viene al cuerpo (> 8 cm): termina el paso, dice "block" y hace **`genuflectStandDefender`** hacia ese lado, sostenida ≥ 2,5 s; luego se levanta (keyframe de B-Human);
+  - balón al cuerpo: se queda de pie.
+- `[CopaKeeper]` en el log en cada cambio de acción (posición/velocidad del balón, cruce, desplazamiento).
+- `teams.cfg` queda como archivo gestionado por la ventana de deploy: el overlay ya no lo pisa ni marca conflicto.
+
+**Verificado en el PC:** compilación; pruebas del planificador (balón quieto o ruido → nada; tiro lento → camina y luego genuflexión; tiro rápido → genuflexión inmediata; al cuerpo → de pie; límite lateral; balón alejándose → nada) y que la ruta del portero nunca pide salto. **Sin probar en el robot.**
+
+### Pruebas del portero (no hace falta tirador)
+
+1. Desplegar `CopaPenaltyKeeper`; portero en la línea de gol entre postes; balón en la marca (1,3 m). Cabeza trasera → delantera.
+2. Balón quieto 10 s: sigue el balón con la cabeza, **no** se agacha.
+3. Rodar el balón **despacio** 40 cm a un lado: camina de lado y, al llegar, "block" + genuflexión hacia ese lado; se levanta solo.
+4. Tiro **rápido** a una esquina: genuflexión inmediata hacia esa esquina, sin caminar.
+5. Tiro al cuerpo: se queda de pie.
+6. Revisar `[CopaKeeper]` en `/home/nao/logs/bhumand_*.log` después de cada tiro.

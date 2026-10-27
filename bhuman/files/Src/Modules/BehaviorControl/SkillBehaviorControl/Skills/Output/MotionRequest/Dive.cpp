@@ -24,6 +24,20 @@ SKILL_IMPLEMENTATION(DiveImpl,
 
 class DiveImpl : public DiveImplBase
 {
+  /**
+   * PenaltyStack: without jumping, the keeper may sit (prepare -> sitDownKeeper) or
+   * genuflect (squat with the arms back, B-Human's keeper block), but a side jump
+   * becomes the genuflect to the same side. It never throws itself to the floor.
+   */
+  static MotionRequest::Dive::Request withoutJump(MotionRequest::Dive::Request request)
+  {
+    if(request == MotionRequest::Dive::jumpLeft)
+      return MotionRequest::Dive::squatWideArmsBackLeft;
+    if(request == MotionRequest::Dive::jumpRight)
+      return MotionRequest::Dive::squatWideArmsBackRight;
+    return request;
+  }
+
   void execute(const Dive& p) override
   {
     if(theBehaviorParameters.keeperJumpingOn)
@@ -33,10 +47,8 @@ class DiveImpl : public DiveImplBase
     }
     else if(theBehaviorParameters.keeperSitWhenNoDive)
     {
-      // PenaltyStack: the keeper must not dive, it only sits down.
-      // Dive::prepare is mapped to the keyframe motion sitDownKeeper by the KeyframeMotionEngine.
       theMotionRequest.motion = MotionRequest::dive;
-      theMotionRequest.diveRequest = MotionRequest::Dive::prepare;
+      theMotionRequest.diveRequest = withoutJump(p.request);
     }
     else
     {
@@ -52,10 +64,10 @@ class DiveImpl : public DiveImplBase
     {
       if(!theBehaviorParameters.keeperSitWhenNoDive)
         return true;
-      return theMotionInfo.isKeyframeMotion(KeyframeMotionRequest::sitDownKeeper);
     }
 
-    const KeyframeMotionRequest keyframeMotionRequest = KeyframeMotionRequest::fromDiveRequest(p.request);
+    const KeyframeMotionRequest keyframeMotionRequest = KeyframeMotionRequest::fromDiveRequest(
+      theBehaviorParameters.keeperJumpingOn ? p.request : withoutJump(p.request));
     return theMotionInfo.isKeyframeMotion(keyframeMotionRequest.keyframeMotion, keyframeMotionRequest.mirror);
   }
 };
