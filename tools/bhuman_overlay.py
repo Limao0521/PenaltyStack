@@ -25,7 +25,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from bhuman_cfg import check_tree  # noqa: E402
+import fnmatch  # noqa: E402
+from bhuman_cfg import CfgError, check_tree, parse  # noqa: E402
 OVERLAY = ROOT / "bhuman"
 FILES = OVERLAY / "files"
 MANIFEST = OVERLAY / "overlay.json"
@@ -66,6 +67,14 @@ def read_state(target: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {"files": {}}
 
 
+def same_keys(current: bytes, wanted: bytes) -> bool:
+    """Deploy-window edits may change values, never the set of keys B-Human loads."""
+    try:
+        return parse(current.decode("utf-8")).keys() == parse(wanted.decode("utf-8")).keys()
+    except (CfgError, UnicodeDecodeError):
+        return False
+
+
 def plan(target: Path, manifest: dict, files: Path = FILES) -> tuple[list[str], list[str], list[str]]:
     """Return (to_write, to_restore, conflicts) for applying the overlay to target."""
     commit = manifest["base_commit"]
@@ -75,7 +84,7 @@ def plan(target: Path, manifest: dict, files: Path = FILES) -> tuple[list[str], 
     previous = read_state(target)["files"]
     # Files the deploy window rewrites (e.g. the scenario in teams.cfg): the overlay
     # provides the first version and then keeps the operator's edits.
-    deploy_managed = set(manifest.get("deploy_managed", []))
+    deploy_managed = manifest.get("deploy_managed", [])
     to_write, conflicts = [], []
     for rel, entry in manifest["files"].items():
         wanted = (files / rel).read_bytes()
@@ -86,7 +95,7 @@ def plan(target: Path, manifest: dict, files: Path = FILES) -> tuple[list[str], 
         base = base_blob(target, commit, rel) if entry["kind"] == "modified" else None
         if current is None or current == base:
             to_write.append(rel)
-        elif rel in deploy_managed:
+        elif any(fnmatch.fnmatch(rel, pattern) for pattern in deploy_managed) and same_keys(current, wanted):
             continue
         elif previous.get(rel) == sha256(current):
             to_write.append(rel)

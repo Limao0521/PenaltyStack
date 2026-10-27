@@ -199,6 +199,13 @@ class OverlayToolTests(unittest.TestCase):
         overlay.apply(self.repo, self.manifest, self.files)
         self.assertEqual((self.repo / "a.cfg").read_text(), "value = chosen in deploy window;\n")
 
+    def test_deploy_managed_file_with_different_keys_is_a_conflict(self):
+        self.manifest["deploy_managed"] = ["*.cfg"]
+        overlay.apply(self.repo, self.manifest, self.files)
+        (self.repo / "a.cfg").write_text("value = x;\nextra = 1;\n")
+        with self.assertRaises(overlay.OverlayError):
+            overlay.apply(self.repo, self.manifest, self.files)
+
     def test_wrong_base_commit_is_refused(self):
         self.manifest["base_commit"] = "0" * 40
         with self.assertRaises(overlay.OverlayError):

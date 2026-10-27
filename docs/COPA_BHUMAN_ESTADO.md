@@ -118,7 +118,7 @@ Pendiente después de validar: usar postes y portero para elegir el lado del tir
 **Genuflexión en simulación** (`tools/record_keeper_block.py`, motor B-Human original y el mismo `keyframeMotionEngine.cfg`): `genuflectStandDefender` **no es un lanzamiento**, pero el robot **baja al suelo en un split lateral** (torso a 0,14 m, inclinación máx. 28° de cabeceo y 25° de alabeo, sin caída) y se levanta solo con `recoverFromSumo` en ~3 s. Vídeo y resumen en `runs/keeper_block/` (no versionados). En el simulador: `--mode manual --action block --block-side defender_left|defender_right`.
 
 **Cambios:**
-- `blockMotion` en `copaKeeper.cfg`: `0` de pie (por defecto, nunca baja), `1` sentarse (`sitDownKeeper`), `2` genuflexión. Con `0` sólo camina a la línea del balón y bloquea con el cuerpo.
+- `blockMotion` en `copaKeeper.cfg`: `0` de pie (nunca baja), `1` sentarse (`sitDownKeeper`), `2` genuflexión (**activa desde el 28 de octubre**, aprobada tras verla en simulación). Con `0` sólo camina a la línea del balón y bloquea con el cuerpo.
 - El portero estima la velocidad del balón con sus propios avistamientos de los últimos 600 ms (mínimos cuadrados, en coordenadas de odometría para no confundir sus pasos con movimiento del balón) y calcula dónde y cuándo cruza su eje; usa la estimación de B-Human sólo si no hay ajuste propio.
 - `[CopaKeeperBall]` cada 500 ms con posición, velocidad de B-Human, velocidad propia, cruce y desplazamiento lateral.
 

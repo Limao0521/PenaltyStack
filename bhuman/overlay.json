@@ -14,7 +14,9 @@
     "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
   },
   "deploy_managed": [
-    "Config/teams.cfg"
+    "Config/teams.cfg",
+    "Config/Scenarios/Copa*/behaviorParameters.cfg",
+    "Config/Scenarios/Copa*/strategyBehaviorControl.cfg"
   ],
   "files": {
     "Config/Locations/CopaPenalty/autoExposureWeightTableProvider.cfg": {
