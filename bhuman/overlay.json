@@ -305,6 +305,9 @@
     "Config/Scenarios/CopaPenaltyStriker/cameraStreamer.cfg": {
       "kind": "added"
     },
+    "Config/Scenarios/CopaPenaltyStriker/copaShot.cfg": {
+      "kind": "added"
+    },
     "Config/Scenarios/CopaPenaltyStriker/copaVisionPerceptor.cfg": {
       "kind": "added"
     },
@@ -596,6 +599,12 @@
     "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaPenaltyState.h": {
       "kind": "added"
     },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaShotConfig.h": {
+      "kind": "added"
+    },
+    "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaShotPlanner.h": {
+      "kind": "added"
+    },
     "Src/Modules/BehaviorControl/SkillBehaviorControl/Options/PenaltyShootout/PenaltyKeeper.h": {
       "kind": "modified"
     },
@@ -659,6 +668,9 @@
     "Src/Modules/Perception/CopaPerceptors/CopaVisionPerceptor.h": {
       "kind": "added"
     },
+    "Src/Modules/Perception/CopaPerceptors/CopaVisionShared.h": {
+      "kind": "added"
+    },
     "Src/Modules/Sensing/InertialDataProvider/InertialDataProvider.cpp": {
       "kind": "modified"
     },
@@ -678,6 +690,9 @@
       "kind": "added"
     },
     "Tests/CopaPenaltyStateTest.cpp": {
+      "kind": "added"
+    },
+    "Tests/CopaShotPlannerTest.cpp": {
       "kind": "added"
     },
     "Tests/test_behavior_config_compatibility.py": {

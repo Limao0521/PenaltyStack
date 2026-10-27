@@ -41,11 +41,11 @@ def camf_frame(jpeg: bytes, copa: bytes | None) -> bytes:
 
 def copa_section() -> bytes:
     import struct
-    box = struct.Struct('<hhhhBff')
-    out = viewer.COPA_MAGIC + bytes([1]) + struct.pack('<Bff', 1, 450.0, 20.0)
-    out += bytes([2]) + box.pack(30, 40, 10, 200, 3, 2000.0, 760.0) + box.pack(280, 290, 12, 205, 3, 2050.0, -740.0)
-    out += struct.pack('<Bbbfff', 1, 0, 1, 1501.0, 2025.0, 10.0)
-    out += bytes([1]) + box.pack(140, 180, 60, 190, 3, 1800.0, 0.0) + bytes([0])
+    box = struct.Struct('<hhhhBfff')
+    out = viewer.COPA_MAGIC + bytes([2]) + struct.pack('<Bff', 1, 450.0, 20.0)
+    out += bytes([2]) + box.pack(30, 40, 10, 200, 3, 2000.0, 760.0, 0.46) + box.pack(280, 290, 12, 205, 3, 2050.0, -740.0, -0.46)
+    out += struct.pack('<Bbbfff', 1, 0, 1, 0.92, 1500.0, 0.0)
+    out += bytes([1]) + box.pack(140, 180, 60, 190, 3, 1800.0, 0.0, 0.05) + bytes([0])
     return out
 
 
@@ -66,7 +66,8 @@ class CopaStreamTests(unittest.TestCase):
             self.assertEqual((status, spots), (1, [(5, 6)]))
             self.assertEqual(len(copa['posts']), 2)
             self.assertTrue(copa['goal']['seen'])
-            self.assertAlmostEqual(copa['goal']['width'], 1501.0)
+            self.assertAlmostEqual(copa['goal']['span'], 0.92, places=5)
+            self.assertAlmostEqual(copa['posts'][0]['bearing'], 0.46, places=5)
             self.assertEqual(len(copa['robots']), 1)
             self.assertTrue(copa['posts'][1]['on_field'])
 
@@ -83,7 +84,7 @@ class CopaStreamTests(unittest.TestCase):
         vis = np.zeros((480, 640, 3), np.uint8)
         lines = [text for text, _ in viewer.draw_copa(vis, copa, 2, viewer.SEEN)]
         self.assertTrue(lines[0].startswith("BALON 0.45m"))
-        self.assertIn("PORTERIA ok ancho 1.50m", lines[1])
-        self.assertTrue(lines[2].startswith("NAO 1 1.80m"))
+        self.assertIn("PORTERIA ok 53deg ~1.50m", lines[1])
+        self.assertEqual(lines[2], "NAO 1 +3deg")
         self.assertGreater(int(vis.sum()), 0)
         viewer.draw_overlay(vis, viewer.SEEN, 100, 120, 20, [], 2, "UPPER", 30.0, 1, None, 20, None, 0.0, copa)

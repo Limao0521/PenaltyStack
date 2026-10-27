@@ -39,6 +39,8 @@
 #include "Representations/Modeling/BallModel.h"
 #include "Representations/Modeling/Whistle.h"
 #include "CopaPenaltyState.h"
+#include "CopaShotConfig.h"
+#include "CopaShotPlanner.h"
 #include "Representations/Modeling/ObstacleModel.h"
 #include "Representations/Modeling/RobotPose.h"
 #include "Representations/Modeling/TeammatesBallModel.h"
@@ -183,6 +185,17 @@ private:
   void executeRequest();
 
   void executeCopaPenalty(bool keeper);
+  void executeCopaStriker(bool ballFresh);
+
+  /** Copa striker sequence: find the ball, sweep the head over the goal, kick. */
+  enum class CopaStrikerPhase { findBall, lookGoal, kick };
+  CopaStrikerPhase copaPhase = CopaStrikerPhase::findBall;
+  unsigned copaPhaseStart = 0;
+  unsigned copaLastSnapshot = 0;
+  CopaShot::Observations copaSeen;
+  Vector2f copaTargetOdometry = Vector2f::Zero(); /**< Aim point in odometry coordinates. */
+  CopaShotConfig copaShotConfig;
+  bool copaShotConfigLoaded = false;
   CopaPenaltyState copaState;
   CopaPenaltyState::State previousCopaState = CopaPenaltyState::stopped;
   unsigned copaLastKick = 0;

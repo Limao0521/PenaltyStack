@@ -249,24 +249,25 @@ def recv_exact(sock: socket.socket, n: int) -> bytes:
 # Sockets cuyo siguiente "CAMF" ya se leyó al buscar la sección COPA.
 _magic_consumed: set = set()
 
-_BOX = struct.Struct('<hhhhBff')
+_BOX = struct.Struct('<hhhhBfff')
+COPA_VERSION = 2
 
 
 def _read_box(sock: socket.socket) -> dict:
-    left, right, top, bottom, flags, x, y = _BOX.unpack(recv_exact(sock, _BOX.size))
+    left, right, top, bottom, flags, x, y, bearing = _BOX.unpack(recv_exact(sock, _BOX.size))
     return {'left': left, 'right': right, 'top': top, 'bottom': bottom,
             'bottom_visible': bool(flags & 1), 'on_field': bool(flags & 2),
-            'x': x, 'y': y}
+            'x': x, 'y': y, 'bearing': bearing}
 
 
 def read_copa(sock: socket.socket) -> dict:
     """Lee la sección COPA (sin el magic); formato en CopaCameraStreamer.h."""
     version = recv_exact(sock, 1)[0]
-    if version != 1:
-        raise ValueError(f"Versión COPA desconocida: {version}")
+    if version != COPA_VERSION:
+        raise ValueError(f"Versión COPA {version}; este visor lee {COPA_VERSION} (actualizar visor o robot)")
     ball_on_field, bx, by = struct.unpack('<Bff', recv_exact(sock, 9))
     posts = [_read_box(sock) for _ in range(recv_exact(sock, 1)[0])]
-    goal_seen, left, right, width, cx, cy = struct.unpack('<Bbbfff', recv_exact(sock, 15))
+    goal_seen, left, right, span, distance, center = struct.unpack('<Bbbfff', recv_exact(sock, 15))
     robots = []
     for _ in range(recv_exact(sock, 1)[0]):
         box = _read_box(sock)
@@ -274,7 +275,7 @@ def read_copa(sock: socket.socket) -> dict:
         robots.append(box)
     return {'ball_on_field': bool(ball_on_field), 'ball': (bx, by), 'posts': posts,
             'goal': {'seen': bool(goal_seen), 'left': left, 'right': right,
-                     'width': width, 'center': (cx, cy)},
+                     'span': span, 'distance': distance, 'center': center},
             'robots': robots}
 
 
@@ -369,6 +370,10 @@ CLR_OK    = ( 80, 230,  80)
 CLR_NO    = ( 90,  90, 200)
 
 
+def _deg(rad: float) -> str:
+    return f"{rad * 57.29578:+.0f}°".replace("°", "deg")
+
+
 def _meters(box_or_xy) -> str:
     x, y = (box_or_xy['x'], box_or_xy['y']) if isinstance(box_or_xy, dict) else box_or_xy
     return f"{(x * x + y * y) ** 0.5 / 1000:.2f}m"
@@ -389,7 +394,7 @@ def draw_copa(vis: np.ndarray, copa: dict, scale: int, status: int) -> list:
         if goal['seen'] and i in (goal['left'], goal['right']):
             tag = "POSTE IZQ" if i == goal['left'] else "POSTE DER"
         rect(post, CLR_GOAL if goal['seen'] and i in (goal['left'], goal['right']) else CLR_POST,
-             f"{tag} {_meters(post) if post['on_field'] else '(base fuera)'}")
+             f"{tag} {_deg(post['bearing'])}")
     if goal['seen']:
         a, b = posts[goal['left']], posts[goal['right']]
         pa = (int((a['left'] + a['right']) / 2 * scale), int(a['bottom'] * scale))
@@ -397,17 +402,19 @@ def draw_copa(vis: np.ndarray, copa: dict, scale: int, status: int) -> list:
         cv2.line(vis, pa, pb, CLR_GOAL, 2, cv2.LINE_AA)
     for robot in robots:
         rect(robot, CLR_ROBOT,
-             f"NAO{' caido' if robot['fallen'] else ''} {_meters(robot) if robot['on_field'] else ''}")
+             f"NAO{' caido' if robot['fallen'] else ''} {_deg(robot['bearing'])}")
 
     ball = (f"BALON {_meters(copa['ball'])}" if status == SEEN and copa['ball_on_field']
             else "BALON no", CLR_OK if status == SEEN else CLR_NO)
     if goal['seen']:
-        goal_line = (f"PORTERIA ok ancho {goal['width'] / 1000:.2f}m centro {_meters(goal['center'])}", CLR_OK)
+        goal_line = (f"PORTERIA ok {goal['span'] * 57.29578:.0f}deg ~{goal['distance'] / 1000:.2f}m "
+                     f"centro {_deg(goal['center'])}", CLR_OK)
     elif posts:
-        goal_line = (f"PORTERIA {len(posts)} poste(s), falta el par a 1.5m", CLR_POST)
+        goal_line = (f"PORTERIA {len(posts)} poste(s) " + " ".join(_deg(p['bearing']) for p in posts)
+                     + " (girar cabeza para ver el par)", CLR_POST)
     else:
         goal_line = ("PORTERIA no", CLR_NO)
-    nao = (f"NAO {len(robots)}" + (" " + ", ".join(_meters(r) for r in robots if r['on_field']) if robots else ""),
+    nao = (f"NAO {len(robots)}" + (" " + ", ".join(_deg(r['bearing']) for r in robots) if robots else ""),
            CLR_OK if robots else CLR_NO)
     return [ball, goal_line, nao]
 

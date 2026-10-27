@@ -61,3 +61,27 @@ Pendiente: validar la carga real del escenario y la ubicación, la configuració
 11. Tiro completo tirador vs portero con el visor abierto, y luego sin PC ni stream (la prueba oficial es sin red).
 
 Pendiente después de validar: usar postes y portero para elegir el lado del tiro (el tirador sigue con dirección fija) y cambiar a la pelota naranja oficial.
+
+## Tirador: balón → mirar portería → patear (27 de octubre, tercera sesión)
+
+**Hallazgos en el robot.** Con los umbrales Copa la cámara inferior ya sigue la Trionda a ~20 cm. Agachado y con la cabeza nivelada se detectaron los dos postes, pero la portería no se emparejaba: la proyección al suelo dio el poste izquierdo a ~3,4 m y descartó el derecho (> 4 m), cuando la portería estaba a ~1,5 m (los postes ocupaban ~560 px de ancho). La distancia proyectada no es fiable; el **ángulo** (bearing) de cada poste sí. El detector de robots inferior marcaba la Trionda como `NAO`.
+
+**Cambios.**
+- `CopaVisionPerceptor`: bearing (ángulo respecto al robot) para cada poste y robot; portería = postes extremos separados entre 25° y 95°, distancia estimada con el ancho de 150 cm; descarta cajas de "robot" alrededor del balón (≤ 2,5 diámetros). Publica los bearings de la cámara superior para el comportamiento (`CopaVisionShared`, sin tocar los hilos de otros escenarios).
+- Tirador en `running` (`copaShot.cfg`):
+  1. **Buscar balón** con la cabeza abajo; si está a más de 30 cm camina hacia él **sin girar** (mirando a la portería) hasta quedar 20 cm detrás.
+  2. **Mirar portería**: se queda quieto, dice "looking at goal", cabeza a +25°, 0°, −25° (1,2 s cada una, inclinación 5°) y acumula bearings de postes y robots.
+  3. **Decidir** (`CopaShotPlanner.h`, punto único a sustituir por RL): con dos postes, apunta 25 % del ancho hacia dentro del poste del lado con más espacio respecto al portero; sin portero, lado por defecto (`defaultSide = 1`, izquierda); con un poste, infiere el otro; sin postes, recto. Dirección limitada a ±20° (gira alrededor del balón, no camina de lado). Dice "aim left/right/center" o "no goal, straight" y escribe `[CopaShot]` en el log.
+  4. **Patear** con `forwardFastLeftLong` hacia ese punto (guardado en odometría para que no cambie al acomodarse).
+- Visor: protocolo COPA v2 con ángulos: `POSTE IZQ +27deg`, `PORTERIA ok 53deg ~1.50m`, `NAO +3deg`.
+
+**Verificado en el PC:** compilación; pruebas del planificador (portero a la izquierda → derecha y viceversa, un poste, sin postes, robot girado 10°), claves exactas de `copaShot.cfg` y `copaVisionPerceptor.cfg`, protocolo v2. **Sin probar en el robot.**
+
+### Pruebas del tirador (sin portero, luego con NAO de pie)
+
+1. Desplegar `CopaPenaltyStriker`; balón en la marca, robot 20 cm detrás mirando la portería. Cabeza trasera → delantera.
+2. Debe decir "looking at goal", mover la cabeza izquierda-centro-derecha y decir "aim left" (sin portero). En el log: `[CopaShot] ... goal=yes keeper=no side=1 direction=…`. Si dice "no goal, straight": revisar `[CopaVision] camera=upper` durante el barrido y ajustar `headTilt`/`sweepPan` en `copaShot.cfg`.
+3. Patea hacia dentro del poste izquierdo sin desplazarse de lado.
+4. Repetir con un NAO de pie en la línea de gol, desplazado ~20 cm a la izquierda → debe decir "aim right"; desplazado a la derecha → "aim left". En el visor, el NAO aparece como `NAO ±Ndeg` y el balón ya no como NAO.
+5. Robot colocado girado ~10° respecto a la portería → la dirección compensa (dentro de ±20°).
+6. Balón a 1 m: camina recto hasta quedar detrás del balón y luego hace el barrido.

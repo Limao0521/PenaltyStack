@@ -8,6 +8,8 @@
 
 #include "SkillBehaviorControl.h"
 #include "Python/Controller/RLSharedState.h"
+#include "Modules/Perception/CopaPerceptors/CopaVisionShared.h"
+#include "Streaming/InStreams.h"
 #include "Streaming/TypeRegistry.h"
 #include <cmath>
 #include <cstdlib>
@@ -418,6 +420,13 @@ void SkillBehaviorControl::update(ActivationGraph&)
 
 void SkillBehaviorControl::executeCopaPenalty(bool keeper)
 {
+  if(!keeper && !copaShotConfigLoaded)
+  {
+    InMapFile stream("copaShot.cfg");
+    if(stream.exists())
+      stream >> copaShotConfig;
+    copaShotConfigLoaded = true;
+  }
   const bool threeHeads = theEnhancedKeyStates.pressed[KeyStates::headFront] &&
                           theEnhancedKeyStates.pressed[KeyStates::headMiddle] &&
                           theEnhancedKeyStates.pressed[KeyStates::headRear];
@@ -442,6 +451,8 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
     {
       copaLastKick = theMotionInfo.lastKickTimestamp;
       copaKeeper.reset();
+      copaPhase = CopaStrikerPhase::findBall;
+      copaPhaseStart = theFrameInfo.time;
     }
     previousCopaState = state;
   }
@@ -492,18 +503,101 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
     theLookForwardSkill();
     theStandSkill({.high = true});
   }
-  else if(ballFresh)
-  {
-    theLookAtBallSkill();
-    theWalkToBallAndKickSkill({.targetDirection = 0_deg,
-                               .kickType = KickInfo::forwardFastLeftLong,
-                               .alignPrecisely = KickPrecision::precise,
-                               .speed = {0.5f, 0.5f, 0.5f}});
-  }
   else
+    executeCopaStriker(ballFresh);
+}
+
+void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
+{
+  const CopaShotConfig& c = copaShotConfig;
+  const Vector2f ball = theBallModel.estimate.position;
+  auto enter = [this](CopaStrikerPhase phase)
   {
-    theLookLeftAndRightSkill({.maxPan = 30_deg, .tilt = 5.7_deg, .speed = 30_deg});
-    theStandSkill({.high = true});
+    copaPhase = phase;
+    copaPhaseStart = theFrameInfo.time;
+  };
+
+  switch(copaPhase)
+  {
+    case CopaStrikerPhase::findBall:
+      if(!ballFresh)
+      {
+        theLookLeftAndRightSkill({.maxPan = 30_deg, .tilt = 5.7_deg, .speed = 30_deg});
+        theStandSkill({.high = true});
+        return;
+      }
+      theLookAtBallSkill();
+      if(ball.norm() > c.approachDistance)
+      {
+        // Keep facing the goal: walk straight up behind the ball, no turning.
+        theWalkToPointSkill({.target = Pose2f(0_deg, ball.x() - c.standOffDistance, ball.y()),
+                             .speed = {0.5f, 0.5f, 0.5f}});
+        return;
+      }
+      // One head and one motion skill per frame: the sweep starts next frame.
+      theStandSkill({.high = true});
+      copaSeen = CopaShot::Observations();
+      copaLastSnapshot = 0;
+      SystemCall::say("looking at goal");
+      enter(CopaStrikerPhase::lookGoal);
+      return;
+
+    case CopaStrikerPhase::lookGoal:
+    {
+      theStandSkill({.high = true});
+      const Angle pans[3] = {c.sweepPan, 0_deg, -c.sweepPan};
+      const int elapsed = static_cast<int>(theFrameInfo.getTimeSince(copaPhaseStart));
+      const int step = elapsed / std::max(1, c.sweepStepMs);
+      if(step < 3)
+      {
+        theLookAtAnglesSkill({.pan = pans[step], .tilt = c.headTilt, .speed = 150_deg});
+        const CopaVisionSnapshot snapshot = CopaVisionShared::instance().read();
+        const unsigned settled = copaPhaseStart + static_cast<unsigned>(step * c.sweepStepMs + c.settleMs);
+        if(snapshot.time != copaLastSnapshot && snapshot.time >= settled)
+        {
+          copaLastSnapshot = snapshot.time;
+          copaSeen.posts.insert(copaSeen.posts.end(), snapshot.postBearings.begin(), snapshot.postBearings.end());
+          copaSeen.robots.insert(copaSeen.robots.end(), snapshot.robotBearings.begin(), snapshot.robotBearings.end());
+        }
+        return;
+      }
+
+      CopaShot::Params params;
+      params.goalWidth = c.goalWidth;
+      params.minGoalSpan = c.minGoalSpan;
+      params.maxGoalSpan = c.maxGoalSpan;
+      params.postMargin = c.postMargin;
+      params.maxAim = c.maxAim;
+      params.defaultSide = c.defaultSide;
+      const CopaShot::Shot shot = CopaShot::planShot(copaSeen, ball.x(), ball.y(), params, c.expectedGoalDistance);
+      copaTargetOdometry = theOdometryData * Vector2f(shot.targetX, shot.targetY);
+      OUTPUT_TEXT("[CopaShot] postSamples=" << static_cast<unsigned>(copaSeen.posts.size())
+                  << " robotSamples=" << static_cast<unsigned>(copaSeen.robots.size())
+                  << " goal=" << (shot.goalSeen ? "yes" : "no") << " keeper=" << (shot.keeperSeen ? "yes" : "no")
+                  << " side=" << shot.side << " direction=" << Angle(shot.direction).toDegrees() << "deg"
+                  << " target=(" << shot.targetX << "," << shot.targetY << ") reason=" << shot.reason);
+      SystemCall::say(!shot.goalSeen ? "no goal, straight" : shot.side > 0 ? "aim left" : shot.side < 0 ? "aim right" : "aim center");
+      theLookForwardSkill();
+      enter(CopaStrikerPhase::kick);
+      return;
+    }
+
+    case CopaStrikerPhase::kick:
+    {
+      if(!ballFresh && theFrameInfo.getTimeSince(copaPhaseStart) > 3000)
+      {
+        enter(CopaStrikerPhase::findBall);
+        return;
+      }
+      const Vector2f target = theOdometryData.inverse() * copaTargetOdometry;
+      const Angle direction = std::clamp(Angle((target - ball).angle()), Angle(-c.maxAim), Angle(c.maxAim));
+      theLookAtBallSkill();
+      theWalkToBallAndKickSkill({.targetDirection = direction,
+                                 .kickType = KickInfo::forwardFastLeftLong,
+                                 .alignPrecisely = KickPrecision::precise,
+                                 .speed = {0.5f, 0.5f, 0.5f}});
+      return;
+    }
   }
 }
 

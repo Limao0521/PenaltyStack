@@ -76,6 +76,13 @@ class CopaConfigTests(unittest.TestCase):
             with self.subTest(path=str(path.relative_to(FILES))):
                 self.assertFalse(keys - cfg_keys(path))
 
+    def test_copa_shot_cfg_matches_its_streamable(self):
+        header = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/CopaShotConfig.h").read_text()
+        expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
+        self.assertIn("defaultSide", expected)
+        found = cfg_keys(FILES / "Config/Scenarios/CopaPenaltyStriker/copaShot.cfg")
+        self.assertEqual(found, expected)
+
     def test_behavior_parameters_match_the_representation(self):
         header = (FILES / "Src/Representations/Configuration/BehaviorParameters.h").read_text()
         expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
@@ -160,6 +167,14 @@ class OverlayToolTests(unittest.TestCase):
         overlay.apply(self.repo, self.manifest, self.files)
         self.assertEqual((self.repo / "a.cfg").read_text(), "value = base;\n")
         self.assertFalse((self.repo / "new.h").exists())
+
+    def test_captured_edits_stay_owned_by_the_overlay(self):
+        overlay.apply(self.repo, self.manifest, self.files)
+        (self.repo / "a.cfg").write_text("value = edited;\n")
+        overlay.capture(self.repo, ["a.cfg"], self.manifest, self.files)
+        (self.files / "a.cfg").write_text("value = later;\n")
+        overlay.apply(self.repo, self.manifest, self.files)
+        self.assertEqual((self.repo / "a.cfg").read_text(), "value = later;\n")
 
     def test_wrong_base_commit_is_refused(self):
         self.manifest["base_commit"] = "0" * 40

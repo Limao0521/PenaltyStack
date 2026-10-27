@@ -6,13 +6,14 @@
  * switch keeps working) followed by a Copa section with what the robot sees:
  *
  *   [4 bytes] magic "COPA"
- *   uint8 version (1)
+ *   uint8 version (2)
  *   uint8 ballOnField | float32 x | float32 y           (BallPercept::positionOnField, mm)
  *   uint8 nPosts  | per post:  Box
- *   uint8 goalSeen | int8 leftPost | int8 rightPost | float32 width | float32 cx | float32 cy
+ *   uint8 goalSeen | int8 leftPost | int8 rightPost | float32 span (rad) | float32 distance (mm)
+ *     | float32 centerBearing (rad)
  *   uint8 nRobots | per robot: Box | uint8 fallen
  *   Box = int16 left | int16 right | int16 top | int16 bottom
- *         | uint8 flags (1 = bottomVisible, 2 = onField) | float32 x | float32 y
+ *         | uint8 flags (1 = bottomVisible, 2 = onField) | float32 x | float32 y | float32 bearing (rad)
  *
  * All values little-endian. Readers that only know CAMF skip the section by
  * searching for the next "CAMF" magic.

@@ -23,6 +23,7 @@ namespace
     CamfStreamServer::append(out, static_cast<uint8_t>((box.bottomVisible ? 1 : 0) | (box.onField ? 2 : 0)));
     CamfStreamServer::append(out, box.positionOnField.x());
     CamfStreamServer::append(out, box.positionOnField.y());
+    CamfStreamServer::append(out, box.bearing);
   }
 }
 
@@ -64,7 +65,7 @@ void CopaCameraStreamer::appendCopaPayload()
 {
   static const unsigned char magic[4] = {'C', 'O', 'P', 'A'};
   payload.insert(payload.end(), magic, magic + 4);
-  CamfStreamServer::append(payload, static_cast<uint8_t>(1));
+  CamfStreamServer::append(payload, static_cast<uint8_t>(2));
 
   CamfStreamServer::append(payload, static_cast<uint8_t>(theBallPercept.status == BallPercept::seen ? 1 : 0));
   CamfStreamServer::append(payload, theBallPercept.positionOnField.x());
@@ -78,9 +79,9 @@ void CopaCameraStreamer::appendCopaPayload()
   CamfStreamServer::append(payload, static_cast<uint8_t>(theCopaVisionPercept.goalSeen ? 1 : 0));
   CamfStreamServer::append(payload, static_cast<int8_t>(theCopaVisionPercept.goalLeftPost));
   CamfStreamServer::append(payload, static_cast<int8_t>(theCopaVisionPercept.goalRightPost));
-  CamfStreamServer::append(payload, theCopaVisionPercept.goalWidth);
-  CamfStreamServer::append(payload, theCopaVisionPercept.goalCenterOnField.x());
-  CamfStreamServer::append(payload, theCopaVisionPercept.goalCenterOnField.y());
+  CamfStreamServer::append(payload, theCopaVisionPercept.goalSpan);
+  CamfStreamServer::append(payload, theCopaVisionPercept.goalDistance);
+  CamfStreamServer::append(payload, theCopaVisionPercept.goalCenterBearing);
 
   const std::size_t robots = std::min<std::size_t>(theCopaVisionPercept.robots.size(), 20);
   CamfStreamServer::append(payload, static_cast<uint8_t>(robots));

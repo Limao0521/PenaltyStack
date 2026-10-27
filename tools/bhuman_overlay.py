@@ -128,6 +128,13 @@ def capture(target: Path, paths: list[str], manifest: dict, files: Path = FILES)
         kind = "modified" if base_blob(target, commit, rel) is not None else "added"
         manifest["files"][rel] = {"kind": kind}
     manifest["files"] = dict(sorted(manifest["files"].items()))
+    # The target now holds exactly the captured content: record it as overlay-owned,
+    # so the next apply may replace it again.
+    if state_path(target).exists():
+        state = read_state(target)
+        for rel in paths:
+            state["files"][rel] = sha256((target / rel).read_bytes())
+        state_path(target).write_text(json.dumps(state, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return manifest
 
 
