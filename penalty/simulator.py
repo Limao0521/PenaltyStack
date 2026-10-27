@@ -6,7 +6,7 @@ import threading
 
 from penalty.motion_contract import ROOT
 from penalty.physical_sim import PhysicalSimulator
-from penalty.sim_session import SimulationSession
+from penalty.sim_session import BLOCK_SIDES, SimulationSession
 
 PenaltySimulator = PhysicalSimulator
 
@@ -70,7 +70,7 @@ def main():
     parser.add_argument('--lateral',type=float,default=0.,help='m/s, modo manual')
     parser.add_argument('--turn',type=float,default=0.,help='rad/s, modo manual')
     parser.add_argument('--kick-type',choices=('forwardFastLeft','forwardFastRight'),default='forwardFastLeft')
-    parser.add_argument('--block-side',choices=('center','left','right'),default='center')
+    parser.add_argument('--block-side',choices=BLOCK_SIDES,default='center')
     parser.add_argument('--seed',type=int,default=0)
     parser.add_argument('--ball-x',type=float,default=.1)
     parser.add_argument('--ball-y',type=float,default=0.)

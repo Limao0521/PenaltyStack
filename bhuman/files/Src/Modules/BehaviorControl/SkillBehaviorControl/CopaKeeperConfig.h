@@ -20,4 +20,8 @@ STREAMABLE(CopaKeeperConfig,
   (int)(150) confirmMs,             /**< A threat must last this long. */
   (int)(2500) holdMs,               /**< Keep the genuflect at least this long. */
   (float)(1.f) walkSpeed,           /**< Sideways walk speed ratio. */
+  (int)(600) velocityWindowMs,      /**< Ball sightings used for the keeper's own velocity fit. */
+  (int)(0) blockMotion,             /**< When the ball arrives: 0 stand (body block), 1 sit (sitDownKeeper),
+                                         2 genuflect (genuflectStandDefender, drops to a split on the floor). */
+  (int)(500) telemetryMs,           /**< [CopaKeeperBall] log period while running; 0 disables it. */
 });

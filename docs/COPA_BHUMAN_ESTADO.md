@@ -110,3 +110,16 @@ Pendiente después de validar: usar postes y portero para elegir el lado del tir
 4. Tiro **rápido** a una esquina: genuflexión inmediata hacia esa esquina, sin caminar.
 5. Tiro al cuerpo: se queda de pie.
 6. Revisar `[CopaKeeper]` en `/home/nao/logs/bhumand_*.log` después de cada tiro.
+
+### Portero: genuflexión en simulación y caminar hacia el balón (28 de octubre, segunda prueba)
+
+**Prueba en robot:** el portero sólo seguía el balón con la cabeza. El log no tuvo ninguna línea `[CopaKeeper]`: la decisión nunca dejó "watch", es decir, nunca se detectó el balón viniendo hacia él. La velocidad de `BallModel` (con 3–4 detecciones YOLO por segundo) no bastó para el disparo.
+
+**Genuflexión en simulación** (`tools/record_keeper_block.py`, motor B-Human original y el mismo `keyframeMotionEngine.cfg`): `genuflectStandDefender` **no es un lanzamiento**, pero el robot **baja al suelo en un split lateral** (torso a 0,14 m, inclinación máx. 28° de cabeceo y 25° de alabeo, sin caída) y se levanta solo con `recoverFromSumo` en ~3 s. Vídeo y resumen en `runs/keeper_block/` (no versionados). En el simulador: `--mode manual --action block --block-side defender_left|defender_right`.
+
+**Cambios:**
+- `blockMotion` en `copaKeeper.cfg`: `0` de pie (por defecto, nunca baja), `1` sentarse (`sitDownKeeper`), `2` genuflexión. Con `0` sólo camina a la línea del balón y bloquea con el cuerpo.
+- El portero estima la velocidad del balón con sus propios avistamientos de los últimos 600 ms (mínimos cuadrados, en coordenadas de odometría para no confundir sus pasos con movimiento del balón) y calcula dónde y cuándo cruza su eje; usa la estimación de B-Human sólo si no hay ajuste propio.
+- `[CopaKeeperBall]` cada 500 ms con posición, velocidad de B-Human, velocidad propia, cruce y desplazamiento lateral.
+
+**Probar:** rodar el balón despacio a ~30–40 cm a un lado del portero (al cuerpo se queda quieto por diseño). Debe caminar de lado y quedarse de pie. Enviar el log con `[CopaKeeper]` y `[CopaKeeperBall]`.

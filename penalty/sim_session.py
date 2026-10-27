@@ -13,6 +13,11 @@ from penalty.control import Command, Observation, PenaltyController
 from penalty.motion_contract import CYCLE_S, ROOT, SOURCE_COMMIT
 
 
+
+# center: genuflectStand; left/right: keeper jumps (comparison only);
+# defender_left/right: genuflectStandDefender, the RoboCup keeper block.
+BLOCK_SIDES = ('center','left','right','defender_left','defender_right')
+
 class SimulationSession:
     def __init__(self, simulator=None, record_dir=ROOT/'runs', mode='penalty'):
         if simulator is None:
@@ -158,7 +163,7 @@ class SimulationSession:
             request[name] = number
         if request.get('kick_type','forwardFastLeft') not in ('forwardFastLeft','forwardFastRight'):
             raise ValueError('tipo de patada desconocido')
-        if request.get('block_side','center') not in ('center','left','right'):
+        if request.get('block_side','center') not in BLOCK_SIDES:
             raise ValueError('lado de bloqueo desconocido')
         return request
 

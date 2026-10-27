@@ -269,8 +269,13 @@ public:
     {
       motion.motion = MotionRequest::dive;
       const std::string side = request.value("block_side", "center");
-      if(side != "center" && side != "left" && side != "right") throw std::runtime_error("Unknown block side");
-      motion.diveRequest = side == "left" ? MotionRequest::Dive::jumpLeft : side == "right" ? MotionRequest::Dive::jumpRight : MotionRequest::Dive::squatArmsBackLeft;
+      // defender_left/right: genuflectStandDefender (wide squat, arms back), the RoboCup keeper block.
+      if(side == "defender_left" || side == "defender_right")
+        motion.diveRequest = side == "defender_left" ? MotionRequest::Dive::squatWideArmsBackLeft : MotionRequest::Dive::squatWideArmsBackRight;
+      else if(side == "center" || side == "left" || side == "right")
+        motion.diveRequest = side == "left" ? MotionRequest::Dive::jumpLeft : side == "right" ? MotionRequest::Dive::jumpRight : MotionRequest::Dive::squatArmsBackLeft;
+      else
+        throw std::runtime_error("Unknown block side");
     }
     else if(action == "sit")
     {

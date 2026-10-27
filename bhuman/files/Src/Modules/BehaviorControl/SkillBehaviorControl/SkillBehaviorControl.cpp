@@ -460,6 +460,7 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
       copaKeeper.reset();
       copaKeeperStart = theOdometryData;
       copaKeeperLastAction = CopaKeeper::Action::watch;
+      copaBallTrack.reset();
       copaPhase = CopaStrikerPhase::findBall;
       copaPhaseStart = theFrameInfo.time;
     }
@@ -523,7 +524,41 @@ void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
   ball.vx = theBallModel.estimate.velocity.x();
   ball.crossY = theFieldBall.intersectionPositionWithOwnYAxis.y();
   ball.crossTime = theFieldBall.timeUntilIntersectsOwnYAxis;
+
   const float lateral = (copaKeeperStart.inverse() * theOdometryData).translation.y();
+
+  // Own velocity from the recent sightings, fixed to the floor through odometry, so the
+  // keeper's own steps are not ball motion. Preferred over B-Human's estimate, which did
+  // not report hand-rolled shots with the 3-4 Hz detections.
+  const int now = static_cast<int>(theFrameInfo.time);
+  if(theBallModel.timeWhenLastSeen != 0 && theFrameInfo.getTimeSince(theBallModel.timeWhenLastSeen) < 100)
+  {
+    const Vector2f onFloor = theOdometryData * theBallModel.lastPerception;
+    copaBallTrack.add(static_cast<int>(theBallModel.timeWhenLastSeen), onFloor.x(), onFloor.y());
+  }
+  float fitX = 0.f, fitY = 0.f;
+  const bool fitted = ball.seen && copaBallTrack.velocity(now, c.velocityWindowMs, fitX, fitY);
+  Vector2f ownVelocity = Vector2f::Zero();
+  if(fitted)
+  {
+    ownVelocity = Vector2f(fitX, fitY).rotated(-theOdometryData.rotation);
+    ball.vx = ownVelocity.x();
+    float crossY = 0.f, crossTime = 0.f;
+    if(CopaKeeper::crossing(ball.x, ball.y, ownVelocity.x(), ownVelocity.y(), crossY, crossTime))
+    {
+      ball.crossY = crossY;
+      ball.crossTime = crossTime;
+    }
+  }
+  if(c.telemetryMs > 0 && ball.seen && theFrameInfo.getTimeSince(copaKeeperTelemetry) >= c.telemetryMs)
+  {
+    copaKeeperTelemetry = theFrameInfo.time;
+    OUTPUT_WARNING("[CopaKeeperBall] ball=(" << static_cast<int>(ball.x) << "," << static_cast<int>(ball.y)
+                   << ") bhumanV=(" << static_cast<int>(theBallModel.estimate.velocity.x()) << ","
+                   << static_cast<int>(theBallModel.estimate.velocity.y()) << ") ownV=(" << static_cast<int>(ownVelocity.x())
+                   << "," << static_cast<int>(ownVelocity.y()) << ")" << (fitted ? "" : "?")
+                   << " cross=" << static_cast<int>(ball.crossY) << "mm in " << ball.crossTime << "s lateral=" << static_cast<int>(lateral));
+  }
   const CopaKeeper::Decision decision = copaKeeper.update(static_cast<int>(theFrameInfo.time), ball, lateral, params);
 
   if(decision.kind != copaKeeperLastAction)
@@ -532,7 +567,7 @@ void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
     OUTPUT_WARNING("[CopaKeeper] " << names[static_cast<int>(decision.kind)]
                    << " ball=(" << ball.x << "," << ball.y << ") vx=" << ball.vx
                    << " cross=" << ball.crossY << "mm in " << ball.crossTime << "s lateral=" << lateral);
-    if(decision.kind == CopaKeeper::Action::genuflectLeft || decision.kind == CopaKeeper::Action::genuflectRight)
+    if((decision.kind == CopaKeeper::Action::genuflectLeft || decision.kind == CopaKeeper::Action::genuflectRight) && c.blockMotion != 0)
       SystemCall::say("block");
     copaKeeperLastAction = decision.kind;
   }
@@ -541,11 +576,23 @@ void SkillBehaviorControl::executeCopaKeeper(bool ballFresh)
   {
     case CopaKeeper::Action::genuflectLeft:
     case CopaKeeper::Action::genuflectRight:
+      // blockMotion 0: the keeper has already walked into the ball line and blocks with its body.
+      if(c.blockMotion == 0)
+      {
+        theLookAtBallSkill();
+        theStandSkill({.high = true});
+        return;
+      }
       theLookForwardSkill();
-      // Like the RoboCup keeper, genuflect only from a stand: finish the current step first.
+      // Like the RoboCup keeper, go down only from a stand: finish the current step first.
       if(theMotionInfo.executedPhase == MotionPhase::walk)
       {
         theStandSkill();
+        return;
+      }
+      if(c.blockMotion == 1)
+      {
+        theDiveSkill({.request = MotionRequest::Dive::prepare});
         return;
       }
       theDiveSkill({.request = decision.kind == CopaKeeper::Action::genuflectLeft

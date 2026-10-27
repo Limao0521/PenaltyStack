@@ -20,6 +20,35 @@ namespace
 
 int main()
 {
+  {
+    // Ball rolled at 500 mm/s towards the keeper and 100 mm/s to its left, seen every 280 ms.
+    BallTrack track;
+    for(int t = 0; t <= 840; t += 280)
+      track.add(t, 1300.f - 0.5f * t, 0.1f * t);
+    float vx = 0.f, vy = 0.f;
+    assert(track.velocity(840, 600, vx, vy));
+    assert(vx < -495.f && vx > -505.f && vy > 95.f && vy < 105.f);
+    float crossY = 0.f, crossTime = 0.f;
+    assert(crossing(880.f, 84.f, vx, vy, crossY, crossTime));
+    assert(crossTime > 1.7f && crossTime < 1.8f && crossY > 250.f && crossY < 270.f);
+    assert(!crossing(880.f, 84.f, 300.f, 0.f, crossY, crossTime)); // moving away
+    // Too few or too close sightings: no estimate.
+    BallTrack sparse;
+    sparse.add(0, 1000.f, 0.f);
+    sparse.add(100, 990.f, 0.f);
+    assert(!sparse.velocity(100, 600, vx, vy));
+    // Same timestamp twice is one sighting.
+    sparse.add(100, 990.f, 0.f);
+    assert(!sparse.velocity(150, 600, vx, vy));
+  }
+  {
+    // A still ball seen while the keeper steps sideways: in the floor frame it does not move.
+    BallTrack track;
+    for(int t = 0; t <= 600; t += 150)
+      track.add(t, 1300.f, 0.f);
+    float vx = 1.f, vy = 1.f;
+    assert(track.velocity(600, 600, vx, vy) && vx > -1e-3f && vx < 1e-3f && vy > -1e-3f && vy < 1e-3f);
+  }
   const Params p;
   {
     // Ball resting on the penalty mark, or with velocity noise: watch only.

@@ -1,6 +1,7 @@
 """Tk control panel; all simulation work is queued to its owning thread."""
 import tkinter as tk
 from tkinter import ttk
+from penalty.sim_session import BLOCK_SIDES
 
 
 class ControlPanel:
@@ -52,7 +53,7 @@ class ControlPanel:
         self.block_side = tk.StringVar(value='center')
         for i,(label,variable,values) in enumerate([
                 ('Patada',self.kick_type,['forwardFastLeft','forwardFastRight']),
-                ('Bloqueo',self.block_side,['center','left','right'])],start=5):
+                ('Bloqueo',self.block_side,list(BLOCK_SIDES))],start=5):
             ttk.Label(manual,text=label).grid(row=i,column=0,sticky='w')
             ttk.Combobox(manual,textvariable=variable,values=values,state='readonly',width=22).grid(row=i,column=1,sticky='w')
         actions = ttk.Frame(manual)

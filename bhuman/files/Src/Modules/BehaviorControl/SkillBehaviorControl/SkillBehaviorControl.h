@@ -206,6 +206,8 @@ private:
   bool copaKeeperConfigLoaded = false;
   Pose2f copaKeeperStart;            /**< Odometry at start, limits the sideways walk. */
   CopaKeeper::Action copaKeeperLastAction = CopaKeeper::Action::watch;
+  CopaKeeper::BallTrack copaBallTrack;  /**< Ball sightings in odometry coordinates. */
+  unsigned copaKeeperTelemetry = 0;
   void executeCopaKeeper(bool ballFresh);
   CopaHeadTouchGate copaHeadGate;
   CopaShutdownLatch copaShutdown;

@@ -41,6 +41,67 @@ namespace CopaKeeper
     float crossTime = 1e9f;     /**< When (s). */
   };
 
+  /**
+   * Ball velocity from the keeper's own recent sightings, in a frame fixed to the
+   * floor (odometry), so the keeper's sideways steps are not taken as ball motion.
+   * B-Human's BallModel velocity was not enough to detect hand-rolled shots with
+   * the 3-4 Hz YOLO detections.
+   */
+  class BallTrack
+  {
+  public:
+    void reset() { count = 0; }
+
+    void add(int timeMs, float x, float y)
+    {
+      if(count > 0 && samples[(next + capacity - 1) % capacity].t == timeMs)
+        return;
+      samples[next] = {timeMs, x, y};
+      next = (next + 1) % capacity;
+      count = std::min(count + 1, capacity);
+    }
+
+    /** Least-squares velocity (mm/s) over the samples of the last windowMs; false if too few. */
+    bool velocity(int now, int windowMs, float& vx, float& vy) const
+    {
+      float st = 0.f, sx = 0.f, sy = 0.f, stt = 0.f, stx = 0.f, sty = 0.f;
+      int n = 0, first = now, last = now - windowMs;
+      for(int i = 0; i < count; ++i)
+      {
+        const Sample& sample = samples[i];
+        if(now - sample.t > windowMs)
+          continue;
+        const float t = 0.001f * static_cast<float>(sample.t - now);
+        st += t; sx += sample.x; sy += sample.y; stt += t * t; stx += t * sample.x; sty += t * sample.y;
+        first = std::min(first, sample.t);
+        last = std::max(last, sample.t);
+        ++n;
+      }
+      const float denominator = n * stt - st * st;
+      if(n < 3 || last - first < 200 || denominator <= 1e-6f)
+        return false;
+      vx = (n * stx - st * sx) / denominator;
+      vy = (n * sty - st * sy) / denominator;
+      return true;
+    }
+
+  private:
+    struct Sample { int t; float x, y; };
+    static constexpr int capacity = 16;
+    Sample samples[capacity] = {};
+    int next = 0, count = 0;
+  };
+
+  /** Where and when a ball at (x, y) moving with (vx, vy) crosses the keeper's y axis (no friction). */
+  inline bool crossing(float x, float y, float vx, float vy, float& crossY, float& crossTime)
+  {
+    if(x <= 0.f || vx >= 0.f)
+      return false;
+    crossTime = -x / vx;
+    crossY = y + vy * crossTime;
+    return true;
+  }
+
   enum class Action { watch, walk, genuflectLeft, genuflectRight };
 
   struct Decision
