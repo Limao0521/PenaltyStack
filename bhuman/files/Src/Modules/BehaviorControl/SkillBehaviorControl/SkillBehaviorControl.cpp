@@ -649,6 +649,7 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
       theStandSkill({.high = true});
       copaSeen = CopaShot::Observations();
       copaLastSnapshot = 0;
+      copaBallOdometry = theOdometryData * ball; // the ball rests on the mark until the kick
       SystemCall::say("looking at goal");
       enter(CopaStrikerPhase::lookGoal);
       return;
@@ -689,7 +690,39 @@ void SkillBehaviorControl::executeCopaStriker(bool ballFresh)
                   << " target=(" << shot.targetX << "," << shot.targetY << ") reason=" << shot.reason);
       SystemCall::say(!shot.goalSeen ? "no goal, straight" : shot.side > 0 ? "aim left" : shot.side < 0 ? "aim right" : "aim center");
       theLookForwardSkill();
-      enter(CopaStrikerPhase::kick);
+      enter(CopaStrikerPhase::align);
+      return;
+    }
+
+    case CopaStrikerPhase::align:
+    {
+      // Reach B-Human's kick pose from behind, away from the ball: step straight back if
+      // too close, sidestep/turn only at the pre-kick pose, then let the kick walk forward.
+      const KickInfo::Kick& kick = theKickInfo[KickInfo::forwardFastLeftLong];
+      const Vector2f mark = theOdometryData.inverse() * copaBallOdometry;
+      const Vector2f target = theOdometryData.inverse() * copaTargetOdometry;
+      const Angle direction = std::clamp(Angle((target - mark).angle()), Angle(-c.maxAim), Angle(c.maxAim));
+      const CopaShot::Pose pre = CopaShot::preKickPose(mark.x(), mark.y(), direction, kick.ballOffset.x(), kick.ballOffset.y(),
+                                                       kick.rotationOffset, c.preKickClearance);
+      const float behind = -kick.ballOffset.x() + c.preKickClearance;
+      theLookAtBallSkill();
+      const bool aligned = std::abs(pre.x) < c.alignTolerance && std::abs(pre.y) < c.alignTolerance
+                           && std::abs(pre.rotation) < c.alignAngleTolerance;
+      if(aligned || theFrameInfo.getTimeSince(copaPhaseStart) > c.alignTimeoutMs)
+      {
+        OUTPUT_WARNING("[CopaShot] aligned=" << (aligned ? "yes" : "timeout") << " pre=(" << static_cast<int>(pre.x) << ","
+                       << static_cast<int>(pre.y) << "," << Angle(pre.rotation).toDegrees() << "deg) ballFromMark="
+                       << static_cast<int>((ball - mark).norm()) << "mm");
+        theStandSkill();
+        enter(CopaStrikerPhase::kick);
+        return;
+      }
+      if(mark.x() < behind - 2.f * c.alignTolerance && std::abs(mark.y()) < 200.f)
+        theWalkToPointSkill({.target = Pose2f(0_deg, mark.x() - behind, 0.f), .speed = {0.4f, 0.4f, 0.4f},
+                             .disableObstacleAvoidance = true});
+      else
+        theWalkToPointSkill({.target = Pose2f(pre.rotation, pre.x, pre.y), .speed = {0.4f, 0.4f, 0.4f},
+                             .disableObstacleAvoidance = true});
       return;
     }
 

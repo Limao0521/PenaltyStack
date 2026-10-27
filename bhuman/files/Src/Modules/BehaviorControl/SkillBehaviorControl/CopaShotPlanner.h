@@ -124,6 +124,29 @@ namespace CopaShot
     return goal;
   }
 
+  struct Pose
+  {
+    float rotation = 0.f, x = 0.f, y = 0.f;
+  };
+
+  /**
+   * Pose relative to the robot from which B-Human's WalkToBallAndKickEngine starts the
+   * kick (kickPose = Pose2f(direction, ball).rotate(rotationOffset).translate(ballOffset)),
+   * moved `clearance` mm further back along the kick direction. Aligning there keeps the
+   * feet off the ball; the kick then only walks straight forward.
+   */
+  inline Pose preKickPose(float ballX, float ballY, float direction, float offsetX, float offsetY,
+                          float rotationOffset, float clearance)
+  {
+    Pose pose;
+    pose.rotation = direction + rotationOffset;
+    const float c = std::cos(pose.rotation), s = std::sin(pose.rotation);
+    const float ox = offsetX - clearance, oy = offsetY;
+    pose.x = ballX + c * ox - s * oy;
+    pose.y = ballY + s * ox + c * oy;
+    return pose;
+  }
+
   /**
    * @param ballX, ballY ball position relative to the robot (mm).
    * @param expectedDistance distance to the goal line used when only one post is seen (mm).

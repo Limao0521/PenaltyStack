@@ -131,3 +131,16 @@ El log de esa prueba se perdió (B-Human reescribe `bhumand_(1).log` al reinicia
 Cambios: postura lista (rodillas flexionadas, como el portero B-Human) mientras corre; balón "visto" 700 ms; el disparo sigue activo 400 ms tras su último avistamiento usando la predicción (tiempo restante y cruce corregido por los pasos del propio portero); histéresis para caminar (empieza > 12 cm, se detiene < 8 cm). Nuevas claves en `copaKeeper.cfg`: `seenTimeoutMs`, `releaseMs`, `walkStartMargin`.
 
 **Después de cada prueba, no reiniciar ni redesplegar antes de revisar el log.**
+
+## Tirador: no tocar el balón en la marca antes de patear (28 de octubre)
+
+**Problema:** el tirador tocaba el balón antes de patear. Con el balón a ~20 cm, `WalkToBallAndKick` tenía que desplazarse de lado y girar (hasta 20°) pegado al balón para llegar a la pose de patada de B-Human (`ballOffset` (−190, −50) mm de `forwardFastLeftLong`).
+
+**Cambio:** nueva fase **align** entre "mirar portería" y "patear":
+1. La posición del balón en la marca se memoriza en coordenadas de odometría al detenerse frente a él (el balón no se mueve hasta la patada).
+2. Si el robot está más cerca que la pose previa, retrocede en línea recta.
+3. Camina a la **pose previa**: la misma pose de patada que calcula `WalkToBallAndKickEngine`, 10 cm más atrás sobre la línea de patada; ahí hace el desplazamiento lateral y el giro, lejos del balón.
+4. Con error ≤ 3 cm y ≤ 5° (o 8 s de límite) pasa a `WalkToBallAndKick`, que sólo avanza recto y patea.
+5. `[CopaShot] aligned=… pre=(x,y,ángulo) ballFromMark=…mm` en el log: si `ballFromMark` es grande, el balón se movió antes de patear.
+
+`copaShot.cfg`: `preKickClearance`, `alignTolerance`, `alignAngleTolerance`, `alignTimeoutMs`; `approachDistance` 400, `standOffDistance` 300.

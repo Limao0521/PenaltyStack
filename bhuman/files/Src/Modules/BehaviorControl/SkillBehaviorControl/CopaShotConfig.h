@@ -12,8 +12,8 @@
 
 STREAMABLE(CopaShotConfig,
 {,
-  (float)(300.f) approachDistance,   /**< Ball closer than this (mm): stop and look at the goal. */
-  (float)(200.f) standOffDistance,   /**< When approaching, stop this far behind the ball (mm). */
+  (float)(400.f) approachDistance,   /**< Ball closer than this (mm): stop and look at the goal. */
+  (float)(300.f) standOffDistance,   /**< When approaching, stop this far behind the ball (mm). */
   (Angle)(5_deg) headTilt,           /**< Head pitch while looking at the goal (positive = down). */
   (Angle)(25_deg) sweepPan,          /**< Head pans to +sweepPan, 0, -sweepPan. */
   (int)(1200) sweepStepMs,           /**< Time per head position. */
@@ -25,4 +25,8 @@ STREAMABLE(CopaShotConfig,
   (float)(0.25f) postMargin,         /**< Aim this fraction of the goal width inside the chosen post. */
   (Angle)(20_deg) maxAim,            /**< Largest kick direction; the robot only turns around the ball. */
   (int)(1) defaultSide,              /**< Without keeper: 1 left, -1 right, 0 center. */
+  (float)(100.f) preKickClearance,   /**< Align this far behind B-Human's kick pose, so the feet stay off the ball. */
+  (float)(30.f) alignTolerance,      /**< Position error (mm) at which the kick may start. */
+  (Angle)(5_deg) alignAngleTolerance,
+  (int)(8000) alignTimeoutMs,        /**< Kick anyway after aligning this long. */
 });

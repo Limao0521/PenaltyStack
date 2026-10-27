@@ -66,4 +66,16 @@ int main()
     assert(shot.direction <= p.maxAim);
   }
   assert(clusters({0.1f, 0.12f, -0.5f, -0.48f}, 8.f * deg).size() == 2);
+  {
+    // forwardFastLeftLong: ballOffset (-190, -50), rotationOffset -3 deg.
+    // Straight kick, ball 200 mm ahead: pre-kick 100 mm further back than the kick pose.
+    const Pose pre = preKickPose(200.f, 0.f, 0.f, -190.f, -50.f, 0.f, 100.f);
+    assert(near(pre.x, -90.f, 1e-3f) && near(pre.y, -50.f, 1e-3f) && pre.rotation == 0.f);
+    // Aimed 20 deg left: the pose turns around the ball, keeping the same distance to it.
+    const float aim = 20.f * deg;
+    const Pose turned = preKickPose(200.f, 0.f, aim, -190.f, -50.f, 0.f, 100.f);
+    assert(near(turned.rotation, aim, 1e-6f));
+    assert(near(std::hypot(turned.x - 200.f, turned.y), std::hypot(290.f, 50.f), 1e-2f));
+    assert(turned.y < -50.f); // to the right of the ball, behind it along the kick line
+  }
 }

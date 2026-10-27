@@ -190,12 +190,13 @@ private:
   void executeCopaStriker(bool ballFresh);
 
   /** Copa striker sequence: find the ball, sweep the head over the goal, kick. */
-  enum class CopaStrikerPhase { findBall, lookGoal, kick };
+  enum class CopaStrikerPhase { findBall, lookGoal, align, kick };
   CopaStrikerPhase copaPhase = CopaStrikerPhase::findBall;
   unsigned copaPhaseStart = 0;
   unsigned copaLastSnapshot = 0;
   CopaShot::Observations copaSeen;
   Vector2f copaTargetOdometry = Vector2f::Zero(); /**< Aim point in odometry coordinates. */
+  Vector2f copaBallOdometry = Vector2f::Zero();   /**< Ball resting on the mark, in odometry coordinates. */
   CopaShotConfig copaShotConfig;
   bool copaShotConfigLoaded = false;
   CopaPenaltyState copaState;
