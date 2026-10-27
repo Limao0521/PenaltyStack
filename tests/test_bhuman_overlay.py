@@ -43,7 +43,21 @@ def thread_providers(scenario: str) -> dict[str, dict[str, str]]:
     return threads
 
 
+cfg_spec = importlib.util.spec_from_file_location("bhuman_cfg", ROOT / "tools/bhuman_cfg.py")
+bhuman_cfg = importlib.util.module_from_spec(cfg_spec)
+cfg_spec.loader.exec_module(bhuman_cfg)
+
+
 class CopaConfigTests(unittest.TestCase):
+    def test_every_overlay_cfg_parses_like_bhuman(self):
+        self.assertEqual(bhuman_cfg.check_tree(FILES), [])
+
+    def test_cfg_parser_rejects_a_missing_comma(self):
+        broken = "threads = [ { a = [ {x = 1;} {y = 2;}, ]; }, ];"
+        with self.assertRaisesRegex(bhuman_cfg.CfgError, "lBrace"):
+            bhuman_cfg.parse(broken)
+        self.assertEqual(bhuman_cfg.parse("a = 1; // c\nb = {c = [x, y,];};"), {"a": "1", "b": {"c": ["x", "y"]}})
+
     def test_module_parameters_are_complete(self):
         for scenario in COPA:
             folder = FILES / "Config/Scenarios" / scenario
@@ -51,14 +65,24 @@ class CopaConfigTests(unittest.TestCase):
                                 ("CopaVisionPerceptor", "copaVisionPerceptor.cfg"),
                                 ("CopaCameraStreamer", "cameraStreamer.cfg")):
                 with self.subTest(scenario=scenario, module=module):
-                    missing = loaded_parameters(module) - cfg_keys(folder / cfg)
-                    self.assertFalse(missing, f"{cfg} lacks {sorted(missing)}")
+                    # On the robot both missing and unused attributes FAIL (InMap errorMask ~0).
+                    expected, found = loaded_parameters(module), cfg_keys(folder / cfg)
+                    self.assertFalse(expected - found, f"{cfg} lacks {sorted(expected - found)}")
+                    self.assertFalse(found - expected, f"{cfg} has unused {sorted(found - expected)}")
 
     def test_every_overlay_yolo_cfg_has_the_detector_keys(self):
         keys = loaded_parameters("YoloBallDetector")
         for path in FILES.joinpath("Config").rglob("yoloBallDetector.cfg"):
             with self.subTest(path=str(path.relative_to(FILES))):
                 self.assertFalse(keys - cfg_keys(path))
+
+    def test_behavior_parameters_match_the_representation(self):
+        header = (FILES / "Src/Representations/Configuration/BehaviorParameters.h").read_text()
+        expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
+        self.assertIn("keeperSitWhenNoDive", expected)
+        for path in FILES.joinpath("Config").rglob("behaviorParameters.cfg"):
+            with self.subTest(path=str(path.relative_to(FILES))):
+                self.assertEqual(cfg_keys(path), expected)
 
     def test_copa_modules_get_their_inputs_in_both_camera_threads(self):
         for scenario in COPA:
@@ -97,13 +121,13 @@ class OverlayToolTests(unittest.TestCase):
         run("init", "-q")
         run("config", "user.email", "t@t")
         run("config", "user.name", "t")
-        (self.repo / "a.cfg").write_text("base\n")
+        (self.repo / "a.cfg").write_text("value = base;\n")
         run("add", ".")
         run("commit", "-qm", "base")
         self.commit = subprocess.run(["git", "-C", str(self.repo), "rev-parse", "HEAD"],
                                      capture_output=True, text=True, check=True).stdout.strip()
         (self.files).mkdir()
-        (self.files / "a.cfg").write_text("overlay\n")
+        (self.files / "a.cfg").write_text("value = overlay;\n")
         (self.files / "new.h").write_text("added\n")
         self.manifest = {"base_commit": self.commit,
                          "files": {"a.cfg": {"kind": "modified"}, "new.h": {"kind": "added"}}}
@@ -114,27 +138,27 @@ class OverlayToolTests(unittest.TestCase):
     def test_apply_writes_and_reapply_is_clean(self):
         changed = overlay.apply(self.repo, self.manifest, self.files)
         self.assertEqual(sorted(changed), ["a.cfg", "new.h"])
-        self.assertEqual((self.repo / "a.cfg").read_text(), "overlay\n")
+        self.assertEqual((self.repo / "a.cfg").read_text(), "value = overlay;\n")
         self.assertEqual(overlay.plan(self.repo, self.manifest, self.files), ([], [], []))
 
     def test_outside_edits_are_not_overwritten(self):
-        (self.repo / "a.cfg").write_text("someone else\n")
+        (self.repo / "a.cfg").write_text("value = other;\n")
         with self.assertRaises(overlay.OverlayError):
             overlay.apply(self.repo, self.manifest, self.files)
-        self.assertEqual((self.repo / "a.cfg").read_text(), "someone else\n")
+        self.assertEqual((self.repo / "a.cfg").read_text(), "value = other;\n")
 
     def test_updated_overlay_replaces_its_own_previous_version(self):
         overlay.apply(self.repo, self.manifest, self.files)
-        (self.files / "a.cfg").write_text("overlay v2\n")
+        (self.files / "a.cfg").write_text("value = overlay2;\n")
         overlay.apply(self.repo, self.manifest, self.files)
-        self.assertEqual((self.repo / "a.cfg").read_text(), "overlay v2\n")
+        self.assertEqual((self.repo / "a.cfg").read_text(), "value = overlay2;\n")
 
     def test_files_dropped_from_overlay_are_restored(self):
         overlay.apply(self.repo, self.manifest, self.files)
         del self.manifest["files"]["a.cfg"]
         del self.manifest["files"]["new.h"]
         overlay.apply(self.repo, self.manifest, self.files)
-        self.assertEqual((self.repo / "a.cfg").read_text(), "base\n")
+        self.assertEqual((self.repo / "a.cfg").read_text(), "value = base;\n")
         self.assertFalse((self.repo / "new.h").exists())
 
     def test_wrong_base_commit_is_refused(self):

@@ -24,6 +24,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from bhuman_cfg import check_tree  # noqa: E402
 OVERLAY = ROOT / "bhuman"
 FILES = OVERLAY / "files"
 MANIFEST = OVERLAY / "overlay.json"
@@ -88,6 +90,9 @@ def plan(target: Path, manifest: dict, files: Path = FILES) -> tuple[list[str], 
 
 
 def apply(target: Path, manifest: dict, files: Path = FILES) -> list[str]:
+    broken = check_tree(files)
+    if broken:
+        raise OverlayError("B-Human would reject these .cfg files (red eyes):\n  " + "\n  ".join(broken))
     to_write, to_restore, conflicts = plan(target, manifest, files)
     if conflicts:
         raise OverlayError("changed outside the overlay (not overwritten): " + ", ".join(conflicts))
