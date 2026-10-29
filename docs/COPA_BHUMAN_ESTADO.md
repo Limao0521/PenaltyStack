@@ -244,3 +244,13 @@ La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto,
 5. Con ruido de público, voces y aplausos 1 min tras armar → no inicia solo. Si inicia, revisar `whistleConfidence` y endurecer el perfil (`whistleRecognizer.cfg`: `mouthWhistleEnabled = false` deja sólo silbatos de árbitro).
 6. Repetir 2–4 con `CopaPenaltyKeeper`.
 7. Silbato real del evento (si es posible, el mismo modelo que usarán los jueces) a la distancia real del juez.
+
+### Silbato: falsos disparos y "start" seguido de "stop" (30 de octubre, prueba en ospinao)
+
+**Log** (`bhumand_(1).log`, 29 oct. 20:11–20:35): 7 inicios por silbato y 1 por botón. Las dos primeras corridas duraron 26 s y 9 s; desde la patada de 20:32:22 todas dijeron "striker mode stop" en el mismo segundo que "start", **también con el botón**. El balón naranja se vio bien: confianza 0,92–0,97, `sizeRatio` 1,1–1,2, balón a 310 mm (la marca).
+
+**"start" → "stop" inmediato (error del cambio anterior):** al añadir `[CopaStart]` se borró `copaLastKick = theMotionInfo.lastKickTimestamp;`. El tiro termina cuando cambia la marca de tiempo de la última patada; sin reiniciarla, después de la primera patada cada tiro nuevo se daba por terminado al instante. Restaurada, con prueba que lo comprueba.
+
+**Cualquier sonido agudo inicia:** el detector se abre tras `onsetConsec = 3` ventanas de 5 ms (~15 ms de tono): clics, chirridos y pitidos bastaban. En Copa (`copaWhistle.cfg`) una detección sólo cuenta como silbato tras **`minToneMs = 250` ms de tono real** (ventanas que pasan todos los filtros; la cola de `offFrames` no cuenta); `minChannels = 1` (2 exige ambos micrófonos). Perfil `mouth_whistle` (el más permisivo, 1,7–4,2 kHz) apagado en Copa: el juez usa silbato. Log: `[CopaWhistle] accepted profile=… toneMs=… peakHz=…` y `[CopaWhistle] too short … toneMs=… (min 250)`.
+
+**Probar:** (1) armar y hacer ruidos agudos (golpes, chirridos de silla, aplausos, voz aguda) → ningún inicio; en el log `too short` con `toneMs` bajos. (2) Silbato corto normal del juez → inicia; anotar `toneMs` de `accepted`. Si un silbato real queda en `too short`, bajar `minToneMs` (p. ej. 180); si aún entra ruido, subirlo o poner `minChannels = 2`. (3) Patear y, tras "stop", rearmar e iniciar de nuevo → el segundo tiro debe correr normalmente. (4) Para probar silbando con la boca, `mouthWhistleEnabled = true` en `whistleRecognizer.cfg` del escenario.

@@ -13,6 +13,7 @@
 #include "Debugging/Plot.h"
 #include "Framework/Settings.h"
 #include "Streaming/Global.h"
+#include "Streaming/InStreams.h"
 
 #include <algorithm>
 #include <array>
@@ -538,8 +539,19 @@ void WhistleRecognizer::update(Whistle& theWhistle)
 
   // Copa penalty: no GameController, so the game state never reaches set/playing. The
   // shot state (CopaPenaltyState) only accepts whistles heard after the robot was armed.
-  const std::string& scenario = Global::getSettings().scenario;
-  const bool copaPenalty = scenario == "CopaPenaltyStriker" || scenario == "CopaPenaltyKeeper";
+  if(!copaConfigLoaded)
+  {
+    const std::string& scenario = Global::getSettings().scenario;
+    copaPenalty = scenario == "CopaPenaltyStriker" || scenario == "CopaPenaltyKeeper";
+    if(copaPenalty)
+    {
+      InMapFile stream("copaWhistle.cfg");
+      if(stream.exists())
+        stream >> copaWhistle;
+      OUTPUT_WARNING("[CopaWhistle] minToneMs=" << copaWhistle.minToneMs << " minChannels=" << copaWhistle.minChannels);
+    }
+    copaConfigLoaded = true;
+  }
   const bool shouldDetectWhistles = (copaPenalty || theGameState.isSet() || theGameState.isPlaying()) && !soundWasPlaying;
   const bool shouldRecord = !soundWasPlaying;
   if(!hasRecorded && shouldRecord)
@@ -658,6 +670,8 @@ void WhistleRecognizer::update(Whistle& theWhistle)
     float correlation = 0.0f;
     size_t defects = 0;
     bool anyActive = false;
+    int copaChannels = 0; // microphones with a long enough detection in this hop
+    const int copaMinToneFrames = (copaWhistle.minToneMs * static_cast<int>(sampleRate) / 1000 + hopSamples - 1) / hopSamples;
     bool loggedDetection = false;
     bool haveBestFeatures = false;
     FrameFeatures bestFeatures;
@@ -671,6 +685,7 @@ void WhistleRecognizer::update(Whistle& theWhistle)
       }
 
       ChannelState& channel = channelStates[i];
+      bool copaChannelActive = false;
       for(size_t profileIndex = 0; profileIndex < profiles.size(); ++profileIndex)
       {
         const DetectorProfile& profile = profiles[profileIndex];
@@ -690,8 +705,39 @@ void WhistleRecognizer::update(Whistle& theWhistle)
                         && gates.lowband
                         && gates.flux;
 
+        const bool wasActive = detector.fsmState == DetectorState::FsmState::ACTIVE;
         const bool opened = shouldDetectWhistles && updateFSM(ok, detector, profile);
-        const bool active = detector.fsmState == DetectorState::FsmState::ACTIVE || opened;
+        bool active = detector.fsmState == DetectorState::FsmState::ACTIVE || opened;
+        if(copaPenalty)
+        {
+          // Copa: only tone that lasts counts; the FSM hangover (offFrames) is not tone.
+          if(opened)
+            detector.toneFrames = profile.onsetConsec;
+          else if(active && ok)
+            ++detector.toneFrames;
+          if(active && !detector.accepted && detector.toneFrames >= copaMinToneFrames)
+          {
+            detector.accepted = true;
+            OUTPUT_WARNING("[CopaWhistle] accepted profile=" << profile.name << " ch=" << static_cast<int>(i)
+                           << " toneMs=" << detector.toneFrames * hopSamples * 1000 / static_cast<int>(sampleRate)
+                           << " peakHz=" << feat.peakFreq << " snr=" << feat.snrDb);
+          }
+          if(wasActive && !active)
+          {
+            if(!detector.accepted && copaWhistle.logRejected &&
+               (lastLogTime == 0 || theFrameInfo.getTimeSince(lastLogTime) >= logIntervalMs))
+            {
+              OUTPUT_WARNING("[CopaWhistle] too short profile=" << profile.name << " ch=" << static_cast<int>(i)
+                             << " toneMs=" << detector.toneFrames * hopSamples * 1000 / static_cast<int>(sampleRate)
+                             << " (min " << copaWhistle.minToneMs << ")");
+              lastLogTime = theFrameInfo.time;
+            }
+            detector.toneFrames = 0;
+            detector.accepted = false;
+          }
+          active = active && detector.accepted;
+          copaChannelActive |= active;
+        }
         const int passCount = passedGateCount(gates);
 
         if(!bestObservedCandidate.valid ||
@@ -754,7 +800,10 @@ void WhistleRecognizer::update(Whistle& theWhistle)
           case 3: PLOT("module:WhistleRecognizer:snrDb3", feat.snrDb); break;
         }
       }
+      copaChannels += copaChannelActive;
     }
+    if(copaPenalty && copaChannels < copaWhistle.minChannels)
+      anyActive = false;
 
     if(haveBestFeatures)
     {

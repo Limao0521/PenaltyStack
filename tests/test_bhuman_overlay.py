@@ -111,6 +111,23 @@ class CopaConfigTests(unittest.TestCase):
         recognizer = (FILES / "Src/Modules/Modeling/WhistleRecognizer/WhistleRecognizer.cpp").read_text()
         self.assertIn("shouldDetectWhistles = (copaPenalty ||", recognizer)
 
+    def test_copa_whistle_needs_a_sustained_tone(self):
+        header = (FILES / "Src/Modules/Modeling/WhistleRecognizer/CopaWhistleConfig.h").read_text()
+        expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
+        self.assertIn("minToneMs", expected)
+        for scenario in COPA:
+            with self.subTest(scenario=scenario):
+                folder = FILES / "Config/Scenarios" / scenario
+                self.assertEqual(cfg_keys(folder / "copaWhistle.cfg"), expected)
+                self.assertRegex((folder / "copaWhistle.cfg").read_text(), r"(?m)^minToneMs = [1-9]\d{2,};")
+                self.assertIn("mouthWhistleEnabled = false;", (folder / "whistleRecognizer.cfg").read_text())
+
+    def test_each_shot_forgets_the_previous_kick(self):
+        # Without this, every shot after the first kick stopped right after "striker mode start" (2026-10-30).
+        behavior = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/SkillBehaviorControl.cpp").read_text()
+        start = behavior.split("if(state == CopaPenaltyState::running)\n    {", 1)[1].split("\n    }", 1)[0]
+        self.assertIn("copaLastKick = theMotionInfo.lastKickTimestamp;", start)
+
     def test_keeper_never_requests_a_jump(self):
         dive = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/Skills/Output/MotionRequest/Dive.cpp").read_text()
         self.assertIn("jumpLeft)\n      return MotionRequest::Dive::squatWideArmsBackLeft", dive)

@@ -472,6 +472,8 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
       OUTPUT_WARNING("[CopaStart] trigger=" << (copaState.startedByWhistle() ? "whistle" : "headFront")
                      << " role=" << role << " whistleConfidence=" << theWhistle.confidenceOfLastWhistleDetection
                      << " delayMs=" << static_cast<int>(theFrameInfo.time - copaState.shotStart()));
+      // The shot ends when this changes (the kick is done); the previous shot's kick must not end this one.
+      copaLastKick = theMotionInfo.lastKickTimestamp;
       copaKeeper.reset();
       copaKeeperStart = theOdometryData;
       copaKeeperLastAction = CopaKeeper::Action::watch;

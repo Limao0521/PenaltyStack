@@ -190,6 +190,9 @@
     "Config/Scenarios/CopaPenaltyKeeper/copaVisionPerceptor.cfg": {
       "kind": "added"
     },
+    "Config/Scenarios/CopaPenaltyKeeper/copaWhistle.cfg": {
+      "kind": "added"
+    },
     "Config/Scenarios/CopaPenaltyKeeper/ecImageProvider.cfg": {
       "kind": "added"
     },
@@ -329,6 +332,9 @@
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyStriker/copaVisionPerceptor.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/copaWhistle.cfg": {
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyStriker/ecImageProvider.cfg": {
@@ -667,7 +673,13 @@
     "Src/Modules/Modeling/BallStateEstimator/BallPerceptFilter.cpp": {
       "kind": "modified"
     },
+    "Src/Modules/Modeling/WhistleRecognizer/CopaWhistleConfig.h": {
+      "kind": "added"
+    },
     "Src/Modules/Modeling/WhistleRecognizer/WhistleRecognizer.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Modeling/WhistleRecognizer/WhistleRecognizer.h": {
       "kind": "modified"
     },
     "Src/Modules/MotionControl/MotionEngine/MotionEngine.cpp": {
