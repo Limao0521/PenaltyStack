@@ -181,6 +181,9 @@
     "Config/Scenarios/CopaPenaltyKeeper/copaKeeper.cfg": {
       "kind": "added"
     },
+    "Config/Scenarios/CopaPenaltyKeeper/copaOrangeBall.cfg": {
+      "kind": "added"
+    },
     "Config/Scenarios/CopaPenaltyKeeper/copaVisionPerceptor.cfg": {
       "kind": "added"
     },
@@ -311,6 +314,9 @@
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyStriker/cameraStreamer.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/copaOrangeBall.cfg": {
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyStriker/copaShot.cfg": {
@@ -664,6 +670,12 @@
     "Src/Modules/Perception/BallPerceptors/CopaBallRange.h": {
       "kind": "added"
     },
+    "Src/Modules/Perception/BallPerceptors/CopaOrangeBall.h": {
+      "kind": "added"
+    },
+    "Src/Modules/Perception/BallPerceptors/CopaOrangeBallConfig.h": {
+      "kind": "added"
+    },
     "Src/Modules/Perception/BallPerceptors/FieldColorNormalizer.h": {
       "kind": "added"
     },
@@ -710,6 +722,9 @@
       "kind": "added"
     },
     "Tests/CopaKeeperPlannerTest.cpp": {
+      "kind": "added"
+    },
+    "Tests/CopaOrangeBallTest.cpp": {
       "kind": "added"
     },
     "Tests/CopaPenaltyStateTest.cpp": {

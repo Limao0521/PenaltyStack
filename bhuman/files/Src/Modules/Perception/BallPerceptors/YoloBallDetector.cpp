@@ -8,6 +8,7 @@
 #include "Streaming/Output.h"
 #include "Streaming/Global.h"
 #include "Framework/Settings.h"
+#include "Streaming/InStreams.h"
 #include "CopaBallModel.h"
 #include "CopaBallRange.h"
 
@@ -96,18 +97,29 @@ void YoloBallDetector::update(BallPercept& bp)
     const bool lower = theCameraInfo.camera == CameraInfo::lower;
     copaDiagnostics = scenario == "CopaPenaltyStriker" || scenario == "CopaPenaltyKeeper";
     copaLowerModel = useCopaLowerTrionda(scenario, lower);
+    loadOrangeConfig(scenario);
     const auto selected = copaBallModel(scenario, lower, modelName);
-    startModel(selected);
-    OUTPUT_WARNING("[CopaBall] camera=" << (lower ? "lower" : "upper") << " model=" << selected << " loaded=" << modelLoaded);
+    if(orangeEnabled && orangeConfig.mode == 1)
+      modelStartAttempted = true; // orange only: YOLO never runs
+    else
+      startModel(selected);
+    OUTPUT_WARNING("[CopaBall] camera=" << (lower ? "lower" : "upper") << " model=" << selected << " loaded=" << modelLoaded
+                   << " orange=" << (orangeEnabled ? orangeConfig.mode : 0));
   }
 
-  if(!enabled || !modelLoaded)
+  if(!enabled || (!modelLoaded && !orangeEnabled))
   {
     consecutiveSeen = 0;
     return;
   }
 
+  // Copa: the orange ball tracked on this very frame has priority over YOLO.
+  Det det = orangeEnabled ? detectOrange() : Det();
+  const bool fromOrange = det.valid;
+  std::chrono::steady_clock::time_point detectionTime = std::chrono::steady_clock::now();
+
   // Copy YUYV bytes to frame buffer and wake the BG thread
+  if(modelLoaded)
   {
     std::lock_guard<std::mutex> lk(frameMtx);
     const unsigned W    = theCameraImage.width;   // YUYV pairs
@@ -126,8 +138,7 @@ void YoloBallDetector::update(BallPercept& bp)
   frameCV.notify_one();
 
   // Read latest detection
-  Det det;
-  std::chrono::steady_clock::time_point detectionTime;
+  if(!fromOrange && modelLoaded)
   {
     std::lock_guard<std::mutex> lk(detMtx);
     det           = latestDet;
@@ -138,7 +149,17 @@ void YoloBallDetector::update(BallPercept& bp)
   const auto ageMs = std::chrono::duration_cast<std::chrono::milliseconds>(now - detectionTime).count();
   const bool report = copaDiagnostics && now - lastCopaDiagnostic >= std::chrono::seconds(5);
   if(report)
+  {
     lastCopaDiagnostic = now;
+    if(orangeEnabled)
+      OUTPUT_WARNING("[CopaOrange] camera=" << (theCameraInfo.camera == CameraInfo::lower ? "lower" : "upper")
+                     << " floorCrMinusCb=" << lastOrange.floorCrMinusCb << " threshold=" << lastOrange.threshold
+                     << " orangeSamples=" << lastOrange.orangeSamples << " blobs=" << lastOrange.blobs
+                     << " candidates=" << static_cast<int>(lastOrange.candidates.size())
+                     << " best=" << (lastOrange.candidates.empty() ? 0.f : lastOrange.candidates.front().confidence)
+                     << " sizeRatio=" << (lastOrange.candidates.empty() ? 0.f : lastOrange.candidates.front().sizeRatio)
+                     << " tracked=" << fromOrange);
+  }
   if(!det.valid || ageMs > timeoutMs)
   {
     if(report)
@@ -183,10 +204,14 @@ void YoloBallDetector::update(BallPercept& bp)
 
   if(report)
     OUTPUT_WARNING("[CopaBall] camera=" << (theCameraInfo.camera == CameraInfo::lower ? "lower" : "upper")
+                   << " source=" << (fromOrange ? "orange" : "yolo")
                    << " confidence=" << det.conf << " geometry=" << geomOk << " ageMs=" << static_cast<int>(ageMs));
   if(!geomOk) { consecutiveSeen = 0; return; }
 
-  if(det.sequence != lastProcessedSequence)
+  // Every orange track update is a new image; YOLO results repeat until the next inference.
+  if(fromOrange)
+    ++consecutiveSeen;
+  else if(det.sequence != lastProcessedSequence)
   {
     lastProcessedSequence = det.sequence;
     ++consecutiveSeen;
@@ -202,6 +227,104 @@ void YoloBallDetector::update(BallPercept& bp)
   bp.positionOnField   = fieldPos;
   bp.radiusOnField     = theBallSpecification.radius;
   bp.covarianceOnField = Matrix2f::Identity() * 10000.f;
+}
+
+void YoloBallDetector::loadOrangeConfig(const std::string& scenario)
+{
+  orangeEnabled = false;
+  if(!isCopaScenario(scenario))
+    return;
+  InMapFile stream("copaOrangeBall.cfg");
+  if(stream.exists())
+    stream >> orangeConfig;
+  orangeEnabled = orangeConfig.mode == 1 || orangeConfig.mode == 2;
+  // The image tracker of YOLO, at the camera rate and with the orange confidence scale.
+  orangeKalman.configure(orangeConfig.minConfidence, orangeConfig.minConfidence, orangeConfig.instantConfidence,
+                         orangeConfig.confirmFrames, kalmanInitGatePx, kalmanFarGatePx, kalmanNearGateScale,
+                         orangeConfig.maxMissed, kalmanStrongPredictionMissed, kalmanMaxSpeedPx,
+                         kalmanMissedVelocityDecay, kalmanProcessNoise, kalmanMeasurementNoise);
+}
+
+float YoloBallDetector::expectedBallRadius(float x, float y) const
+{
+  const float r = theBallSpecification.radius;
+  Vector2f onField;
+  if(!Transformation::imageToRobotHorizontalPlane(Vector2f(x, y), r, theCameraMatrix, theCameraInfo, onField)
+     || !std::isfinite(onField.x()) || !std::isfinite(onField.y()))
+    return 0.f;
+  if(copaLowerModel)
+  {
+    float bx = onField.x(), by = onField.y();
+    CopaRange::correctRange(theCameraMatrix.translation.x(), theCameraMatrix.translation.y(),
+                            theCameraMatrix.translation.z(), r, CopaRange::lowerPitchOffset().load(), bx, by);
+    onField = Vector2f(bx, by);
+  }
+  const Vector3f fromCamera(onField.x() - theCameraMatrix.translation.x(), onField.y() - theCameraMatrix.translation.y(),
+                            r - theCameraMatrix.translation.z());
+  const float distance = fromCamera.norm();
+  return distance > r ? theCameraInfo.focalLength * std::tan(std::asin(r / distance)) : 0.f;
+}
+
+YoloBallDetector::Det YoloBallDetector::detectOrange()
+{
+  CopaOrangeBall::Params params;
+  params.step = theCameraInfo.camera == CameraInfo::upper ? orangeConfig.upperStep : orangeConfig.lowerStep;
+  params.minY = orangeConfig.minY;
+  params.maxY = orangeConfig.maxY;
+  params.minCr = orangeConfig.minCr;
+  params.maxCb = orangeConfig.maxCb;
+  params.minCrMinusCb = orangeConfig.minCrMinusCb;
+  params.floorMargin = orangeConfig.floorMargin;
+  params.minHueRatio = orangeConfig.minHueRatio;
+  params.maxHueRatio = orangeConfig.maxHueRatio;
+  params.minSamples = orangeConfig.minSamples;
+  params.minFill = orangeConfig.minFill;
+  params.maxAspect = orangeConfig.maxAspect;
+  params.maxRadiusFraction = orangeConfig.maxRadiusFraction;
+  params.sizeTolerance = orangeConfig.sizeTolerance;
+  params.minConfidence = orangeConfig.minConfidence;
+
+  const int width = static_cast<int>(theCameraImage.width) * 2;
+  const int height = static_cast<int>(theCameraImage.height);
+  auto pixel = [this](int x, int y, int& Y, int& cb, int& cr)
+  {
+    const PixelTypes::YUYVPixel& p = theCameraImage(static_cast<unsigned>(x / 2), static_cast<unsigned>(y));
+    Y = x & 1 ? p.y1 : p.y0;
+    cb = p.u;
+    cr = p.v;
+  };
+  lastOrange = CopaOrangeBall::detect(width, height, pixel,
+                                      [this](float x, float y) { return expectedBallRadius(x, y); }, params);
+
+  std::vector<DetectionCandidate> detections;
+  for(const CopaOrangeBall::Candidate& c : lastOrange.candidates)
+  {
+    DetectionCandidate& d = detections.emplace_back();
+    d.x = c.x;
+    d.y = c.y;
+    d.w = d.h = 2.f * c.radius;
+    d.confidence = c.confidence;
+  }
+  if(orangeHasPrev)
+    orangeKalman.applyEgomotion(orangePrevMatrix, orangePrevInfo, theCameraMatrix, theCameraInfo, theBallSpecification.radius);
+  orangePrevMatrix = theCameraMatrix;
+  orangePrevInfo = theCameraInfo;
+  orangeHasPrev = true;
+
+  // Only frames with a real candidate are published; predictions keep the track alive.
+  const TrackState state = orangeKalman.update(detections);
+  Det det;
+  det.cameraInfo = theCameraInfo;
+  det.cameraMatrix = theCameraMatrix;
+  if(state.active && state.visible)
+  {
+    det.cx = state.x;
+    det.cy = state.y;
+    det.radius = (state.w + state.h) * 0.25f;
+    det.conf = state.confidence;
+    det.valid = true;
+  }
+  return det;
 }
 
 void YoloBallDetector::update(RawBallPatch& rp)

@@ -89,6 +89,16 @@ class CopaConfigTests(unittest.TestCase):
         self.assertIn("genuflectTime", expected)
         self.assertEqual(cfg_keys(FILES / "Config/Scenarios/CopaPenaltyKeeper/copaKeeper.cfg"), expected)
 
+    def test_copa_orange_ball_cfg_matches_its_streamable(self):
+        header = (FILES / "Src/Modules/Perception/BallPerceptors/CopaOrangeBallConfig.h").read_text()
+        expected = set(re.findall(r"^\s*\([^)]*\)(?:\([^)]*\))?\s*(\w+),", header, re.M))
+        self.assertIn("floorMargin", expected)
+        for scenario in COPA:
+            with self.subTest(scenario=scenario):
+                path = FILES / "Config/Scenarios" / scenario / "copaOrangeBall.cfg"
+                self.assertEqual(cfg_keys(path), expected)
+                self.assertRegex(path.read_text(), r"(?m)^mode = 2;", "official ball is orange: orange first")
+
     def test_keeper_never_requests_a_jump(self):
         dive = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/Skills/Output/MotionRequest/Dive.cpp").read_text()
         self.assertIn("jumpLeft)\n      return MotionRequest::Dive::squatWideArmsBackLeft", dive)

@@ -10,6 +10,10 @@
  *
  * Inference runs in a background thread (never blocks the RT camera thread).
  *
+ * Copa scenarios: the official ball is orange (CopaOrangeBall.h). The color
+ * detector runs on every frame in the camera thread with its own tracker and
+ * has priority; YOLO stays as fallback for the Trionda (copaOrangeBall.cfg).
+ *
  * Model: Config/NeuralNets/BallDetector/yolo_ball_best1.onnx in the HSL scenarios.
  *   Input:  [1, 3, H, W]  float32 RGB CHW normalized [0,1]; H/W are read from ONNX.
  *   Output: [1, 5, N]     float32 cx,cy,w,h,conf in model-pixel coords.
@@ -26,6 +30,8 @@
 #include "Framework/Module.h"
 #include "Math/Eigen.h"
 #include "FieldColorNormalizer.h"
+#include "CopaOrangeBall.h"
+#include "CopaOrangeBallConfig.h"
 
 #include <onnxruntime_cxx_api.h>
 
@@ -220,6 +226,20 @@ private:
   Det                                   latestDet;
   std::chrono::steady_clock::time_point detTime{};
   std::mutex                            detMtx;
+
+  // ── Copa orange ball (camera thread) ─────────────────────────────────────
+  void loadOrangeConfig(const std::string& scenario);
+  /** Runs the color detector on the current image and returns the tracked orange ball. */
+  Det detectOrange();
+  /** Radius in pixels of a ball centered at an image point, 0 if it cannot lie on the floor. */
+  float expectedBallRadius(float x, float y) const;
+  CopaOrangeBallConfig     orangeConfig;
+  bool                     orangeEnabled = false;
+  LightweightBallKalman    orangeKalman;
+  CameraMatrix             orangePrevMatrix;
+  CameraInfo               orangePrevInfo;
+  bool                     orangeHasPrev = false;
+  CopaOrangeBall::Result   lastOrange;
 
   // ── ONNX Runtime ─────────────────────────────────────────────────────────
   Ort::Env                      ortEnv;

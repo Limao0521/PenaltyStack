@@ -32,7 +32,7 @@ editarlo en el worktree y traerlo con
 |---|---|
 | Escenarios y ubicación Copa | `Config/Scenarios/CopaPenaltyStriker`, `CopaPenaltyKeeper`, `Config/Locations/CopaPenalty` (balón 32,5 mm), `Config/teams.cfg` |
 | Botones, silbato, voz, sentado sin salto | `SkillBehaviorControl.*`, `CopaPenaltyState.h`, `PenaltyKeeper.h`, `Dive.cpp`, `BehaviorParameters.h` |
-| Balón | `YoloBallDetector.*`, `CopaBallModel.h`, modelos `trionda_copa_upper.onnx` y `trionda_copa_lower.onnx` |
+| Balón | `YoloBallDetector.*`, `CopaBallModel.h`, modelos `trionda_copa_upper.onnx` y `trionda_copa_lower.onnx`; balón naranja oficial: `CopaOrangeBall.h`, `CopaOrangeBallConfig.h`, `copaOrangeBall.cfg` |
 | Postes azules, portería, otros NAO | `Src/Modules/Perception/CopaPerceptors/`, `Src/Representations/Perception/CopaPercepts/` |
 | Stream al visor | `CamfStreamServer.*`, `CameraStreamer.*`, `CopaCameraStreamer.*`; visor `../tools/copa_camera_viewer.py` |
 | Despliegue | `Make/Common/deploy`, `cameraStreamConfig`, `openCameraViewer`, `Src/Apps/DeployDialog/SettingsArea.*` |

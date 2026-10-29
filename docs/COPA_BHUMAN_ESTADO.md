@@ -193,3 +193,29 @@ La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto,
 - **Sin reinicios:** si pierde el balón en la patada vuelve a alinear, nunca a buscar caminando.
 
 `copaShot.cfg`: `maxPitchCorrection`, `boxMaxBack`, `boxMaxLateral`, `trackGain`, `trackGate`; se quitaron `approachDistance` y `standOffDistance`.
+
+## Balón naranja oficial (29 de octubre)
+
+**Reglamento** (§ 3.3.4): pelota de plástico **naranja**, 65 mm, 55 g, sobre duela; líneas negras, postes azules, red blanca. Los modelos YOLO se entrenaron con la Trionda y no conocen una pelota naranja lisa. La duela es un naranja desaturado, así que el color solo no basta.
+
+**Detector** (`CopaOrangeBall.h`, sin tipos de B-Human, probado en el PC): cada frame, en el hilo de la cámara (30 Hz, antes 3–4 Hz con YOLO), muestrea la imagen cada 2 px:
+1. **Color relativo a la duela:** una muestra es naranja si Cr − Cb ≥ max(`minCrMinusCb` 50, mediana de la imagen + `floorMargin` 35), Cr − 128 ≥ 18, Cb − 128 ≤ −4 y el tono (Cr − 128)/(128 − Cb) está entre 0,35 (amarillo) y 1,9 (rojo). Duela del laboratorio (ospinao, 27 oct.): Cr − Cb mediana 7–20, percentil 99,9 ≤ 39. La franja roja de la Trionda mide 2,19 → descartada.
+2. **Manchas conexas** (8 vecinos): redondas (ancho/alto ≤ 1,8 si no las corta el borde), llenas (≥ 0,42 de su caja; un disco da 0,785) y menores que 0,45 de la altura de imagen. Un balón cortado por el borde (pegado a los pies) conserva su extensión mayor como diámetro.
+3. **Tamaño esperado:** el radio medido debe estar entre ½ y 2× el de una pelota de 65 mm en ese punto de la imagen según la matriz de cámara (con la corrección de cabeceo `CopaRange` en la inferior). Manos, camisetas, cinta y franjas pequeñas fallan aquí.
+4. **Seguimiento:** el mismo Kalman de imagen de YOLO (con compensación del movimiento de cámara), 2 frames de confirmación (o confianza ≥ 0,8), sólo publica frames con candidato real.
+
+**Integración** (`YoloBallDetector`): en escenarios Copa lee `copaOrangeBall.cfg` (archivo propio, para no tocar los `yoloBallDetector.cfg` de los otros 25 escenarios del fork). `mode = 2` (por defecto): si hay balón naranja seguido se usa; si no, YOLO (Trionda). `mode = 1`: sólo naranja, YOLO no se carga (menos CPU). `mode = 0`: sólo YOLO, como antes. El `BallPercept` es el mismo, así que modelo de balón, tirador, portero, gemelo y visor no cambian. Log cada 5 s: `[CopaOrange] camera=… floorCrMinusCb=… threshold=… orangeSamples=… blobs=… candidates=… best=… sizeRatio=… tracked=…` y `[CopaBall] … source=orange|yolo`.
+
+**Calibración en PC** (`tools/copa_orange_calibrate.py`, entorno de BallDetectorTL): aplica la misma regla de color a capturas del visor (`s`) y muestra la máscara (`--show`); con `--ball X,Y,R` imprime estadísticas del balón y de la duela y el umbral máximo que conserva el 90 % del balón. La prueba de manchas y tamaño necesita la matriz de cámara y sólo corre en el robot.
+
+**Verificado en el PC:** compilación Nao + DeployDialog; `Tests/CopaOrangeBallTest.cpp` (duela del laboratorio y duela barnizada, balón sombreado con brillo, balón cortado por el borde, balón lejano a ~4 m en la superior, dos balones, rechazo de mano, rojo, cinta naranja, tamaño incorrecto y punto sobre el horizonte); claves de `copaOrangeBall.cfg` = estructura; suite completa. En la captura real del laboratorio sin balón naranja la regla de color no marca nada en la inferior; en la superior sólo franjas de la Trionda y zonas pequeñas que la prueba de tamaño descarta. **No hay aún ninguna imagen real de la pelota naranja oficial; nada está probado en el robot.**
+
+### Pruebas del balón naranja (en orden)
+
+1. Con el visor abierto, capturar (`s`) la pelota naranja en la duela a 20 cm, 1 m, 2 m y 3 m y sin pelota; correr `copa_orange_calibrate.py <capturas> --ball X,Y,R`. Si «ball detected px» < 80 %, bajar `minCrMinusCb`/`floorMargin` al valor sugerido (sin bajar del percentil 99,9 de la duela) o ajustar `maxHueRatio` con el tono medido. Repetir en la duela del evento (5 min de calibración, § 2.10).
+2. Desplegar `CopaPenaltyStriker`, ubicación `CopaPenalty`. En el log: `[CopaBall] … orange=2` en ambas cámaras.
+3. Pelota a 15–40 cm frente a los pies → `BALON` verde, `[CopaBall] source=orange`; moverla → la sigue sin saltos; retirarla → `BALON no` en ≤ 0,3 s.
+4. Cámara superior a 1, 2, 3 y 4 m: anotar desde qué distancia deja de verse (`[CopaOrange] candidates=0` o `sizeRatio` fuera de 0,5–2).
+5. Falsos positivos 1 min sin pelota: manos, piel, camisetas rojas/naranjas, Trionda, cables, duela con sol → ningún `source=orange`. Si aparece, anotar `floorCrMinusCb`/`threshold` y subir `floorMargin`.
+6. Portero (`CopaPenaltyKeeper`): rodar la pelota naranja; `[CopaKeeperBall]` debería tener muchas más muestras por segundo que con YOLO.
+7. Para ensayar con la Trionda, dejar `mode = 2` (cae a YOLO) o `mode = 0`.
