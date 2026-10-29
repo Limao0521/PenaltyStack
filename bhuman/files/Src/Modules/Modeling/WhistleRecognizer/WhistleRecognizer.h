@@ -201,8 +201,8 @@ class WhistleRecognizer : public WhistleRecognizerBase
     int fsmGapBudget = 0;
     int fsmLastEndSample = -1000000;
     int fsmCurrentSample = 0;
-    int toneStartSample = 0; /**< Copa: first sample of the current detection's tone... */
-    int toneLastSample = 0;  /**< ...and last sample that passed all gates (trill gaps inside count). */
+    unsigned toneStartTime = 0; /**< Copa: audio time of the first passing frame of the current tone... */
+    unsigned toneLastTime = 0;  /**< ...and of the last one (trill gaps inside count). */
     bool accepted = false;  /**< Copa: this detection already lasted long enough. */
   };
 
@@ -220,6 +220,7 @@ class WhistleRecognizer : public WhistleRecognizerBase
 
   bool copaPenalty = false;
   bool copaConfigLoaded = false;
+  unsigned copaLastLog = 0; /**< Own rate limit: the monitor lines use lastLogTime every second. */
   CopaWhistleConfig copaWhistle;
 
   static float applyBP(float x, double (&z)[BP_N_SOS][2]);

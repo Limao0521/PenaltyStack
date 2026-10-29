@@ -709,18 +709,18 @@ void WhistleRecognizer::update(Whistle& theWhistle)
         bool active = detector.fsmState == DetectorState::FsmState::ACTIVE || opened;
         if(copaPenalty)
         {
-          // Copa: only tone that lasts counts. The tone spans from the onset to the last frame that
-          // passed all gates: a pea whistle trills, so frames inside it fail now and then
-          // (2026-10-30: real whistles measured 30-35 ms when only passing frames were counted),
-          // while the FSM hangover after the end (offFrames) is not tone.
-          if(opened)
-          {
-            detector.toneStartSample = detector.fsmCurrentSample - profile.onsetConsec * hopSamples;
-            detector.toneLastSample = detector.fsmCurrentSample;
-          }
-          else if(active && ok)
-            detector.toneLastSample = detector.fsmCurrentSample;
-          const int toneMs = (detector.toneLastSample - detector.toneStartSample) * 1000 / static_cast<int>(sampleRate);
+          // Copa: only tone that lasts counts, measured on the audio clock. The FSM runs once per
+          // audio block (512 frames, ~32 ms) but counts one 5 ms hop, so sample counts read whistles
+          // ~6x too short (2026-10-30: 30-35 ms for real blasts). The tone spans from the first
+          // passing frame to the last one: a pea whistle trills, so frames inside it fail now and
+          // then, while the FSM hangover after the end (offFrames) is not tone.
+          if(ok && (detector.fsmState == DetectorState::FsmState::CANDIDATE || opened) && detector.fsmOkRun <= 1)
+            detector.toneStartTime = theFrameInfo.time;
+          if(opened && detector.toneStartTime == 0)
+            detector.toneStartTime = theFrameInfo.time;
+          if(ok && active)
+            detector.toneLastTime = theFrameInfo.time;
+          const int toneMs = active && detector.toneStartTime ? static_cast<int>(detector.toneLastTime - detector.toneStartTime) : 0;
           if(active && !detector.accepted && toneMs >= copaWhistle.minToneMs)
           {
             detector.accepted = true;
@@ -730,15 +730,15 @@ void WhistleRecognizer::update(Whistle& theWhistle)
           }
           if(wasActive && !active)
           {
-            if(!detector.accepted && copaWhistle.logRejected &&
-               (lastLogTime == 0 || theFrameInfo.getTimeSince(lastLogTime) >= logIntervalMs))
+            const int endedToneMs = static_cast<int>(detector.toneLastTime - detector.toneStartTime);
+            if(!detector.accepted && copaWhistle.logRejected && theFrameInfo.getTimeSince(copaLastLog) >= 300)
             {
               OUTPUT_WARNING("[CopaWhistle] too short profile=" << profile.name << " ch=" << static_cast<int>(i)
-                             << " toneMs=" << toneMs
+                             << " toneMs=" << endedToneMs
                              << " (min " << copaWhistle.minToneMs << ")");
-              lastLogTime = theFrameInfo.time;
+              copaLastLog = theFrameInfo.time;
             }
-            detector.toneStartSample = detector.toneLastSample = detector.fsmCurrentSample;
+            detector.toneStartTime = detector.toneLastTime = 0;
             detector.accepted = false;
           }
           active = active && detector.accepted;

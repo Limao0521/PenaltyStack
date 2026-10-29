@@ -276,3 +276,13 @@ La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto,
 3. Balón naranja abajo y arriba como antes (`source=orange`); `[CopaVision] camera=upper … robots=` con el portero delante.
 4. Silbato: `accepted … toneMs=` ≥ 200 inicia; clics y chirridos `too short`. Ajustar `minToneMs` con los valores medidos.
 5. Tiro completo: alinear, patear, "stop"; rearmar y repetir.
+
+### Silbato: duración medida 6× corta (30 de octubre, tercera prueba)
+
+**Log (20:59–21:02):** CPU 105–122 % (antes 315–350 %), sin "CPU temperature". El monitor vio silbatos fuertes que pasan todos los filtros (`pMax` ~2000 frente a 41, `snr` 11–21, `fail=[] passCount=9`) pero ninguno inició.
+
+**Causa:** el reconocedor analiza **una vez por bloque de audio** (`frames = 512` a 16 kHz ≈ 32 ms), pero su FSM avanza el contador de muestras sólo un salto de 5 ms (80 muestras) por análisis. La duración del tono se calculaba con ese contador: cada silbato medía ~6,4× menos (los 30–35 ms del log anterior eran ~200 ms reales), y con `minToneMs = 200` hacía falta ~1,3 s de silbato continuo. Además, las líneas `too short` compartían el límite de 1 s de las líneas del monitor y no aparecían.
+
+**Cambio:** la duración se mide con el reloj del hilo de audio (`FrameInfo`), del primer al último análisis que pasa todos los filtros; `minToneMs = 150` (clics ~60–100 ms, silbato de árbitro ≥ 250 ms); `too short` con límite propio de 300 ms.
+
+**Probar:** armar → silbato corto normal → `[CopaWhistle] accepted … toneMs=` y "striker mode start". Golpes/chirridos → `too short toneMs=` < 150. Enviar los `toneMs` de ambos para ajustar el umbral.
