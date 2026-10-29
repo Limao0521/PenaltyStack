@@ -219,3 +219,28 @@ La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto,
 5. Falsos positivos 1 min sin pelota: manos, piel, camisetas rojas/naranjas, Trionda, cables, duela con sol → ningún `source=orange`. Si aparece, anotar `floorCrMinusCb`/`threshold` y subir `floorMargin`.
 6. Portero (`CopaPenaltyKeeper`): rodar la pelota naranja; `[CopaKeeperBall]` debería tener muchas más muestras por segundo que con YOLO.
 7. Para ensayar con la Trionda, dejar `mode = 2` (cae a YOLO) o `mode = 0`.
+
+## Silbato como disparador (30 de octubre)
+
+**Flujo:** cabeza trasera arma → el **silbato** del juez o la **cabeza delantera** inician el tiro (lo primero que llegue). Un silbato anterior al armado, o mientras el robot está parado, se ignora; con el tiro en curso, los dos disparadores no hacen nada. El límite de 28 s cuenta desde el silbato detectado (o desde el toque).
+
+**Por qué no funcionaba:** el silbato nunca llegaba al comportamiento. Sin GameController el robot nunca pasa por *set* ni *playing*, y B-Human sólo escucha en esos estados por dos lados: `AudioProvider` vacía las muestras (`onlySoundInSetAndPlaying = true` en `Robots/Default`) y `WhistleRecognizer` sólo detecta en *set*/*playing*. La máquina de estados (`CopaPenaltyState`) ya aceptaba el silbato.
+
+**Cambios** (sólo escenarios Copa):
+- `Config/Scenarios/CopaPenalty*/audioProvider.cfg`: copia de `Robots/Default` con `onlySoundInSetAndPlaying = false` (la carpeta del escenario tiene prioridad sobre `Robots/Default`).
+- `WhistleRecognizer.cpp`: en `CopaPenaltyStriker`/`CopaPenaltyKeeper` detecta en cualquier estado de juego. Los demás escenarios no cambian.
+- `[CopaStart] trigger=whistle|headFront role=… whistleConfidence=… delayMs=…` en el log al iniciar (`delayMs`: retraso entre el silbato y la reacción).
+
+**Limitación conocida:** B-Human no escucha mientras el robot habla (`soundWasPlaying`), para no detectar su propia voz. Si el juez pita justo durante "striker mode armed" o los avisos del barrido al armar ("ball on the mark", "goal confirmed"), ese silbato se pierde: hay que usar el botón delantero o volver a pitar. Armar con tiempo antes del silbato.
+
+**Verificado en el PC:** compilación; `CopaPenaltyStateTest` (silbato o botón tras armar, reloj de audio ligeramente adelantado, silbato antes de armar ignorado, toque durante el tiro ignorado); configuración de audio con las mismas claves que `Robots/Default`; suite completa. **Sin probar en el robot.**
+
+### Pruebas del silbato
+
+1. Desplegar `CopaPenaltyStriker`. En el log, sin GameController: líneas `Whistle monitor:` al silbar (antes no aparecían fuera de *set*/*playing*).
+2. Silbar **sin armar** → no pasa nada.
+3. Cabeza trasera ("striker mode armed"), esperar a que termine de hablar y del barrido, silbar → "striker mode start", `[CopaStart] trigger=whistle`, `delayMs` < 1000.
+4. Pecho (stop), rearmar, cabeza delantera → `[CopaStart] trigger=headFront`.
+5. Con ruido de público, voces y aplausos 1 min tras armar → no inicia solo. Si inicia, revisar `whistleConfidence` y endurecer el perfil (`whistleRecognizer.cfg`: `mouthWhistleEnabled = false` deja sólo silbatos de árbitro).
+6. Repetir 2–4 con `CopaPenaltyKeeper`.
+7. Silbato real del evento (si es posible, el mismo modelo que usarán los jueces) a la distancia real del juez.

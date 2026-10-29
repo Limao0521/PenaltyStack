@@ -99,6 +99,18 @@ class CopaConfigTests(unittest.TestCase):
                 self.assertEqual(cfg_keys(path), expected)
                 self.assertRegex(path.read_text(), r"(?m)^mode = 2;", "official ball is orange: orange first")
 
+    def test_copa_listens_for_the_whistle_without_game_controller(self):
+        default = (Path(overlay.load_manifest()["worktree"]).expanduser()
+                   / "Config/Robots/Default/audioProvider.cfg")
+        for scenario in COPA:
+            with self.subTest(scenario=scenario):
+                path = FILES / "Config/Scenarios" / scenario / "audioProvider.cfg"
+                self.assertRegex(path.read_text(), r"(?m)^onlySoundInSetAndPlaying = false;")
+                if default.is_file():
+                    self.assertEqual(cfg_keys(path), cfg_keys(default))
+        recognizer = (FILES / "Src/Modules/Modeling/WhistleRecognizer/WhistleRecognizer.cpp").read_text()
+        self.assertIn("shouldDetectWhistles = (copaPenalty ||", recognizer)
+
     def test_keeper_never_requests_a_jump(self):
         dive = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/Skills/Output/MotionRequest/Dive.cpp").read_text()
         self.assertIn("jumpLeft)\n      return MotionRequest::Dive::squatWideArmsBackLeft", dive)

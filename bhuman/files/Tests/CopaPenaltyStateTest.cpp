@@ -27,6 +27,27 @@ int main()
   assert(state.update(30600, 30600, true, false, false, true) == CopaPenaltyState::stopped);
   assert(state.update(30700, 30700, true, false, false) == CopaPenaltyState::stopped);
 
+  {
+    // Armed: the whistle starts, the button starts; each records its trigger.
+    CopaPenaltyState whistle;
+    whistle.update(100, 0, false, false, false);
+    assert(whistle.update(200, 0, false, false, true) == CopaPenaltyState::waiting);
+    assert(whistle.update(300, 0, false, false, false) == CopaPenaltyState::waiting);
+    // Audio clock slightly ahead of the camera frame: accepted on the next cycle.
+    assert(whistle.update(400, 420, false, false, false) == CopaPenaltyState::waiting);
+    assert(whistle.update(440, 420, false, false, false) == CopaPenaltyState::running);
+    assert(whistle.startedByWhistle() && whistle.shotStart() == 420);
+    // A head touch while running does nothing.
+    assert(whistle.update(500, 420, true, false, false) == CopaPenaltyState::running);
+    assert(whistle.update(600, 420, false, true, false) == CopaPenaltyState::stopped);
+    // Whistle while stopped (not armed) does not start, nor later after arming.
+    assert(whistle.update(700, 700, false, false, false) == CopaPenaltyState::stopped);
+    assert(whistle.update(800, 700, false, false, true) == CopaPenaltyState::waiting);
+    assert(whistle.update(900, 700, false, false, false) == CopaPenaltyState::waiting);
+    assert(whistle.update(1000, 700, true, false, false) == CopaPenaltyState::running);
+    assert(!whistle.startedByWhistle() && whistle.shotStart() == 1000);
+  }
+
   CopaKeeperPolicy keeper;
   assert(!keeper.update(false, -500.f)); // stale perception must not trigger
   assert(!keeper.update(true, 0.f));

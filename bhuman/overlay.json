@@ -163,6 +163,9 @@
     "Config/Scenarios/CopaPenaltyKeeper/BehaviorControl/zweikampfImpl.cfg": {
       "kind": "added"
     },
+    "Config/Scenarios/CopaPenaltyKeeper/audioProvider.cfg": {
+      "kind": "added"
+    },
     "Config/Scenarios/CopaPenaltyKeeper/ballContactCheckerProvider.cfg": {
       "kind": "added"
     },
@@ -299,6 +302,9 @@
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyStriker/BehaviorControl/zweikampfImpl.cfg": {
+      "kind": "added"
+    },
+    "Config/Scenarios/CopaPenaltyStriker/audioProvider.cfg": {
       "kind": "added"
     },
     "Config/Scenarios/CopaPenaltyStriker/ballContactCheckerProvider.cfg": {
@@ -659,6 +665,9 @@
       "kind": "added"
     },
     "Src/Modules/Modeling/BallStateEstimator/BallPerceptFilter.cpp": {
+      "kind": "modified"
+    },
+    "Src/Modules/Modeling/WhistleRecognizer/WhistleRecognizer.cpp": {
       "kind": "modified"
     },
     "Src/Modules/MotionControl/MotionEngine/MotionEngine.cpp": {

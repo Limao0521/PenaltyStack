@@ -1,12 +1,15 @@
 #pragma once
 
-// Local shot lifecycle. Inputs must be sampled every cycle. A new start press
-// is accepted only after release; abort and timeout latch until rearmed.
+// Local shot lifecycle. Inputs must be sampled every cycle. Once armed, either a
+// new whistle (heard after arming) or a front head touch starts the shot; a new
+// start press is accepted only after release; abort and timeout latch until rearmed.
 class CopaPenaltyState
 {
 public:
   enum State { waiting, running, stopped };
   void finish() { current = stopped; }
+  bool startedByWhistle() const { return byWhistle; }
+  unsigned shotStart() const { return startTime; }
 
   State update(unsigned now, unsigned whistle, bool startPressed, bool abortPressed, bool rearmPressed, bool shutdown = false)
   {
@@ -36,6 +39,7 @@ public:
     else if(current == waiting && (startEdge || newWhistle))
     {
       current = running;
+      byWhistle = newWhistle;
       startTime = newWhistle ? whistle : now;
     }
     if(current == running && now - startTime >= 28000u)
@@ -48,6 +52,7 @@ private:
   unsigned startTime = 0;
   unsigned armedTime = 0;
   unsigned lastWhistle = 0;
+  bool byWhistle = false;
   bool initialized = false;
   bool startWasPressed = false;
   bool rearmWasPressed = false;

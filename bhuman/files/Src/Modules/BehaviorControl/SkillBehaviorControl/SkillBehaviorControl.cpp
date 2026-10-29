@@ -468,7 +468,10 @@ void SkillBehaviorControl::executeCopaPenalty(bool keeper)
     SystemCall::say((std::string(role) + " mode " + name).c_str());
     if(state == CopaPenaltyState::running)
     {
-      copaLastKick = theMotionInfo.lastKickTimestamp;
+      // The 28 s limit runs from the whistle, not from when it was recognized.
+      OUTPUT_WARNING("[CopaStart] trigger=" << (copaState.startedByWhistle() ? "whistle" : "headFront")
+                     << " role=" << role << " whistleConfidence=" << theWhistle.confidenceOfLastWhistleDetection
+                     << " delayMs=" << static_cast<int>(theFrameInfo.time - copaState.shotStart()));
       copaKeeper.reset();
       copaKeeperStart = theOdometryData;
       copaKeeperLastAction = CopaKeeper::Action::watch;
