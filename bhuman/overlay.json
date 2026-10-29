@@ -715,6 +715,12 @@
     "Src/Modules/Perception/CopaPerceptors/CopaGoalPostDetector.h": {
       "kind": "added"
     },
+    "Src/Modules/Perception/CopaPerceptors/CopaPerceptionStub.cpp": {
+      "kind": "added"
+    },
+    "Src/Modules/Perception/CopaPerceptors/CopaPerceptionStub.h": {
+      "kind": "added"
+    },
     "Src/Modules/Perception/CopaPerceptors/CopaVisionPerceptor.cpp": {
       "kind": "added"
     },

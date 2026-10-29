@@ -254,3 +254,25 @@ La versión anterior reiniciaba al iniciar con distancias fijas. Flujo correcto,
 **Cualquier sonido agudo inicia:** el detector se abre tras `onsetConsec = 3` ventanas de 5 ms (~15 ms de tono): clics, chirridos y pitidos bastaban. En Copa (`copaWhistle.cfg`) una detección sólo cuenta como silbato tras **`minToneMs = 250` ms de tono real** (ventanas que pasan todos los filtros; la cola de `offFrames` no cuenta); `minChannels = 1` (2 exige ambos micrófonos). Perfil `mouth_whistle` (el más permisivo, 1,7–4,2 kHz) apagado en Copa: el juez usa silbato. Log: `[CopaWhistle] accepted profile=… toneMs=… peakHz=…` y `[CopaWhistle] too short … toneMs=… (min 250)`.
 
 **Probar:** (1) armar y hacer ruidos agudos (golpes, chirridos de silla, aplausos, voz aguda) → ningún inicio; en el log `too short` con `toneMs` bajos. (2) Silbato corto normal del juez → inicia; anotar `toneMs` de `accepted`. Si un silbato real queda en `too short`, bajar `minToneMs` (p. ej. 180); si aún entra ruido, subirlo o poner `minChannels = 2`. (3) Patear y, tras "stop", rearmar e iniciar de nuevo → el segundo tiro debe correr normalmente. (4) Para probar silbando con la boca, `mouthWhistleEnabled = true` en `whistleRecognizer.cfg` del escenario.
+
+## Menos CPU para el torneo y silbato por duración (30 de octubre, segunda prueba)
+
+**Log y `top` en ospinao (20:44–20:49):** `procCPU` 315–350 % de 400 %, carga 5 en 4 núcleos, ~5 % libre; el robot decía "CPU temperature" cada ~25 s, y cada aviso hablado deja al detector de silbato sordo mientras suena. Hilos: dos `Upper` y dos `Lower` de 58–79 % cada uno (cámara + inferencia YOLO en segundo plano). Silbatos reales: `[CopaWhistle] too short … toneMs=30/35`.
+
+**Quitado en Copa (no lo usa el penal):**
+- **YOLO** (`copaOrangeBall.cfg`, `mode = 1`): sólo balón naranja; los dos hilos de inferencia no arrancan. Para ensayar con la Trionda, `mode = 2`.
+- **Logger binario** (`logger.cfg`, `enabled = false`): codificaba en JPEG cada frame de ambas cámaras y escribía ~1 GB cada 6 min. El log de texto `bhumand_*.log` sigue igual.
+- **Percepción de cancha HSL** en ambas cámaras: líneas, círculo, intersecciones, marca penal, regiones de scan lines, ball spots de la Trionda.
+- **Redes de la cámara inferior**: BOP (segmentación) y PlayersDeeptector (robots), y su límite de campo.
+- Módulo `CopaPerceptionStub` entrega esas representaciones vacías ("nada visto"), así ningún módulo que aún las requiera (autolocalización, modelo de obstáculos, visor) queda sin proveedor (eso detiene B-Human). Comprobado con una verificación estática del grafo de módulos: los mismos resultados que la configuración anterior, que sí arranca.
+
+**Se mantiene:** cámaras y matrices, contorno del cuerpo, balón naranja, postes/portería (`CopaVisionPerceptor`), detector de robots de la cámara **superior** con su límite de campo y clasificador de camisetas (el tirador elige el lado según el portero), visor (sólo codifica si hay un cliente conectado).
+
+**Silbato:** el tono se mide como tramo desde el inicio hasta el último frame que pasa todos los filtros (un silbato de árbitro tiene trino y algunos frames fallan dentro); `minToneMs = 200`. Un clic sigue midiendo ~15 ms.
+
+**Probar:**
+1. Desplegar; ojos sin rojo (si hay rojo, enviar el log: sería un proveedor faltante).
+2. `[ResourceMonitor] procCPU` en reposo y armado, comparado con 315–350 %; sin "CPU temperature".
+3. Balón naranja abajo y arriba como antes (`source=orange`); `[CopaVision] camera=upper … robots=` con el portero delante.
+4. Silbato: `accepted … toneMs=` ≥ 200 inicia; clics y chirridos `too short`. Ajustar `minToneMs` con los valores medidos.
+5. Tiro completo: alinear, patear, "stop"; rearmar y repetir.

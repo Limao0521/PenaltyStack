@@ -97,7 +97,7 @@ class CopaConfigTests(unittest.TestCase):
             with self.subTest(scenario=scenario):
                 path = FILES / "Config/Scenarios" / scenario / "copaOrangeBall.cfg"
                 self.assertEqual(cfg_keys(path), expected)
-                self.assertRegex(path.read_text(), r"(?m)^mode = 2;", "official ball is orange: orange first")
+                self.assertRegex(path.read_text(), r"(?m)^mode = 1;", "official ball is orange: no YOLO threads (CPU)")
 
     def test_copa_listens_for_the_whistle_without_game_controller(self):
         default = (Path(overlay.load_manifest()["worktree"]).expanduser()
@@ -127,6 +127,24 @@ class CopaConfigTests(unittest.TestCase):
         behavior = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/SkillBehaviorControl.cpp").read_text()
         start = behavior.split("if(state == CopaPenaltyState::running)\n    {", 1)[1].split("\n    }", 1)[0]
         self.assertIn("copaLastKick = theMotionInfo.lastKickTimestamp;", start)
+
+    def test_copa_skips_perception_the_penalty_does_not_use(self):
+        # CPU temperature warnings (2026-10-30): HSL field perception, lower obstacle nets, YOLO and the logger.
+        stub = set(re.findall(r"PROVIDES\((\w+)\)", module_header("CopaPerceptionStub")))
+        for scenario in COPA:
+            threads = thread_providers(scenario)
+            folder = FILES / "Config/Scenarios" / scenario
+            with self.subTest(scenario=scenario):
+                for thread in ("Upper", "Lower"):
+                    for rep in ("LinesPercept", "CirclePercept", "PenaltyMarkPercept", "BallSpots"):
+                        self.assertEqual(threads[thread][rep], "CopaPerceptionStub")
+                    stubbed = {r for r, p in threads[thread].items() if p == "CopaPerceptionStub"}
+                    self.assertLessEqual(stubbed, stub)
+                # The striker finds the keeper with the upper robot detector, which needs the field boundary.
+                self.assertEqual(threads["Upper"]["ObstaclesImagePercept"], "RobotDetector")
+                self.assertEqual(threads["Upper"]["FieldBoundary"], "FieldBoundaryProvider")
+                self.assertEqual(threads["Lower"]["ObstaclesImagePercept"], "CopaPerceptionStub")
+                self.assertRegex((folder / "logger.cfg").read_text(), r"(?m)^enabled = false;")
 
     def test_keeper_never_requests_a_jump(self):
         dive = (FILES / "Src/Modules/BehaviorControl/SkillBehaviorControl/Skills/Output/MotionRequest/Dive.cpp").read_text()

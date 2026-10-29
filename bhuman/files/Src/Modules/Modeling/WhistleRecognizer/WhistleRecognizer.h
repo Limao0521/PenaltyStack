@@ -201,7 +201,8 @@ class WhistleRecognizer : public WhistleRecognizerBase
     int fsmGapBudget = 0;
     int fsmLastEndSample = -1000000;
     int fsmCurrentSample = 0;
-    int toneFrames = 0;     /**< Copa: frames passing all gates in the current detection. */
+    int toneStartSample = 0; /**< Copa: first sample of the current detection's tone... */
+    int toneLastSample = 0;  /**< ...and last sample that passed all gates (trill gaps inside count). */
     bool accepted = false;  /**< Copa: this detection already lasted long enough. */
   };
 
